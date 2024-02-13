@@ -5,13 +5,13 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "strict": true,
-        "module": "esnext",
+        "module": "CommonJS",
         "moduleResolution": "node",
-        "outDir": "./build",
+        "outDir": "dist",
         "declaration": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "react-jsx"
+                "jsx": "react-jsx"
     },
     "include": ["src"]
 }
