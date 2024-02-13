@@ -6,7 +6,8 @@
     "scripts": {
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "build": "tsc --project tsconfig.json"
+        "build": "tsc --project tsconfig.json",
+        "release": "git checkout main && git merge develop && git push && npm publish && git checkout develop"
     },
     "bugs": {
         "url": "https://github.com/InvoiceBox/invoicebox-ui/issues"
