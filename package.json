@@ -7,7 +7,7 @@
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
         "build": "babel src --extensions .ts,.tsx --out-dir dist && tsc --project tsconfig.json",
-        "release": "git checkout main && git merge develop && git push && npm run build && npm publish && git checkout develop"
+        "release": "git checkout develop && npm version $VERSION && git push && git push --tags && git checkout main && git merge develop && git push && npm run build && npm publish && git checkout develop"
     },
     "bugs": {
         "url": "https://github.com/InvoiceBox/invoicebox-ui/issues"
