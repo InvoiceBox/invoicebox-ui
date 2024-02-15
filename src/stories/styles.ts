@@ -1,12 +1,14 @@
-export const wrapperStyles = {
-    fontFamily: "'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-    fontWeight: 700,
-    border: 0,
-    borderRadius: '3em',
-    cursor: 'pointer',
-    display: 'inline-block',
-    lineHeight: 1,
-};
+import { styled } from 'styled-components';
+
+export const Wrapper = styled.button`
+    font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    border: 0;
+    border-radius: '3em';
+    cursor: 'pointer';
+    display: 'inline-block';
+    line-height: 1;
+`;
 
 export const primaryStyles = {
     color: 'white',

@@ -8,5 +8,6 @@
                 "modules": "commonjs"
             }
         ]
-    ]
+    ],
+    "plugins": ["babel-plugin-styled-components"]
 }

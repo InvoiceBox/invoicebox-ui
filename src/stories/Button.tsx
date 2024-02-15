@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-    largeStyles,
-    mediumStyles,
-    primaryStyles,
-    secondaryStyles,
-    smallStyles,
-    wrapperStyles,
-} from './styles';
+import { largeStyles, mediumStyles, primaryStyles, secondaryStyles, smallStyles } from './styles';
+import * as S from './styles';
 
 export interface ButtonProps {
     /**
@@ -49,10 +43,9 @@ export const Button = ({
     }[size];
 
     return (
-        <button
+        <S.Wrapper
             type="button"
             style={{
-                ...wrapperStyles,
                 ...modeStyles,
                 ...sizeStyles,
                 ...(backgroundColor ? { backgroundColor } : {}),
@@ -60,6 +53,6 @@ export const Button = ({
             {...props}
         >
             {label}
-        </button>
+        </S.Wrapper>
     );
 };
