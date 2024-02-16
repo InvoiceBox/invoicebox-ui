@@ -9,9 +9,9 @@ const shine = keyframes`
     }
 `;
 
-export const Wrapper = styled.div`
-    width: 100%;
-    height: 100%;
+export const Wrapper = styled.div<{ $width?: string; $height?: string }>`
+    width: ${({ $width }) => $width ?? '100%'};
+    height: ${({ $height }) => $height ?? '100%'};
     border-radius: 10px;
     overflow: hidden;
     position: relative;

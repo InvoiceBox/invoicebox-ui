@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Skeleton } from '.';
+import { Skeleton, TProps } from '.';
 
 const meta = {
     title: 'Common/Skeleton',
@@ -10,14 +10,21 @@ const meta = {
 
 export default meta;
 
-export const Primary: StoryObj<{ width: number; height: number }> = {
+export const ByContainer: StoryObj<TProps & { containerWidth: number; containerHeight: number }> = {
     args: {
-        width: 100,
-        height: 200,
+        containerWidth: 200,
+        containerHeight: 100,
     },
-    render: (args) => (
-        <div style={{ width: args.width, height: args.height }}>
-            <Skeleton />
+    render: ({ containerWidth, containerHeight, ...rest }) => (
+        <div style={{ width: containerWidth, height: containerHeight }}>
+            <Skeleton {...rest} />
         </div>
     ),
+};
+
+export const ByOwnSize: StoryObj<typeof Skeleton> = {
+    args: {
+        width: '200px',
+        height: '100px',
+    },
 };
