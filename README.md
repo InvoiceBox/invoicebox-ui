@@ -2,7 +2,7 @@
 
 Библиотека компонентов Invoicebox.
 
-[Cторибук](https://invoicebox.github.io/invoicebox-ui) с документацией и примерами.
+[Cторибук](https://ui.invoicebox.ru/) с документацией и примерами.
 
 # Установка
 
