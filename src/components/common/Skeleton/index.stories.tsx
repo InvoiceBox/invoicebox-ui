@@ -1,23 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Skeleton, TProps } from '.';
+import { Skeleton } from '.';
 
 const meta = {
-    title: 'Common/Skeleton',
+    title: 'common/Skeleton',
     component: Skeleton,
     tags: ['autodocs'],
 } satisfies Meta<typeof Skeleton>;
 
 export default meta;
 
-export const ByContainer: StoryObj<TProps & { containerWidth: number; containerHeight: number }> = {
-    args: {
-        containerWidth: 200,
-        containerHeight: 100,
-    },
-    render: ({ containerWidth, containerHeight, ...rest }) => (
-        <div style={{ width: containerWidth, height: containerHeight }}>
-            <Skeleton {...rest} />
+export const ByContainer: StoryObj<typeof Skeleton> = {
+    render: (props) => (
+        <div style={{ width: 200, height: 100 }}>
+            <Skeleton {...props} />
         </div>
     ),
 };

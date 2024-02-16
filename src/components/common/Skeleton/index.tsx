@@ -6,7 +6,7 @@ export type TProps = {
     height?: string;
 };
 
-export const Skeleton: FC<TProps> = ({ width, height }) => (
+export const Skeleton: FC<TProps> = ({ width = '100%', height = '100%' }) => (
     <S.Wrapper $width={width} $height={height}>
         <S.Inner />
     </S.Wrapper>
