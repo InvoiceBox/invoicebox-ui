@@ -13,7 +13,7 @@ rm -rf dist docs &&
 ./node_modules/.bin/storybook build --output-dir docs &&
 
 # stage, сommit and push storybook
-git add storybook-static && 
+git add docs && 
 git commit -m "storybook build" &&
 git push &&
 
