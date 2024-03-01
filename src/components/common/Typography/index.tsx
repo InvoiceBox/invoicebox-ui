@@ -1,21 +1,21 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, HTMLProps } from 'react';
 import * as S from './styles';
 import { typography } from './typography';
 import { Helmet } from 'react-helmet';
 
-export type TProps = {
-    children: ReactNode;
-    variant: keyof typeof typography;
-    as?: 'div' | 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-    className?: string;
-};
+type TDefaultElementProps = { as?: never } & HTMLProps<HTMLDivElement>;
 
-export const Typography: FC<TProps> = ({ children, as = 'div', variant, className }) => {
-    return (
-        <S.Wrapper as={as} $variant={variant} className={className}>
-            {children}
-        </S.Wrapper>
-    );
+type TDivProps = { as: 'div' } & HTMLProps<HTMLDivElement>;
+type TParagraphProps = { as: 'p' } & HTMLProps<HTMLParagraphElement>;
+type TSpanProps = { as: 'span' } & HTMLProps<HTMLSpanElement>;
+type THeadingProps = { as: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' } & HTMLProps<HTMLHeadingElement>;
+
+export type TProps = {
+    variant: keyof typeof typography;
+} & ((TDefaultElementProps | TDivProps) | TParagraphProps | TSpanProps | THeadingProps);
+
+export const Typography: FC<TProps> = ({ variant, as = 'div', ...rest }) => {
+    return <S.Wrapper as={as} $variant={variant} {...(rest as HTMLProps<HTMLDivElement>)} />;
 };
 
 export const TypographyGlobalStyle: FC = () => {
