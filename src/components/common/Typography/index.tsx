@@ -1,21 +1,24 @@
-import React, { FC, HTMLProps } from 'react';
+import React, { ButtonHTMLAttributes, FC, HTMLAttributes } from 'react';
 import * as S from './styles';
 import { typography } from './typography';
 import { Helmet } from 'react-helmet';
 
-type TDefaultElementProps = { as?: never } & HTMLProps<HTMLDivElement>;
+type TDefaultElementProps = { htmlElement?: never } & HTMLAttributes<HTMLDivElement>;
 
-type TDivProps = { as: 'div' } & HTMLProps<HTMLDivElement>;
-type TParagraphProps = { as: 'p' } & HTMLProps<HTMLParagraphElement>;
-type TSpanProps = { as: 'span' } & HTMLProps<HTMLSpanElement>;
-type THeadingProps = { as: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' } & HTMLProps<HTMLHeadingElement>;
+type TDivProps = { htmlElement: 'div' } & HTMLAttributes<HTMLDivElement>;
+type TParagraphProps = { htmlElement: 'p' } & HTMLAttributes<HTMLParagraphElement>;
+type TSpanProps = { htmlElement: 'span' } & HTMLAttributes<HTMLSpanElement>;
+type THeadingProps = {
+    htmlElement: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+} & HTMLAttributes<HTMLHeadingElement>;
+type TButtonProps = { htmlElement: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type TProps = {
     variant: keyof typeof typography;
-} & ((TDefaultElementProps | TDivProps) | TParagraphProps | TSpanProps | THeadingProps);
+} & ((TDefaultElementProps | TDivProps) | TParagraphProps | TSpanProps | THeadingProps | TButtonProps);
 
-export const Typography: FC<TProps> = ({ variant, as = 'div', ...rest }) => {
-    return <S.Wrapper as={as} $variant={variant} {...(rest as HTMLProps<HTMLDivElement>)} />;
+export const Typography: FC<TProps> = ({ variant, htmlElement = 'div', ...rest }) => {
+    return <S.Wrapper as={htmlElement} $variant={variant} {...rest} />;
 };
 
 export const TypographyGlobalStyle: FC = () => {
