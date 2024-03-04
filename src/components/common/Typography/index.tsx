@@ -3,22 +3,22 @@ import * as S from './styles';
 import { typography } from './typography';
 import { Helmet } from 'react-helmet';
 
-type TDefaultElementProps = { htmlElement?: never } & HTMLAttributes<HTMLDivElement>;
+type TDefaultElementProps = { element?: never } & HTMLAttributes<HTMLDivElement>;
 
-type TDivProps = { htmlElement: 'div' } & HTMLAttributes<HTMLDivElement>;
-type TParagraphProps = { htmlElement: 'p' } & HTMLAttributes<HTMLParagraphElement>;
-type TSpanProps = { htmlElement: 'span' } & HTMLAttributes<HTMLSpanElement>;
+type TDivProps = { element: 'div' } & HTMLAttributes<HTMLDivElement>;
+type TParagraphProps = { element: 'p' } & HTMLAttributes<HTMLParagraphElement>;
+type TSpanProps = { element: 'span' } & HTMLAttributes<HTMLSpanElement>;
 type THeadingProps = {
-    htmlElement: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+    element: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 } & HTMLAttributes<HTMLHeadingElement>;
-type TButtonProps = { htmlElement: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
+type TButtonProps = { element: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type TProps = {
     variant: keyof typeof typography;
 } & ((TDefaultElementProps | TDivProps) | TParagraphProps | TSpanProps | THeadingProps | TButtonProps);
 
-export const Typography: FC<TProps> = ({ variant, htmlElement = 'div', ...rest }) => {
-    return <S.Wrapper as={htmlElement} $variant={variant} {...rest} />;
+export const Typography: FC<TProps> = ({ variant, element = 'div', ...rest }) => {
+    return <S.Wrapper as={element} $variant={variant} {...rest} />;
 };
 
 export const TypographyGlobalStyle: FC = () => {

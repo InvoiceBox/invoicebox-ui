@@ -8,12 +8,14 @@ export type TProps = {
     isLoading?: boolean;
     palette?: Partial<TSecondaryButtonPalette>;
     invoiceboxSpinnerProps?: Pick<TInvoiceboxSpinnerProps, 'palette'>;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+    fullWidth?: boolean;
+} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'>;
 
 export const SecondaryButton: FC<TProps> = ({
     isLoading,
     palette,
     invoiceboxSpinnerProps,
+    fullWidth = false,
     children,
     disabled,
     ...rest
@@ -21,13 +23,13 @@ export const SecondaryButton: FC<TProps> = ({
     const mergedPalette = useComponentPalette('secondaryButton', palette);
 
     return (
-        <S.Wrapper disabled={disabled || isLoading} $palette={mergedPalette} {...rest}>
+        <S.Wrapper disabled={disabled || isLoading} $palette={mergedPalette} $fullWidth={fullWidth} {...rest}>
             {isLoading && (
                 <S.LoaderWrapper>
                     <InvoiceboxSpinner {...invoiceboxSpinnerProps} isSecondary width="32px" />
                 </S.LoaderWrapper>
             )}
-            <S.Inner htmlElement="span" variant="buttonM" $isLoading={isLoading}>
+            <S.Inner element="span" variant="buttonM" $isLoading={isLoading}>
                 {children}
             </S.Inner>
         </S.Wrapper>

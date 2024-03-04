@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Typography } from '../Typography';
 import { TSecondaryButtonPalette } from './palette';
 
@@ -6,7 +6,7 @@ export const Inner = styled(Typography)<{ $isLoading?: boolean }>`
     visibility: ${({ $isLoading }) => ($isLoading ? 'hidden' : 'visible')};
 `;
 
-export const Wrapper = styled.button<{ $palette: TSecondaryButtonPalette }>`
+export const Wrapper = styled.button<{ $palette: TSecondaryButtonPalette; $fullWidth: boolean }>`
     position: relative;
     border: none;
     border-radius: 10px;
@@ -15,6 +15,13 @@ export const Wrapper = styled.button<{ $palette: TSecondaryButtonPalette }>`
     color: ${({ $palette }) => $palette.text};
     background-color: ${({ $palette }) => $palette.bg};
     transition: background-color 0.2s ease-in-out 0s;
+
+    ${({ $fullWidth }) =>
+        $fullWidth &&
+        css`
+            box-sizing: border-box;
+            width: 100%;
+        `}
 
     &:hover:not(:disabled) {
         background-color: ${({ $palette }) => $palette.bgHover};

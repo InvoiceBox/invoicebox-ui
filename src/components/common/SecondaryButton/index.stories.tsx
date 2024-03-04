@@ -14,6 +14,7 @@ export const Default: StoryObj<typeof SecondaryButton> = {
     args: {
         disabled: false,
         isLoading: false,
+        fullWidth: false,
         onClick: action('click'),
         children: 'Button',
     },
