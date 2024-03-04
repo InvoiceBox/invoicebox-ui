@@ -10,12 +10,25 @@ const meta = {
 
 export default meta;
 
+const args = {
+    disabled: false,
+    isLoading: false,
+    fullWidth: false,
+    onClick: action('click'),
+    children: 'Button',
+};
+
 export const Default: StoryObj<typeof SecondaryButton> = {
     args: {
-        disabled: false,
-        isLoading: false,
-        fullWidth: false,
-        onClick: action('click'),
-        children: 'Button',
+        ...args,
+        element: 'button',
+    },
+};
+
+export const Link: StoryObj<typeof SecondaryButton> = {
+    args: {
+        ...args,
+        element: 'a',
+        href: 'https://google.com',
     },
 };

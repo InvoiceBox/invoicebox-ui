@@ -6,7 +6,15 @@ export const Inner = styled(Typography)<{ $isLoading?: boolean }>`
     visibility: ${({ $isLoading }) => ($isLoading ? 'hidden' : 'visible')};
 `;
 
-export const Wrapper = styled.button<{ $palette: TSecondaryButtonPalette; $fullWidth: boolean }>`
+export const Wrapper = styled.button<{
+    $palette: TSecondaryButtonPalette;
+    $fullWidth: boolean;
+    $disabled: boolean;
+}>`
+    appearance: none;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
     position: relative;
     border: none;
     border-radius: 10px;
@@ -15,29 +23,39 @@ export const Wrapper = styled.button<{ $palette: TSecondaryButtonPalette; $fullW
     color: ${({ $palette }) => $palette.text};
     background-color: ${({ $palette }) => $palette.bg};
     transition: background-color 0.2s ease-in-out 0s;
+    box-sizing: border-box;
 
     ${({ $fullWidth }) =>
         $fullWidth &&
         css`
-            box-sizing: border-box;
             width: 100%;
         `}
 
-    &:hover:not(:disabled) {
-        background-color: ${({ $palette }) => $palette.bgHover};
+    &:hover {
+        ${({ $disabled, $palette }) =>
+            !$disabled &&
+            css`
+                background-color: ${$palette.bgHover};
+            `}
     }
 
-    &:active:not(:disabled) {
-        background-color: ${({ $palette }) => $palette.bgActive};
+    &:active {
+        ${({ $disabled, $palette }) =>
+            !$disabled &&
+            css`
+                background-color: ${$palette.bgActive};
+            `}
     }
 
-    &:disabled {
-        cursor: not-allowed;
+    ${({ $disabled }) =>
+        $disabled &&
+        css`
+            pointer-events: none;
 
-        ${Inner} {
-            opacity: 0.5;
-        }
-    }
+            ${Inner} {
+                opacity: 0.5;
+            }
+        `}
 `;
 
 export const LoaderWrapper = styled.div`
