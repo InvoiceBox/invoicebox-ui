@@ -4,12 +4,10 @@ import { InvoiceboxSpinner, TProps as TInvoiceboxSpinnerProps } from '../Invoice
 import { TSecondaryButtonPalette } from './palette';
 import { useComponentPalette } from '../../../palette';
 
-type TDefaultElementProps = { element?: never } & ButtonHTMLAttributes<HTMLButtonElement>;
-
-type TButtonProps = { element: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
+type TButtonProps = { element?: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
 type TAnchorProps = { element: 'a' } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export type TProps = (TDefaultElementProps | TButtonProps | TAnchorProps) & {
+export type TProps = (TButtonProps | TAnchorProps) & {
     isLoading?: boolean;
     fullWidth?: boolean;
     disabled?: boolean;
