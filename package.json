@@ -30,7 +30,6 @@
         "@storybook/react": "^7.6.13",
         "@storybook/react-webpack5": "^7.6.13",
         "@storybook/test": "^7.6.13",
-        "@types/react-helmet": "^6.1.11",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "babel-plugin-inline-json-import": "^0.3.2",
@@ -50,7 +49,6 @@
     "dependencies": {
         "hex-to-rgba": "^2.0.1",
         "lottie-react": "^2.4.0",
-        "react-helmet": "^6.1.0",
         "styled-components": "^6.1.8"
     },
     "peerDependencies": {
