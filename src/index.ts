@@ -5,6 +5,7 @@ export { Typography, TypographyGlobalStyle } from './components/common/Typograph
 export { InvoiceboxSpinner } from './components/common/InvoiceboxSpinner';
 export { SecondaryButton } from './components/common/SecondaryButton';
 export { Arrow } from './components/common/Arrow';
+export { InputLabel } from './components/form/InputLabel';
 
 /* palette */
 export { PaletteProvider } from './palette';

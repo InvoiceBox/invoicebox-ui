@@ -10,12 +10,14 @@ import {
     generateSecondaryButtonPalette,
 } from '../components/common/SecondaryButton/palette';
 import { TArrowPalette, generateArrowPalette } from '../components/common/Arrow/palette';
+import { TInputLabelPalette, generateInputLabelPalette } from '../components/form/InputLabel/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
     invoiceboxSpinner: TInvoiceboxSpinnerPalette;
     secondaryButton: TSecondaryButtonPalette;
     arrow: TArrowPalette;
+    inputLabel: TInputLabelPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -23,4 +25,5 @@ export const PaletteContext = createContext<TContext>({
     invoiceboxSpinner: generateInvoiceboxSpinnerPalette(defaultAbstractPalette),
     secondaryButton: generateSecondaryButtonPalette(defaultAbstractPalette),
     arrow: generateArrowPalette(defaultAbstractPalette),
+    inputLabel: generateInputLabelPalette(defaultAbstractPalette),
 });

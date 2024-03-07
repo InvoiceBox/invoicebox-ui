@@ -12,6 +12,7 @@ import {
     generateSecondaryButtonPalette,
 } from '../components/common/SecondaryButton/palette';
 import { TArrowPalette, generateArrowPalette } from '../components/common/Arrow/palette';
+import { TInputLabelPalette, generateInputLabelPalette } from '../components/form/InputLabel/palette';
 
 type TProps = {
     children: ReactNode;
@@ -20,6 +21,7 @@ type TProps = {
     invoiceboxSpinner?: Partial<TInvoiceboxSpinnerPalette>;
     secondaryButton?: Partial<TSecondaryButtonPalette>;
     arrow?: Partial<TArrowPalette>;
+    inputLabel?: Partial<TInputLabelPalette>;
 };
 
 export const PaletteProvider: FC<TProps> = ({
@@ -29,6 +31,7 @@ export const PaletteProvider: FC<TProps> = ({
     invoiceboxSpinner,
     secondaryButton,
     arrow,
+    inputLabel,
 }) => {
     const mergedAbstractPalette = useMemo(() => ({ ...defaultAbstractPalette, ...abstract }), [abstract]);
 
@@ -52,18 +55,25 @@ export const PaletteProvider: FC<TProps> = ({
         [mergedAbstractPalette, arrow],
     );
 
+    const mergedInputLabelPalette = useMemo(
+        () => ({ ...generateInputLabelPalette(mergedAbstractPalette), ...inputLabel }),
+        [mergedAbstractPalette, inputLabel],
+    );
+
     const value = useMemo(
         () => ({
             skeleton: mergedSkeletonPalette,
             invoiceboxSpinner: mergedInvoiceboxSpinnerPalette,
             secondaryButton: mergedSecondaryButtonPalette,
             arrow: mergedArrowPalette,
+            inputLabel: mergedInputLabelPalette,
         }),
         [
             mergedSkeletonPalette,
             mergedInvoiceboxSpinnerPalette,
             mergedSecondaryButtonPalette,
             mergedArrowPalette,
+            mergedInputLabelPalette,
         ],
     );
 
