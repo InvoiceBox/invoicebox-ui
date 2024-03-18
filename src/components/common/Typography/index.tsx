@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, FC, HTMLAttributes, useEffect } from 'react';
+import React, { ButtonHTMLAttributes, FC, HTMLAttributes, InputHTMLAttributes, useEffect } from 'react';
 import * as S from './styles';
 import { typography } from './typography';
 
@@ -9,10 +9,11 @@ type THeadingProps = {
     element: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 } & HTMLAttributes<HTMLHeadingElement>;
 type TButtonProps = { element: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
+type TInputProps = { element: 'input' } & InputHTMLAttributes<HTMLInputElement>;
 
 export type TProps = {
     variant: keyof typeof typography;
-} & (TDivProps | TParagraphProps | TSpanProps | THeadingProps | TButtonProps);
+} & (TDivProps | TParagraphProps | TSpanProps | THeadingProps | TButtonProps | TInputProps);
 
 export const Typography: FC<TProps> = ({ variant, element = 'div', ...rest }) => {
     return <S.Wrapper as={element} $variant={variant} {...rest} />;

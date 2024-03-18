@@ -13,6 +13,7 @@ import {
 } from '../components/common/SecondaryButton/palette';
 import { TArrowPalette, generateArrowPalette } from '../components/common/Arrow/palette';
 import { TInputLabelPalette, generateInputLabelPalette } from '../components/form/InputLabel/palette';
+import { TPureInputPalette, generatePureInputPalette } from '../components/form/PureInput/palette';
 
 type TProps = {
     children: ReactNode;
@@ -22,6 +23,7 @@ type TProps = {
     secondaryButton?: Partial<TSecondaryButtonPalette>;
     arrow?: Partial<TArrowPalette>;
     inputLabel?: Partial<TInputLabelPalette>;
+    pureInput?: Partial<TPureInputPalette>;
 };
 
 export const PaletteProvider: FC<TProps> = ({
@@ -32,6 +34,7 @@ export const PaletteProvider: FC<TProps> = ({
     secondaryButton,
     arrow,
     inputLabel,
+    pureInput,
 }) => {
     const mergedAbstractPalette = useMemo(() => ({ ...defaultAbstractPalette, ...abstract }), [abstract]);
 
@@ -60,6 +63,11 @@ export const PaletteProvider: FC<TProps> = ({
         [mergedAbstractPalette, inputLabel],
     );
 
+    const mergedPureInputPalette = useMemo(
+        () => ({ ...generatePureInputPalette(mergedAbstractPalette), ...pureInput }),
+        [mergedAbstractPalette, pureInput],
+    );
+
     const value = useMemo(
         () => ({
             skeleton: mergedSkeletonPalette,
@@ -67,6 +75,7 @@ export const PaletteProvider: FC<TProps> = ({
             secondaryButton: mergedSecondaryButtonPalette,
             arrow: mergedArrowPalette,
             inputLabel: mergedInputLabelPalette,
+            pureInput: mergedPureInputPalette,
         }),
         [
             mergedSkeletonPalette,
@@ -74,6 +83,7 @@ export const PaletteProvider: FC<TProps> = ({
             mergedSecondaryButtonPalette,
             mergedArrowPalette,
             mergedInputLabelPalette,
+            mergedPureInputPalette,
         ],
     );
 

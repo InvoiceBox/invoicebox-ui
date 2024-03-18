@@ -5,7 +5,7 @@ import { InputLabel, TProps } from '.';
 import { Typography } from '../../common/Typography';
 
 const meta: Meta<typeof InputLabel> = {
-    title: 'common/controls/InputLabel',
+    title: 'form/InputLabel',
     component: InputLabel,
     tags: ['autodocs'],
 };
