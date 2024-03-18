@@ -6,6 +6,7 @@ export const Label = styled(Typography)<{
     $inFocus: boolean;
     $palette: TInputLabelPalette;
 }>`
+    border-radius: 10px;
     position: absolute;
     top: 0;
     left: 8px;
