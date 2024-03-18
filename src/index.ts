@@ -6,6 +6,7 @@ export { InvoiceboxSpinner } from './components/common/InvoiceboxSpinner';
 export { SecondaryButton } from './components/common/SecondaryButton';
 export { Arrow } from './components/common/Arrow';
 export { InputLabel } from './components/form/InputLabel';
+export { PureInput } from './components/form/PureInput';
 
 /* palette */
 export { PaletteProvider } from './palette';
