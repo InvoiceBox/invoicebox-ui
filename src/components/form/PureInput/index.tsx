@@ -16,9 +16,9 @@ type TProps = InputHTMLAttributes<HTMLInputElement> & {
 export const PureInput: FC<TProps> = ({
     paddingLeft = 18,
     paddingRight = 18,
-    hasError = true,
+    hasError = false,
     inFocus = false,
-    hasBorder = false,
+    hasBorder = true,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     className,
     palette,
