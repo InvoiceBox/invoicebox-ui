@@ -7,6 +7,7 @@ export { SecondaryButton } from './components/common/SecondaryButton';
 export { Arrow } from './components/common/Arrow';
 export { InputLabel } from './components/form/InputLabel';
 export { PureInput } from './components/form/PureInput';
+export { PositiveIntegerInput } from './components/form/PositiveIntegerInput';
 
 /* palette */
 export { PaletteProvider } from './palette';

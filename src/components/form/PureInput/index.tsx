@@ -3,7 +3,7 @@ import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TPureInputPalette } from './palette';
 
-type TProps = InputHTMLAttributes<HTMLInputElement> & {
+export type TProps = InputHTMLAttributes<HTMLInputElement> & {
     paddingLeft?: number;
     paddingRight?: number;
     hasError?: boolean;
