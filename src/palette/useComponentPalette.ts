@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { usePalette } from './usePalette';
 
 export const useComponentPalette = <TComponentPalette>(
@@ -8,5 +9,10 @@ export const useComponentPalette = <TComponentPalette>(
 
     const componentPalette = palette[componentName] as TComponentPalette;
 
-    return { ...componentPalette, ...componentPropsPalette };
+    const value = useMemo(
+        () => ({ ...componentPalette, ...componentPropsPalette }),
+        [componentPalette, componentPropsPalette],
+    );
+
+    return value;
 };

@@ -12,6 +12,7 @@ import {
 import { TArrowPalette, generateArrowPalette } from '../components/common/Arrow/palette';
 import { TInputLabelPalette, generateInputLabelPalette } from '../components/form/InputLabel/palette';
 import { TPureInputPalette, generatePureInputPalette } from '../components/form/PureInput/palette';
+import { TDropdownPalette, generateDropdownPalette } from '../components/common/Dropdown/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -20,6 +21,7 @@ type TContext = {
     arrow: TArrowPalette;
     inputLabel: TInputLabelPalette;
     pureInput: TPureInputPalette;
+    dropdown: TDropdownPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -29,4 +31,5 @@ export const PaletteContext = createContext<TContext>({
     arrow: generateArrowPalette(defaultAbstractPalette),
     inputLabel: generateInputLabelPalette(defaultAbstractPalette),
     pureInput: generatePureInputPalette(defaultAbstractPalette),
+    dropdown: generateDropdownPalette(defaultAbstractPalette),
 });

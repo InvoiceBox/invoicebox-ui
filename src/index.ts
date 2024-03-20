@@ -9,6 +9,8 @@ export { InputLabel } from './components/form/InputLabel';
 export { PureInput } from './components/form/PureInput';
 export { PositiveIntegerInput } from './components/form/PositiveIntegerInput';
 export type { TProps as TPositiveIntegerInputProps } from './components/form/PositiveIntegerInput';
+export { Dropdown } from './components/common/Dropdown';
+export type { TProps as TDropdownProps } from './components/common/Dropdown';
 
 /* palette */
 export { PaletteProvider } from './palette';
