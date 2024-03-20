@@ -14,15 +14,8 @@ export type TProps = {
     onChange: (value: number | null) => void;
     max?: number;
     upAndDown?: boolean;
-
-    label: TInputLabelProps['label'];
-    placeholder: TPureInputProps['placeholder'];
-    hasError: TPureInputProps['hasError'];
-    onFocus: TPureInputProps['onFocus'];
-    onBlur: TPureInputProps['onBlur'];
-    disabled: TPureInputProps['disabled'];
-    name: TPureInputProps['name'];
-};
+} & Pick<TInputLabelProps, 'label'> &
+    Pick<TPureInputProps, 'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name'>;
 
 export const PositiveIntegerInput: FC<TProps> = ({
     value,
