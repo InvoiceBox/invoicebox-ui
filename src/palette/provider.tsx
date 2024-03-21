@@ -15,6 +15,7 @@ import { TArrowPalette, generateArrowPalette } from '../components/common/Arrow/
 import { TInputLabelPalette, generateInputLabelPalette } from '../components/form/InputLabel/palette';
 import { TPureInputPalette, generatePureInputPalette } from '../components/form/PureInput/palette';
 import { generateDropdownPalette } from '../components/common/Dropdown/palette';
+import { generateScrollbarPalette } from '../components/common/Scrollbar/palette';
 
 type TProps = {
     children: ReactNode;
@@ -78,6 +79,7 @@ export const PaletteProvider: FC<TProps> = ({
             inputLabel: mergedInputLabelPalette,
             pureInput: mergedPureInputPalette,
             dropdown: generateDropdownPalette(mergedAbstractPalette),
+            scrollbar: generateScrollbarPalette(mergedAbstractPalette),
         }),
         [
             mergedSkeletonPalette,

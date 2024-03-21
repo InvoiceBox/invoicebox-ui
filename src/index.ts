@@ -11,6 +11,7 @@ export { PositiveIntegerInput } from './components/form/PositiveIntegerInput';
 export type { TProps as TPositiveIntegerInputProps } from './components/form/PositiveIntegerInput';
 export { Dropdown } from './components/common/Dropdown';
 export type { TProps as TDropdownProps } from './components/common/Dropdown';
+export { Scrollbar } from './components/common/Scrollbar';
 
 /* palette */
 export { PaletteProvider } from './palette';

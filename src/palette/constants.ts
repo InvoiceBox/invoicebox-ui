@@ -9,5 +9,6 @@ export const defaultAbstractPalette: TAbstractPalette = {
     neutralUsual: '#f1f2f6',
     neutralHeavy: '#ececf0',
     neutralMassive: '#dee0e7',
+    neutralFoggy: '#ccc',
     neutralBrutal: '#999',
 };

@@ -7,5 +7,6 @@ export type TAbstractPalette = {
     neutralLight: string;
     neutralHeavy: string;
     neutralMassive: string;
+    neutralFoggy: string;
     neutralBrutal: string;
 };
