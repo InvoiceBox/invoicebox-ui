@@ -32,7 +32,7 @@ export const Wrapper = styled.div<{
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0px 10px 17px ${({ $palette }) => $palette.shadow};
-    bckground: ${({ $palette }) => $palette.bg};
+    background: ${({ $palette }) => $palette.bg};
 
     min-width: ${({ $minWidth }) => $minWidth};
     width: ${({ $width }) => $width};
