@@ -14,6 +14,12 @@ export const Scrollbar: FC<TProps> = ({ children, maxHeight }) => {
     const props = useMemo(
         () => ({
             style: { maxHeight, minWidth: '100%', maxWidth: '100%' },
+            wrapperProps: {
+                style: {
+                    right: '0px',
+                    bottom: '0px',
+                },
+            },
             thumbYProps: {
                 style: {
                     backgroundColor: palette.thumb,
@@ -23,8 +29,9 @@ export const Scrollbar: FC<TProps> = ({ children, maxHeight }) => {
                 style: {
                     backgroundColor: 'transparent',
                     width: '6px',
-                    height: 'calc(100% - 0px)',
-                    top: '0px',
+                    height: 'calc(100% - 4px)',
+                    top: '2px',
+                    right: '2px',
                 },
             },
             thumbXProps: {
@@ -36,8 +43,9 @@ export const Scrollbar: FC<TProps> = ({ children, maxHeight }) => {
                 style: {
                     backgroundColor: 'transparent',
                     height: '6px',
-                    width: 'calc(100% - 10px)',
-                    left: '0px',
+                    width: 'calc(100% - 12px)',
+                    left: '2px',
+                    bottom: '2px',
                 },
             },
         }),
