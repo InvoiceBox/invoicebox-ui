@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import * as S from './styles';
-import { useInputFocus } from '../../../hooks/useFocusField';
+import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { Arrow } from '../../common/Arrow';
