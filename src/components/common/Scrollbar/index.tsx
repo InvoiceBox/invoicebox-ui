@@ -20,6 +20,11 @@ export const Scrollbar: FC<TProps> = ({ children, maxHeight }) => {
                     bottom: '0px',
                 },
             },
+            contentProps: {
+                style: {
+                    display: 'block',
+                },
+            },
             thumbYProps: {
                 style: {
                     backgroundColor: palette.thumb,

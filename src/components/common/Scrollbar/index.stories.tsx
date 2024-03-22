@@ -33,3 +33,26 @@ export const Horisontall: StoryObj<typeof Scrollbar> = {
         children: <div style={{ width: 2000 }}>{longDummyText}</div>,
     },
 };
+
+export const InnerBlock: StoryObj<typeof Scrollbar> = {
+    args: {
+        maxHeight: 200,
+        children: (
+            <div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+                <div>Some text</div>
+            </div>
+        ),
+    },
+};
