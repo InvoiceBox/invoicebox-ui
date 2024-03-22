@@ -8,3 +8,7 @@ export const IconWrapper = styled.div`
     display: flex;
     align-items: center;
 `;
+
+export const ControlWrapper = styled.div`
+    position: relative;
+`;

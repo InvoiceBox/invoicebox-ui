@@ -55,27 +55,29 @@ export const PositiveIntegerInput: FC<TProps> = ({
 
     return (
         <InputLabel inFocus={inFocus} label={label}>
-            <PureInput
-                name={name}
-                hasError={hasError}
-                inFocus={inFocus}
-                placeholder={placeholder}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                value={normalizeFrom(value)}
-                onChange={handleChange}
-                paddingRight={upAndDown ? 44 : undefined}
-            />
-            {upAndDown && (
-                <S.Arrows>
-                    <S.Arrow onClick={handleUp} $disabled={isIncrementDisabled}>
-                        <Arrow isOpen outterSize={12} />
-                    </S.Arrow>
-                    <S.Arrow onClick={handleDown} $disabled={isDecrementDisabled}>
-                        <Arrow isOpen={false} outterSize={12} />
-                    </S.Arrow>
-                </S.Arrows>
-            )}
+            <S.ControlWrapper>
+                <PureInput
+                    name={name}
+                    hasError={hasError}
+                    inFocus={inFocus}
+                    placeholder={placeholder}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    value={normalizeFrom(value)}
+                    onChange={handleChange}
+                    paddingRight={upAndDown ? 44 : undefined}
+                />
+                {upAndDown && (
+                    <S.Arrows>
+                        <S.Arrow onClick={handleUp} $disabled={isIncrementDisabled}>
+                            <Arrow isOpen outterSize={12} />
+                        </S.Arrow>
+                        <S.Arrow onClick={handleDown} $disabled={isDecrementDisabled}>
+                            <Arrow isOpen={false} outterSize={12} />
+                        </S.Arrow>
+                    </S.Arrows>
+                )}
+            </S.ControlWrapper>
         </InputLabel>
     );
 };

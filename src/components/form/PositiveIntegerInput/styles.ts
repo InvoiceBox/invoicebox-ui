@@ -22,3 +22,7 @@ export const Arrow = styled.div<{ $disabled: boolean }>`
             pointer-events: none;
         `}
 `;
+
+export const ControlWrapper = styled.div`
+    position: relative;
+`;

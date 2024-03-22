@@ -20,19 +20,21 @@ export const Input: FC<TProps> = ({
     isOpen,
 }) => (
     <InputLabel inFocus={inFocus} label={label}>
-        <PureInput
-            hasError={hasError}
-            inFocus={inFocus}
-            name={name}
-            placeholder={placeholder}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            value={value}
-            readOnly
-            paddingRight={52}
-        />
-        <S.IconWrapper>
-            <Arrow isOpen={isOpen} />
-        </S.IconWrapper>
+        <S.ControlWrapper>
+            <PureInput
+                hasError={hasError}
+                inFocus={inFocus}
+                name={name}
+                placeholder={placeholder}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                value={value}
+                readOnly
+                paddingRight={52}
+            />
+            <S.IconWrapper>
+                <Arrow isOpen={isOpen} />
+            </S.IconWrapper>
+        </S.ControlWrapper>
     </InputLabel>
 );
