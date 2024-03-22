@@ -14,6 +14,7 @@ import { TInputLabelPalette, generateInputLabelPalette } from '../components/for
 import { TPureInputPalette, generatePureInputPalette } from '../components/form/PureInput/palette';
 import { TDropdownPalette, generateDropdownPalette } from '../components/common/Dropdown/palette';
 import { TScrollbarPalette, generateScrollbarPalette } from '../components/common/Scrollbar/palette';
+import { TSelectPalette, generateSelectPalette } from '../components/form/Select/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -24,6 +25,7 @@ type TContext = {
     pureInput: TPureInputPalette;
     dropdown: TDropdownPalette;
     scrollbar: TScrollbarPalette;
+    select: TSelectPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -35,4 +37,5 @@ export const PaletteContext = createContext<TContext>({
     pureInput: generatePureInputPalette(defaultAbstractPalette),
     dropdown: generateDropdownPalette(defaultAbstractPalette),
     scrollbar: generateScrollbarPalette(defaultAbstractPalette),
+    select: generateSelectPalette(defaultAbstractPalette),
 });

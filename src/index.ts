@@ -12,6 +12,8 @@ export type { TProps as TPositiveIntegerInputProps } from './components/form/Pos
 export { Dropdown } from './components/common/Dropdown';
 export type { TProps as TDropdownProps } from './components/common/Dropdown';
 export { Scrollbar } from './components/common/Scrollbar';
+export { Select } from './components/form/Select';
+export type { TProps as TSelectProps } from './components/form/Select';
 
 /* palette */
 export { PaletteProvider } from './palette';

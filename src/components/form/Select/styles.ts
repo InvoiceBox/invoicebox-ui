@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Typography } from '../../common/Typography';
+import { TSelectPalette } from './palette';
 
 export const Wrapper = styled.div`
     position: relative;
@@ -19,7 +20,7 @@ export const Options = styled.div`
     flex-direction: column;
 `;
 
-export const Option = styled(Typography)`
+export const Option = styled(Typography)<{ $palette: TSelectPalette }>`
     overflow: hidden;
     display: flex;
     width: 100%;
@@ -31,6 +32,6 @@ export const Option = styled(Typography)`
     cursor: pointer;
 
     &:hover {
-        background-color: rgba(241, 242, 246, 0.5);
+        background-color: ${({ $palette }) => $palette.bgHover};
     }
 `;

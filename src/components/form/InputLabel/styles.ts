@@ -14,7 +14,7 @@ export const Label = styled(Typography)<{
     padding: 0 10px;
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;
-    color: ${({ $inFocus, $palette }) => ($inFocus ? $palette.highlightText : $palette.text)}};
+    color: ${({ $inFocus, $palette }) => ($inFocus ? $palette.textHighlight : $palette.text)}};
 `;
 
 export const Wrapper = styled.div<{
@@ -31,7 +31,7 @@ export const Wrapper = styled.div<{
         ${({ $disabled, $palette }) =>
             !$disabled &&
             css`
-                color: ${$palette.highlightText};
+                color: ${$palette.textHighlight};
             `};
     }
 `;

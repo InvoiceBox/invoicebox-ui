@@ -5,11 +5,13 @@ import { useInputFocus } from '../../../hooks/useInputFocus';
 import { Dropdown } from '../../common/Dropdown';
 import { Scrollbar } from '../../common/Scrollbar';
 import { useOutsideClick } from '../../../hooks/useClickOutside';
+import { useComponentPalette } from '../../../palette';
+import { TSelectPalette } from './palette';
 
 const LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
 
-type TProps<TValue> = Pick<
+export type TProps<TValue> = Pick<
     TInputProps,
     'label' | 'hasError' | 'placeholder' | 'onFocus' | 'onBlur' | 'name'
 > & {
@@ -29,6 +31,8 @@ export const Select = <TValue extends string | number>({
     onChange,
     options,
 }: TProps<TValue>) => {
+    const palette = useComponentPalette<TSelectPalette>('select');
+
     const {
         inFocus,
         handleFocus: focusHandler,
@@ -118,6 +122,7 @@ export const Select = <TValue extends string | number>({
                         {options.map((option) => (
                             <S.Option
                                 key={option.value}
+                                $palette={palette}
                                 variant="bodyMRegular"
                                 onClick={handleSelect}
                                 data-value={JSON.stringify(option.value)}
