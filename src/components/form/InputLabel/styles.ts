@@ -14,7 +14,7 @@ export const Label = styled(Typography)<{
     padding: 0 10px;
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;
-    color: ${({ $inFocus, $palette }) => ($inFocus ? $palette.textHighlight : $palette.text)}};
+    color: ${({ $inFocus, $palette }) => ($inFocus ? $palette.textHighlight : $palette.text)};
 `;
 
 export const Wrapper = styled.div<{
@@ -36,7 +36,7 @@ export const Wrapper = styled.div<{
     }
 `;
 
-export const InputWrapper = styled.div`
+export const InputWrapper = styled.div<{ $zIndex: number | 'auto' }>`
     position: relative;
-    z-index: 1;
+    z-index: ${({ $zIndex }) => $zIndex};
 `;

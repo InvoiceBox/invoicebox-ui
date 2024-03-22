@@ -9,9 +9,17 @@ export type TProps = {
     inFocus?: boolean;
     children: ReactNode;
     palette?: Partial<TInputLabelPalette>;
+    zIndex?: number | 'auto';
 };
 
-export const InputLabel: FC<TProps> = ({ disabled = false, label, inFocus = false, children, palette }) => {
+export const InputLabel: FC<TProps> = ({
+    disabled = false,
+    label,
+    inFocus = false,
+    children,
+    palette,
+    zIndex = 1,
+}) => {
     const mergedPalette = useComponentPalette('inputLabel', palette);
 
     return (
@@ -21,7 +29,7 @@ export const InputLabel: FC<TProps> = ({ disabled = false, label, inFocus = fals
                     {label}
                 </S.Label>
             )}
-            <S.InputWrapper>{children}</S.InputWrapper>
+            <S.InputWrapper $zIndex={zIndex}>{children}</S.InputWrapper>
         </S.Wrapper>
     );
 };

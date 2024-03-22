@@ -17,6 +17,7 @@ export const Default: StoryObj<TProps> = {
         disabled: false,
         inFocus: false,
         label: 'Label',
+        zIndex: 1,
     },
     render: (props) => (
         <InputLabel {...props}>
