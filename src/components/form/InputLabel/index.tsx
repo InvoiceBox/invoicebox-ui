@@ -21,7 +21,7 @@ export const InputLabel: FC<TProps> = ({ disabled = false, label, inFocus = fals
                     {label}
                 </S.Label>
             )}
-            <S.InputWrapper>{children}</S.InputWrapper>
+            {children}
         </S.Wrapper>
     );
 };

@@ -35,8 +35,3 @@ export const Wrapper = styled.div<{
             `};
     }
 `;
-
-export const InputWrapper = styled.div`
-    position: relative;
-    z-index: 1;
-`;
