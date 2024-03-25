@@ -9,5 +9,13 @@
             }
         ]
     ],
-    "plugins": ["babel-plugin-styled-components", "inline-json-import"]
+    "plugins": [
+        "babel-plugin-styled-components",
+        [
+            "babel-plugin-inline-import",
+            {
+                "extensions": [".json"]
+            }
+        ]
+    ]
 }

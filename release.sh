@@ -6,7 +6,7 @@ git checkout develop &&
 rm -rf dist docs &&
 
 # build dist
-./node_modules/.bin/babel src --extensions .ts,.tsx --out-dir dist && 
+./node_modules/.bin/babel src --extensions .ts,.tsx --out-dir dist --copy-files && 
 ./node_modules/.bin/tsc --project tsconfig.json &&
 
 # build storybook

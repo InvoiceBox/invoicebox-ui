@@ -25,7 +25,7 @@ export const List: StoryObj<typeof Typography> = {
     render: () => (
         <Typography variant="bodyL">
             {Object.keys(typography).map((variant) => (
-                <>
+                <div key={variant}>
                     <Markdown>
                         {`
 ### ${variant}
@@ -40,7 +40,7 @@ ${typography[variant as keyof typeof typography].join('').replaceAll('        ',
 `}
                     </Markdown>
                     <hr />
-                </>
+                </div>
             ))}
         </Typography>
     ),

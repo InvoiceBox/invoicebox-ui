@@ -14,6 +14,8 @@ export type { TProps as TDropdownProps } from './components/common/Dropdown';
 export { Scrollbar } from './components/common/Scrollbar';
 export { Select } from './components/form/Select';
 export type { TProps as TSelectProps } from './components/form/Select';
+export { Calendar } from './components/common/Calendar';
+export type { TProps as TCalendarProps } from './components/common/Calendar';
 
 /* palette */
 export { PaletteProvider } from './palette';
