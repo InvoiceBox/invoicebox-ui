@@ -9,6 +9,8 @@ import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
 import { Icon } from './components/Icon';
+import { useComponentPalette } from '../../../palette';
+import { TDateInputPalette } from './palette';
 
 export type TProps = {
     value: Date | null;
@@ -28,6 +30,8 @@ export const DateInput: FC<TProps> = ({
     minDate,
     maxDate,
 }) => {
+    const palette = useComponentPalette<TDateInputPalette>('dateInput');
+
     const [isOpen, setOpenFlag] = useState(false);
 
     const handleTrigger = useCallback(() => setOpenFlag((flag) => !flag), []);
@@ -96,7 +100,7 @@ export const DateInput: FC<TProps> = ({
                         onChange={handleStringValueChange}
                         paddingRight={44}
                     />
-                    <S.Icon onClick={handleTrigger}>
+                    <S.Icon onClick={handleTrigger} $palette={palette}>
                         <Icon />
                     </S.Icon>
                 </S.InputWrapper>

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { breakpoints } from '../../../breakpoints';
+import { TDateInputPalette } from './palette';
 
 export const Wrapper = styled.div`
     position: relative;
@@ -9,7 +10,7 @@ export const InputWrapper = styled.div`
     position: relative;
 `;
 
-export const Icon = styled.div`
+export const Icon = styled.div<{ $palette: TDateInputPalette }>`
     position: absolute;
     right: 12px;
     top: 0;
@@ -18,6 +19,7 @@ export const Icon = styled.div`
     justify-content: center;
     flex-direction: column;
     cursor: pointer;
+    color: ${({ $palette }) => $palette.icon};
 `;
 
 export const Calendar = styled.div`

@@ -3,7 +3,7 @@ import * as React from 'react';
 export const Icon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none">
         <path
-            stroke="#353F47"
+            stroke="currentColor"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeOpacity={0.5}
@@ -11,7 +11,7 @@ export const Icon = () => (
             d="M15.703 16.33h.008M12.004 16.33h.008M8.297 16.33h.008M15.703 13.092h.008M12.004 13.092h.008M8.297 13.092h.008M4.578 9.837h14.853M15.371 3.667v2.742M8.637 3.667v2.742"
         />
         <path
-            stroke="#353F47"
+            stroke="currentColor"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeOpacity={0.5}

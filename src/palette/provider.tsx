@@ -17,6 +17,7 @@ import { TPureInputPalette, generatePureInputPalette } from '../components/form/
 import { generateDropdownPalette } from '../components/common/Dropdown/palette';
 import { generateScrollbarPalette } from '../components/common/Scrollbar/palette';
 import { generateSelectPalette } from '../components/form/Select/palette';
+import { generateDateInputPalette } from '../components/form/DateInput/palette';
 
 type TProps = {
     children: ReactNode;
@@ -82,6 +83,7 @@ export const PaletteProvider: FC<TProps> = ({
             dropdown: generateDropdownPalette(mergedAbstractPalette),
             scrollbar: generateScrollbarPalette(mergedAbstractPalette),
             select: generateSelectPalette(mergedAbstractPalette),
+            dateInput: generateDateInputPalette(mergedAbstractPalette),
         }),
         [
             mergedSkeletonPalette,
