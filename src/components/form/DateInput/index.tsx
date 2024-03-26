@@ -1,27 +1,21 @@
-import React, { ChangeEvent, FC, FocusEvent, InputHTMLAttributes, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useState } from 'react';
 import * as S from './styles';
 import { logic } from './logic';
 
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useInputFocus } from '../../../hooks/useInputFocus';
-import { InputLabel } from '../InputLabel';
-import { PureInput } from '../PureInput';
+import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
+import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar } from '../../common/Calendar';
 
-type TFieldProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'name' | 'onBlur' | 'onFocus'> & {
-    hasError?: boolean;
+export type TProps = {
     value: Date | null;
     onChange: (value: Date) => void;
-};
-
-export type TControlProps = {
-    label?: string;
     minDate?: Date;
     maxDate?: Date;
-};
-
-export type TProps = TFieldProps & TControlProps;
+} & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
+    Pick<TInputLabelProps, 'label'>;
 
 export const DateInput: FC<TProps> = ({
     onChange,
