@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Select } from '.';
@@ -31,13 +31,16 @@ export const Default: StoryObj<typeof Select> = {
         hasError: false,
         label: 'Label',
         name: 'name',
-        onBlur: action('blur'),
-        onFocus: action('focus'),
         placeholder: 'Placeholder',
     },
     render: function Component(props) {
         const [value, setValue] = useState<string | null>(null);
 
-        return <Select {...props} value={value} onChange={setValue} options={selectOptions} />;
+        const handleChange = useCallback((newValue: string | null) => {
+            setValue(newValue);
+            action('onChange')(newValue);
+        }, []);
+
+        return <Select {...props} value={value} onChange={handleChange} options={selectOptions} />;
     },
 };

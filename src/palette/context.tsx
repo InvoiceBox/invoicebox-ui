@@ -15,6 +15,7 @@ import { TPureInputPalette, generatePureInputPalette } from '../components/form/
 import { TDropdownPalette, generateDropdownPalette } from '../components/common/Dropdown/palette';
 import { TScrollbarPalette, generateScrollbarPalette } from '../components/common/Scrollbar/palette';
 import { TSelectPalette, generateSelectPalette } from '../components/form/Select/palette';
+import { TDateInputPalette, generateDateInputPalette } from '../components/form/DateInput/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -26,6 +27,7 @@ type TContext = {
     dropdown: TDropdownPalette;
     scrollbar: TScrollbarPalette;
     select: TSelectPalette;
+    dateInput: TDateInputPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -38,4 +40,5 @@ export const PaletteContext = createContext<TContext>({
     dropdown: generateDropdownPalette(defaultAbstractPalette),
     scrollbar: generateScrollbarPalette(defaultAbstractPalette),
     select: generateSelectPalette(defaultAbstractPalette),
+    dateInput: generateDateInputPalette(defaultAbstractPalette),
 });
