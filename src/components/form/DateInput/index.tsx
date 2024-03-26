@@ -7,15 +7,14 @@ import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { Dropdown } from '../../common/Dropdown';
-import { Calendar } from '../../common/Calendar';
+import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
 
 export type TProps = {
     value: Date | null;
     onChange: (value: Date) => void;
-    minDate?: Date;
-    maxDate?: Date;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
-    Pick<TInputLabelProps, 'label'>;
+    Pick<TInputLabelProps, 'label'> &
+    Pick<TCalendarProps, 'maxDate' | 'minDate'>;
 
 export const DateInput: FC<TProps> = ({
     onChange,
