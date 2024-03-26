@@ -4,7 +4,7 @@ import { Input, TProps as TInputProps } from './components/Input';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { Dropdown } from '../../common/Dropdown';
 import { Scrollbar } from '../../common/Scrollbar';
-import { useOutsideClick } from '../../../hooks/useClickOutside';
+import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useComponentPalette } from '../../../palette';
 import { TSelectPalette } from './palette';
 
