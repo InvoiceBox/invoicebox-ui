@@ -8,6 +8,7 @@ import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
+import { Icon } from './components/Icon';
 
 export type TProps = {
     value: Date | null;
@@ -95,7 +96,9 @@ export const DateInput: FC<TProps> = ({
                         onChange={handleStringValueChange}
                         paddingRight={44}
                     />
-                    <S.Icon onClick={handleTrigger}>icon</S.Icon>
+                    <S.Icon onClick={handleTrigger}>
+                        <Icon />
+                    </S.Icon>
                 </S.InputWrapper>
             </InputLabel>
             <Dropdown isOpen={isOpen} isAutoPosition>
