@@ -16,6 +16,8 @@ export { Select } from './components/form/Select';
 export type { TProps as TSelectProps } from './components/form/Select';
 export { Calendar } from './components/common/Calendar';
 export type { TProps as TCalendarProps } from './components/common/Calendar';
+export { DateInput } from './components/form/DateInput';
+export type { TProps as TDateInputProps } from './components/form/DateInput';
 
 /* palette */
 export { PaletteProvider } from './palette';
