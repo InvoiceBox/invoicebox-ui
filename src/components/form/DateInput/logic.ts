@@ -17,7 +17,10 @@ class Logic {
 
     // Date => 31.01.2023
     valueToString(value: null | Date): string {
-        return !value ? '' : value.toISOString().split('T')[0].split('-').reverse().join('.');
+        if (!value) return '';
+        const toTwoDigits = (item: number) => `0${item}`.slice(-2);
+        const date = [toTwoDigits(value.getDate()), toTwoDigits(value.getMonth() + 1), value.getFullYear()];
+        return date.join('.');
     }
 
     // 31.01.2023 => Date
