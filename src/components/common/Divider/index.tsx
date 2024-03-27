@@ -3,8 +3,12 @@ import { useComponentPalette } from '../../../palette';
 import * as S from './styles';
 import { TDividerPalette } from './palette';
 
-export const Divider: FC = () => {
-    const palette = useComponentPalette<TDividerPalette>('divider');
+export type TProps = {
+    palette?: Partial<TDividerPalette>;
+};
 
-    return <S.Divider $palette={palette} />;
+export const Divider: FC<TProps> = ({ palette }) => {
+    const mergedPalette = useComponentPalette('divider', palette);
+
+    return <S.Divider $palette={mergedPalette} />;
 };

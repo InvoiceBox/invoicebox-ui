@@ -21,6 +21,7 @@ export type { TProps as TDateInputProps } from './components/form/DateInput';
 export { WarningIcon } from './components/common/WarningIcon';
 export type { TProps as TWarningIconProps } from './components/common/WarningIcon';
 export { Divider } from './components/common/Divider';
+export type { TProps as TDividerProps } from './components/common/Divider';
 
 /* palette */
 export { PaletteProvider } from './palette';
