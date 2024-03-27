@@ -18,6 +18,8 @@ export { Calendar } from './components/common/Calendar';
 export type { TProps as TCalendarProps } from './components/common/Calendar';
 export { DateInput } from './components/form/DateInput';
 export type { TProps as TDateInputProps } from './components/form/DateInput';
+export { WarningIcon } from './components/common/WarningIcon';
+export type { TProps as TWarningIconProps } from './components/common/WarningIcon';
 
 /* palette */
 export { PaletteProvider } from './palette';

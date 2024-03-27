@@ -16,6 +16,7 @@ import { TDropdownPalette, generateDropdownPalette } from '../components/common/
 import { TScrollbarPalette, generateScrollbarPalette } from '../components/common/Scrollbar/palette';
 import { TSelectPalette, generateSelectPalette } from '../components/form/Select/palette';
 import { TDateInputPalette, generateDateInputPalette } from '../components/form/DateInput/palette';
+import { TWarningIconPalette, generateWarningIconPalette } from '../components/common/WarningIcon/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -28,6 +29,7 @@ type TContext = {
     scrollbar: TScrollbarPalette;
     select: TSelectPalette;
     dateInput: TDateInputPalette;
+    warningIcon: TWarningIconPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -41,4 +43,5 @@ export const PaletteContext = createContext<TContext>({
     scrollbar: generateScrollbarPalette(defaultAbstractPalette),
     select: generateSelectPalette(defaultAbstractPalette),
     dateInput: generateDateInputPalette(defaultAbstractPalette),
+    warningIcon: generateWarningIconPalette(defaultAbstractPalette),
 });
