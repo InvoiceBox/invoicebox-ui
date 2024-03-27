@@ -5,10 +5,11 @@ import { TWarningIconPalette } from './palette';
 
 export type TProps = {
     size?: number;
+    palette?: Partial<TWarningIconPalette>;
 };
 
-export const WarningIcon: FC<TProps> = ({ size = 20 }) => {
-    const palette = useComponentPalette<TWarningIconPalette>('warningIcon');
+export const WarningIcon: FC<TProps> = ({ size = 20, palette }) => {
+    const mergedPalette = useComponentPalette('warningIcon', palette);
 
-    return <S.StyledIcon $palette={palette} $size={size} />;
+    return <S.StyledIcon $palette={mergedPalette} $size={size} />;
 };
