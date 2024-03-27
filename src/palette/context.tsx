@@ -17,6 +17,7 @@ import { TScrollbarPalette, generateScrollbarPalette } from '../components/commo
 import { TSelectPalette, generateSelectPalette } from '../components/form/Select/palette';
 import { TDateInputPalette, generateDateInputPalette } from '../components/form/DateInput/palette';
 import { TWarningIconPalette, generateWarningIconPalette } from '../components/common/WarningIcon/palette';
+import { TDividerPalette, generateDividerPalette } from '../components/common/Divider/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -30,6 +31,7 @@ type TContext = {
     select: TSelectPalette;
     dateInput: TDateInputPalette;
     warningIcon: TWarningIconPalette;
+    divider: TDividerPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -44,4 +46,5 @@ export const PaletteContext = createContext<TContext>({
     select: generateSelectPalette(defaultAbstractPalette),
     dateInput: generateDateInputPalette(defaultAbstractPalette),
     warningIcon: generateWarningIconPalette(defaultAbstractPalette),
+    divider: generateDividerPalette(defaultAbstractPalette),
 });

@@ -19,6 +19,7 @@ import { generateScrollbarPalette } from '../components/common/Scrollbar/palette
 import { generateSelectPalette } from '../components/form/Select/palette';
 import { generateDateInputPalette } from '../components/form/DateInput/palette';
 import { generateWarningIconPalette } from '../components/common/WarningIcon/palette';
+import { generateDividerPalette } from '../components/common/Divider/palette';
 
 type TProps = {
     children: ReactNode;
@@ -86,6 +87,7 @@ export const PaletteProvider: FC<TProps> = ({
             select: generateSelectPalette(mergedAbstractPalette),
             dateInput: generateDateInputPalette(mergedAbstractPalette),
             warningIcon: generateWarningIconPalette(mergedAbstractPalette),
+            divider: generateDividerPalette(mergedAbstractPalette),
         }),
         [
             mergedSkeletonPalette,
