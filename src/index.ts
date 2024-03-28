@@ -1,4 +1,3 @@
-/* components */
 export { Skeleton } from './components/common/Skeleton';
 export { InvoiceboxLoader } from './components/common/InvoiceboxLoader';
 export { Typography, TypographyGlobalStyle } from './components/common/Typography';
@@ -23,6 +22,8 @@ export type { TProps as TWarningIconProps } from './components/common/WarningIco
 export { Divider } from './components/common/Divider';
 export type { TProps as TDividerProps } from './components/common/Divider';
 
-/* palette */
 export { PaletteProvider } from './palette';
 export type { TAbstractPalette } from './palette';
+
+export { useOutsideClick } from './hooks/useOutsideClick';
+export { useInputFocus } from './hooks/useInputFocus';
