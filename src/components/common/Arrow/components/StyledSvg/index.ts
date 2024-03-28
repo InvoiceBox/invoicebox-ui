@@ -3,11 +3,8 @@ import { Svg } from '../Svg';
 
 export const StyledSvg = styled(Svg)<{
     $isOpen: boolean;
-    $isLight: boolean;
-    $openLightColor: string;
-    $closeLightColor: string;
-    $openUsualColor: string;
-    $closeUsualColor: string;
+    $openColor: string;
+    $closeColor: string;
     $padding: number;
     $defaultRotate: number;
 }>`
@@ -18,17 +15,5 @@ export const StyledSvg = styled(Svg)<{
     padding: ${({ $padding }) => $padding}px;
 
     path {
-        stroke: ${({
-            $isLight,
-            $isOpen,
-            $openLightColor,
-            $closeLightColor,
-            $openUsualColor,
-            $closeUsualColor,
-        }) => {
-            if ($isLight && $isOpen) return $openLightColor;
-            if ($isLight && !$isOpen) return $closeLightColor;
-            if (!$isLight && $isOpen) return $openUsualColor;
-            if (!$isLight && !$isOpen) return $closeUsualColor;
-        }};
+        stroke: ${({ $isOpen, $openColor, $closeColor }) => ($isOpen ? $openColor : $closeColor)};
 `;

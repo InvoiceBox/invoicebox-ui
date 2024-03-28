@@ -14,7 +14,6 @@ type TStory = StoryObj<TProps>;
 export const Default: TStory = {
     args: {
         isOpen: false,
-        isLight: false,
         innerSize: 10,
         outterSize: 24,
         defaultRotate: 0,

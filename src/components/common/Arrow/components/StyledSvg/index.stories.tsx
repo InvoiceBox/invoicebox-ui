@@ -15,11 +15,8 @@ export default meta;
 export const Default: StoryObj<typeof StyledSvg> = {
     args: {
         $isOpen: false,
-        $isLight: false,
-        $openLightColor: '#cfc',
-        $closeLightColor: '#cac',
-        $openUsualColor: '#05b',
-        $closeUsualColor: '#00b',
+        $openColor: '#05b',
+        $closeColor: '#00b',
         size: 10,
         $padding: 7,
         $defaultRotate: 0,
