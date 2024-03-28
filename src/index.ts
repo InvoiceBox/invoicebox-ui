@@ -25,3 +25,4 @@ export type { TProps as TDividerProps } from './components/common/Divider';
 
 /* palette */
 export { PaletteProvider } from './palette';
+export type { TAbstractPalette } from './palette';
