@@ -5,7 +5,6 @@ import { useComponentPalette } from '../../../palette';
 
 export type TProps = {
     isOpen: boolean;
-    isLight?: boolean;
     innerSize?: number;
     outterSize?: number;
     defaultRotate?: number;
@@ -14,7 +13,6 @@ export type TProps = {
 
 export const Arrow: FC<TProps> = ({
     isOpen,
-    isLight = false,
     innerSize = 10,
     outterSize = 24,
     defaultRotate = 0,
@@ -25,11 +23,8 @@ export const Arrow: FC<TProps> = ({
     return (
         <StyledSvg
             $isOpen={isOpen}
-            $isLight={isLight}
-            $openLightColor={mergedPalette.openLight}
-            $closeLightColor={mergedPalette.closeLight}
-            $openUsualColor={mergedPalette.openUsual}
-            $closeUsualColor={mergedPalette.closeUsual}
+            $openColor={mergedPalette.open}
+            $closeColor={mergedPalette.close}
             size={innerSize}
             $padding={(outterSize - innerSize) / 2}
             $defaultRotate={defaultRotate}
