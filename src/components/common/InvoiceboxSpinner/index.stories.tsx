@@ -12,7 +12,6 @@ export default meta;
 
 export const Default: StoryObj<typeof InvoiceboxSpinner> = {
     args: {
-        isSecondary: true,
         width: '32px',
     },
 };
