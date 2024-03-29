@@ -8,16 +8,15 @@ export type TProps = {
     label?: string;
     inFocus?: boolean;
     children: ReactNode;
-    palette?: Partial<TInputLabelPalette>;
 };
 
-export const InputLabel: FC<TProps> = ({ disabled = false, label, inFocus = false, children, palette }) => {
-    const mergedPalette = useComponentPalette('inputLabel', palette);
+export const InputLabel: FC<TProps> = ({ disabled = false, label, inFocus = false, children }) => {
+    const palette = useComponentPalette<TInputLabelPalette>('inputLabel');
 
     return (
-        <S.Wrapper $palette={mergedPalette} $disabled={disabled} $isLabel={!!label}>
+        <S.Wrapper $palette={palette} $disabled={disabled} $isLabel={!!label}>
             {label && (
-                <S.Label $palette={mergedPalette} $inFocus={inFocus} variant="captionRegular">
+                <S.Label $palette={palette} $inFocus={inFocus} variant="captionRegular">
                     {label}
                 </S.Label>
             )}

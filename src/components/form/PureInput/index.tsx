@@ -10,7 +10,6 @@ export type TProps = InputHTMLAttributes<HTMLInputElement> & {
     inFocus?: boolean;
     hasBorder?: boolean;
     className?: never;
-    palette?: Partial<TPureInputPalette>;
 };
 
 export const PureInput: FC<TProps> = ({
@@ -21,10 +20,9 @@ export const PureInput: FC<TProps> = ({
     hasBorder = true,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     className,
-    palette,
     ...rest
 }) => {
-    const mergedPalette = useComponentPalette('pureInput', palette);
+    const palette = useComponentPalette<TPureInputPalette>('pureInput');
 
     return (
         <S.Wrapper
@@ -35,7 +33,7 @@ export const PureInput: FC<TProps> = ({
             $hasError={hasError}
             $inFocus={inFocus}
             $hasBorder={hasBorder}
-            $palette={mergedPalette}
+            $palette={palette}
             {...rest}
         />
     );
