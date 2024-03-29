@@ -14,7 +14,6 @@ export const useCss = ({ id, css }: TProps) => {
         const style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = css;
-        style.id = id;
 
         document.head.appendChild(style);
         stylesInDOM.add(id);

@@ -1,6 +1,9 @@
-import React, { ButtonHTMLAttributes, FC, HTMLAttributes, InputHTMLAttributes, useEffect } from 'react';
+import React, { ButtonHTMLAttributes, FC, HTMLAttributes, InputHTMLAttributes } from 'react';
 import * as S from './styles';
 import { typography } from './typography';
+import { useCss } from '../../../hooks/useCss';
+
+const CSS_ID = 'INVOICEBOX_UI_TYPOGRAPHY';
 
 type TDivProps = { element?: 'div' } & HTMLAttributes<HTMLDivElement>;
 type TParagraphProps = { element: 'p' } & HTMLAttributes<HTMLParagraphElement>;
@@ -16,32 +19,10 @@ export type TProps = {
 } & (TDivProps | TParagraphProps | TSpanProps | THeadingProps | TButtonProps | TInputProps);
 
 export const Typography: FC<TProps> = ({ variant, element = 'div', ...rest }) => {
+    useCss({
+        id: CSS_ID,
+        css: `@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap')`,
+    });
+
     return <S.Wrapper as={element} $variant={variant} {...rest} />;
-};
-
-export const TypographyGlobalStyle: FC = () => {
-    useEffect(() => {
-        const primaryLink = document.createElement('link');
-        primaryLink.rel = 'preconnect';
-        primaryLink.href = 'https://fonts.googleapis.com';
-
-        const secondaryLink = document.createElement('link');
-        secondaryLink.rel = 'preconnect';
-        secondaryLink.href = 'https://fonts.gstatic.com';
-        secondaryLink.crossOrigin = '';
-
-        const thirdLink = document.createElement('link');
-        thirdLink.rel = 'stylesheet';
-        thirdLink.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap';
-
-        const links = [primaryLink, secondaryLink, thirdLink];
-
-        links.forEach((link) => document.head.appendChild(link));
-
-        return () => {
-            links.forEach((link) => document.head.removeChild(link));
-        };
-    }, []);
-
-    return null;
 };

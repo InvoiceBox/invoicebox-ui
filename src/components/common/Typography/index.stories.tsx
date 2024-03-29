@@ -2,7 +2,6 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Typography } from '.';
 import { typography } from './typography';
-import Markdown from 'markdown-to-jsx';
 
 const meta = {
     title: 'common/Typography',
@@ -26,19 +25,18 @@ export const List: StoryObj<typeof Typography> = {
         <Typography variant="bodyL">
             {Object.keys(typography).map((variant) => (
                 <div key={variant}>
-                    <Markdown>
-                        {`
-### ${variant}
-`}
-                    </Markdown>
+                    <h3>{variant}</h3>
                     <Typography variant={variant as keyof typeof typography}>{dummyText}</Typography>
-                    <Markdown>
-                        {`
-\`\`\`
-${typography[variant as keyof typeof typography].join('').replaceAll('        ', '').split('\n').filter(Boolean).join('\n')}
-\`\`\`
-`}
-                    </Markdown>
+                    <pre>
+                        <code>
+                            {typography[variant as keyof typeof typography]
+                                .join('')
+                                .replaceAll('        ', '')
+                                .split('\n')
+                                .filter(Boolean)
+                                .join('\n')}
+                        </code>
+                    </pre>
                     <hr />
                 </div>
             ))}
