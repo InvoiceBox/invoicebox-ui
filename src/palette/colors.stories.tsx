@@ -12,7 +12,7 @@ export const Docs: StoryObj = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
             {Object.keys(defaultAbstractPalette).map((key) => (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+                <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
                     <div
                         style={{
                             backgroundColor:

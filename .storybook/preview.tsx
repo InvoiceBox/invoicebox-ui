@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Preview } from '@storybook/react';
-import { TypographyGlobalStyle } from '../src';
 
 const preview: Preview = {
     parameters: {
@@ -12,14 +11,7 @@ const preview: Preview = {
             },
         },
     },
-    decorators: [
-        (Story) => (
-            <>
-                <TypographyGlobalStyle />
-                <Story />
-            </>
-        ),
-    ],
+    decorators: [(Story) => <Story />],
 };
 
 export default preview;
