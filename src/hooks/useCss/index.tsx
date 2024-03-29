@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
-const stylesInDOM = new Set<string>();
+const stylesInDOM = new Map<string, HTMLStyleElement>();
 
 type TProps = {
     id: string;
@@ -8,19 +8,28 @@ type TProps = {
 };
 
 export const useCss = ({ id, css }: TProps) => {
-    useEffect(() => {
+    const append = useCallback(() => {
         if (stylesInDOM.has(id)) return;
-
         const style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = css;
 
         document.head.appendChild(style);
-        stylesInDOM.add(id);
-
-        return () => {
-            document.head.removeChild(style);
-            stylesInDOM.delete(id);
-        };
+        stylesInDOM.set(id, style);
     }, [id, css]);
+
+    const clear = useCallback(() => {
+        const style = stylesInDOM.get(id);
+        if (!style) return;
+        document.head.removeChild(style);
+        stylesInDOM.delete(id);
+    }, [id]);
+
+    append();
+
+    useEffect(() => {
+        append();
+
+        return clear;
+    }, [append, clear]);
 };
