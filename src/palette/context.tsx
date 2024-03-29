@@ -18,6 +18,7 @@ import { TSelectPalette, generateSelectPalette } from '../components/form/Select
 import { TDateInputPalette, generateDateInputPalette } from '../components/form/DateInput/palette';
 import { TWarningIconPalette, generateWarningIconPalette } from '../components/common/WarningIcon/palette';
 import { TDividerPalette, generateDividerPalette } from '../components/common/Divider/palette';
+import { TCalendarPalette, generateCalendarPalette } from '../components/common/Calendar/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -32,6 +33,7 @@ type TContext = {
     dateInput: TDateInputPalette;
     warningIcon: TWarningIconPalette;
     divider: TDividerPalette;
+    calendar: TCalendarPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -47,4 +49,5 @@ export const PaletteContext = createContext<TContext>({
     dateInput: generateDateInputPalette(defaultAbstractPalette),
     warningIcon: generateWarningIconPalette(defaultAbstractPalette),
     divider: generateDividerPalette(defaultAbstractPalette),
+    calendar: generateCalendarPalette(defaultAbstractPalette),
 });
