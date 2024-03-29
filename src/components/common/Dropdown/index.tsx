@@ -33,7 +33,7 @@ export const Dropdown: FC<TProps> = ({
     zIndex,
     onCloseTransitionEnd,
 }) => {
-    const mergedPalette = useComponentPalette<TDropdownPalette>('dropdown');
+    const palette = useComponentPalette<TDropdownPalette>('dropdown');
 
     const position = useRef<TPosition>({ isAbove: true, translateY: '0px' });
     const [elRef, setElRef] = useState<HTMLDivElement | null>(null);
@@ -111,7 +111,7 @@ export const Dropdown: FC<TProps> = ({
             $width={width}
             $zIndex={zIndex}
             onTransitionEnd={handleCloseTransitionEnd}
-            $palette={mergedPalette}
+            $palette={palette}
         >
             {children}
         </S.Wrapper>
