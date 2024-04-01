@@ -21,6 +21,8 @@ export { WarningIcon } from './components/common/WarningIcon';
 export type { TProps as TWarningIconProps } from './components/common/WarningIcon';
 export { Divider } from './components/common/Divider';
 export type { TProps as TDividerProps } from './components/common/Divider';
+export { SearchInput } from './components/form/SearchInput';
+export type { TProps as TSearchInputProps } from './components/form/SearchInput';
 
 export { PaletteProvider } from './palette';
 export type { TAbstractPalette } from './palette';
