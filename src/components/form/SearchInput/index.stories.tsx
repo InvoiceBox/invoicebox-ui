@@ -14,9 +14,13 @@ export default meta;
 const Component = (props: TProps) => {
     const [value, setValue] = useState('');
 
-    return <SearchInput {...props} value={value} onChange={setValue} placeholder="Поиск" />;
+    return <SearchInput {...props} value={value} onChange={setValue} />;
 };
 
 export const Default: StoryObj<TProps> = {
+    args: {
+        hasBorder: true,
+        placeholder: 'Поиск',
+    },
     render: Component,
 };
