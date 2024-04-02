@@ -23,6 +23,8 @@ export { Divider } from './components/common/Divider';
 export type { TProps as TDividerProps } from './components/common/Divider';
 export { SearchInput } from './components/form/SearchInput';
 export type { TProps as TSearchInputProps } from './components/form/SearchInput';
+export { Flag } from './components/common/Flag';
+export type { TProps as TFlagProps } from './components/common/Flag';
 
 export { PaletteProvider } from './palette';
 export type { TAbstractPalette } from './palette';
