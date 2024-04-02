@@ -14,15 +14,13 @@ export const useOptionGroups = <TValue>(options: TOption<TValue>[], groups: TGro
             }
         });
 
-        const optionsByGroups: { group: TGroup | null; options: TOption<TValue>[] }[] = groups.map(
-            (group) => ({
-                group,
-                options: optionsByGroupId.get(group.id) || [],
-            }),
-        );
+        const optionGroups: { group: TGroup | null; options: TOption<TValue>[] }[] = groups.map((group) => ({
+            group,
+            options: optionsByGroupId.get(group.id) || [],
+        }));
 
-        optionsByGroups.push({ group: null, options: optionsByGroupId.get(undefined) || [] });
+        optionGroups.push({ group: null, options: optionsByGroupId.get(undefined) || [] });
 
-        return optionsByGroups.filter((item) => item.options.length > 0);
+        return optionGroups.filter((item) => item.options.length > 0);
     }, [groups, options]);
 };
