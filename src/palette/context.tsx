@@ -19,6 +19,11 @@ import { TDateInputPalette, generateDateInputPalette } from '../components/form/
 import { TWarningIconPalette, generateWarningIconPalette } from '../components/common/WarningIcon/palette';
 import { TDividerPalette, generateDividerPalette } from '../components/common/Divider/palette';
 import { TCalendarPalette, generateCalendarPalette } from '../components/common/Calendar/palette';
+import { generateSearchInputPalette, TSearchInputPalette } from '../components/form/SearchInput/palette';
+import {
+    generateCountrySelectPalette,
+    TCountrySelectPalette,
+} from '../components/form/CountrySelect/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -27,9 +32,11 @@ type TContext = {
     arrow: TArrowPalette;
     inputLabel: TInputLabelPalette;
     pureInput: TPureInputPalette;
+    searchInput: TSearchInputPalette;
     dropdown: TDropdownPalette;
     scrollbar: TScrollbarPalette;
     select: TSelectPalette;
+    countrySelect: TCountrySelectPalette;
     dateInput: TDateInputPalette;
     warningIcon: TWarningIconPalette;
     divider: TDividerPalette;
@@ -43,9 +50,11 @@ export const PaletteContext = createContext<TContext>({
     arrow: generateArrowPalette(defaultAbstractPalette),
     inputLabel: generateInputLabelPalette(defaultAbstractPalette),
     pureInput: generatePureInputPalette(defaultAbstractPalette),
+    searchInput: generateSearchInputPalette(defaultAbstractPalette),
     dropdown: generateDropdownPalette(defaultAbstractPalette),
     scrollbar: generateScrollbarPalette(defaultAbstractPalette),
     select: generateSelectPalette(defaultAbstractPalette),
+    countrySelect: generateCountrySelectPalette(defaultAbstractPalette),
     dateInput: generateDateInputPalette(defaultAbstractPalette),
     warningIcon: generateWarningIconPalette(defaultAbstractPalette),
     divider: generateDividerPalette(defaultAbstractPalette),

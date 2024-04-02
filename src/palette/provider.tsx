@@ -15,6 +15,8 @@ import { generateDateInputPalette } from '../components/form/DateInput/palette';
 import { generateWarningIconPalette } from '../components/common/WarningIcon/palette';
 import { generateDividerPalette } from '../components/common/Divider/palette';
 import { generateCalendarPalette } from '../components/common/Calendar/palette';
+import { generateSearchInputPalette } from '../components/form/SearchInput/palette';
+import { generateCountrySelectPalette } from '../components/form/CountrySelect/palette';
 
 type TProps = {
     children: ReactNode;
@@ -38,9 +40,11 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             arrow: generateArrowPalette(mergedAbstractPalette),
             inputLabel: generateInputLabelPalette(mergedAbstractPalette),
             pureInput: generatePureInputPalette(mergedAbstractPalette),
+            searchInput: generateSearchInputPalette(mergedAbstractPalette),
             dropdown: generateDropdownPalette(mergedAbstractPalette),
             scrollbar: generateScrollbarPalette(mergedAbstractPalette),
             select: generateSelectPalette(mergedAbstractPalette),
+            countrySelect: generateCountrySelectPalette(mergedAbstractPalette),
             dateInput: generateDateInputPalette(mergedAbstractPalette),
             warningIcon: generateWarningIconPalette(mergedAbstractPalette),
             divider: generateDividerPalette(mergedAbstractPalette),
