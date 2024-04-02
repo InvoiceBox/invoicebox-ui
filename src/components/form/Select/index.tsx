@@ -1,4 +1,4 @@
-import React, { FocusEvent, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
+import React, { FocusEvent, Fragment, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
 import * as S from './styles';
 import { Input, TProps as TInputProps } from './components/Input';
 import { useInputFocus } from '../../../hooks/useInputFocus';
@@ -128,8 +128,8 @@ export const Select = <TValue extends string | number>({
                 <S.Options>
                     <Scrollbar maxHeight={LIST_HEIGHT}>
                         {optionGroups.map(({ group, options: groupOptions }) => (
-                            <>
-                                {group ? <div>{group.label}</div> : null}
+                            <Fragment key={group?.id || null}>
+                                {!group ? null : <S.Group variant="headerText">{group.label}</S.Group>}
                                 {groupOptions.map((option) => (
                                     <S.Option
                                         key={option.value}
@@ -138,11 +138,12 @@ export const Select = <TValue extends string | number>({
                                         onClick={handleSelect}
                                         data-value={JSON.stringify(option.value)}
                                         data-option-identifier={OPTION_IDENTIFIER}
+                                        $isGrouped={!!group}
                                     >
                                         {option.label}
                                     </S.Option>
                                 ))}
-                            </>
+                            </Fragment>
                         ))}
                     </Scrollbar>
                 </S.Options>

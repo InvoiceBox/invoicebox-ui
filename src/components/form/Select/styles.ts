@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Typography } from '../../common/Typography';
 import { TSelectPalette } from './palette';
 
@@ -20,7 +20,7 @@ export const Options = styled.div`
     flex-direction: column;
 `;
 
-export const Option = styled(Typography)<{ $palette: TSelectPalette }>`
+export const Option = styled(Typography)<{ $palette: TSelectPalette; $isGrouped: boolean }>`
     overflow: hidden;
     display: flex;
     width: 100%;
@@ -34,4 +34,14 @@ export const Option = styled(Typography)<{ $palette: TSelectPalette }>`
     &:hover {
         background-color: ${({ $palette }) => $palette.bgHover};
     }
+
+    ${({ $isGrouped }) =>
+        $isGrouped &&
+        css`
+            padding-left: 30px;
+        `}
+`;
+
+export const Group = styled(Typography)`
+    padding: 12px 20px;
 `;
