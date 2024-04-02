@@ -7,9 +7,13 @@ import { Scrollbar } from '../../common/Scrollbar';
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useComponentPalette } from '../../../palette';
 import { TSelectPalette } from './palette';
+import { useOptionGroups } from './hooks/useOptionGroups';
 
 const LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
+
+export type TOption<TValue> = { label: string; value: TValue; groupId?: string };
+export type TGroup = { label: string; id: string };
 
 export type TProps<TValue> = Pick<
     TInputProps,
@@ -17,7 +21,8 @@ export type TProps<TValue> = Pick<
 > & {
     value: TValue | null;
     onChange: (value: TValue) => void;
-    options: { label: string; value: TValue }[];
+    options: TOption<TValue>[];
+    groups?: TGroup[];
 };
 
 export const Select = <TValue extends string | number>({
@@ -30,6 +35,7 @@ export const Select = <TValue extends string | number>({
     value,
     onChange,
     options,
+    groups = [],
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -58,6 +64,8 @@ export const Select = <TValue extends string | number>({
     const delayBlur = useRef<null | (() => void)>(null);
 
     const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
+
+    const optionGroups = useOptionGroups(options, groups);
 
     const handleShow = useCallback(() => setIsOpen(true), []);
     const handleHide = useCallback(() => setIsOpen(false), []);
@@ -119,17 +127,22 @@ export const Select = <TValue extends string | number>({
             <Dropdown isOpen={isOpen} isAutoPosition width="100%">
                 <S.Options>
                     <Scrollbar maxHeight={LIST_HEIGHT}>
-                        {options.map((option) => (
-                            <S.Option
-                                key={option.value}
-                                $palette={palette}
-                                variant="bodyMRegular"
-                                onClick={handleSelect}
-                                data-value={JSON.stringify(option.value)}
-                                data-option-identifier={OPTION_IDENTIFIER}
-                            >
-                                {option.label}
-                            </S.Option>
+                        {optionGroups.map(({ group, options: groupOptions }) => (
+                            <>
+                                {group ? <div>{group.label}</div> : null}
+                                {groupOptions.map((option) => (
+                                    <S.Option
+                                        key={option.value}
+                                        $palette={palette}
+                                        variant="bodyMRegular"
+                                        onClick={handleSelect}
+                                        data-value={JSON.stringify(option.value)}
+                                        data-option-identifier={OPTION_IDENTIFIER}
+                                    >
+                                        {option.label}
+                                    </S.Option>
+                                ))}
+                            </>
                         ))}
                     </Scrollbar>
                 </S.Options>
