@@ -19,12 +19,12 @@ type TOption = {
     flag?: TFlagKey;
 };
 
-export type TFieldProps = {
+type TFieldProps = {
     value: TOption['value'];
     onChange: (value: TOption['value']) => void;
 };
 
-export type TControlProps<T> = Pick<TSearchInputProps, 'placeholder'> &
+type TControlProps<T> = Pick<TSearchInputProps, 'placeholder'> &
     Pick<TCountryItemProps<T>, 'selectedLabel'> & {
         options: TOption[];
         disabled?: boolean;
