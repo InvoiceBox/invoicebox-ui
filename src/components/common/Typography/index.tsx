@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, FC, HTMLAttributes, InputHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, forwardRef, HTMLAttributes, InputHTMLAttributes } from 'react';
 import * as S from './styles';
 import { typography } from './typography';
 import { useCss } from '../../../hooks/useCss';
@@ -18,11 +18,13 @@ export type TProps = {
     variant: keyof typeof typography;
 } & (TDivProps | TParagraphProps | TSpanProps | THeadingProps | TButtonProps | TInputProps);
 
-export const Typography: FC<TProps> = ({ variant, element = 'div', ...rest }) => {
-    useCss({
-        id: CSS_ID,
-        css: `@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap')`,
-    });
+export const Typography = forwardRef<HTMLInputElement, TProps>(
+    ({ variant, element = 'div', ...rest }, ref) => {
+        useCss({
+            id: CSS_ID,
+            css: `@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap')`,
+        });
 
-    return <S.Wrapper as={element} $variant={variant} {...rest} />;
-};
+        return <S.Wrapper ref={ref} as={element} $variant={variant} {...rest} />;
+    },
+);

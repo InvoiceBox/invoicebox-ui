@@ -47,6 +47,7 @@
         "webpack": "^5.90.1"
     },
     "dependencies": {
+        "@mona-health/react-input-mask": "^3.0.3",
         "hex-to-rgba": "^2.0.1",
         "lottie-react": "^2.4.0",
         "react-calendar": "^4.8.0",
