@@ -28,14 +28,18 @@ const Component = (props: TProps) => {
     );
 };
 
+const commonProps = {
+    disabled: false,
+    label: 'Телефон',
+    countrySelectProps: {
+        placeholder: 'Поиск',
+        selectedLabel: '(выбрано)',
+    },
+};
+
 export const MultiCountry: StoryObj<TProps> = {
     args: {
-        disabled: false,
-        label: 'Телефон',
-        countrySelectProps: {
-            placeholder: 'Поиск',
-            selectedLabel: '(выбрано)',
-        },
+        ...commonProps,
         countries: [
             {
                 label: 'Россия',
@@ -71,13 +75,6 @@ export const MultiCountry: StoryObj<TProps> = {
 };
 
 export const DefaultRusCountry: StoryObj<TProps> = {
-    args: {
-        disabled: false,
-        label: 'Телефон',
-        countrySelectProps: {
-            placeholder: 'Поиск',
-            selectedLabel: '(выбрано)',
-        },
-    },
+    args: commonProps,
     render: Component,
 };
