@@ -24,7 +24,9 @@ export type { TProps as TDividerProps } from './components/common/Divider';
 export { SearchInput } from './components/form/SearchInput';
 export type { TProps as TSearchInputProps } from './components/form/SearchInput';
 export { Flag } from './components/common/Flag';
-export type { TProps as TFlagProps } from './components/common/Flag';
+export type { TProps as TFlagProps, TFlagKey } from './components/common/Flag';
+export { CountrySelect } from './components/form/CountrySelect';
+export type { TProps as TCountrySelectProps } from './components/form/CountrySelect';
 
 export { PaletteProvider } from './palette';
 export type { TAbstractPalette } from './palette';
