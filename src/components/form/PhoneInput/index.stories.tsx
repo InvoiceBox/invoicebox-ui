@@ -19,11 +19,13 @@ const Component = (props: TProps) => {
     const [value, setValue] = useState('37411800000');
 
     return (
-        <div style={{ height: 400 }}>
+        <div>
             <p>
                 Значение: <span>{value}</span>
             </p>
-            <PhoneInput {...props} value={value} onChange={setValue} />
+            <div style={{ width: 400 }}>
+                <PhoneInput {...props} value={value} onChange={setValue} />
+            </div>
         </div>
     );
 };

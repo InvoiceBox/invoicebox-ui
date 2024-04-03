@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, InputHTMLAttributes, useCallback, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, ClipboardEvent, useCallback, FocusEvent, useMemo, useState } from 'react';
 import InputMask from '@mona-health/react-input-mask';
 import * as S from './styles';
 import { phoneInputLogic } from './phoneInputLogic';
@@ -6,16 +6,16 @@ import { useValidateInitialValue } from './hooks/useValidateInitialValue';
 import { RUS_COUNTRY_CODE, TSupportedCountries } from './types';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel } from '../InputLabel';
-import { PureInput } from '../PureInput';
+import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { CountrySelect, TProps as TCountrySelectProps } from '../CountrySelect';
 
-type TFieldProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'name' | 'onBlur' | 'onFocus'> & {
+type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
     onChange: (value: string) => void;
     hasError?: boolean;
 };
 
-type TControlProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'id'> & {
+type TControlProps = Pick<TPureInputProps, 'disabled' | 'id'> & {
     label: string;
     countrySelectProps: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
     onCountryChange?: (countryCode: string) => void;
@@ -73,22 +73,36 @@ export const PhoneInput: FC<TProps> = ({
         [onCountryChange],
     );
 
-    useValidateInitialValue(
-        value,
-        currentCountriesPhoneRules,
-        onChange,
-        setIsHaveInputError,
-        handleChangeCountry,
+    const handleValid = useCallback(
+        (currentInputValue: string, countryCode: string) => {
+            onChange(currentInputValue);
+            setIsHaveInputError(false);
+            setCountry(countryCode);
+        },
+        [onChange],
     );
 
-    const handleChange = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
-            const notFormattedValue = event.target.value.match(/\d/g)?.join('') || '';
+    const handleUnValid = useCallback(
+        (countryCode: string) => {
+            onChange('');
+            setIsHaveInputError(true);
+            setCountry(countryCode);
+        },
+        [onChange],
+    );
+
+    useValidateInitialValue(value, currentCountriesPhoneRules, handleValid, handleUnValid);
+
+    const handleInputValueChange = useCallback(
+        (currentInputValue: string) => {
+            const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(currentInputValue);
             const currentCountry = currentCountriesPhoneRules[country];
             const newCountry = Object.entries(currentCountriesPhoneRules).find(
                 (item) =>
-                    notFormattedValue.startsWith(item[1].startSubsequence) &&
-                    currentCountry.flag !== item[1].flag,
+                    phoneInputLogic.getIsHaveStartSequenceInString(
+                        notFormattedValue,
+                        item[1].startSubsequence,
+                    ) && currentCountry.flag !== item[1].flag,
             );
 
             const isNeedChangeCountry =
@@ -107,8 +121,15 @@ export const PhoneInput: FC<TProps> = ({
         [country, currentCountriesPhoneRules, handleChangeCountry, onChange],
     );
 
+    const handleChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            handleInputValueChange(event.target.value);
+        },
+        [handleInputValueChange],
+    );
+
     const handleBlur = useCallback(
-        (event: React.FocusEvent<HTMLInputElement>) => {
+        (event: FocusEvent<HTMLInputElement>) => {
             blurHandler(event);
             if (isFirstBlur) {
                 setIsFirstBlur(false);
@@ -126,6 +147,16 @@ export const PhoneInput: FC<TProps> = ({
             setIsHaveInputError(!isValidInputValue);
         },
         [currentCountriesPhoneRules, handleChangeCountry, inputValue],
+    );
+
+    const handlePaste = useCallback(
+        (event: ClipboardEvent<HTMLInputElement>) => {
+            event.preventDefault();
+
+            const pasteText = event.clipboardData.getData('Text').trim();
+            handleInputValueChange(pasteText);
+        },
+        [handleInputValueChange],
     );
 
     return (
@@ -157,6 +188,7 @@ export const PhoneInput: FC<TProps> = ({
                     mask={currentCountriesPhoneRules[country].mask}
                     maskPlaceholder={null}
                     disabled={disabled}
+                    onPaste={handlePaste}
                 >
                     <PureInput
                         id={id}

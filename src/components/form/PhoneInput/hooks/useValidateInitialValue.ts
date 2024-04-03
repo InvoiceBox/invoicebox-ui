@@ -6,9 +6,8 @@ import { RUS_COUNTRY_CODE, TCountryRule } from '../types';
 export const useValidateInitialValue = (
     initialValue: string,
     currentCountriesPhoneRules: { [p: string]: TCountryRule },
-    onChange: (value: string) => void,
-    setIsHaveInputError: (value: boolean) => void,
-    setCountry: (value: string) => void,
+    onValid: (currentInputValue: string, countryCode: string) => void,
+    onUnValid: (countryCode: string) => void,
 ) => {
     const [isInitialValidateDone, setIsInitialValidateDone] = useState(false);
 
@@ -17,15 +16,18 @@ export const useValidateInitialValue = (
 
         if (initialValue) {
             const currentCountry = Object.entries(currentCountriesPhoneRules).find((item) =>
-                initialValue.startsWith(item[1].startSubsequence),
+                phoneInputLogic.getIsHaveStartSequenceInString(initialValue, item[1].startSubsequence),
             );
+            const countryCode = currentCountry ? currentCountry[0] : RUS_COUNTRY_CODE;
             const isValidInputValue = phoneInputLogic.getIsValidPhoneInput(
                 initialValue,
                 currentCountry ? currentCountry[1] : allCountriesPhoneRules.RUS,
             );
-            onChange(isValidInputValue ? initialValue : '');
-            setIsHaveInputError(!isValidInputValue);
-            setCountry(currentCountry ? currentCountry[0] : RUS_COUNTRY_CODE);
+            if (isValidInputValue) {
+                onValid(initialValue, countryCode);
+            } else {
+                onUnValid(countryCode);
+            }
         }
 
         setIsInitialValidateDone(true);

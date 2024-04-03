@@ -35,6 +35,14 @@ class PhoneInputLogic {
               )
             : { RUS: allCountriesPhoneRules.RUS };
     }
+
+    getIsHaveStartSequenceInString(value: string, subsequence: string) {
+        return value.startsWith(subsequence);
+    }
+
+    getOnlyNumbersFromString(value: string) {
+        return value.match(/\d/g)?.join('') || '';
+    }
 }
 
 export const phoneInputLogic = new PhoneInputLogic();
