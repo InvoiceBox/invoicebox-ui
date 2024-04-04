@@ -189,6 +189,7 @@ export const PhoneInput: FC<TProps> = ({
                     maskPlaceholder={null}
                     disabled={disabled}
                     onPaste={handlePaste}
+                    placeholder={currentCountriesPhoneRules[country].placeholder}
                 >
                     <PureInput
                         id={id}

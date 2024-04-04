@@ -3,6 +3,7 @@ export const supportedCountries = [RUS_COUNTRY_CODE, 'BLR', 'AZE', 'ARM', 'KAZ',
 export type TSupportedCountries = (typeof supportedCountries)[number];
 
 export type TCountryRule = {
+    placeholder: string;
     mask: string;
     startSubsequence: string;
     regexp: RegExp;
