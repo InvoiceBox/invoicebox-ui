@@ -7,4 +7,6 @@ export const FlagWrapper = styled.div<{ $width: number; $height: number }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 2px;
+    overflow: hidden;
 `;
