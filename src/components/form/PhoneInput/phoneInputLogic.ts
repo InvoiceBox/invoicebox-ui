@@ -1,8 +1,24 @@
 import { TCountryRule, TCountrySelectOption, TSupportedCountries } from './types';
-import { allCountriesPhoneRules } from './constants';
+import { allCountriesPhoneRules, MASK_DIGIT_ITEM } from './constants';
 import { TFlagKey } from '../../common/Flag';
 
 class PhoneInputLogic {
+    private getCaretPositionByRusValue(value: string) {
+        const mask = allCountriesPhoneRules.RUS.mask.split('');
+        let counter = 0;
+        let position = 0;
+        mask.forEach((maskItem, index) => {
+            if (maskItem === MASK_DIGIT_ITEM) {
+                counter += 1;
+                if (counter === value.length) {
+                    position = index + 1;
+                }
+            }
+        });
+
+        return position;
+    }
+
     getIsValidPhoneInput(value: string, country: TCountryRule) {
         return !!value.match(country.regexp);
     }
@@ -38,6 +54,25 @@ class PhoneInputLogic {
 
     getIsHaveStartSequenceInString(value: string, subsequence: string) {
         return value.startsWith(subsequence);
+    }
+
+    // '8' => '+7', '9' => '+79'
+    formatRusPhoneToUnifiedView(value: string, moveCaret?: (positionCaret: number) => void) {
+        let result = value;
+
+        if (value[0] === '8') {
+            result = `7${value.slice(1)}`;
+        }
+        if (value[0] === '9') {
+            const newValue = `79${value.slice(1)}`;
+            result = newValue;
+            if (moveCaret) {
+                // когда пользователь вводит номер с "9", мы подставляем в инпут "79", но каретка не переносится после "9", нужно это делать вручную
+                moveCaret(this.getCaretPositionByRusValue(newValue));
+            }
+        }
+
+        return result;
     }
 
     getOnlyNumbersFromString(value: string) {

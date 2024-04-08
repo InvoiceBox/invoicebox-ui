@@ -1,5 +1,6 @@
 import { TCountryRule, TSupportedCountries } from './types';
 
+export const MASK_DIGIT_ITEM = '9';
 export const allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule> = {
     RUS: {
         placeholder: '+7 (XXX) XXX-XX-XX',
