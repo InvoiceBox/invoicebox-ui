@@ -29,6 +29,7 @@ export { CountrySelect } from './components/form/CountrySelect';
 export type { TProps as TCountrySelectProps } from './components/form/CountrySelect';
 export { PhoneInput } from './components/form/PhoneInput';
 export type { TProps as TPhoneInputProps } from './components/form/PhoneInput';
+export type { MiniAppWrapper } from './components/miniApp/MiniAppWrapper';
 
 export { PaletteProvider } from './palette';
 export type { TAbstractPalette } from './palette';
