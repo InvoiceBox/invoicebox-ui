@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
 
-    *:first-child {
+    > *:first-child {
         flex-grow: 1;
     }
 `;
