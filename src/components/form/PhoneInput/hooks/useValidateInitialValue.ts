@@ -15,16 +15,17 @@ export const useValidateInitialValue = (
         if (isInitialValidateDone) return;
 
         if (initialValue) {
+            const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(initialValue);
             const currentCountry = Object.entries(currentCountriesPhoneRules).find((item) =>
-                phoneInputLogic.getIsHaveStartSequenceInString(initialValue, item[1].startSubsequence),
+                phoneInputLogic.getIsHaveStartSequenceInString(notFormattedValue, item[1].startSubsequence),
             );
             const countryCode = currentCountry ? currentCountry[0] : RUS_COUNTRY_CODE;
             const isValidInputValue = phoneInputLogic.getIsValidPhoneInput(
-                initialValue,
+                notFormattedValue,
                 currentCountry ? currentCountry[1] : allCountriesPhoneRules.RUS,
             );
             if (isValidInputValue) {
-                onValid(initialValue, countryCode);
+                onValid(notFormattedValue, countryCode);
             } else {
                 onUnValid(countryCode);
             }

@@ -93,37 +93,60 @@ export const PhoneInput: FC<TProps> = ({
 
     useValidateInitialValue(value, currentCountriesPhoneRules, handleValid, handleUnValid);
 
-    const handleInputValueChange = useCallback(
-        (currentInputValue: string) => {
-            const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(currentInputValue);
+    // хак для того чтобы сдвигать каретку в случае если при вводе "9" надо заменить на "79", каретка не двигается сама и остаётся между "7" и "9" без этой функции
+    const moveCaretByValue = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => (positionCaret: number) => {
+            setTimeout(() => {
+                event.target.setSelectionRange(positionCaret, positionCaret);
+            }, 0);
+        },
+        [],
+    );
+
+    const getIsValidValue = useCallback(
+        (currentValue: string) => {
             const currentCountry = currentCountriesPhoneRules[country];
             const newCountry = Object.entries(currentCountriesPhoneRules).find(
                 (item) =>
-                    phoneInputLogic.getIsHaveStartSequenceInString(
-                        notFormattedValue,
-                        item[1].startSubsequence,
-                    ) && currentCountry.flag !== item[1].flag,
+                    phoneInputLogic.getIsHaveStartSequenceInString(currentValue, item[1].startSubsequence) &&
+                    currentCountry.flag !== item[1].flag,
             );
 
             const isNeedChangeCountry =
                 newCountry && currentCountry.startSubsequence !== newCountry[1].startSubsequence;
-            if (isNeedChangeCountry && newCountry) {
+            const isNeedAndCanChangeCountry = isNeedChangeCountry && !!newCountry;
+            if (isNeedAndCanChangeCountry) {
                 handleChangeCountry(newCountry[0]);
             }
-            const isValidInputValue = phoneInputLogic.getIsValidPhoneInput(
-                notFormattedValue,
-                isNeedChangeCountry && newCountry ? newCountry[1] : currentCountry,
+
+            return phoneInputLogic.getIsValidPhoneInput(
+                currentValue,
+                isNeedAndCanChangeCountry ? newCountry[1] : currentCountry,
             );
-            setIsHaveInputError(!isValidInputValue);
-            onChange(isValidInputValue ? notFormattedValue : '');
-            setInputValue(notFormattedValue);
         },
-        [country, currentCountriesPhoneRules, handleChangeCountry, onChange],
+        [country, currentCountriesPhoneRules, handleChangeCountry],
+    );
+
+    const handleInputValueChange = useCallback(
+        (currentInputValue: string, event?: ChangeEvent<HTMLInputElement>) => {
+            const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(currentInputValue);
+            const moveCaret = event ? moveCaretByValue(event) : undefined;
+            const intermediateValue =
+                country === RUS_COUNTRY_CODE
+                    ? phoneInputLogic.formatRusPhoneToUnifiedView(notFormattedValue, moveCaret)
+                    : notFormattedValue;
+
+            const isValidInputValue = getIsValidValue(intermediateValue);
+            setIsHaveInputError(!isValidInputValue);
+            onChange(isValidInputValue ? intermediateValue : '');
+            setInputValue(intermediateValue);
+        },
+        [country, getIsValidValue, moveCaretByValue, onChange],
     );
 
     const handleChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            handleInputValueChange(event.target.value);
+            handleInputValueChange(event.target.value, event);
         },
         [handleInputValueChange],
     );
@@ -197,6 +220,7 @@ export const PhoneInput: FC<TProps> = ({
                         inFocus={inFocus}
                         name={name}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
+                        autoComplete={'off'}
                     />
                 </InputMask>
             </S.InputLabelContent>
