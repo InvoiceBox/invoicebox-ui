@@ -5,7 +5,7 @@ import { TScrollbarPalette } from './palette';
 
 export type TProps = {
     children: ReactNode;
-    maxHeight: number;
+    maxHeight?: number;
 };
 
 export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%' }) => {
