@@ -5,10 +5,10 @@ import { TScrollbarPalette } from './palette';
 
 export type TProps = {
     children: ReactNode;
-    maxHeight: string;
+    maxHeight: number;
 };
 
-export const Scrollbar: FC<TProps> = ({ children, maxHeight }) => {
+export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%' }) => {
     const palette = useComponentPalette<TScrollbarPalette>('scrollbar');
 
     const props = useMemo(
