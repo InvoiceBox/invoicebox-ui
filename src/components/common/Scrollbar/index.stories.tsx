@@ -23,20 +23,20 @@ const longDummyText = Array(10)
 export const Default: StoryObj<typeof Scrollbar> = {
     args: {
         children: longDummyText,
-        maxHeight: '200px',
+        maxHeight: 200,
     },
 };
 
 export const Horisontall: StoryObj<typeof Scrollbar> = {
     args: {
-        maxHeight: '200px',
+        maxHeight: 200,
         children: <div style={{ width: 2000 }}>{longDummyText}</div>,
     },
 };
 
 export const Blocks: StoryObj<typeof Scrollbar> = {
     args: {
-        maxHeight: '200px',
+        maxHeight: 200,
         children: (
             <div>
                 <div>Some text</div>
@@ -57,10 +57,7 @@ export const Blocks: StoryObj<typeof Scrollbar> = {
     },
 };
 
-export const ByPercents: StoryObj<typeof Scrollbar> = {
-    args: {
-        maxHeight: '100%',
-    },
+export const ByContainer: StoryObj<typeof Scrollbar> = {
     render: (args) => (
         <div style={{ height: 200 }}>
             <Scrollbar {...args}>{longDummyText}</Scrollbar>
