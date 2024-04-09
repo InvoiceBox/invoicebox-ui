@@ -1,4 +1,13 @@
-import React, { ChangeEvent, FC, ClipboardEvent, useCallback, FocusEvent, useMemo, useState } from 'react';
+import React, {
+    ChangeEvent,
+    FC,
+    ClipboardEvent,
+    useCallback,
+    FocusEvent,
+    useMemo,
+    useState,
+    useRef,
+} from 'react';
 import InputMask from '@mona-health/react-input-mask';
 import * as S from './styles';
 import { phoneInputLogic } from './phoneInputLogic';
@@ -38,6 +47,8 @@ export const PhoneInput: FC<TProps> = ({
     countries,
     onCountryChange,
 }) => {
+    const inputRef = useRef<HTMLInputElement>();
+
     const countrySelectOptions = useMemo(
         () => phoneInputLogic.getCountriesSelectOptions(countries),
         [countries],
@@ -168,6 +179,9 @@ export const PhoneInput: FC<TProps> = ({
             const isValidInputValue = phoneInputLogic.getIsValidPhoneInput(inputValue, currentCountry);
             setIsFirstBlur(false);
             setIsHaveInputError(!isValidInputValue);
+            setTimeout(() => {
+                inputRef.current?.focus();
+            }, 0);
         },
         [currentCountriesPhoneRules, handleChangeCountry, inputValue],
     );
@@ -213,6 +227,7 @@ export const PhoneInput: FC<TProps> = ({
                     disabled={disabled}
                     onPaste={handlePaste}
                     placeholder={currentCountriesPhoneRules[country].placeholder}
+                    ref={inputRef}
                 >
                     <PureInput
                         id={id}
