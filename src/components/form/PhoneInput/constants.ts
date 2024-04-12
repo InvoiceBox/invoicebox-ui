@@ -37,6 +37,13 @@ export const allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule> =
         regexp: /^(\+?7|8)?7\d{9}$/,
         flag: 'KAZ' as const,
     },
+    KGZ: {
+        placeholder: '+996 XXX-XX-XX-XX',
+        mask: '+999 999-99-99-99',
+        startSubsequence: '996',
+        regexp: /\+?996\d{9}/,
+        flag: 'KGZ' as const,
+    },
     TJK: {
         placeholder: '+992-XX-XXX-XXXX',
         mask: '+999-99-999-9999',

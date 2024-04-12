@@ -60,6 +60,10 @@ export const MultiCountry: StoryObj<TProps> = {
                 value: 'KAZ',
             },
             {
+                label: 'Кыргызстан',
+                value: 'KGZ',
+            },
+            {
                 label: 'Азербайджан',
                 value: 'AZE',
             },

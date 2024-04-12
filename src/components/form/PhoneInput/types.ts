@@ -1,5 +1,14 @@
 export const RUS_COUNTRY_CODE = 'RUS';
-export const supportedCountries = [RUS_COUNTRY_CODE, 'BLR', 'AZE', 'ARM', 'KAZ', 'TJK', 'UZB'] as const;
+export const supportedCountries = [
+    RUS_COUNTRY_CODE,
+    'BLR',
+    'AZE',
+    'ARM',
+    'KAZ',
+    'TJK',
+    'UZB',
+    'KGZ',
+] as const;
 export type TSupportedCountries = (typeof supportedCountries)[number];
 
 export type TCountryRule = {
