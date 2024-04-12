@@ -80,6 +80,31 @@ export const MultiCountry: StoryObj<TProps> = {
     render: Component,
 };
 
+export const MultiCountryWithUnknown: StoryObj<TProps> = {
+    args: {
+        ...commonProps,
+        countries: [
+            {
+                label: 'Россия',
+                value: 'RUS',
+            },
+            {
+                label: 'Армения',
+                value: 'ARM',
+            },
+            {
+                label: 'Белорусь',
+                value: 'BLR',
+            },
+            {
+                label: 'Другая',
+                value: 'UNKNOWN',
+            },
+        ],
+    },
+    render: Component,
+};
+
 export const DefaultRusCountry: StoryObj<TProps> = {
     args: commonProps,
     render: Component,

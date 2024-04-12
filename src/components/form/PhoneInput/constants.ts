@@ -58,4 +58,13 @@ export const allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule> =
         regexp: /\+?998\d{9}/,
         flag: 'UZB' as const,
     },
+
+    // для всех непредусмотренных стран
+    UNKNOWN: {
+        placeholder: '',
+        mask: '+999999999999999999',
+        startSubsequence: '',
+        regexp: /^\d+$/,
+        flag: 'UNKNOWN' as const,
+    },
 };

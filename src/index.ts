@@ -28,6 +28,7 @@ export type { TProps as TFlagProps, TFlagKey } from './components/common/Flag';
 export { CountrySelect } from './components/form/CountrySelect';
 export type { TProps as TCountrySelectProps } from './components/form/CountrySelect';
 export { PhoneInput } from './components/form/PhoneInput';
+export { getIsValidPhone } from './components/form/PhoneInput/phoneInputLogic';
 export type { TProps as TPhoneInputProps } from './components/form/PhoneInput';
 
 export { PaletteProvider } from './palette';
