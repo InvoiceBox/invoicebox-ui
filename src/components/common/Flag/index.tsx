@@ -12,6 +12,7 @@ import { UzbFlag } from './components/UzbFlag';
 import { ChnFlag } from './components/ChnFlag';
 import { EngFlag } from './components/EngFlag';
 import { EspFlag } from './components/EspFlag';
+import { UnknownFlag } from './components/UnknownFlag';
 
 const flagKeys = [
     'RUS',
@@ -26,6 +27,7 @@ const flagKeys = [
     'CHN',
     'ENG',
     'ESP',
+    'UNKNOWN',
 ] as const;
 
 export type TFlagKey = (typeof flagKeys)[number];
@@ -43,6 +45,7 @@ const map: Record<TFlagKey, ReactNode> = {
     CHN: <ChnFlag />,
     ENG: <EngFlag />,
     ESP: <EspFlag />,
+    UNKNOWN: <UnknownFlag />,
 };
 
 export type TProps = {
