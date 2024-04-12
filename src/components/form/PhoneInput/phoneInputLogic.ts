@@ -19,8 +19,22 @@ class PhoneInputLogic {
         return position;
     }
 
-    getIsValidPhoneInput(value: string, country: TCountryRule) {
+    getIsValidPhoneInputByCountry(value: string, country: TCountryRule) {
         return !!value.match(country.regexp);
+    }
+
+    getIsValidPhone(value: string, countries?: Array<{ label: string; value: TSupportedCountries }>) {
+        const notFormattedValue = this.getOnlyNumbersFromString(value);
+        const countrySelectOptions = this.getCountriesSelectOptions(countries);
+        const currentCountriesPhoneRules = this.getCountriesPhoneRules(countrySelectOptions);
+
+        const country = Object.entries(currentCountriesPhoneRules).find((item) =>
+            phoneInputLogic.getIsHaveStartSequenceInString(notFormattedValue, item[1].startSubsequence),
+        );
+        return this.getIsValidPhoneInputByCountry(
+            notFormattedValue,
+            country ? country[1] : allCountriesPhoneRules.RUS,
+        );
     }
 
     getCountriesSelectOptions(countries?: Array<{ label: string; value: TSupportedCountries }>) {
@@ -30,7 +44,7 @@ class PhoneInputLogic {
             const countryRules = allCountriesPhoneRules[country.value];
             return {
                 ...country,
-                description: `+${countryRules.startSubsequence}`,
+                description: countryRules.startSubsequence ? `+${countryRules.startSubsequence}` : '',
                 flag: countryRules.flag as TFlagKey,
             };
         });
@@ -81,3 +95,4 @@ class PhoneInputLogic {
 }
 
 export const phoneInputLogic = new PhoneInputLogic();
+export const getIsValidPhone = phoneInputLogic.getIsValidPhone;

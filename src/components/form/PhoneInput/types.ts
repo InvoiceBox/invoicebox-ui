@@ -1,5 +1,17 @@
+import { TFlagKey } from '../../common/Flag';
+
 export const RUS_COUNTRY_CODE = 'RUS';
-export const supportedCountries = [RUS_COUNTRY_CODE, 'BLR', 'AZE', 'ARM', 'KAZ', 'TJK', 'UZB'] as const;
+export const supportedCountries = [
+    RUS_COUNTRY_CODE,
+    'BLR',
+    'AZE',
+    'ARM',
+    'KAZ',
+    'TJK',
+    'UZB',
+    'KGZ',
+    'UNKNOWN',
+] as const;
 export type TSupportedCountries = (typeof supportedCountries)[number];
 
 export type TCountryRule = {
@@ -7,7 +19,7 @@ export type TCountryRule = {
     mask: string;
     startSubsequence: string;
     regexp: RegExp;
-    flag: string;
+    flag: TFlagKey;
 };
 
 export type TCountrySelectOption = {

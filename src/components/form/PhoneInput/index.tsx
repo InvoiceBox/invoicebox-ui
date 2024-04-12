@@ -120,7 +120,8 @@ export const PhoneInput: FC<TProps> = ({
             const newCountry = Object.entries(currentCountriesPhoneRules).find(
                 (item) =>
                     phoneInputLogic.getIsHaveStartSequenceInString(currentValue, item[1].startSubsequence) &&
-                    currentCountry.flag !== item[1].flag,
+                    currentCountry.flag !== item[1].flag &&
+                    item[1].flag !== 'UNKNOWN',
             );
 
             const isNeedChangeCountry =
@@ -130,7 +131,7 @@ export const PhoneInput: FC<TProps> = ({
                 handleChangeCountry(newCountry[0]);
             }
 
-            return phoneInputLogic.getIsValidPhoneInput(
+            return phoneInputLogic.getIsValidPhoneInputByCountry(
                 currentValue,
                 isNeedAndCanChangeCountry ? newCountry[1] : currentCountry,
             );
@@ -176,7 +177,10 @@ export const PhoneInput: FC<TProps> = ({
         (countryValue: string) => {
             handleChangeCountry(countryValue);
             const currentCountry = currentCountriesPhoneRules[countryValue];
-            const isValidInputValue = phoneInputLogic.getIsValidPhoneInput(inputValue, currentCountry);
+            const isValidInputValue = phoneInputLogic.getIsValidPhoneInputByCountry(
+                inputValue,
+                currentCountry,
+            );
             setIsFirstBlur(false);
             setIsHaveInputError(!isValidInputValue);
             setTimeout(() => {

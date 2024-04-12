@@ -20,7 +20,7 @@ export const useValidateInitialValue = (
                 phoneInputLogic.getIsHaveStartSequenceInString(notFormattedValue, item[1].startSubsequence),
             );
             const countryCode = currentCountry ? currentCountry[0] : RUS_COUNTRY_CODE;
-            const isValidInputValue = phoneInputLogic.getIsValidPhoneInput(
+            const isValidInputValue = phoneInputLogic.getIsValidPhoneInputByCountry(
                 notFormattedValue,
                 currentCountry ? currentCountry[1] : allCountriesPhoneRules.RUS,
             );
