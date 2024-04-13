@@ -1,6 +1,8 @@
 import { TFlagKey } from '../../common/Flag';
 
 export const RUS_COUNTRY_CODE = 'RUS';
+export const UNKNOWN_COUNTRY_CODE = 'UNKNOWN';
+
 export const supportedCountries = [
     RUS_COUNTRY_CODE,
     'BLR',
@@ -10,7 +12,7 @@ export const supportedCountries = [
     'TJK',
     'UZB',
     'KGZ',
-    'UNKNOWN',
+    UNKNOWN_COUNTRY_CODE,
 ] as const;
 export type TSupportedCountries = (typeof supportedCountries)[number];
 
