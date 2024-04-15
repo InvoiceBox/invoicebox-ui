@@ -24,18 +24,8 @@ class PhoneInputLogic {
         return !!value.match(country.regexp);
     }
 
-    getIsValidPhone(value: string, countries?: Array<{ label: string; value: TSupportedCountries }>) {
-        const notFormattedValue = this.getOnlyNumbersFromString(value);
-        const countrySelectOptions = this.getCountriesSelectOptions(countries);
-        const currentCountriesPhoneRules = this.getCountriesPhoneRules(countrySelectOptions);
-
-        const country = Object.entries(currentCountriesPhoneRules).find((item) =>
-            phoneInputLogic.getIsHaveStartSequenceInString(notFormattedValue, item[1].startSubsequence),
-        );
-        return this.getIsValidPhoneInputByCountry(
-            notFormattedValue,
-            country ? country[1] : allCountriesPhoneRules.RUS,
-        );
+    getSupportedCountriesByCountryNames(countries?: Array<TSupportedCountries>) {
+        return countries?.filter((country) => allCountriesPhoneRules[country]);
     }
 
     getCountriesSelectOptions(countries?: Array<{ label: string; value: TSupportedCountries }>) {
@@ -51,16 +41,30 @@ class PhoneInputLogic {
         });
     }
 
-    getIsHaveCountriesSelectOptions(countrySelectOptions?: Array<TCountrySelectOption>) {
+    getIsHaveCountriesSelectOptions(
+        countrySelectOptions?: Array<TCountrySelectOption | TSupportedCountries>,
+    ) {
         return !!countrySelectOptions?.length;
     }
 
-    getCountriesPhoneRules(countrySelectOptions?: Array<TCountrySelectOption>) {
+    getCountriesPhoneRulesBySelectOptions(countrySelectOptions?: Array<TCountrySelectOption>) {
         return this.getIsHaveCountriesSelectOptions(countrySelectOptions)
             ? Object.fromEntries(
                   Object.entries(allCountriesPhoneRules).filter((ruleItem) =>
                       countrySelectOptions?.find(
                           (countrySelectOption) => countrySelectOption.value === ruleItem[0],
+                      ),
+                  ),
+              )
+            : { RUS: allCountriesPhoneRules.RUS };
+    }
+
+    getCountriesPhoneRulesByCountryNames(countrySelectOptions?: Array<TSupportedCountries>) {
+        return this.getIsHaveCountriesSelectOptions(countrySelectOptions)
+            ? Object.fromEntries(
+                  Object.entries(allCountriesPhoneRules).filter((ruleItem) =>
+                      countrySelectOptions?.find(
+                          (countrySelectOption) => countrySelectOption === ruleItem[0],
                       ),
                   ),
               )
