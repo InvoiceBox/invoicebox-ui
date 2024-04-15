@@ -120,4 +120,3 @@ class PhoneInputLogic {
 }
 
 export const phoneInputLogic = new PhoneInputLogic();
-export const getIsValidPhone = phoneInputLogic.getIsValidPhone;
