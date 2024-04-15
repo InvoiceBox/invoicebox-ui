@@ -64,7 +64,7 @@ export const allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule> =
         placeholder: '',
         mask: '+999999999999999999',
         startSubsequence: '',
-        regexp: /^\d+$/,
+        regexp: /^\d{7,}$/,
         flag: 'UNKNOWN' as const,
     },
 };

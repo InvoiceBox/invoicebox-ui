@@ -84,7 +84,7 @@ export const PhoneInput: FC<TProps> = ({
         [onCountryChange],
     );
 
-    const handleValid = useCallback(
+    const handleInitialValid = useCallback(
         (currentInputValue: string, countryCode: string) => {
             onChange(currentInputValue);
             setIsHaveInputError(false);
@@ -93,7 +93,7 @@ export const PhoneInput: FC<TProps> = ({
         [onChange],
     );
 
-    const handleUnValid = useCallback(
+    const handleInitialUnValid = useCallback(
         (countryCode: string) => {
             onChange('');
             setIsHaveInputError(true);
@@ -102,47 +102,45 @@ export const PhoneInput: FC<TProps> = ({
         [onChange],
     );
 
-    useValidateInitialValue(value, currentCountriesPhoneRules, handleValid, handleUnValid);
+    useValidateInitialValue(value, currentCountriesPhoneRules, handleInitialValid, handleInitialUnValid);
 
-    // хак для того чтобы сдвигать каретку в случае если при вводе "9" надо заменить на "79", каретка не двигается сама и остаётся между "7" и "9" без этой функции
-    const moveCaretByValue = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => (positionCaret: number) => {
-            setTimeout(() => {
-                event.target.setSelectionRange(positionCaret, positionCaret);
-            }, 0);
-        },
-        [],
-    );
-
-    const getIsValidValue = useCallback(
+    const getNewCountryByInputValue = useCallback(
         (currentValue: string) => {
             const currentCountry = currentCountriesPhoneRules[country];
             const newCountry = Object.entries(currentCountriesPhoneRules).find(
                 (item) =>
                     phoneInputLogic.getIsHaveStartSequenceInString(currentValue, item[1].startSubsequence) &&
-                    currentCountry.flag !== item[1].flag &&
-                    item[1].flag !== 'UNKNOWN',
+                    currentCountry.flag !== item[1].flag,
             );
 
-            const isNeedChangeCountry =
-                newCountry && currentCountry.startSubsequence !== newCountry[1].startSubsequence;
+            const isNeedChangeCountry = phoneInputLogic.getIsNeedChangeCountry(
+                currentValue,
+                currentCountry,
+                newCountry,
+            );
             const isNeedAndCanChangeCountry = isNeedChangeCountry && !!newCountry;
             if (isNeedAndCanChangeCountry) {
                 handleChangeCountry(newCountry[0]);
             }
 
-            return phoneInputLogic.getIsValidPhoneInputByCountry(
-                currentValue,
-                isNeedAndCanChangeCountry ? newCountry[1] : currentCountry,
-            );
+            return isNeedAndCanChangeCountry ? newCountry[1] : currentCountry;
         },
         [country, currentCountriesPhoneRules, handleChangeCountry],
+    );
+
+    const getIsValidValue = useCallback(
+        (currentValue: string) => {
+            const currentCountry = getNewCountryByInputValue(currentValue);
+
+            return phoneInputLogic.getIsValidPhoneInputByCountry(currentValue, currentCountry);
+        },
+        [getNewCountryByInputValue],
     );
 
     const handleInputValueChange = useCallback(
         (currentInputValue: string, event?: ChangeEvent<HTMLInputElement>) => {
             const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(currentInputValue);
-            const moveCaret = event ? moveCaretByValue(event) : undefined;
+            const moveCaret = event ? phoneInputLogic.moveCaretByValue(event) : undefined;
             const intermediateValue =
                 country === RUS_COUNTRY_CODE
                     ? phoneInputLogic.formatRusPhoneToUnifiedView(notFormattedValue, moveCaret)
@@ -153,7 +151,7 @@ export const PhoneInput: FC<TProps> = ({
             onChange(isValidInputValue ? intermediateValue : '');
             setInputValue(intermediateValue);
         },
-        [country, getIsValidValue, moveCaretByValue, onChange],
+        [country, getIsValidValue, onChange],
     );
 
     const handleChange = useCallback(
@@ -183,11 +181,12 @@ export const PhoneInput: FC<TProps> = ({
             );
             setIsFirstBlur(false);
             setIsHaveInputError(!isValidInputValue);
+            onChange(isValidInputValue ? inputValue : '');
             setTimeout(() => {
                 inputRef.current?.focus();
             }, 0);
         },
-        [currentCountriesPhoneRules, handleChangeCountry, inputValue],
+        [currentCountriesPhoneRules, handleChangeCountry, inputValue, onChange],
     );
 
     const handlePaste = useCallback(

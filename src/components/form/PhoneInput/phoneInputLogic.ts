@@ -1,6 +1,7 @@
-import { TCountryRule, TCountrySelectOption, TSupportedCountries } from './types';
+import { TCountryRule, TCountrySelectOption, TSupportedCountries, UNKNOWN_COUNTRY_CODE } from './types';
 import { allCountriesPhoneRules, MASK_DIGIT_ITEM } from './constants';
 import { TFlagKey } from '../../common/Flag';
+import { ChangeEvent } from 'react';
 
 class PhoneInputLogic {
     private getCaretPositionByRusValue(value: string) {
@@ -91,6 +92,30 @@ class PhoneInputLogic {
 
     getOnlyNumbersFromString(value: string) {
         return value.match(/\d/g)?.join('') || '';
+    }
+
+    // хак для того чтобы сдвигать каретку в случае если при вводе "9" надо заменить на "79", каретка не двигается сама и остаётся между "7" и "9" без этой функции
+    moveCaretByValue(event: ChangeEvent<HTMLInputElement>) {
+        return (positionCaret: number) => {
+            setTimeout(() => {
+                event.target.setSelectionRange(positionCaret, positionCaret);
+            }, 0);
+        };
+    }
+
+    getIsNeedChangeCountry(
+        inputValue: string,
+        currentCountry: TCountryRule,
+        newCountry?: [string, TCountryRule],
+    ) {
+        return (
+            newCountry &&
+            currentCountry.startSubsequence !== newCountry[1].startSubsequence &&
+            inputValue &&
+            (newCountry[0] === UNKNOWN_COUNTRY_CODE
+                ? !this.getIsHaveStartSequenceInString(inputValue, currentCountry.startSubsequence)
+                : true)
+        );
     }
 }
 
