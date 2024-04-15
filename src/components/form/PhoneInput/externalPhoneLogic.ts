@@ -3,10 +3,11 @@ import { allCountriesPhoneRules } from './constants';
 import { phoneInputLogic } from './phoneInputLogic';
 
 class ExternalPhoneLogic {
-    getIsValidPhone(value: string, countries?: Array<{ label: string; value: TSupportedCountries }>) {
+    getIsValidPhone(value: string, countries?: Array<TSupportedCountries>) {
         const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(value);
-        const countrySelectOptions = phoneInputLogic.getCountriesSelectOptions(countries);
-        const currentCountriesPhoneRules = phoneInputLogic.getCountriesPhoneRules(countrySelectOptions);
+        const supportedCountries = phoneInputLogic.getSupportedCountriesByCountryNames(countries);
+        const currentCountriesPhoneRules =
+            phoneInputLogic.getCountriesPhoneRulesByCountryNames(supportedCountries);
 
         const country = Object.entries(currentCountriesPhoneRules).find((item) =>
             phoneInputLogic.getIsHaveStartSequenceInString(notFormattedValue, item[1].startSubsequence),

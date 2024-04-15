@@ -58,7 +58,7 @@ export const PhoneInput: FC<TProps> = ({
         [countrySelectOptions],
     );
     const currentCountriesPhoneRules = useMemo(
-        () => phoneInputLogic.getCountriesPhoneRules(countrySelectOptions),
+        () => phoneInputLogic.getCountriesPhoneRulesBySelectOptions(countrySelectOptions),
         [countrySelectOptions],
     );
 
