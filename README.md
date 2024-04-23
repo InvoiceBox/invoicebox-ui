@@ -15,3 +15,14 @@ npm i @invoicebox/ui
 ```bash
 yarn add @invoicebox/ui
 ```
+
+# Пример использования
+
+```ts
+import React, { FC } from 'react';
+import { Arrow } from '@invoicebox/ui';
+
+export const SomeComponent: FC = () => {
+    return <Arrow isOpen={false} />;
+};
+```
