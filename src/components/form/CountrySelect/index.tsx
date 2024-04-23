@@ -83,7 +83,7 @@ export const CountrySelect: FC<TProps> = ({
     return (
         <S.Wrapper ref={wrapperRef}>
             <S.HeaderWrapper type="button" onClick={handleDropdownTrigger} disabled={disabled}>
-                {selectedOption.flag && <Flag height={16} width={22} flag={selectedOption.flag} />}
+                {selectedOption.flag && <Flag isSmall={false} flag={selectedOption.flag} />}
                 <Arrow isOpen={isOpen} />
             </S.HeaderWrapper>
             <Dropdown
