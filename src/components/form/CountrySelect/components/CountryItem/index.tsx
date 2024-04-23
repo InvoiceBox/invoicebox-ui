@@ -30,7 +30,7 @@ export const CountryItem = <TValue,>({
     return (
         <S.Wrapper $palette={palette} onClick={handleSelect} type="button">
             <S.Title $isSelected={isSelected} $palette={palette}>
-                {flag && <Flag flag={flag} width={17} height={12} />}
+                {flag && <Flag flag={flag} isSmall={true} />}
                 <Typography variant={'captionRegular'}>
                     {countryLabel} {isSelected && selectedLabel}
                 </Typography>

@@ -50,16 +50,11 @@ const map: Record<TFlagKey, ReactNode> = {
 
 export type TProps = {
     flag: TFlagKey;
-    width: number;
-    height: number;
+    isSmall: boolean;
 };
 
-export const Flag = ({ flag, width, height }: TProps) => {
-    return (
-        <S.FlagWrapper $width={width} $height={height}>
-            {map[flag]}
-        </S.FlagWrapper>
-    );
+export const Flag = ({ flag, isSmall }: TProps) => {
+    return <S.FlagWrapper $isSmall={isSmall}>{map[flag]}</S.FlagWrapper>;
 };
 
 Flag.flags = flagKeys;

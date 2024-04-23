@@ -17,7 +17,6 @@ type TStory = StoryObj<TProps>;
 export const Default: TStory = {
     args: {
         flag: 'RUS',
-        width: 44,
-        height: 32,
+        isSmall: false,
     },
 };
