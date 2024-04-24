@@ -2,7 +2,6 @@ import React, { FC, ReactNode, TransitionEvent, useCallback, useRef, useState } 
 import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TDropdownPalette } from './palette';
-import { StyleSheetManager } from 'styled-components';
 
 type TPosition = {
     isAbove: boolean;
@@ -22,15 +21,7 @@ export type TProps = {
     onCloseTransitionEnd?: () => void;
 };
 
-export const Dropdown: FC<TProps> = ({ children, ...props }) => {
-    return (
-        <StyleSheetManager disableCSSOMInjection>
-            <DropdownInner {...props}>{children}</DropdownInner>
-        </StyleSheetManager>
-    );
-};
-
-const DropdownInner: FC<TProps> = ({
+export const Dropdown: FC<TProps> = ({
     children,
     isOpen,
     isAutoPosition = false,
