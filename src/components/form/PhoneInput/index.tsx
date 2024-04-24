@@ -17,6 +17,7 @@ import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { CountrySelect, TProps as TCountrySelectProps } from '../CountrySelect';
+import { disableCSSOM } from '../../../helpers/disableCSSOM';
 
 type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
@@ -33,7 +34,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id'> & {
 
 export type TProps = TControlProps & TFieldProps;
 
-export const PhoneInput: FC<TProps> = ({
+const PhoneInputInner: FC<TProps> = ({
     onBlur,
     name,
     onFocus,
@@ -245,3 +246,5 @@ export const PhoneInput: FC<TProps> = ({
         </InputLabel>
     );
 };
+
+export const PhoneInput = disableCSSOM(PhoneInputInner);

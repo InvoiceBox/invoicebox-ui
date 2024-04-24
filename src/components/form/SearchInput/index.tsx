@@ -7,13 +7,14 @@ import { SearchIcon } from './components/SearchIcon';
 import { CrossIcon } from './components/CrossIcon';
 import { useComponentPalette } from '../../../palette';
 import { TSearchInputPalette } from './palette';
+import { disableCSSOM } from '../../../helpers/disableCSSOM';
 
 export type TProps = Pick<PureInputProps, 'placeholder' | 'hasBorder'> & {
     value: string;
     onChange: (value: string) => void;
 };
 
-export const SearchInput: FC<TProps> = ({ onChange, placeholder, hasBorder, value }) => {
+const SearchInputInner: FC<TProps> = ({ onChange, placeholder, hasBorder, value }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus();
     const palette = useComponentPalette<TSearchInputPalette>('searchInput');
 
@@ -52,3 +53,5 @@ export const SearchInput: FC<TProps> = ({ onChange, placeholder, hasBorder, valu
         </InputLabel>
     );
 };
+
+export const SearchInput = disableCSSOM(SearchInputInner);

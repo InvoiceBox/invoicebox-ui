@@ -11,6 +11,7 @@ import { Scrollbar } from '../../common/Scrollbar';
 import { TDropdownProps } from '../../../index';
 import { useComponentPalette } from '../../../palette';
 import { TCountrySelectPalette } from './palette';
+import { disableCSSOM } from '../../../helpers/disableCSSOM';
 
 type TOption = {
     value: string;
@@ -32,7 +33,7 @@ type TControlProps<T> = Pick<TSearchInputProps, 'placeholder'> &
 
 export type TProps = TFieldProps & TControlProps<string>;
 
-export const CountrySelect: FC<TProps> = ({
+const CountrySelectInner: FC<TProps> = ({
     value,
     onChange,
     options,
@@ -122,3 +123,5 @@ export const CountrySelect: FC<TProps> = ({
         </S.Wrapper>
     );
 };
+
+export const CountrySelect = disableCSSOM(CountrySelectInner);

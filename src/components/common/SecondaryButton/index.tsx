@@ -3,6 +3,7 @@ import * as S from './styles';
 import { InvoiceboxSpinner } from '../InvoiceboxSpinner';
 import { TSecondaryButtonPalette } from './palette';
 import { useComponentPalette } from '../../../palette';
+import { disableCSSOM } from '../../../helpers/disableCSSOM';
 
 type TButtonProps = { element?: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
 type TAnchorProps = { element: 'a' } & AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -14,7 +15,7 @@ export type TProps = (TButtonProps | TAnchorProps) & {
     className?: never;
 };
 
-export const SecondaryButton: FC<TProps> = ({
+const SecondaryButtonInner: FC<TProps> = ({
     element = 'button',
     isLoading = false,
     fullWidth = false,
@@ -50,3 +51,5 @@ export const SecondaryButton: FC<TProps> = ({
         </S.Wrapper>
     );
 };
+
+export const SecondaryButton = disableCSSOM(SecondaryButtonInner);

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { StyledSvg } from './components/StyledSvg';
 import { TArrowPalette } from './palette';
 import { useComponentPalette } from '../../../palette';
+import { disableCSSOM } from '../../../helpers/disableCSSOM';
 
 export type TProps = {
     isOpen: boolean;
@@ -11,13 +12,7 @@ export type TProps = {
     palette?: Partial<TArrowPalette>;
 };
 
-export const Arrow: FC<TProps> = ({
-    isOpen,
-    innerSize = 10,
-    outterSize = 24,
-    defaultRotate = 0,
-    palette,
-}) => {
+const ArrowInner: FC<TProps> = ({ isOpen, innerSize = 10, outterSize = 24, defaultRotate = 0, palette }) => {
     const mergedPalette = useComponentPalette('arrow', palette);
 
     return (
@@ -31,3 +26,5 @@ export const Arrow: FC<TProps> = ({
         />
     );
 };
+
+export const Arrow = disableCSSOM(ArrowInner);

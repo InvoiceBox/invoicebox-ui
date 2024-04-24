@@ -2,13 +2,14 @@ import React, { FC, ReactNode, useMemo } from 'react';
 import { Scrollbar as LibScrollbar } from 'react-scrollbars-custom';
 import { useComponentPalette } from '../../../palette';
 import { TScrollbarPalette } from './palette';
+import { disableCSSOM } from '../../../helpers/disableCSSOM';
 
 export type TProps = {
     children: ReactNode;
     maxHeight?: number;
 };
 
-export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%' }) => {
+const ScrollbarInner: FC<TProps> = ({ children, maxHeight = '100%' }) => {
     const palette = useComponentPalette<TScrollbarPalette>('scrollbar');
 
     const props = useMemo(
@@ -63,3 +64,5 @@ export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%' }) => {
         </LibScrollbar>
     );
 };
+
+export const Scrollbar = disableCSSOM(ScrollbarInner);

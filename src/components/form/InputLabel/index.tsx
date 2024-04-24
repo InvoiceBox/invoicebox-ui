@@ -2,6 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import * as S from './styles';
 import { TInputLabelPalette } from './palette';
 import { useComponentPalette } from '../../../palette';
+import { disableCSSOM } from '../../../helpers/disableCSSOM';
 
 export type TProps = {
     disabled?: boolean;
@@ -10,7 +11,7 @@ export type TProps = {
     children: ReactNode;
 };
 
-export const InputLabel: FC<TProps> = ({ disabled = false, label, inFocus = false, children }) => {
+const InputLabelInner: FC<TProps> = ({ disabled = false, label, inFocus = false, children }) => {
     const palette = useComponentPalette<TInputLabelPalette>('inputLabel');
 
     return (
@@ -24,3 +25,5 @@ export const InputLabel: FC<TProps> = ({ disabled = false, label, inFocus = fals
         </S.Wrapper>
     );
 };
+
+export const InputLabel = disableCSSOM(InputLabelInner);
