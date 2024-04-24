@@ -1,8 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 import { StyleSheetManager } from 'styled-components';
+import { IStyleSheetManager } from 'styled-components/dist/models/StyleSheetManager';
 
-type TProps = {
-    disableCSSOMInjection: boolean;
+type TProps = Pick<IStyleSheetManager, 'disableCSSOMInjection'> & {
     children: ReactNode;
 };
 
