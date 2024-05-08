@@ -17,6 +17,10 @@ class ExternalPhoneLogic {
             country ? country[1] : allCountriesPhoneRules.RUS,
         );
     }
+
+    getIsValidRusPhone(phone?: string) {
+        return phoneInputLogic.getIsValidPhoneInputByCountry(phone || '', allCountriesPhoneRules.RUS);
+    }
 }
 
 export const phoneLogic = new ExternalPhoneLogic();
