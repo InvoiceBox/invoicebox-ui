@@ -31,7 +31,7 @@ export { PhoneInput } from './components/form/PhoneInput';
 export type { TProps as TPhoneInputProps } from './components/form/PhoneInput';
 export { phoneLogic } from './components/form/PhoneInput/externalPhoneLogic';
 
-export { PaletteProvider } from './palette';
+export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';
 
 export { useOutsideClick } from './hooks/useOutsideClick';
