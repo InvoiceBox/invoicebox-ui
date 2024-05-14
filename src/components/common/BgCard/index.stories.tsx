@@ -10,9 +10,8 @@ const meta: Meta<typeof BgCard> = {
 };
 
 export default meta;
-type TStory = StoryObj<TProps>;
 
-export const Default: TStory = {
+export const Default: StoryObj<TProps> = {
     args: {
         children: (
             <>
