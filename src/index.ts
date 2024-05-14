@@ -37,3 +37,5 @@ export type { TAbstractPalette } from './palette';
 export { useOutsideClick } from './hooks/useOutsideClick';
 export { useInputFocus } from './hooks/useInputFocus';
 export { useUnupdatableHandler } from './hooks/useUnupdatableHandler';
+
+export { breakpoints } from './breakpoints';
