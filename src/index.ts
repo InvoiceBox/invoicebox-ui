@@ -30,6 +30,7 @@ export type { TProps as TCountrySelectProps } from './components/form/CountrySel
 export { PhoneInput } from './components/form/PhoneInput';
 export type { TProps as TPhoneInputProps } from './components/form/PhoneInput';
 export { phoneLogic } from './components/form/PhoneInput/externalPhoneLogic';
+export { BgCard } from './components/common/BgCard';
 
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';

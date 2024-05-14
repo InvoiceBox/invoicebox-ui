@@ -24,6 +24,7 @@ import {
     generateCountrySelectPalette,
     TCountrySelectPalette,
 } from '../components/form/CountrySelect/palette';
+import { TBgCardPalette, generateBgCardPalette } from '../components/common/BgCard/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -41,6 +42,7 @@ type TContext = {
     warningIcon: TWarningIconPalette;
     divider: TDividerPalette;
     calendar: TCalendarPalette;
+    bgCard: TBgCardPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -59,4 +61,5 @@ export const PaletteContext = createContext<TContext>({
     warningIcon: generateWarningIconPalette(defaultAbstractPalette),
     divider: generateDividerPalette(defaultAbstractPalette),
     calendar: generateCalendarPalette(defaultAbstractPalette),
+    bgCard: generateBgCardPalette(defaultAbstractPalette),
 });
