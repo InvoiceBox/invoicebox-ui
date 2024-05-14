@@ -2,14 +2,14 @@ import styled, { css } from 'styled-components';
 import { breakpoints } from '../../../breakpoints';
 import { TBgCardPalette } from './palette';
 
-export const Wrapper = styled.div<{ $palette: TBgCardPalette; $isTopLeftBorder: boolean }>`
+export const Wrapper = styled.div<{ $palette: TBgCardPalette; $isTopLeftBorderRadius: boolean }>`
     background-color: ${({ $palette }) => $palette.bg};
     position: relative;
     border-radius: 20px;
     padding: 30px;
 
-    ${({ $isTopLeftBorder }) =>
-        !$isTopLeftBorder &&
+    ${({ $isTopLeftBorderRadius }) =>
+        !$isTopLeftBorderRadius &&
         css`
             border-top-left-radius: 0px;
         `}

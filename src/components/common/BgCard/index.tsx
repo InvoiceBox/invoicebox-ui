@@ -5,14 +5,14 @@ import { TBgCardPalette } from './palette';
 
 export type TProps = {
     children: ReactNode;
-    isTopLeftBorder?: boolean;
+    isTopLeftBorderRadius?: boolean;
 };
 
-export const BgCard: FC<TProps> = ({ children, isTopLeftBorder = true }) => {
+export const BgCard: FC<TProps> = ({ children, isTopLeftBorderRadius = true }) => {
     const palette = useComponentPalette<TBgCardPalette>('bgCard');
 
     return (
-        <S.Wrapper $palette={palette} $isTopLeftBorder={isTopLeftBorder}>
+        <S.Wrapper $palette={palette} $isTopLeftBorderRadius={isTopLeftBorderRadius}>
             {children}
         </S.Wrapper>
     );
