@@ -19,5 +19,6 @@ export const Default: StoryObj<TProps> = {
                 <div>Some children</div>
             </>
         ),
+        isTopLeftBorder: true,
     },
 };

@@ -5,10 +5,15 @@ import { TBgCardPalette } from './palette';
 
 export type TProps = {
     children: ReactNode;
+    isTopLeftBorder?: boolean;
 };
 
-export const BgCard: FC<TProps> = ({ children }) => {
+export const BgCard: FC<TProps> = ({ children, isTopLeftBorder = true }) => {
     const palette = useComponentPalette<TBgCardPalette>('bgCard');
 
-    return <S.Wrapper $palette={palette}>{children}</S.Wrapper>;
+    return (
+        <S.Wrapper $palette={palette} $isTopLeftBorder={isTopLeftBorder}>
+            {children}
+        </S.Wrapper>
+    );
 };
