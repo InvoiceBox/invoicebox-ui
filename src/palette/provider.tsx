@@ -17,6 +17,7 @@ import { generateDividerPalette } from '../components/common/Divider/palette';
 import { generateCalendarPalette } from '../components/common/Calendar/palette';
 import { generateSearchInputPalette } from '../components/form/SearchInput/palette';
 import { generateCountrySelectPalette } from '../components/form/CountrySelect/palette';
+import { generateBgCardPalette } from '../components/common/BgCard/palette';
 
 type TProps = {
     children: ReactNode;
@@ -49,6 +50,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             warningIcon: generateWarningIconPalette(mergedAbstractPalette),
             divider: generateDividerPalette(mergedAbstractPalette),
             calendar: generateCalendarPalette(mergedAbstractPalette),
+            bgCard: generateBgCardPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );
