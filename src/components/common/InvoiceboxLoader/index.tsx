@@ -7,5 +7,5 @@ export type TProps = {
 };
 
 export const InvoiceboxLoader: FC<TProps> = ({ width = '100%' }) => (
-    <Lottie style={{ width }} loop animationData={animation} />
+    <Lottie style={{ width, display: 'flex' }} loop animationData={animation} />
 );
