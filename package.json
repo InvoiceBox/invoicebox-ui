@@ -54,7 +54,7 @@
         "lottie-react": "^2.4.0",
         "react-calendar": "^4.8.0",
         "react-scrollbars-custom": "^4.1.1",
-        "react-toastify": "^10.0.5"
+        "react-toastify": "^9.1.3"
     },
     "peerDependencies": {
         "react": "^18.2.0",
