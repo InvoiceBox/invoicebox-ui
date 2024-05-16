@@ -1,6 +1,6 @@
 export { Skeleton } from './components/common/Skeleton';
 export { InvoiceboxLoader } from './components/common/InvoiceboxLoader';
-export { Typography } from './components/common/Typography';
+export { Typography, typography } from './components/common/Typography';
 export { InvoiceboxSpinner } from './components/common/InvoiceboxSpinner';
 export { SecondaryButton } from './components/common/SecondaryButton';
 export { Arrow } from './components/common/Arrow';
@@ -31,6 +31,7 @@ export { PhoneInput } from './components/form/PhoneInput';
 export type { TProps as TPhoneInputProps } from './components/form/PhoneInput';
 export { phoneLogic } from './components/form/PhoneInput/externalPhoneLogic';
 export { BgCard } from './components/common/BgCard';
+export { ToastContainer, toast } from './components/common/Toast';
 
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';

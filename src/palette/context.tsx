@@ -25,6 +25,7 @@ import {
     TCountrySelectPalette,
 } from '../components/form/CountrySelect/palette';
 import { TBgCardPalette, generateBgCardPalette } from '../components/common/BgCard/palette';
+import { TToastPalette, generateToastPalette } from '../components/common/Toast/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -43,6 +44,7 @@ type TContext = {
     divider: TDividerPalette;
     calendar: TCalendarPalette;
     bgCard: TBgCardPalette;
+    toast: TToastPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -62,4 +64,5 @@ export const PaletteContext = createContext<TContext>({
     divider: generateDividerPalette(defaultAbstractPalette),
     calendar: generateCalendarPalette(defaultAbstractPalette),
     bgCard: generateBgCardPalette(defaultAbstractPalette),
+    toast: generateToastPalette(defaultAbstractPalette),
 });
