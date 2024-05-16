@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TToastPalette } from './palette';
