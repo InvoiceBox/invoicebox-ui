@@ -1,7 +1,6 @@
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { TToastPalette } from './palette';
-import { typography } from '../Typography';
 import { breakpoints } from '../../../breakpoints';
 import hexToRgba from 'hex-to-rgba';
 
@@ -16,11 +15,9 @@ export const Container = styled(ToastContainer)<{ $palette: TToastPalette }>`
         background-color: ${({ $palette }) => $palette.bg};
         box-shadow: 0px 10px 30px ${({ $palette }) => hexToRgba($palette.shadow, 0.1)};
         color: ${({ $palette }) => $palette.text};
-        ${typography.bodyMRegular};
         min-height: 54px;
 
         @media ${breakpoints.sm} {
-            ${typography.captionRegular};
             min-height: 38px;
         }
     }

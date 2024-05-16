@@ -28,5 +28,3 @@ export const Typography = forwardRef<HTMLInputElement, TProps>(
         return <S.Wrapper ref={ref} as={element} $variant={variant} {...rest} />;
     },
 );
-
-export { typography } from './typography';

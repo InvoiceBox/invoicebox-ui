@@ -2,8 +2,17 @@ import { FC } from 'react';
 import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TToastPalette } from './palette';
+import { toast as libToast } from 'react-toastify';
+import { Typography } from '../Typography';
 
-export { toast } from 'react-toastify';
+export const toast = {
+    error: (message: string) => {
+        libToast.error(<Typography variant="bodyMRegular">{message}</Typography>);
+    },
+    success: (message: string) => {
+        libToast.success(<Typography variant="bodyMRegular">{message}</Typography>);
+    },
+};
 
 export const ToastContainer: FC = () => {
     const palette = useComponentPalette<TToastPalette>('toast');
