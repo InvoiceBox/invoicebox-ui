@@ -44,3 +44,5 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
         );
     },
 );
+
+PureInput.displayName = 'PureInput';

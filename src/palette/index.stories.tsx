@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Skeleton } from '../components/common/Skeleton';
 import { PaletteProvider } from './provider';

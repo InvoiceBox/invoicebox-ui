@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { defaultAbstractPalette } from './constants';
 import { Typography } from '../components/common/Typography';
