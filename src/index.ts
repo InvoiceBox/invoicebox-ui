@@ -41,3 +41,4 @@ export { useInputFocus } from './hooks/useInputFocus';
 export { useUnupdatableHandler } from './hooks/useUnupdatableHandler';
 
 export { breakpoints } from './breakpoints';
+export { useMobile, useTablet, useLargeTablet, useMiniLaptop } from './hooks/useMedia';
