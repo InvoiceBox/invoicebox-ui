@@ -8,12 +8,12 @@ import { CrossIcon } from './components/CrossIcon';
 import { useComponentPalette } from '../../../palette';
 import { TSearchInputPalette } from './palette';
 
-export type TProps = Pick<PureInputProps, 'placeholder' | 'hasBorder'> & {
+export type TProps = Pick<PureInputProps, 'placeholder' | 'hasBorder' | 'autoFocus'> & {
     value: string;
     onChange: (value: string) => void;
 };
 
-export const SearchInput: FC<TProps> = ({ onChange, placeholder, hasBorder, value }) => {
+export const SearchInput: FC<TProps> = ({ onChange, placeholder, hasBorder, value, autoFocus }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus();
     const palette = useComponentPalette<TSearchInputPalette>('searchInput');
 
@@ -39,6 +39,7 @@ export const SearchInput: FC<TProps> = ({ onChange, placeholder, hasBorder, valu
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 inFocus={inFocus}
+                autoFocus={autoFocus}
             />
             <S.IconWrapper $inFocus={inFocus} $palette={palette}>
                 {value ? (
