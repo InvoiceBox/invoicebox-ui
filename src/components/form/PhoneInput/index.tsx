@@ -17,6 +17,7 @@ import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { CountrySelect, TProps as TCountrySelectProps } from '../CountrySelect';
+import { useMobile } from '../../../hooks/useMedia';
 
 type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
@@ -48,6 +49,7 @@ export const PhoneInput: FC<TProps> = ({
     onCountryChange,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
+    const isMobile = useMobile();
 
     const countrySelectOptions = useMemo(
         () => phoneInputLogic.getCountriesSelectOptions(countries),
@@ -206,7 +208,7 @@ export const PhoneInput: FC<TProps> = ({
                     <S.InputLabelFloatWrapper>
                         <S.CountrySelectWrapper>
                             <CountrySelect
-                                minWidth="350px"
+                                minWidth={isMobile ? '100%' : '350px'}
                                 options={countrySelectOptions}
                                 onChange={handleCountryChange}
                                 value={country}
