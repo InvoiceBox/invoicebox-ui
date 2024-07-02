@@ -29,7 +29,7 @@ export const Wrapper = styled.button<{
     text-align: center;
     position: relative;
     border: none;
-    border-radius: ${({ $borderRadius }) => $borderRadius}
+    border-radius: ${({ $borderRadius }) => $borderRadius};
     cursor: pointer;
     padding: ${({ $size }) => getPaddingBySize($size)};
     color: ${({ $palette }) => $palette.text};
