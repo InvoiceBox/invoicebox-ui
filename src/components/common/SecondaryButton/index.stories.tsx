@@ -16,6 +16,7 @@ const args = {
     fullWidth: false,
     onClick: action('click'),
     children: 'Button',
+    size: 'small' as const,
 };
 
 export const Default: StoryObj<typeof SecondaryButton> = {
