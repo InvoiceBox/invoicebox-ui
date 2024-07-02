@@ -3,7 +3,6 @@ import * as S from './styles';
 import { InvoiceboxSpinner } from '../InvoiceboxSpinner';
 import { TSecondaryButtonPalette } from './palette';
 import { useComponentPalette } from '../../../palette';
-import { TButtonSize } from './styles';
 
 type TButtonProps = { element?: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
 type TAnchorProps = { element: 'a' } & AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -13,8 +12,8 @@ export type TProps = (TButtonProps | TAnchorProps) & {
     fullWidth?: boolean;
     disabled?: boolean;
     className?: never;
-    size?: TButtonSize;
     borderRadius?: string;
+    padding?: string;
 };
 
 export const SecondaryButton: FC<TProps> = ({
@@ -22,8 +21,8 @@ export const SecondaryButton: FC<TProps> = ({
     isLoading = false,
     fullWidth = false,
     disabled = false,
-    size = 'medium',
     borderRadius = '10px',
+    padding = '13px 24px',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     className,
     children,
@@ -42,8 +41,8 @@ export const SecondaryButton: FC<TProps> = ({
             disabled={element === 'button' ? isDisabled : undefined}
             $palette={palette}
             $fullWidth={fullWidth}
-            $size={size}
             $borderRadius={borderRadius}
+            $padding={padding}
             {...rest}
         >
             {isLoading && (
