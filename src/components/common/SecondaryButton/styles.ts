@@ -2,6 +2,16 @@ import styled, { css } from 'styled-components';
 import { Typography } from '../Typography';
 import { TSecondaryButtonPalette } from './palette';
 
+export type TButtonSize = 'small' | 'medium';
+
+export const getPaddingBySize = (size: TButtonSize) => {
+    if (size === 'small') {
+        return '8px 16px';
+    }
+
+    return '13px 24px';
+};
+
 export const Inner = styled(Typography)<{ $isLoading?: boolean }>`
     visibility: ${({ $isLoading }) => ($isLoading ? 'hidden' : 'visible')};
 `;
@@ -10,6 +20,7 @@ export const Wrapper = styled.button<{
     $palette: TSecondaryButtonPalette;
     $fullWidth: boolean;
     $disabled: boolean;
+    $size: TButtonSize;
 }>`
     appearance: none;
     display: inline-block;
@@ -19,7 +30,7 @@ export const Wrapper = styled.button<{
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    padding: 13px 24px;
+    padding: ${({ $size }) => getPaddingBySize($size)};
     color: ${({ $palette }) => $palette.text};
     background-color: ${({ $palette }) => $palette.bg};
     transition: background-color 0.2s ease-in-out 0s;
