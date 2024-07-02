@@ -21,6 +21,7 @@ export const Wrapper = styled.button<{
     $fullWidth: boolean;
     $disabled: boolean;
     $size: TButtonSize;
+    $borderRadius: string;
 }>`
     appearance: none;
     display: inline-block;
@@ -28,7 +29,7 @@ export const Wrapper = styled.button<{
     text-align: center;
     position: relative;
     border: none;
-    border-radius: 10px;
+    border-radius: ${({ $borderRadius }) => $borderRadius}
     cursor: pointer;
     padding: ${({ $size }) => getPaddingBySize($size)};
     color: ${({ $palette }) => $palette.text};
