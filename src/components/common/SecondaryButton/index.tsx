@@ -14,6 +14,7 @@ export type TProps = (TButtonProps | TAnchorProps) & {
     disabled?: boolean;
     className?: never;
     size?: TButtonSize;
+    borderRadius?: string;
 };
 
 export const SecondaryButton: FC<TProps> = ({
@@ -22,6 +23,7 @@ export const SecondaryButton: FC<TProps> = ({
     fullWidth = false,
     disabled = false,
     size = 'medium',
+    borderRadius = '10px',
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     className,
     children,
@@ -41,6 +43,7 @@ export const SecondaryButton: FC<TProps> = ({
             $palette={palette}
             $fullWidth={fullWidth}
             $size={size}
+            $borderRadius={borderRadius}
             {...rest}
         >
             {isLoading && (
