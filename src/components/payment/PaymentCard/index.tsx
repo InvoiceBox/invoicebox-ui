@@ -34,7 +34,7 @@ export const PaymentCard: FC<TProps> = ({
                 </S.Title>
                 {children}
             </S.Content>
-            <S.IconWrapper>{iconJSX}</S.IconWrapper>
+            <S.IconWrapper $isActive={isActive}>{iconJSX}</S.IconWrapper>
             {comment ? <S.Comment variant="captionRegular">{comment}</S.Comment> : null}
         </S.Wrapper>
     );

@@ -60,13 +60,13 @@ export const Title = styled(Typography)<{ $ellipsis: boolean }>`
     max-width: 100%;
 `;
 
-export const IconWrapper = styled.div`
+export const IconWrapper = styled.div<{ $isActive: boolean }>`
     flex-shrink: 0;
     flex-grow: 0;
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: #f1f2f6;
+    background-color: ${({ $isActive }) => ($isActive ? 'transparent' : '#f1f2f6')};
     display: flex;
     align-items: center;
     justify-content: center;
