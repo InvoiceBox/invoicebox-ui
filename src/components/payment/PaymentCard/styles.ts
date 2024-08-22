@@ -78,6 +78,12 @@ export const IconWrapper = styled.div<{ $isActive: boolean; $pallete: TPaymentCa
 export const Comment = styled(Typography)<{ $pallete: TPaymentCardPalette }>`
     color: ${({ $pallete }) => $pallete.comment};
     position: absolute;
-    bottom: 4px;
-    right: 10px;
+    bottom: 0;
+    right: 0;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px 0px 0px 0px;
 `;
