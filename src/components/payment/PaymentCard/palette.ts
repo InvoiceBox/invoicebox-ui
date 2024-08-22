@@ -8,6 +8,9 @@ export type TPaymentCardPalette = {
     title: string;
     iconBg: string;
     comment: string;
+    radioBgActive: string;
+    radioBorderActive: string;
+    radioBorderInactive: string;
 };
 
 export const generatePaymentCardPalette = (abstractPalette: TAbstractPalette): TPaymentCardPalette => {
@@ -18,5 +21,8 @@ export const generatePaymentCardPalette = (abstractPalette: TAbstractPalette): T
         title: abstractPalette.primary,
         iconBg: abstractPalette.neutralLight,
         comment: abstractPalette.neutralBrutal,
+        radioBgActive: abstractPalette.base,
+        radioBorderActive: abstractPalette.secondary,
+        radioBorderInactive: abstractPalette.primary,
     };
 };

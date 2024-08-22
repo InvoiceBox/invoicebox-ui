@@ -34,7 +34,16 @@ export const PaymentCard: FC<TProps> = ({
             $isDisabled={isDisabled}
             onClick={isDisabled ? undefined : onClick}
         >
-            <S.RadioWrpper>{isActive ? <SelectedRadioIcon /> : <UnselectedRadioIcon />}</S.RadioWrpper>
+            <S.RadioWrpper>
+                {isActive ? (
+                    <SelectedRadioIcon
+                        bgColor={palette.radioBgActive}
+                        borderColor={palette.radioBorderActive}
+                    />
+                ) : (
+                    <UnselectedRadioIcon borderColor={palette.radioBorderInactive} />
+                )}
+            </S.RadioWrpper>
             <S.Content>
                 <S.Title $pallete={palette} variant="bodyMRegular" $ellipsis={!children}>
                     {title}
