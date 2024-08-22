@@ -27,8 +27,6 @@ export const PaymentCard: FC<TProps> = ({
 }) => {
     const palette = useComponentPalette<TPaymentCardPalette>('paymentCard');
 
-    const iconJSX = icon || <DefaultLogo />;
-
     return (
         <S.Wrapper
             $pallete={palette}
@@ -38,13 +36,19 @@ export const PaymentCard: FC<TProps> = ({
         >
             <S.RadioWrpper>{isActive ? <SelectedRadioIcon /> : <UnselectedRadioIcon />}</S.RadioWrpper>
             <S.Content>
-                <S.Title variant="bodyMRegular" $ellipsis={!children}>
+                <S.Title $pallete={palette} variant="bodyMRegular" $ellipsis={!children}>
                     {title}
                 </S.Title>
                 {children}
             </S.Content>
-            <S.IconWrapper $isActive={isActive}>{iconJSX}</S.IconWrapper>
-            {comment ? <S.Comment variant="captionRegular">{comment}</S.Comment> : null}
+            <S.IconWrapper $pallete={palette} $isActive={isActive}>
+                {icon || <DefaultLogo />}
+            </S.IconWrapper>
+            {comment ? (
+                <S.Comment $pallete={palette} variant="captionRegular">
+                    {comment}
+                </S.Comment>
+            ) : null}
         </S.Wrapper>
     );
 };
