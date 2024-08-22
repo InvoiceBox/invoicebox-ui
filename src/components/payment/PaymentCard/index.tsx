@@ -29,10 +29,10 @@ export const PaymentCard: FC<TProps> = ({
         <S.Wrapper $isActive={isActive} $isDisabled={isDisabled} onClick={isDisabled ? undefined : onClick}>
             <S.RadioWrpper>{isActive ? <SelectedRadioIcon /> : <UnselectedRadioIcon />}</S.RadioWrpper>
             <S.Content>
-                <S.SubPaymentTitle variant="bodyMRegular" $onlyTitle={!children}>
+                <S.Title variant="bodyMRegular" $ellipsis={!children}>
                     {title}
-                </S.SubPaymentTitle>
-                {children && <S.SubPaymentSubTitle>{children}</S.SubPaymentSubTitle>}
+                </S.Title>
+                {children}
             </S.Content>
             <S.IconWrapper>{iconJSX}</S.IconWrapper>
             {comment ? <S.Comment variant="captionRegular">{comment}</S.Comment> : null}

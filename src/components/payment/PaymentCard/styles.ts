@@ -44,13 +44,20 @@ export const RadioWrpper = styled.div`
 `;
 
 export const Content = styled.div`
+    flex-grow: 1;
+    flex-shrink: 1;
     overflow: hidden;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     gap: 4px;
-    flex-grow: 1;
-    flex-shrink: 1;
+`;
+
+export const Title = styled(Typography)<{ $ellipsis: boolean }>`
+    white-space: ${({ $ellipsis }) => ($ellipsis ? 'normal' : 'nowrap')};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 `;
 
 export const IconWrapper = styled.div`
@@ -71,13 +78,3 @@ export const Comment = styled(Typography)`
     bottom: 4px;
     right: 10px;
 `;
-
-export const SubPaymentTitle = styled(Typography)<{ $onlyTitle: boolean }>`
-    max-height: ${({ $onlyTitle }) => ($onlyTitle ? '56px' : '20px')};
-    white-space: ${({ $onlyTitle }) => ($onlyTitle ? 'normal' : 'nowrap')};
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-`;
-
-export const SubPaymentSubTitle = styled.div``;
