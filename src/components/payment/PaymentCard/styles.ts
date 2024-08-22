@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Typography } from '../../common/Typography';
+import { UnselectedRadioIcon } from './components/UnselectedRadioIcon';
 
 export const Wrapper = styled.div.attrs({ role: 'button' })<{
     $isActive: boolean;
@@ -12,12 +13,20 @@ export const Wrapper = styled.div.attrs({ role: 'button' })<{
     padding: 12px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
     border-radius: 10px;
-    border: 1px solid ${({ $isActive }) => ($isActive ? '#FAD247' : '#c3c6c8')};
-    background: ${({ $isActive }) => ($isActive ? 'rgba(250, 210, 71, 0.10)' : '#fff')};
     transition: all 0.2s ease-in-out;
     overflow: hidden;
+
+    ${({ $isActive }) =>
+        $isActive
+            ? css`
+                  background: rgba(250, 210, 71, 0.1);
+                  border: 1px solid #fad247;
+              `
+            : css`
+                  border: 1px solid #c3c6c8;
+              `}
 
     ${({ $isDisabled }) =>
         $isDisabled
@@ -30,14 +39,24 @@ export const Wrapper = styled.div.attrs({ role: 'button' })<{
               `};
 `;
 
-export const Comment = styled(Typography)`
-    color: #999999;
-    position: absolute;
-    bottom: 4px;
-    right: 10px;
+export const UnselectedRadio = styled(UnselectedRadioIcon)`
+    flex-shrink: 0;
+    flex-grow: 0;
 `;
 
-export const DefaultIconWrapper = styled.div`
+export const Content = styled.div`
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
+
+export const IconWrapper = styled.div`
+    flex-shrink: 0;
+    flex-grow: 0;
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -47,16 +66,11 @@ export const DefaultIconWrapper = styled.div`
     justify-content: center;
 `;
 
-export const IconWrapper = styled.div`
-    flex-shrink: 0;
-`;
-
-export const Content = styled.div`
-    overflow: hidden;
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 4px;
+export const Comment = styled(Typography)`
+    color: #999999;
+    position: absolute;
+    bottom: 4px;
+    right: 10px;
 `;
 
 export const SubPaymentTitle = styled(Typography)<{ $onlyTitle: boolean }>`

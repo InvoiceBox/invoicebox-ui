@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import * as S from './styles';
-import { Icon } from './components/Icon';
+import { DefaultLogo } from './components/DefaultLogo';
 
 type TProps = {
     title: string;
@@ -21,7 +21,7 @@ export const PaymentCard: FC<TProps> = ({
     children,
     comment,
 }) => {
-    const iconJSX = icon || <Icon />;
+    const iconJSX = icon || <DefaultLogo />;
 
     return (
         <S.Wrapper
@@ -29,15 +29,14 @@ export const PaymentCard: FC<TProps> = ({
             $isDisabled={isDisabled}
             onClick={isDisabled ? undefined : onClick}
         >
-            <S.IconWrapper>
-                <S.DefaultIconWrapper>{iconJSX}</S.DefaultIconWrapper>
-            </S.IconWrapper>
+            <S.UnselectedRadio />
             <S.Content>
                 <S.SubPaymentTitle variant="bodyMRegular" $onlyTitle={!children}>
                     {title}
                 </S.SubPaymentTitle>
                 {children && <S.SubPaymentSubTitle>{children}</S.SubPaymentSubTitle>}
             </S.Content>
+            <S.IconWrapper>{iconJSX}</S.IconWrapper>
             {comment ? <S.Comment variant="captionRegular">{comment}</S.Comment> : null}
         </S.Wrapper>
     );
