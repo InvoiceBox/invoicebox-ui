@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { Typography } from '../../common/Typography';
-import { UnselectedRadioIcon } from './components/UnselectedRadioIcon';
 
 export const Wrapper = styled.div.attrs({ role: 'button' })<{
     $isActive: boolean;
@@ -39,7 +38,7 @@ export const Wrapper = styled.div.attrs({ role: 'button' })<{
               `};
 `;
 
-export const UnselectedRadio = styled(UnselectedRadioIcon)`
+export const RadioWrpper = styled.div`
     flex-shrink: 0;
     flex-grow: 0;
 `;

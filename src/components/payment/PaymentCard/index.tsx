@@ -1,6 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 import * as S from './styles';
 import { DefaultLogo } from './components/DefaultLogo';
+import { SelectedRadioIcon } from './components/SelectedRadioIcon';
+import { UnselectedRadioIcon } from './components/UnselectedRadioIcon';
 
 type TProps = {
     title: string;
@@ -24,12 +26,8 @@ export const PaymentCard: FC<TProps> = ({
     const iconJSX = icon || <DefaultLogo />;
 
     return (
-        <S.Wrapper
-            $isActive={!isDisabled && isActive}
-            $isDisabled={isDisabled}
-            onClick={isDisabled ? undefined : onClick}
-        >
-            <S.UnselectedRadio />
+        <S.Wrapper $isActive={isActive} $isDisabled={isDisabled} onClick={isDisabled ? undefined : onClick}>
+            <S.RadioWrpper>{isActive ? <SelectedRadioIcon /> : <UnselectedRadioIcon />}</S.RadioWrpper>
             <S.Content>
                 <S.SubPaymentTitle variant="bodyMRegular" $onlyTitle={!children}>
                     {title}
