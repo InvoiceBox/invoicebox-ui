@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components';
 import { Typography } from '../../common/Typography';
+import { TPaymentCardPalette } from './palette';
 
 export const Wrapper = styled.div.attrs({ role: 'button' })<{
     $isActive: boolean;
     $isDisabled: boolean;
+    $pallete: TPaymentCardPalette;
 }>`
     position: relative;
     box-sizing: border-box;
@@ -17,10 +19,10 @@ export const Wrapper = styled.div.attrs({ role: 'button' })<{
     transition: all 0.2s ease-in-out;
     overflow: hidden;
 
-    ${({ $isActive }) =>
+    ${({ $isActive, $pallete }) =>
         $isActive
             ? css`
-                  background: rgba(250, 210, 71, 0.1);
+                  background: ${$pallete.bgActive};
                   border: 1px solid #fad247;
               `
             : css`

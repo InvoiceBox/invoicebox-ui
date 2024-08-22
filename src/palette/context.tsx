@@ -26,6 +26,7 @@ import {
 } from '../components/form/CountrySelect/palette';
 import { TBgCardPalette, generateBgCardPalette } from '../components/common/BgCard/palette';
 import { TToastPalette, generateToastPalette } from '../components/common/Toast/palette';
+import { generatePaymentCardPalette, TPaymentCardPalette } from '../components/payment/PaymentCard/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -45,6 +46,7 @@ type TContext = {
     calendar: TCalendarPalette;
     bgCard: TBgCardPalette;
     toast: TToastPalette;
+    paymentCard: TPaymentCardPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -65,4 +67,5 @@ export const PaletteContext = createContext<TContext>({
     calendar: generateCalendarPalette(defaultAbstractPalette),
     bgCard: generateBgCardPalette(defaultAbstractPalette),
     toast: generateToastPalette(defaultAbstractPalette),
+    paymentCard: generatePaymentCardPalette(defaultAbstractPalette),
 });
