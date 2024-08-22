@@ -19,6 +19,7 @@ import { generateSearchInputPalette } from '../components/form/SearchInput/palet
 import { generateCountrySelectPalette } from '../components/form/CountrySelect/palette';
 import { generateBgCardPalette } from '../components/common/BgCard/palette';
 import { generateToastPalette } from '../components/common/Toast/palette';
+import { generatePaymentCardPalette } from '../components/payment/PaymentCard/palette';
 
 type TProps = {
     children: ReactNode;
@@ -53,6 +54,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             calendar: generateCalendarPalette(mergedAbstractPalette),
             bgCard: generateBgCardPalette(mergedAbstractPalette),
             toast: generateToastPalette(mergedAbstractPalette),
+            paymentCard: generatePaymentCardPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );
