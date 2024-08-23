@@ -54,7 +54,7 @@ export const PaymentCard: FC<TProps> = ({
                 {icon || <DefaultLogo />}
             </S.IconWrapper>
             {comment && (
-                <S.Comment $pallete={palette} $isActive={isActive} variant="captionRegular">
+                <S.Comment $pallete={palette} $isActive={isActive} variant="captionSRegular">
                     {comment}
                 </S.Comment>
             )}

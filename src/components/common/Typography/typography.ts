@@ -128,6 +128,11 @@ export const typography = {
         font-weight: 400;
         line-height: 18px;
     `,
+    captionSRegular: css`
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 16px;
+    `,
     captionUnderlined: css`
         font-size: 12px;
         font-weight: 400;
