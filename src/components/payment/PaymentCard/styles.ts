@@ -75,15 +75,24 @@ export const IconWrapper = styled.div<{ $isActive: boolean; $pallete: TPaymentCa
     justify-content: center;
 `;
 
-export const Comment = styled(Typography)<{ $pallete: TPaymentCardPalette }>`
+export const Comment = styled(Typography)<{ $pallete: TPaymentCardPalette; $isActive: boolean }>`
     color: ${({ $pallete }) => $pallete.comment};
     position: absolute;
     bottom: 0;
     right: 0;
     padding: 0 8px;
     box-sizing: border-box;
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    background: #fff;
+    background: ${({ $pallete }) => $pallete.commentBg};
     border-radius: 6px 0px 0px 0px;
+
+    ${({ $isActive, $pallete }) =>
+        $isActive
+            ? css`
+                  border-top: 1px solid ${$pallete.borderActive};
+                  border-left: 1px solid ${$pallete.borderActive};
+              `
+            : css`
+                  border-top: 1px solid ${$pallete.borderInactive};
+                  border-left: 1px solid ${$pallete.borderInactive};
+              `}
 `;
