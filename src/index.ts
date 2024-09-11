@@ -1,3 +1,8 @@
+const fromEntries = require('object.fromentries');
+const entries = require('object.entries');
+fromEntries.shim();
+entries.shim();
+
 export { Skeleton } from './components/common/Skeleton';
 export { InvoiceboxLoader } from './components/common/InvoiceboxLoader';
 export { Typography } from './components/common/Typography';

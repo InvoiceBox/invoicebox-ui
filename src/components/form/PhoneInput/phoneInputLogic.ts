@@ -3,25 +3,6 @@ import { allCountriesPhoneRules, MASK_DIGIT_ITEM } from './constants';
 import { TFlagKey } from '../../common/Flag';
 import { ChangeEvent } from 'react';
 
-if (typeof Object.fromEntries !== 'function') {
-    Object.fromEntries = function (array: any) {
-        return [...array].reduce((obj, [key, value]) => {
-            obj[key] = value;
-            return obj;
-        }, {});
-    };
-}
-
-if (typeof Object.entries !== 'function') {
-    Object.entries = function (obj: Record<string, any>): [string, any][] {
-        const entries: [string, any][] = [];
-        for (const key in obj) {
-            entries.push([key, obj[key]]);
-        }
-        return entries;
-    };
-}
-
 class PhoneInputLogic {
     private getCaretPositionByRusValue(value: string) {
         const mask = allCountriesPhoneRules.RUS.mask.split('');

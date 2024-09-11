@@ -52,6 +52,7 @@
         "@mona-health/react-input-mask": "^3.0.3",
         "hex-to-rgba": "^2.0.1",
         "lottie-react": "^2.4.0",
+        "object.entries": "^1.1.8",
         "react-calendar": "^4.8.0",
         "react-responsive": "^9.0.2",
         "react-scrollbars-custom": "^4.1.1",
