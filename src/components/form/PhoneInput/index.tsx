@@ -109,10 +109,8 @@ export const PhoneInput: FC<TProps> = ({
     const getNewCountryByInputValue = useCallback(
         (currentValue: string) => {
             const currentCountry = currentCountriesPhoneRules[country];
-            const newCountry = Object.entries(currentCountriesPhoneRules).find(
-                (item) =>
-                    phoneInputLogic.getIsHaveStartSequenceInString(currentValue, item[1].startSubsequence) &&
-                    currentCountry.flag !== item[1].flag,
+            const newCountry = Object.entries(currentCountriesPhoneRules).find((item) =>
+                phoneInputLogic.getIsHaveStartSequenceInString(currentValue, item[1].startSubsequence),
             );
 
             const isNeedChangeCountry = phoneInputLogic.getIsNeedChangeCountry(
