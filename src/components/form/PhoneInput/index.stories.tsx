@@ -89,6 +89,10 @@ export const MultiCountryWithUnknown: StoryObj<TProps> = {
                 value: 'RUS',
             },
             {
+                label: 'Казахстан',
+                value: 'KAZ',
+            },
+            {
                 label: 'Армения',
                 value: 'ARM',
             },
