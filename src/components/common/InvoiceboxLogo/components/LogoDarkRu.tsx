@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 
 type TProps = {
-    width: number;
     height: number;
 };
 
-const LogoDarkRu: FC<TProps> = ({ width, height }) => {
+const LogoDarkRu: FC<TProps> = ({ height }) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="none">
+        <svg xmlns="http://www.w3.org/2000/svg" height={height} viewBox="0 0 123 26" fill="none">
             <path
                 d="M87.9 17.0945C82.4976 22.3368 75.0504 25.2916 67.6464 25.1547C60.2382 25.0884 52.9751 21.8905 47.9438 16.5518C47.6458 16.2393 47.6556 15.7427 47.9658 15.4419C48.2687 15.1484 48.7508 15.1558 49.05 15.4468C53.985 20.3072 60.8416 22.99 67.6391 22.8003C74.4421 22.6702 81.0519 19.7234 85.7059 14.8654C86.3032 14.2416 87.2899 14.2238 87.9092 14.8261C88.5284 15.4284 88.5461 16.4217 87.9482 17.046C87.9366 17.0583 87.9244 17.07 87.9122 17.0817L87.9 17.0945Z"
                 fill="#FAD247"

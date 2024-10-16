@@ -11,6 +11,6 @@ export default meta;
 
 export const Default: StoryObj<TProps> = {
     args: {
-        width: 121,
+        height: 30,
     },
 };
