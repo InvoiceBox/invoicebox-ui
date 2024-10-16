@@ -1,17 +1,13 @@
 import React, { FC } from 'react';
-import LogoDarkRu from './logos/LogoDarkRu';
+import LogoDarkRu from './components/LogoDarkRu';
 
 export type TProps = {
     width: number;
-    height?: number;
+    height: number;
 };
 
 const InvoiceboxLogo: FC<TProps> = ({ width, height }) => {
-    return (
-        <div>
-            <LogoDarkRu height={height} width={width} />
-        </div>
-    );
+    return <LogoDarkRu height={height} width={width} />;
 };
 
 export default InvoiceboxLogo;
