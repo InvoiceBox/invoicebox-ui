@@ -5,8 +5,6 @@ export type TProps = {
     height: number;
 };
 
-const InvoiceboxLogo: FC<TProps> = ({ height }) => {
+export const InvoiceboxLogo: FC<TProps> = ({ height }) => {
     return <LogoDarkRu height={height} />;
 };
-
-export default InvoiceboxLogo;

@@ -12,7 +12,7 @@ export type TProps = {
     href: string;
 };
 
-const AppCardLink: FC<TProps> = ({ height, variant, href }) => {
+export const AppCardLink: FC<TProps> = ({ height, variant, href }) => {
     const appCardMap: Record<TAppCardVariant, FC<TAppCardProps>> = {
         googlePlay: GooglePlayRu,
         apk: ApkRu,
@@ -28,5 +28,3 @@ const AppCardLink: FC<TProps> = ({ height, variant, href }) => {
         </S.Wrapper>
     );
 };
-
-export default AppCardLink;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import AppCardLink, { TProps } from '.';
+import { TProps, AppCardLink } from '.';
 
 const meta = {
     title: 'common/AppCardLink',
