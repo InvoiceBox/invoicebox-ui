@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import InvoiceboxLogo, { TProps } from '.';
+import { TProps, InvoiceboxLogo } from '.';
 
 const meta = {
     title: 'common/InvoiceboxLogo',
