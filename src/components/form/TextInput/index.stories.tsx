@@ -28,6 +28,7 @@ export const Default: StoryObj<TProps> = {
         maxLength: 30,
         placeholder: 'Placeholder',
         disabled: false,
+        children: <div>Children</div>,
     },
     render: Component,
 };

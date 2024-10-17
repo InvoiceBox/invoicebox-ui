@@ -5,7 +5,9 @@ export const ChildrenWrapper = styled.div`
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    ${({ theme }) => theme.mixins.flexCenterCenter};
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const InputLabelContent = styled.div`
