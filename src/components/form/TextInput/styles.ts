@@ -12,5 +12,4 @@ export const ChildrenWrapper = styled.div`
 
 export const InputLabelContent = styled.div`
     position: relative;
-    z-index: 1;
 `;
