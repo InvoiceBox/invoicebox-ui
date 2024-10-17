@@ -13,6 +13,8 @@ export { InputLabel } from './components/form/InputLabel';
 export { PureInput } from './components/form/PureInput';
 export { PositiveIntegerInput } from './components/form/PositiveIntegerInput';
 export type { TProps as TPositiveIntegerInputProps } from './components/form/PositiveIntegerInput';
+export { TextInput } from './components/form/TextInput';
+export type { TProps as TTextInputProps } from './components/form/TextInput';
 export { Dropdown } from './components/common/Dropdown';
 export type { TProps as TDropdownProps } from './components/common/Dropdown';
 export { Scrollbar } from './components/common/Scrollbar';
