@@ -20,6 +20,7 @@ import { generateCountrySelectPalette } from '../components/form/CountrySelect/p
 import { generateBgCardPalette } from '../components/common/BgCard/palette';
 import { generateToastPalette } from '../components/common/Toast/palette';
 import { generatePaymentCardPalette } from '../components/payment/PaymentCard/palette';
+import { generateAutocompleteDefaultOptionPalette } from '../components/form/Autocomplete/components/AutocompleteDefaultOption/palette';
 
 type TProps = {
     children: ReactNode;
@@ -55,6 +56,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             bgCard: generateBgCardPalette(mergedAbstractPalette),
             toast: generateToastPalette(mergedAbstractPalette),
             paymentCard: generatePaymentCardPalette(mergedAbstractPalette),
+            autocompleteDefaultOption: generateAutocompleteDefaultOptionPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );

@@ -42,6 +42,8 @@ export { ToastContainer, toast } from './components/common/Toast';
 export { PaymentCard } from './components/payment/PaymentCard';
 export { AppCardLink } from './components/common/AppCardLink';
 export { InvoiceboxLogo } from './components/common/InvoiceboxLogo';
+export type { TProps as TAutocompleteProps } from './components/form/Autocomplete/index';
+export { Autocomplete, AutocompleteDefaultOption } from './components/form/Autocomplete/index';
 
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';
