@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import OrganizationAutocompleteItem, { TProps } from '.';
+import { TProps, OrganizationAutocompleteItem } from '.';
 
 const meta: Meta<typeof OrganizationAutocompleteItem> = {
     title: 'form/Autocomplete/components/OrganizationAutocompleteItem',

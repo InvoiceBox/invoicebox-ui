@@ -14,7 +14,7 @@ export type TProps = {
     tags?: Array<ReactNode>;
 };
 
-const OrganizationAutocompleteItem: FC<TProps> = ({
+export const OrganizationAutocompleteItem: FC<TProps> = ({
     name,
     registrationAddress,
     vatNumber,
@@ -62,5 +62,3 @@ const OrganizationAutocompleteItem: FC<TProps> = ({
         </AutocompleteDefaultOption>
     );
 };
-
-export default OrganizationAutocompleteItem;
