@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { typography } from '../../../../common/Typography/typography';
 import { useComponentPalette } from '../../../../../palette';
 import { TAutocompleteDefaultOptionPalette } from './palette';
+import { Typography } from '../../../../common/Typography';
 
 export type TProps = {
     children: ReactNode;
@@ -11,10 +12,14 @@ export type TProps = {
 export const AutocompleteDefaultOption: FC<TProps> = ({ children }) => {
     const palette = useComponentPalette<TAutocompleteDefaultOptionPalette>('autocompleteDefaultOption');
 
-    return <Wrapper $hoverBg={palette.hoverBg}>{children}</Wrapper>;
+    return (
+        <Wrapper variant={'bodyMRegular'} element={'div'} $hoverBg={palette.hoverBg}>
+            {children}
+        </Wrapper>
+    );
 };
 
-const Wrapper = styled.div<{ $hoverBg: string }>`
+const Wrapper = styled(Typography)<{ $hoverBg: string }>`
     overflow: hidden;
     display: flex;
     width: 100%;

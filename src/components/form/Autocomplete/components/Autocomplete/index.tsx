@@ -46,7 +46,7 @@ type TControlProps = {
     listHeight?: number;
     hasError?: boolean;
     isLoading?: boolean;
-    loadingComponent?: ReactNode;
+    optionsLoader?: ReactNode;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -69,7 +69,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             listHeight = 294,
             hasError,
             isLoading,
-            loadingComponent,
+            optionsLoader,
         },
         ref,
     ) => {
@@ -135,7 +135,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     minWidth={isMobile ? '100%' : '340px'}
                 >
                     {isLoading ? (
-                        loadingComponent || (
+                        optionsLoader || (
                             <>
                                 <DefaultSkeletonItem />
                                 <DefaultSkeletonItem />
