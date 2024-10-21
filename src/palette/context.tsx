@@ -31,6 +31,10 @@ import {
     generateAutocompleteDefaultOptionPalette,
     TAutocompleteDefaultOptionPalette,
 } from '../components/form/Autocomplete/components/AutocompleteDefaultOption/palette';
+import {
+    generateOrganizationAutocompleteItemPalette,
+    TOrganizationAutocompleteItemPalette,
+} from '../components/form/Autocomplete/components/OrganizationAutocompleteItem/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -52,6 +56,7 @@ type TContext = {
     toast: TToastPalette;
     paymentCard: TPaymentCardPalette;
     autocompleteDefaultOption: TAutocompleteDefaultOptionPalette;
+    organizationAutocompleteItem: TOrganizationAutocompleteItemPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -74,4 +79,5 @@ export const PaletteContext = createContext<TContext>({
     toast: generateToastPalette(defaultAbstractPalette),
     paymentCard: generatePaymentCardPalette(defaultAbstractPalette),
     autocompleteDefaultOption: generateAutocompleteDefaultOptionPalette(defaultAbstractPalette),
+    organizationAutocompleteItem: generateOrganizationAutocompleteItemPalette(defaultAbstractPalette),
 });
