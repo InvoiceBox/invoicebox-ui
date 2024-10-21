@@ -21,6 +21,7 @@ import { generateBgCardPalette } from '../components/common/BgCard/palette';
 import { generateToastPalette } from '../components/common/Toast/palette';
 import { generatePaymentCardPalette } from '../components/payment/PaymentCard/palette';
 import { generateAutocompleteDefaultOptionPalette } from '../components/form/Autocomplete/components/AutocompleteDefaultOption/palette';
+import { generateOrganizationAutocompleteItemPalette } from '../components/form/Autocomplete/components/OrganizationAutocompleteItem/palette';
 
 type TProps = {
     children: ReactNode;
@@ -57,6 +58,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             toast: generateToastPalette(mergedAbstractPalette),
             paymentCard: generatePaymentCardPalette(mergedAbstractPalette),
             autocompleteDefaultOption: generateAutocompleteDefaultOptionPalette(mergedAbstractPalette),
+            organizationAutocompleteItem: generateOrganizationAutocompleteItemPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );
