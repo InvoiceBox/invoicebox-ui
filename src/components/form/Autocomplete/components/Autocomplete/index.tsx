@@ -1,0 +1,171 @@
+import React, {
+    ChangeEvent,
+    FocusEvent,
+    forwardRef,
+    InputHTMLAttributes,
+    MouseEvent,
+    ReactNode,
+    useCallback,
+    useState,
+} from 'react';
+import * as S from './styles';
+import { AutocompleteDefaultOption } from '../AutocompleteDefaultOption';
+import { Skeleton } from '../../../../common/Skeleton';
+import { useMobile } from '../../../../../hooks/useMedia';
+import { useInputFocus } from '../../../../../hooks/useInputFocus';
+import { useOutsideClick } from '../../../../../hooks/useOutsideClick';
+import { InputLabel } from '../../../InputLabel';
+import { PureInput } from '../../../PureInput';
+import { Dropdown } from '../../../../common/Dropdown';
+import { Scrollbar } from '../../../../common/Scrollbar';
+
+const DefaultSkeletonItem = () => (
+    <S.DefaultSkeletonWrapper>
+        <Skeleton height="20px" />
+    </S.DefaultSkeletonWrapper>
+);
+
+type TOption = {
+    value: string;
+    entity?: any;
+};
+
+export type TFieldProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'name' | 'onBlur' | 'onFocus'> & {
+    value: string;
+    onChange: (value: string, option?: TOption) => void;
+};
+
+export type TControlProps = {
+    options: TOption[];
+    label?: string;
+    placeholder?: string;
+    renderOption?: (option: TOption) => ReactNode;
+    children?: ReactNode;
+    inputPaddingLeft?: number;
+    disabled?: boolean;
+    listHeight?: number;
+    hasError?: boolean;
+    isLoading?: boolean;
+    loadingComponent?: ReactNode;
+};
+
+export type TProps = TFieldProps & TControlProps;
+
+export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
+    (
+        {
+            options,
+            value,
+            onChange,
+            name,
+            onBlur,
+            onFocus,
+            label,
+            placeholder,
+            disabled,
+            renderOption,
+            children,
+            inputPaddingLeft,
+            listHeight = 294,
+            hasError,
+            isLoading,
+            loadingComponent,
+        },
+        ref,
+    ) => {
+        const isMobile = useMobile();
+        const [isOpen, setIsOpen] = useState(false);
+        const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
+
+        const handleOpen = useCallback(() => setIsOpen(true), []);
+        const handleClose = useCallback(() => setIsOpen(false), []);
+
+        const wrapperRef = useOutsideClick(handleClose);
+
+        const handleChange = useCallback(
+            (event: ChangeEvent<HTMLInputElement>) => {
+                onChange(event.target.value);
+            },
+            [onChange],
+        );
+
+        const handleSelect = useCallback(
+            (event: MouseEvent<HTMLButtonElement>) => {
+                const optionIndex = JSON.parse(event.currentTarget.dataset.index as string) as number;
+                const option = options[optionIndex];
+                onChange(option.value, option);
+                handleClose();
+            },
+            [handleClose, onChange, options],
+        );
+
+        const handleInputFocus = useCallback(
+            (event: FocusEvent<HTMLInputElement>) => {
+                handleOpen();
+                handleFocus(event);
+            },
+            [handleOpen, handleFocus],
+        );
+
+        return (
+            <S.Wrapper ref={wrapperRef}>
+                <InputLabel inFocus={inFocus} label={label} disabled={disabled}>
+                    <S.InputLabelContent>
+                        {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
+                        <PureInput
+                            ref={ref}
+                            hasError={hasError}
+                            inFocus={inFocus}
+                            value={value}
+                            onChange={handleChange}
+                            onFocus={handleInputFocus}
+                            onBlur={handleBlur}
+                            name={name}
+                            placeholder={placeholder}
+                            disabled={disabled}
+                            paddingLeft={inputPaddingLeft}
+                        />
+                    </S.InputLabelContent>
+                </InputLabel>
+
+                <Dropdown
+                    isOpen={isOpen && (!!options.length || !!isLoading)}
+                    isAutoPosition
+                    width="100%"
+                    minWidth={isMobile ? '100%' : '340px'}
+                >
+                    {isLoading ? (
+                        loadingComponent || (
+                            <>
+                                <DefaultSkeletonItem />
+                                <DefaultSkeletonItem />
+                                <DefaultSkeletonItem />
+                            </>
+                        )
+                    ) : (
+                        <Scrollbar maxHeight={listHeight}>
+                            {options.map((option, index) => (
+                                <S.OptionWrapper
+                                    // eslint-disable-next-line react/no-array-index-key
+                                    key={`${option.value}${index}`}
+                                    tabIndex={-1}
+                                    type="button"
+                                    onClick={handleSelect}
+                                    data-index={JSON.stringify(index)}
+                                >
+                                    {renderOption ? (
+                                        renderOption(option)
+                                    ) : (
+                                        <AutocompleteDefaultOption>{option.value}</AutocompleteDefaultOption>
+                                    )}
+                                </S.OptionWrapper>
+                            ))}
+                        </Scrollbar>
+                    )}
+                </Dropdown>
+            </S.Wrapper>
+        );
+    },
+);
+
+Autocomplete.displayName = 'Autocomplete';
