@@ -30,12 +30,12 @@ type TOption = {
     entity?: any;
 };
 
-export type TFieldProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'name' | 'onBlur' | 'onFocus'> & {
+type TFieldProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
     onChange: (value: string, option?: TOption) => void;
 };
 
-export type TControlProps = {
+type TControlProps = {
     options: TOption[];
     label?: string;
     placeholder?: string;
