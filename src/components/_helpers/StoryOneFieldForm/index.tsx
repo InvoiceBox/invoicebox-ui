@@ -19,9 +19,14 @@ export const StoryOneFieldForm: FC<TProps> = ({ children, initialValue }) => {
 
     const { handleSubmit } = methods;
 
+    const submit = () => {
+        action('submit');
+    };
+
     return (
         <FormProvider {...methods}>
-            <form onSubmit={() => handleSubmit(() => action('submit'))}>
+            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+            <form onSubmit={handleSubmit(submit)}>
                 {children}
                 <button type="submit">Отправить</button>
 

@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
 const fromEntries = require('object.fromentries');
+// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
 const entries = require('object.entries');
 fromEntries.shim();
 entries.shim();
