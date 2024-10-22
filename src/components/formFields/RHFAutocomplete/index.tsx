@@ -13,7 +13,7 @@ export const RHFAutocomplete: FC<TProps> = ({ name, onChange, ...other }) => {
     const render = useCallback(
         ({
             field,
-            fieldState: { error, isTouched },
+            fieldState: { error },
         }: {
             field: ControllerRenderProps;
             fieldState: ControllerFieldState;
@@ -31,7 +31,7 @@ export const RHFAutocomplete: FC<TProps> = ({ name, onChange, ...other }) => {
                     onBlur={field.onBlur}
                     onChange={handleChange}
                     value={field.value || ''}
-                    hasError={!!error && isTouched}
+                    hasError={!!error}
                 />
             );
         },
