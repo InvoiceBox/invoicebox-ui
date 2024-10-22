@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { Controller, ControllerFieldState, ControllerRenderProps, useFormContext } from 'react-hook-form';
 import { Autocomplete, TAutocompleteProps } from '../../../index';
 
-export type TProps = Omit<TAutocompleteProps, 'value'> & { name: string } & Pick<
+export type TProps = Omit<TAutocompleteProps, 'value' | 'onBlur' | 'onFocus'> & { name: string } & Pick<
         Partial<TAutocompleteProps>,
         'onChange'
     >;
@@ -28,7 +28,7 @@ export const RHFAutocomplete: FC<TProps> = ({ name, onChange, ...other }) => {
             return (
                 <Autocomplete
                     {...other}
-                    {...field}
+                    onBlur={field.onBlur}
                     onChange={handleChange}
                     value={field.value || ''}
                     hasError={!!error && isTouched}

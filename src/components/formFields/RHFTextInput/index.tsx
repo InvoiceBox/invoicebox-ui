@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { Controller, ControllerFieldState, ControllerRenderProps, useFormContext } from 'react-hook-form';
 import { TextInput, TTextInputProps } from '../../../index';
 
-export type TProps = Omit<TTextInputProps, 'onChange' | 'value' | 'hasError'> & {
+export type TProps = Omit<TTextInputProps, 'onChange' | 'value' | 'hasError' | 'onBlur' | 'onFocus'> & {
     name: string;
 };
 
@@ -12,11 +12,21 @@ export const RHFTextInput: FC<TProps> = ({ name, ...other }) => {
     const render = useCallback(
         ({
             field,
-            fieldState: { error, isTouched },
+            fieldState: { error },
         }: {
             field: ControllerRenderProps;
             fieldState: ControllerFieldState;
-        }) => <TextInput {...other} {...field} value={field.value || ''} hasError={!!error && isTouched} />,
+        }) => {
+            return (
+                <TextInput
+                    {...other}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    value={field.value || ''}
+                    hasError={!!error}
+                />
+            );
+        },
         [other],
     );
 

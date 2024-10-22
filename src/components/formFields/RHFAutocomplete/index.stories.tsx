@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { RHFAutocomplete, TProps } from '.';
 import { selectOptions } from '../../_helpers/selectOptions';
 import { FIELD_NAME, StoryOneFieldForm } from '../../_helpers/StoryOneFieldForm';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 const meta: Meta<typeof RHFAutocomplete> = {
     title: 'formFields/RHFAutocomplete',
@@ -18,7 +20,14 @@ export const Default: StoryObj<TProps> = {
         options: selectOptions,
     },
     render: (props) => (
-        <StoryOneFieldForm initialValue="">
+        <StoryOneFieldForm
+            initialValue=""
+            resolver={yupResolver(
+                yup.object().shape({
+                    [FIELD_NAME]: yup.string().required(),
+                }),
+            )}
+        >
             <RHFAutocomplete {...props} name={FIELD_NAME} />
         </StoryOneFieldForm>
     ),
