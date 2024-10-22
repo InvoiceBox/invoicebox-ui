@@ -42,6 +42,7 @@ type TControlProps = {
     renderOption?: (option: TOption) => ReactNode;
     children?: ReactNode;
     inputPaddingLeft?: number;
+    inputMaxLength?: number;
     disabled?: boolean;
     listHeight?: number;
     hasError?: boolean;
@@ -70,6 +71,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             hasError,
             isLoading,
             optionsLoader,
+            inputMaxLength,
         },
         ref,
     ) => {
@@ -124,6 +126,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             placeholder={placeholder}
                             disabled={disabled}
                             paddingLeft={inputPaddingLeft}
+                            maxLength={inputMaxLength}
                         />
                     </S.InputLabelContent>
                 </InputLabel>
