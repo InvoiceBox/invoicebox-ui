@@ -50,7 +50,6 @@ export {
     AutocompleteDefaultOption,
     OrganizationAutocompleteItem,
 } from './components/form/Autocomplete/index';
-export { Portal } from './components/common/Portal';
 export { RHFTextInput } from './components/formFields/RHFTextInput';
 export { RHFAutocomplete } from './components/formFields/RHFAutocomplete';
 

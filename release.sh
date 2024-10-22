@@ -13,7 +13,7 @@ rm -rf dist docs &&
 ./node_modules/.bin/storybook build --output-dir docs &&
 
 # set domain for github pages
-echo "ui.invoicebox.ru" > ./docs/CNAME
+echo "ui.invoicebox.ru" > ./docs/CNAME &&
 
 # stage, сommit and push storybook
 git add docs && 
