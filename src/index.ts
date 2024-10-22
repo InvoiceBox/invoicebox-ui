@@ -1,6 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
 const fromEntries = require('object.fromentries');
-// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
 const entries = require('object.entries');
 fromEntries.shim();
 entries.shim();
@@ -50,6 +48,7 @@ export {
     AutocompleteDefaultOption,
     OrganizationAutocompleteItem,
 } from './components/form/Autocomplete/index';
+export { Portal } from './components/common/Portal';
 
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';

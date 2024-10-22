@@ -22,6 +22,7 @@
         "@babel/preset-env": "^7.23.9",
         "@babel/preset-react": "^7.23.3",
         "@babel/preset-typescript": "^7.23.3",
+        "@hookform/devtools": "^4.3.0",
         "@storybook/addon-essentials": "^7.6.13",
         "@storybook/addon-interactions": "^7.6.13",
         "@storybook/addon-links": "^7.6.13",
@@ -30,6 +31,7 @@
         "@storybook/react": "^7.6.13",
         "@storybook/react-webpack5": "^7.6.13",
         "@storybook/test": "^7.6.13",
+        "@types/react-dom": "^17.0.2",
         "@typescript-eslint/eslint-plugin": "^5.62.0",
         "@typescript-eslint/parser": "^5.62.0",
         "babel-plugin-inline-json-import": "^0.3.2",
@@ -55,6 +57,7 @@
         "object.entries": "^1.1.8",
         "object.fromentries": "^2.0.8",
         "react-calendar": "^4.8.0",
+        "react-hook-form": "^7.34.0",
         "react-responsive": "^9.0.2",
         "react-scrollbars-custom": "^4.1.1",
         "react-toastify": "^9.1.3"
