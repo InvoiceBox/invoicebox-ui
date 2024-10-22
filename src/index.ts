@@ -48,6 +48,7 @@ export {
     AutocompleteDefaultOption,
     OrganizationAutocompleteItem,
 } from './components/form/Autocomplete/index';
+export { Portal } from './components/common/Portal';
 
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';
