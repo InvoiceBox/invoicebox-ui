@@ -50,8 +50,6 @@ export {
     AutocompleteDefaultOption,
     OrganizationAutocompleteItem,
 } from './components/form/Autocomplete/index';
-export { RHFTextInput } from './components/formFields/RHFTextInput';
-export { RHFAutocomplete } from './components/formFields/RHFAutocomplete';
 
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';
