@@ -57,8 +57,10 @@ export const Content = styled.div`
 
 export const Title = styled(Typography)<{ $ellipsis: boolean; $pallete: TPaymentCardPalette }>`
     white-space: ${({ $ellipsis }) => ($ellipsis ? 'normal' : 'nowrap')};
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
     max-width: 100%;
     color: ${({ $pallete }) => $pallete.title};
 `;
