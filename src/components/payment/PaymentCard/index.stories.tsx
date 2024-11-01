@@ -38,3 +38,13 @@ export const OverflowText: StoryObj<typeof PaymentCard> = {
         comment: 'Комиссия 10 руб',
     },
 };
+
+export const OverflowTextWithChildren: StoryObj<typeof PaymentCard> = {
+    args: {
+        title: 'Длинное наименование длинное наименование длинное наименование длинное наименование длинное наименование длинное наименование длинное наименование длинное наименование длинное наименование длинное наименование длинное наименование ',
+        isActive: false,
+        isDisabled: false,
+        comment: 'Комиссия 10 руб',
+        children: <div style={{ height: 22, width: 121, background: 'green' }} />,
+    },
+};
