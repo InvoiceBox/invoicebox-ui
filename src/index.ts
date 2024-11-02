@@ -50,6 +50,7 @@ export {
     AutocompleteDefaultOption,
     OrganizationAutocompleteItem,
 } from './components/form/Autocomplete/index';
+export { QRCode } from './components/common/QRCode';
 
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';
