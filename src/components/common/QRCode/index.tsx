@@ -1,24 +1,28 @@
 import React, { FC } from 'react';
 import QRCodeFromLibrary from 'qrcode.react';
-import invoiceboxIcon from './assets/invoiceboxQRLogo.png';
 
 export type TProps = {
     value: string;
+    image?: string;
     bgColor?: string;
     size?: number;
     id?: string;
 };
 
-export const QRCode: FC<TProps> = (props) => (
+export const QRCode: FC<TProps> = ({ image, ...others }) => (
     <QRCodeFromLibrary
-        {...props}
+        {...others}
         renderAs="canvas"
         level="M"
-        imageSettings={{
-            src: invoiceboxIcon,
-            height: 39,
-            width: 39,
-            excavate: false,
-        }}
+        imageSettings={
+            image
+                ? {
+                      src: image,
+                      height: 39,
+                      width: 39,
+                      excavate: false,
+                  }
+                : undefined
+        }
     />
 );
