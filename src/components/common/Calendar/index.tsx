@@ -1,37 +1,40 @@
 import React, { FC, useCallback } from 'react';
-import LibCalendar from 'react-calendar';
 import { useComponentPalette } from '../../../palette';
 import { TCalendarPalette } from './palette';
-import { useCss } from '../../../hooks/useCss';
+import { LibCalendar } from './styles';
+import 'react-calendar/dist/Calendar.css';
 
-const CSS_ID = 'INVOICEBOX_UI_CALENDAR';
-
-export type TProps = {
-    onChange: (value: Date) => void;
-    value: null | Date;
+type TGeneralProps = {
     minDate?: Date;
     maxDate?: Date;
 };
 
-export const Calendar: FC<TProps> = ({ onChange, value, minDate, maxDate }) => {
-    const palette = useComponentPalette<TCalendarPalette>('calendar');
+export type TProps = TGeneralProps &
+    (
+        | {
+              onChange: (value: Date) => void;
+              value: null | Date;
+              selectRange?: false;
+          }
+        | {
+              onChange: (value: [Date, Date]) => void;
+              value: null | [Date, Date];
+              selectRange: true;
+          }
+    );
 
-    useCss({
-        id: CSS_ID,
-        css: `:root {
-            --invoicebox-ui-calendar-arrow: ${palette.arrow};
-            --invoicebox-ui-calendar-weekday: ${palette.weekday};
-            --invoicebox-ui-calendar-tile: ${palette.tile};
-            --invoicebox-ui-calendar-tile-active: ${palette.tileActive};
-            --invoicebox-ui-calendar-tile-bg-active: ${palette.tileBgActive};
-        }`,
-    });
+export const Calendar: FC<TProps> = ({ onChange, value, minDate, maxDate, selectRange }) => {
+    const palette = useComponentPalette<TCalendarPalette>('calendar');
 
     const handleChange = useCallback(
         (newValue: unknown) => {
-            onChange(newValue as Date);
+            if (selectRange) {
+                onChange(newValue as [Date, Date]);
+            } else {
+                onChange(newValue as Date);
+            }
         },
-        [onChange],
+        [onChange, selectRange],
     );
 
     return (
@@ -45,6 +48,13 @@ export const Calendar: FC<TProps> = ({ onChange, value, minDate, maxDate }) => {
             prev2Label={null}
             onChange={handleChange}
             value={value}
+            selectRange={selectRange}
+            // styles
+            $arrow={palette.arrow}
+            $weekDay={palette.weekday}
+            $tile={palette.tile}
+            $tileActive={palette.tileActive}
+            $tileBgActive={palette.tileBgActive}
         />
     );
 };
