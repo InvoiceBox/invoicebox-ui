@@ -16,8 +16,10 @@ export const Installation: StoryObj = {
             <Markdown>
                 {`
 ### Установка
+
 Используется библиотека [react-calendar](https://github.com/wojtekmaj/react-calendar).
 Для корректной работы необходимо подключить стили.
+
 \`\`\`ts
 import 'react-calendar/dist/Calendar.css';
 \`\`\`
