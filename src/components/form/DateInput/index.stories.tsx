@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { DateInput, TProps } from '.';
 
+import 'react-calendar/dist/Calendar.css';
+
 const meta: Meta<typeof DateInput> = {
     title: 'form/DateInput',
     component: DateInput,
