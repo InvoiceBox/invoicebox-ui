@@ -2,7 +2,6 @@ import React, { FC, useCallback } from 'react';
 import { useComponentPalette } from '../../../palette';
 import { TCalendarPalette } from './palette';
 import { LibCalendar } from './styles';
-import 'react-calendar/dist/Calendar.css';
 
 type TGeneralProps = {
     minDate?: Date;
