@@ -4,7 +4,6 @@ import { action } from '@storybook/addon-actions';
 import { DateInput, TProps } from '.';
 
 import 'react-calendar/dist/Calendar.css';
-import '../../common/Calendar/index.css';
 
 const meta: Meta<typeof DateInput> = {
     title: 'form/DateInput',

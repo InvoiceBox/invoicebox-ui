@@ -22,7 +22,6 @@ export const Installation: StoryObj = {
 
 \`\`\`ts
 import 'react-calendar/dist/Calendar.css';
-import '@invoicebox/ui/dist/components/common/Calendar/index.css';
 \`\`\`
 `}
             </Markdown>
