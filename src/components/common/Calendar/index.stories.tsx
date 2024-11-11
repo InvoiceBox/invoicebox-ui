@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Calendar, TProps } from '.';
 
+import 'react-calendar/dist/Calendar.css';
+
 const meta: Meta<typeof Calendar> = {
     title: 'common/Calendar',
     component: Calendar,
