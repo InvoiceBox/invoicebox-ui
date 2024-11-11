@@ -7,6 +7,7 @@ export type TCalendarPalette = {
     tile: string;
     tileActive: string;
     tileBgActive: string;
+    tileBgRangeBetween: string;
 };
 
 export const generateCalendarPalette = (abstractPalette: TAbstractPalette): TCalendarPalette => {
@@ -16,5 +17,6 @@ export const generateCalendarPalette = (abstractPalette: TAbstractPalette): TCal
         tile: hexToRgba(abstractPalette.primary, 0.7),
         tileActive: abstractPalette.primary,
         tileBgActive: abstractPalette.secondary,
+        tileBgRangeBetween: hexToRgba(abstractPalette.primary, 0.05),
     };
 };
