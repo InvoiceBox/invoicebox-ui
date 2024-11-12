@@ -7,6 +7,7 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
     $tile: string;
     $tileActive: string;
     $tileBgActive: string;
+    $tileBgRangeBetween: string;
     selectRange?: boolean;
 }>`
     border: none;
@@ -68,7 +69,8 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
         color: ${({ $tile }) => $tile};
         background-color: transparent !important;
         padding: 4px 6.6667px;
-        border-radius: 6px;
+        border-radius: 5px;
+        margin-bottom: 4px;
     }
 
     .react-calendar__tile:disabled {
@@ -89,23 +91,31 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
         opacity: 1 !important;
     }
 
-    ${({ selectRange }) =>
+    ${({ selectRange, $tileBgActive, $tileBgRangeBetween }) =>
         selectRange &&
         `
             .react-calendar__tile--range {
                 border-radius: 0;
             }
-            
-            .react-calendar__tile--rangeStart {
-                border-radius: 6px 0 0 6px;
-            }
-            
-            .react-calendar__tile--rangeEnd {
-                border-radius: 0 6px 6px 0;
-            }
-    
+
             .react-calendar__tile--rangeBothEnds {
-                border-radius: 6px;
+                border-radius: 5px;
+            }
+            
+            .react-calendar__tile--active {
+                background-color: ${$tileBgRangeBetween} !important;
+            }
+
+            .react-calendar__tile--rangeStart {
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+                background-color: ${$tileBgActive} !important;
+            }
+
+            .react-calendar__tile--rangeEnd {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                background-color: ${$tileBgActive} !important;
             }
     `}
 `;
