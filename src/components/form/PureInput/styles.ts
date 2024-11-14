@@ -5,6 +5,8 @@ import { Typography } from '../../common/Typography';
 export const Wrapper = styled(Typography)<{
     $paddingLeft: number;
     $paddingRight: number;
+    $paddingTop: number;
+    $paddingBottom: number;
     $hasError: boolean;
     $inFocus: boolean;
     $hasBorder: boolean;
@@ -13,13 +15,14 @@ export const Wrapper = styled(Typography)<{
     color: ${({ $palette }) => $palette.text};
     border-radius: 10px;
     outline: none;
-    padding: 12px 18px;
     width: 100%;
     background-color: ${({ $palette }) => $palette.bg};
     transition: all 0.2s ease-in-out 0s;
     box-sizing: border-box;
     padding-right: ${({ $paddingRight }) => $paddingRight}px;
     padding-left: ${({ $paddingLeft }) => $paddingLeft}px;
+    padding-top: ${({ $paddingTop }) => $paddingTop}px;
+    padding-bottom: ${({ $paddingBottom }) => $paddingBottom}px;
     border: 1px solid
         ${({ $hasError, $inFocus, $hasBorder, $palette }) =>
             !$hasBorder
