@@ -30,6 +30,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id'> & {
     countrySelectProps: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
     onCountryChange?: (countryCode: string) => void;
     countries?: Array<{ label: string; value: TSupportedCountries }>;
+    pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom'>;
 };
 
 export type TProps = TControlProps & TFieldProps;
@@ -47,6 +48,7 @@ export const PhoneInput: FC<TProps> = ({
     id,
     countries,
     onCountryChange,
+    pureInputProps,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
@@ -239,6 +241,7 @@ export const PhoneInput: FC<TProps> = ({
                         name={name}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
                         autoComplete={'off'}
+                        {...pureInputProps}
                     />
                 </InputMask>
             </S.InputLabelContent>
