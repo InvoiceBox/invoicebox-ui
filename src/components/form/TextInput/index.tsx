@@ -7,7 +7,7 @@ import { useInputFocus } from '../../../hooks/useInputFocus';
 export type TProps = Pick<TInputLabelProps, 'label'> &
     Pick<
         TPureInputProps,
-        'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name' | 'paddingRight'
+        'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name' | 'paddingRight' | 'type'
     > & {
         value: string;
         onChange: (value: string) => void;
