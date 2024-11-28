@@ -27,6 +27,7 @@ export const TextInput: FC<TProps> = ({
     disabled,
     placeholder,
     paddingRight,
+    type,
     children,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
@@ -52,6 +53,7 @@ export const TextInput: FC<TProps> = ({
                     onChange={handleChange}
                     placeholder={placeholder}
                     paddingRight={paddingRight}
+                    type={type}
                 />
                 {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
             </S.InputLabelContent>
