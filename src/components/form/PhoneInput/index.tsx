@@ -27,7 +27,7 @@ type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
 
 type TControlProps = Pick<TPureInputProps, 'disabled' | 'id'> & {
     label: string;
-    countrySelectProps: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
+    countrySelectProps?: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
     onCountryChange?: (countryCode: string) => void;
     countries?: Array<{ label: string; value: TSupportedCountries }>;
     pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom'>;
@@ -212,12 +212,12 @@ export const PhoneInput: FC<TProps> = ({
                                 options={countrySelectOptions}
                                 onChange={handleCountryChange}
                                 value={country}
-                                placeholder={countrySelectProps.placeholder}
+                                placeholder={countrySelectProps?.placeholder || ''}
                                 positionVertical={16}
                                 positionRight="0"
                                 positionLeft="-20px"
                                 disabled={disabled}
-                                selectedLabel={countrySelectProps.selectedLabel}
+                                selectedLabel={countrySelectProps?.selectedLabel || ''}
                             />
                         </S.CountrySelectWrapper>
                     </S.InputLabelFloatWrapper>
