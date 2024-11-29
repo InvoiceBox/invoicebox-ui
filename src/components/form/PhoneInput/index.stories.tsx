@@ -33,10 +33,6 @@ const Component = (props: TProps) => {
 const commonProps = {
     disabled: false,
     label: 'Телефон',
-    countrySelectProps: {
-        placeholder: 'Поиск',
-        selectedLabel: '(выбрано)',
-    },
 };
 
 export const MultiCountry: StoryObj<TProps> = {
