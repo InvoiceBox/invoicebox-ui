@@ -3,13 +3,7 @@ import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
-
-type TSizes = 'M' | 'L';
-
-const SIZE_PADDING_MAP: Record<TSizes, { paddingTop: number; paddingBottom: number }> = {
-    L: { paddingTop: 12, paddingBottom: 12 },
-    M: { paddingTop: 8, paddingBottom: 8 },
-};
+import { SIZE_PADDING_MAP, TSizes } from '../constants';
 
 export type TProps = Pick<TInputLabelProps, 'label'> &
     Pick<

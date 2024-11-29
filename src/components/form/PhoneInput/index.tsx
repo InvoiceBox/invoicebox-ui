@@ -18,6 +18,7 @@ import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { CountrySelect, TProps as TCountrySelectProps } from '../CountrySelect';
 import { useMobile } from '../../../hooks/useMedia';
+import { SIZE_PADDING_MAP, TSizes } from '../constants';
 
 type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
@@ -31,6 +32,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id'> & {
     onCountryChange?: (countryCode: string) => void;
     countries?: Array<{ label: string; value: TSupportedCountries }>;
     pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom'>;
+    size?: TSizes;
 };
 
 export type TProps = TControlProps & TFieldProps;
@@ -49,6 +51,7 @@ export const PhoneInput: FC<TProps> = ({
     countries,
     onCountryChange,
     pureInputProps,
+    size = 'L',
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
@@ -241,6 +244,7 @@ export const PhoneInput: FC<TProps> = ({
                         name={name}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
                         autoComplete={'off'}
+                        {...SIZE_PADDING_MAP[size]}
                         {...pureInputProps}
                     />
                 </InputMask>

@@ -33,6 +33,7 @@ const Component = (props: TProps) => {
 const commonProps = {
     disabled: false,
     label: 'Телефон',
+    size: 'L' as const,
 };
 
 export const MultiCountry: StoryObj<TProps> = {
