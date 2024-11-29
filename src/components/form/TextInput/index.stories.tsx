@@ -29,6 +29,7 @@ export const Default: StoryObj<TProps> = {
         placeholder: 'Placeholder',
         disabled: false,
         children: <div>Children</div>,
+        size: 'L',
     },
     render: Component,
 };
