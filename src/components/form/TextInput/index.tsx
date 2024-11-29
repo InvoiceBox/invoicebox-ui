@@ -4,6 +4,13 @@ import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 
+type TSizes = 'M' | 'L';
+
+const SIZE_PADDING_MAP: Record<TSizes, { paddingTop: number; paddingBottom: number }> = {
+    L: { paddingTop: 12, paddingBottom: 12 },
+    M: { paddingTop: 8, paddingBottom: 8 },
+};
+
 export type TProps = Pick<TInputLabelProps, 'label'> &
     Pick<
         TPureInputProps,
@@ -12,6 +19,7 @@ export type TProps = Pick<TInputLabelProps, 'label'> &
         value: string;
         onChange: (value: string) => void;
         maxLength?: number;
+        size?: TSizes;
         children?: ReactNode;
     };
 
@@ -29,6 +37,7 @@ export const TextInput: FC<TProps> = ({
     paddingRight,
     type,
     children,
+    size = 'L',
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -54,6 +63,7 @@ export const TextInput: FC<TProps> = ({
                     placeholder={placeholder}
                     paddingRight={paddingRight}
                     type={type}
+                    {...SIZE_PADDING_MAP[size]}
                 />
                 {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
             </S.InputLabelContent>
