@@ -19,6 +19,8 @@ export { TextInput } from './components/form/TextInput';
 export type { TProps as TTextInputProps } from './components/form/TextInput';
 export { Dropdown } from './components/common/Dropdown';
 export type { TProps as TDropdownProps } from './components/common/Dropdown';
+export { Drawer } from './components/common/Drawer';
+export type { TProps as TDrawerProps } from './components/common/Drawer';
 export { Scrollbar } from './components/common/Scrollbar';
 export { Select } from './components/form/Select';
 export type { TProps as TSelectProps } from './components/form/Select';
