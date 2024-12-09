@@ -63,7 +63,8 @@
     },
     "peerDependencies": {
         "react": "^18.2.0",
-        "styled-components": "^6.1.8"
+        "styled-components": "^6.1.8",
+        "yup": "^0.32.11"
     },
     "engines": {
         "node": ">=16.0.0"
