@@ -65,4 +65,4 @@ export { useUnupdatableHandler } from './hooks/useUnupdatableHandler';
 
 export { breakpoints } from './breakpoints';
 export { useMobile, useTablet, useLargeTablet, useMiniLaptop } from './hooks/useMedia';
-export { validate } from './validate';
+export { Validate } from './validate';

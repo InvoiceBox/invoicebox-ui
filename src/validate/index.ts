@@ -12,7 +12,7 @@ import {
     UZBValidate,
 } from './utils/vatNumberValidateHelpers';
 
-class Validate {
+export class Validate {
     static vatNumber(
         value: string,
         path: string,
@@ -70,5 +70,3 @@ class Validate {
         return true;
     }
 }
-
-export const validate = new Validate();
