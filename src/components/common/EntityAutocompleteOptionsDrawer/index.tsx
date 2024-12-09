@@ -8,12 +8,14 @@ import { TEntityAutocompleteOptionsDrawerPalette } from './palette';
 
 const loadingList = new Array(4).fill(Skeleton);
 
+type TOption = { value: string; entity: any };
+
 export type TProps = {
     isOpen: boolean;
     onClose: () => void;
-    options: Array<{ value: string; entity: any }>;
-    renderOption: (option: { value: string; entity: any }) => ReactNode;
-    onChange: (value: string, option?: { value: string; entity: any }) => void;
+    options: Array<TOption>;
+    renderOption: (option: TOption) => ReactNode;
+    onChange: (value: string, option?: TOption) => void;
     isLoadingOptions: boolean;
     promptMessage: string;
     searchInputField: ReactNode;
