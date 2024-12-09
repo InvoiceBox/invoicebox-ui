@@ -21,6 +21,8 @@ export { Dropdown } from './components/common/Dropdown';
 export type { TProps as TDropdownProps } from './components/common/Dropdown';
 export { Drawer } from './components/common/Drawer';
 export type { TProps as TDrawerProps } from './components/common/Drawer';
+export { EntityAutocompleteOptionsDrawer } from './components/common/EntityAutocompleteOptionsDrawer';
+export type { TProps as TEntityAutocompleteOptionsDrawerProps } from './components/common/EntityAutocompleteOptionsDrawer';
 export { Scrollbar } from './components/common/Scrollbar';
 export { Select } from './components/form/Select';
 export type { TProps as TSelectProps } from './components/form/Select';
