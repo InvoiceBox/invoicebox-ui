@@ -36,6 +36,10 @@ import {
     TOrganizationAutocompleteItemPalette,
 } from '../components/form/Autocomplete/components/OrganizationAutocompleteItem/palette';
 import { generateDrawerPalette, TDrawerPalette } from '../components/common/Drawer/palette';
+import {
+    generateEntityAutocompleteOptionsDrawerPalette,
+    TEntityAutocompleteOptionsDrawerPalette,
+} from '../components/common/EntityAutocompleteOptionsDrawer/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -59,6 +63,7 @@ type TContext = {
     autocompleteDefaultOption: TAutocompleteDefaultOptionPalette;
     organizationAutocompleteItem: TOrganizationAutocompleteItemPalette;
     drawer: TDrawerPalette;
+    entityAutocompleteOptionsDrawer: TEntityAutocompleteOptionsDrawerPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -83,4 +88,5 @@ export const PaletteContext = createContext<TContext>({
     autocompleteDefaultOption: generateAutocompleteDefaultOptionPalette(defaultAbstractPalette),
     organizationAutocompleteItem: generateOrganizationAutocompleteItemPalette(defaultAbstractPalette),
     drawer: generateDrawerPalette(defaultAbstractPalette),
+    entityAutocompleteOptionsDrawer: generateEntityAutocompleteOptionsDrawerPalette(defaultAbstractPalette),
 });
