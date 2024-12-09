@@ -23,6 +23,7 @@ import { generatePaymentCardPalette } from '../components/payment/PaymentCard/pa
 import { generateAutocompleteDefaultOptionPalette } from '../components/form/Autocomplete/components/AutocompleteDefaultOption/palette';
 import { generateOrganizationAutocompleteItemPalette } from '../components/form/Autocomplete/components/OrganizationAutocompleteItem/palette';
 import { generateDrawerPalette } from '../components/common/Drawer/palette';
+import { generateEntityAutocompleteOptionsDrawerPalette } from '../components/common/EntityAutocompleteOptionsDrawer/palette';
 
 type TProps = {
     children: ReactNode;
@@ -61,6 +62,8 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             autocompleteDefaultOption: generateAutocompleteDefaultOptionPalette(mergedAbstractPalette),
             organizationAutocompleteItem: generateOrganizationAutocompleteItemPalette(mergedAbstractPalette),
             drawer: generateDrawerPalette(mergedAbstractPalette),
+            entityAutocompleteOptionsDrawer:
+                generateEntityAutocompleteOptionsDrawerPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );
