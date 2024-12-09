@@ -48,6 +48,27 @@ class Validate {
                 return RUSValidate(value, path, createError);
         }
     }
+
+    static taxRegistrationReasonCode(
+        value: string,
+        path: string,
+        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
+    ) {
+        if (value === '') {
+            return true;
+        }
+
+        if (value.length !== 9) {
+            return createError({
+                path,
+                message: 'КПП может состоять только из 9 знаков',
+            });
+        }
+        if (!/^[0-9]{4}[0-9A-Z]{2}[0-9]{3}$/.test(value)) {
+            return createError({ path, message: 'Неправильный формат КПП' });
+        }
+        return true;
+    }
 }
 
 export const validate = new Validate();
