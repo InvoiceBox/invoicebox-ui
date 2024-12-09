@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useCallback, MouseEvent, useMemo } from 'react';
+import React, { FC, ReactNode, useCallback, MouseEvent } from 'react';
 import * as S from './styles';
 import { Drawer } from '../Drawer';
 import { Scrollbar } from '../Scrollbar';
@@ -15,10 +15,7 @@ export type TProps = {
     renderOption: (option: { value: string; entity: any }) => ReactNode;
     onChange: (value: string, option?: { value: string; entity: any }) => void;
     isLoadingOptions: boolean;
-    minValidLength: number;
-    searchValue: string;
-    notFoundLabel: string;
-    minLengthLabel: string;
+    promptMessage: string;
     searchInputField: ReactNode;
 };
 
@@ -29,10 +26,7 @@ export const EntityAutocompleteOptionsDrawer: FC<TProps> = ({
     renderOption,
     onChange,
     isLoadingOptions,
-    minValidLength,
-    searchValue,
-    notFoundLabel,
-    minLengthLabel,
+    promptMessage,
     searchInputField,
 }) => {
     const palette = useComponentPalette<TEntityAutocompleteOptionsDrawerPalette>(
@@ -48,15 +42,6 @@ export const EntityAutocompleteOptionsDrawer: FC<TProps> = ({
         },
         [onClose, onChange, options],
     );
-
-    const promptMessage = useMemo(() => {
-        if (searchValue.length < minValidLength) {
-            return minLengthLabel;
-        }
-        if (!isLoadingOptions && !options.length) {
-            return notFoundLabel;
-        }
-    }, [isLoadingOptions, minLengthLabel, minValidLength, notFoundLabel, options.length, searchValue.length]);
 
     return (
         <Drawer isOpen={isOpen} onClose={onClose} isPadding={false} initialFocusRef={false}>

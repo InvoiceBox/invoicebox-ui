@@ -17,8 +17,6 @@ const meta: Meta<typeof EntityAutocompleteOptionsDrawer> = {
 export default meta;
 type TStory = StoryObj<TProps>;
 
-const minValidLength = 3;
-
 function Render(props: TProps) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -36,9 +34,6 @@ function Render(props: TProps) {
 }
 
 const commonArgs = {
-    notFoundLabel: 'Не найдено',
-    minValidLength,
-    minLengthLabel: `Укажите более ${minValidLength} символов`,
     isLoadingOptions: false,
     searchValue: '1234',
     searchInputField: <div> Input here </div>,
@@ -80,12 +75,7 @@ export const Loading: TStory = {
     render: Render,
 };
 
-export const NotFound: TStory = {
-    args: { ...commonArgs, options: [] },
-    render: Render,
-};
-
-export const SmallValueLength: TStory = {
-    args: { ...commonArgs, searchValue: Array(minValidLength).fill('1').join('').slice(0, -1) },
+export const PromptMessage: TStory = {
+    args: { ...commonArgs, promptMessage: 'PromptMessage' },
     render: Render,
 };
