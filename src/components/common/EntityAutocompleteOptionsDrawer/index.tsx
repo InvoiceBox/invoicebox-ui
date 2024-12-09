@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useCallback, MouseEvent } from 'react';
+import React, { ReactNode, useCallback, MouseEvent } from 'react';
 import * as S from './styles';
 import { Drawer } from '../Drawer';
 import { Scrollbar } from '../Scrollbar';
@@ -8,20 +8,20 @@ import { TEntityAutocompleteOptionsDrawerPalette } from './palette';
 
 const loadingList = new Array(4).fill(Skeleton);
 
-type TOption = { value: string; entity: any };
+type TOption<TEntity> = { value: string; entity: TEntity };
 
-export type TProps = {
+export type TProps<TEntity> = {
     isOpen: boolean;
     onClose: () => void;
-    options: Array<TOption>;
-    renderOption: (option: TOption) => ReactNode;
-    onChange: (value: string, option?: TOption) => void;
+    options: Array<TOption<TEntity>>;
+    renderOption: (option: TOption<TEntity>) => ReactNode;
+    onChange: (value: string, option?: TOption<TEntity>) => void;
     isLoadingOptions: boolean;
     promptMessage: string;
     searchInputField: ReactNode;
 };
 
-export const EntityAutocompleteOptionsDrawer: FC<TProps> = ({
+export const EntityAutocompleteOptionsDrawer = <TEntity,>({
     isOpen,
     onClose,
     options,
@@ -30,7 +30,7 @@ export const EntityAutocompleteOptionsDrawer: FC<TProps> = ({
     isLoadingOptions,
     promptMessage,
     searchInputField,
-}) => {
+}: TProps<TEntity>) => {
     const palette = useComponentPalette<TEntityAutocompleteOptionsDrawerPalette>(
         'entityAutocompleteOptionsDrawer',
     );

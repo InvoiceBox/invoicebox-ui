@@ -14,10 +14,12 @@ const meta: Meta<typeof EntityAutocompleteOptionsDrawer> = {
     },
 };
 
-export default meta;
-type TStory = StoryObj<TProps>;
+type TOption = { id: string; name: string };
 
-function Render(props: TProps) {
+export default meta;
+type TStory = StoryObj<TProps<TOption>>;
+
+function Render(props: TProps<TOption>) {
     const [isOpen, setIsOpen] = useState(false);
 
     const close = () => setIsOpen(false);
