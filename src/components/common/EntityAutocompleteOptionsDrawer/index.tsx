@@ -17,8 +17,8 @@ export type TProps<TEntity> = {
     renderOption: (option: TOption<TEntity>) => ReactNode;
     onChange: (value: string, option?: TOption<TEntity>) => void;
     isLoadingOptions: boolean;
-    promptMessage: string;
     searchInputField: ReactNode;
+    promptMessage?: string;
 };
 
 export const EntityAutocompleteOptionsDrawer = <TEntity,>({
