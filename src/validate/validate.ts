@@ -13,7 +13,7 @@ import {
 } from './utils/vatNumberValidateHelpers';
 
 class Validate {
-    static validateVatNumber(
+    static vatNumber(
         value: string,
         path: string,
         countryId: string,
