@@ -43,6 +43,7 @@ type TControlProps = {
     children?: ReactNode;
     inputPaddingLeft?: number;
     inputMaxLength?: number;
+    isInputOnlyNumbers?: boolean;
     disabled?: boolean;
     listHeight?: number;
     hasError?: boolean;
@@ -72,6 +73,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             isLoading,
             optionsLoader,
             inputMaxLength,
+            isInputOnlyNumbers = false,
         },
         ref,
     ) => {
@@ -127,6 +129,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             disabled={disabled}
                             paddingLeft={inputPaddingLeft}
                             maxLength={inputMaxLength}
+                            isOnlyNumbers={isInputOnlyNumbers}
                         />
                     </S.InputLabelContent>
                 </InputLabel>
