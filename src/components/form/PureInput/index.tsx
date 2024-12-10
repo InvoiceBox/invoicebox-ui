@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes, useCallback } from 'react';
 import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TPureInputPalette } from './palette';
@@ -11,6 +11,7 @@ export type TProps = InputHTMLAttributes<HTMLInputElement> & {
     hasError?: boolean;
     inFocus?: boolean;
     hasBorder?: boolean;
+    isOnlyNumbers?: boolean;
     className?: never;
 };
 
@@ -24,13 +25,30 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             hasError = false,
             inFocus = false,
             hasBorder = true,
+            isOnlyNumbers = false,
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             className,
+            onChange,
             ...rest
         },
         ref,
     ) => {
         const palette = useComponentPalette<TPureInputPalette>('pureInput');
+
+        const handleChange = useCallback(
+            (event: ChangeEvent<HTMLInputElement>) => {
+                const inputValue = event.target.value;
+                const replacedValue = isOnlyNumbers ? inputValue.replace(/[^0-9]/g, '') : inputValue;
+
+                if (onChange) {
+                    const formattedEvent = {
+                        target: { value: replacedValue },
+                    } as React.ChangeEvent<HTMLInputElement>;
+                    onChange(formattedEvent);
+                }
+            },
+            [isOnlyNumbers, onChange],
+        );
 
         return (
             <S.Wrapper
@@ -45,6 +63,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
                 $inFocus={inFocus}
                 $hasBorder={hasBorder}
                 $palette={palette}
+                onChange={handleChange}
                 {...rest}
             />
         );
