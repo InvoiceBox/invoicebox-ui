@@ -42,7 +42,11 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
 
                 if (onChange) {
                     const formattedEvent = {
-                        target: { value: replacedValue },
+                        ...event,
+                        target: {
+                            ...event.target,
+                            value: replacedValue,
+                        },
                     } as React.ChangeEvent<HTMLInputElement>;
                     onChange(formattedEvent);
                 }
