@@ -10,14 +10,28 @@ import { TSearchInputPalette } from './palette';
 
 export type TProps = Pick<
     PureInputProps,
-    'placeholder' | 'hasBorder' | 'autoFocus' | 'name' | 'onFocus' | 'onBlur'
+    'placeholder' | 'hasBorder' | 'autoFocus' | 'name' | 'onFocus' | 'onBlur' | 'isOnlyNumbers' | 'maxLength'
 > & {
     value: string;
     onChange: (value: string) => void;
 };
 
 export const SearchInput = forwardRef<HTMLInputElement, TProps>(
-    ({ name, onFocus, onBlur, onChange, placeholder, hasBorder, value, autoFocus }, ref) => {
+    (
+        {
+            name,
+            onFocus,
+            onBlur,
+            onChange,
+            placeholder,
+            hasBorder,
+            value,
+            autoFocus,
+            isOnlyNumbers,
+            maxLength,
+        },
+        ref,
+    ) => {
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
         const palette = useComponentPalette<TSearchInputPalette>('searchInput');
 
@@ -46,6 +60,8 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     inFocus={inFocus}
                     autoFocus={autoFocus}
                     name={name}
+                    maxLength={maxLength}
+                    isOnlyNumbers={isOnlyNumbers}
                 />
                 <S.IconWrapper $inFocus={inFocus} $palette={palette}>
                     {value ? (
