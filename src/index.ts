@@ -65,4 +65,6 @@ export { useUnupdatableHandler } from './hooks/useUnupdatableHandler';
 
 export { breakpoints } from './breakpoints';
 export { useMobile, useTablet, useLargeTablet, useMiniLaptop } from './hooks/useMedia';
+
+export { LENGTH_VAT_NUMBER } from './validate/utils/vatNumberValidateHelpers';
 export { Validate } from './validate';

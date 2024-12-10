@@ -1,16 +1,18 @@
 import * as yup from 'yup';
 
-export const LENGTH_RUS_INDIVIDUAL_ENTREPRENEUR = 12;
-export const LENGTH_RUS_LEGAL_ENTREPRENEUR = 10;
-export const LENGTH_BLR_VAT_NUMBER = 9;
-export const LENGTH_KAZ_VAT_NUMBER = 12;
-export const LENGTH_AZE_VAT_NUMBER = 10;
-export const LENGTH_ARM_VAT_NUMBER = 8;
-export const LENGTH_KGZ_VAT_NUMBER = 14;
-export const LENGTH_MDA_VAT_NUMBER = 13;
-export const LENGTH_TJK_VAT_NUMBER_SHORT = 9;
-export const LENGTH_TJK_VAT_NUMBER_LONG = 10;
-export const LENGTH_UZB_VAT_NUMBER = 9;
+export const LENGTH_VAT_NUMBER = {
+    RUS_INDIVIDUAL_ENTREPRENEUR: 12,
+    RUS_LEGAL_ENTREPRENEUR: 10,
+    BLR_VAT_NUMBER: 9,
+    KAZ_VAT_NUMBER: 12,
+    AZE_VAT_NUMBER: 10,
+    ARM_VAT_NUMBER: 8,
+    KGZ_VAT_NUMBER: 14,
+    MDA_VAT_NUMBER: 13,
+    TJK_VAT_NUMBER_SHORT: 9,
+    TJK_VAT_NUMBER_LONG: 10,
+    UZB_VAT_NUMBER: 9,
+};
 
 const checkDigitFunc = (inn: string, coefficients: number[], valueDigit: number) =>
     coefficients.reduce((sum, current, index) => sum + current * Number(inn[index]), 0) % valueDigit;
@@ -45,7 +47,7 @@ export const BLRValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_BLR_VAT_NUMBER) {
+    if (value.length !== LENGTH_VAT_NUMBER.BLR_VAT_NUMBER) {
         return createError({
             path,
             message: 'УНБ должен состоять из 9 цифр',
@@ -67,7 +69,7 @@ export const AZEValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_AZE_VAT_NUMBER) {
+    if (value.length !== LENGTH_VAT_NUMBER.AZE_VAT_NUMBER) {
         return createError({
             path,
             message: 'ИНН должен состоять из 10 цифр',
@@ -89,7 +91,7 @@ export const MDAValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_MDA_VAT_NUMBER) {
+    if (value.length !== LENGTH_VAT_NUMBER.MDA_VAT_NUMBER) {
         return createError({
             path,
             message: 'IDNO должен состоять из 13 цифр',
@@ -114,7 +116,7 @@ export const KAZValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_KAZ_VAT_NUMBER) {
+    if (value.length !== LENGTH_VAT_NUMBER.KAZ_VAT_NUMBER) {
         return createError({
             path,
             message: 'ИИН/БИН должен состоять из 12 цифр',
@@ -154,7 +156,7 @@ export const ARMValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_ARM_VAT_NUMBER) {
+    if (value.length !== LENGTH_VAT_NUMBER.ARM_VAT_NUMBER) {
         return createError({
             path,
             message: 'УНН должен состоять из 8 цифр',
@@ -169,7 +171,7 @@ export const UZBValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_UZB_VAT_NUMBER) {
+    if (value.length !== LENGTH_VAT_NUMBER.UZB_VAT_NUMBER) {
         return createError({
             path,
             message: 'ИНН должен состоять из 9 цифр',
@@ -184,7 +186,10 @@ export const TJKValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_TJK_VAT_NUMBER_LONG && value.length !== LENGTH_TJK_VAT_NUMBER_SHORT) {
+    if (
+        value.length !== LENGTH_VAT_NUMBER.TJK_VAT_NUMBER_LONG &&
+        value.length !== LENGTH_VAT_NUMBER.TJK_VAT_NUMBER_SHORT
+    ) {
         return createError({
             path,
             message: 'ИНН должен состоять из 9 или 10 цифр',
@@ -199,7 +204,7 @@ export const KGZValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if (value.length !== LENGTH_KGZ_VAT_NUMBER) {
+    if (value.length !== LENGTH_VAT_NUMBER.KGZ_VAT_NUMBER) {
         return createError({
             path,
             message: 'ИНН должен состоять из 14 цифр',
@@ -214,21 +219,25 @@ export const RUSValidate = (
     path: string,
     createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
 ) => {
-    if ([LENGTH_RUS_LEGAL_ENTREPRENEUR, LENGTH_RUS_INDIVIDUAL_ENTREPRENEUR].indexOf(value.length) === -1) {
+    if (
+        [LENGTH_VAT_NUMBER.RUS_LEGAL_ENTREPRENEUR, LENGTH_VAT_NUMBER.RUS_INDIVIDUAL_ENTREPRENEUR].indexOf(
+            value.length,
+        ) === -1
+    ) {
         return createError({
             path,
             message: 'ИНН должен состоять из 10 или 12 цифр',
         });
     } else {
         switch (value.length) {
-            case LENGTH_RUS_LEGAL_ENTREPRENEUR: {
+            case LENGTH_VAT_NUMBER.RUS_LEGAL_ENTREPRENEUR: {
                 const n10 = checkDigitFunc(value, [2, 4, 10, 3, 5, 9, 4, 6, 8], 11) % 10;
                 if (n10 === parseInt(value[9], 10)) {
                     return true;
                 }
                 break;
             }
-            case LENGTH_RUS_INDIVIDUAL_ENTREPRENEUR: {
+            case LENGTH_VAT_NUMBER.RUS_INDIVIDUAL_ENTREPRENEUR: {
                 const n11 = checkDigitFunc(value, [7, 2, 4, 10, 3, 5, 9, 4, 6, 8], 11) % 10;
                 const n12 = checkDigitFunc(value, [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8], 11) % 10;
                 if (n11 === parseInt(value[10], 10) && n12 === parseInt(value[11], 10)) {
