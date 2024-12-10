@@ -8,7 +8,15 @@ import { SIZE_PADDING_MAP, TSizes } from '../constants';
 export type TProps = Pick<TInputLabelProps, 'label'> &
     Pick<
         TPureInputProps,
-        'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name' | 'paddingRight' | 'type'
+        | 'placeholder'
+        | 'hasError'
+        | 'onFocus'
+        | 'onBlur'
+        | 'disabled'
+        | 'name'
+        | 'paddingRight'
+        | 'type'
+        | 'isOnlyNumbers'
     > & {
         value: string;
         onChange: (value: string) => void;
