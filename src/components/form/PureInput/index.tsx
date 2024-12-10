@@ -37,22 +37,10 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
 
         const handleChange = useCallback(
             (event: ChangeEvent<HTMLInputElement>) => {
+                const inputValue = event.target.value;
+                event.target.value = isOnlyNumbers ? inputValue.replace(/[^0-9]/g, '') : inputValue;
                 if (onChange) {
-                    if (isOnlyNumbers) {
-                        const inputValue = event.target.value;
-                        const replacedValue = inputValue.replace(/[^0-9]/g, '');
-
-                        const formattedEvent = {
-                            ...event,
-                            target: {
-                                ...event.target,
-                                value: replacedValue,
-                            },
-                        } as React.ChangeEvent<HTMLInputElement>;
-                        onChange(formattedEvent);
-                    } else {
-                        onChange(event);
-                    }
+                    onChange(event);
                 }
             },
             [isOnlyNumbers, onChange],
