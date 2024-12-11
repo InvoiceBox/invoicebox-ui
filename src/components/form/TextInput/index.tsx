@@ -40,6 +40,7 @@ export const TextInput: FC<TProps> = ({
     type,
     children,
     size = 'L',
+    isOnlyNumbers,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -65,6 +66,7 @@ export const TextInput: FC<TProps> = ({
                     placeholder={placeholder}
                     paddingRight={paddingRight}
                     type={type}
+                    isOnlyNumbers={isOnlyNumbers}
                     {...SIZE_PADDING_MAP[size]}
                 />
                 {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
