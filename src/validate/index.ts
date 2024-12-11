@@ -6,11 +6,13 @@ import {
     BLRValidate,
     KAZValidate,
     KGZValidate,
+    LENGTH_VAT_NUMBER,
     MDAValidate,
     RUSValidate,
     TJKValidate,
     UZBValidate,
 } from './utils/vatNumberValidateHelpers';
+import { RUS_COUNTRY_CODE } from '../components/form/PhoneInput/types';
 
 export class Validate {
     static vatNumber(
@@ -67,6 +69,53 @@ export class Validate {
         if (!/^[0-9]{4}[0-9A-Z]{2}[0-9]{3}$/.test(value)) {
             return createError({ path, message: 'Неправильный формат КПП' });
         }
+        return true;
+    }
+
+    static registrationNumber(
+        value: string,
+        path: string,
+        vatNumber: string,
+        countryId: string,
+        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
+    ) {
+        if (value === '') {
+            return true;
+        }
+
+        if (countryId === RUS_COUNTRY_CODE) {
+            if (value.length === 13 && vatNumber.length === LENGTH_VAT_NUMBER.RUS_LEGAL_ENTREPRENEUR) {
+                const n13 = parseInt((parseInt(value.slice(0, -1), 10) % 11).toString().slice(-1), 10);
+
+                if (n13 === parseInt(value[12], 10)) {
+                    return true;
+                } else {
+                    return createError({
+                        path,
+                        message: 'Неправильное контрольное число',
+                    });
+                }
+            }
+
+            if (value.length === 15 && vatNumber.length === LENGTH_VAT_NUMBER.RUS_INDIVIDUAL_ENTREPRENEUR) {
+                const n15 = parseInt((parseInt(value.slice(0, -1), 10) % 13).toString().slice(-1), 10);
+
+                if (n15 === parseInt(value[14], 10)) {
+                    return true;
+                } else {
+                    return createError({
+                        path,
+                        message: 'Неправильное контрольное число',
+                    });
+                }
+            }
+
+            return createError({
+                path,
+                message: 'ОГРН состоит из 13 или 15 знаков',
+            });
+        }
+
         return true;
     }
 }
