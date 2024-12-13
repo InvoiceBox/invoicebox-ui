@@ -15,6 +15,50 @@ import {
 import { RUS_COUNTRY_CODE } from '../components/form/PhoneInput/types';
 
 export class Validate {
+    static bic(
+        value: string,
+        path: string,
+        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
+    ) {
+        if (value === '') {
+            return true;
+        }
+
+        if (/[^0-9]/.test(value)) {
+            return createError({
+                path,
+                message: 'БИК может состоять только из цифр',
+            });
+        }
+
+        if (value.length !== 9) {
+            return createError({
+                path,
+                message: 'БИК может состоять только из 9 цифр',
+            });
+        }
+        return true;
+    }
+
+    static website(
+        value: string,
+        path: string,
+        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
+    ) {
+        if (value === '') {
+            return true;
+        }
+
+        if (
+            value.match(
+                /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm,
+            )
+        ) {
+            return true;
+        }
+        return createError({ path, message: 'Некорректный адрес' });
+    }
+
     static vatNumber(
         value: string,
         path: string,
