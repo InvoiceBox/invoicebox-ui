@@ -15,6 +15,31 @@ import {
 import { RUS_COUNTRY_CODE } from '../components/form/PhoneInput/types';
 
 export class Validate {
+    static bic(
+        value: string,
+        path: string,
+        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
+    ) {
+        if (value === '') {
+            return true;
+        }
+
+        if (/[^0-9]/.test(value)) {
+            return createError({
+                path,
+                message: 'БИК может состоять только из цифр',
+            });
+        }
+
+        if (value.length !== 9) {
+            return createError({
+                path,
+                message: 'БИК может состоять только из 9 цифр',
+            });
+        }
+        return true;
+    }
+
     static website(
         value: string,
         path: string,
