@@ -123,6 +123,11 @@ export class Validate {
         countryId: string,
         createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
     ) {
+        if (!vatNumber || !countryId) {
+            // eslint-disable-next-line no-console
+            console.error('Form dont have vatNumber or countryId');
+        }
+
         if (value === '') {
             return true;
         }
