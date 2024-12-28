@@ -40,6 +40,7 @@ import {
     generateEntityAutocompleteOptionsDrawerPalette,
     TEntityAutocompleteOptionsDrawerPalette,
 } from '../components/common/EntityAutocompleteOptionsDrawer/palette';
+import { generateCodeInputPalette, TCodeInputPalette } from '../components/form/CodeInput/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -64,6 +65,7 @@ type TContext = {
     organizationAutocompleteItem: TOrganizationAutocompleteItemPalette;
     drawer: TDrawerPalette;
     entityAutocompleteOptionsDrawer: TEntityAutocompleteOptionsDrawerPalette;
+    codeInput: TCodeInputPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -89,4 +91,5 @@ export const PaletteContext = createContext<TContext>({
     organizationAutocompleteItem: generateOrganizationAutocompleteItemPalette(defaultAbstractPalette),
     drawer: generateDrawerPalette(defaultAbstractPalette),
     entityAutocompleteOptionsDrawer: generateEntityAutocompleteOptionsDrawerPalette(defaultAbstractPalette),
+    codeInput: generateCodeInputPalette(defaultAbstractPalette),
 });
