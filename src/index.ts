@@ -64,6 +64,7 @@ export type { TAbstractPalette } from './palette';
 export { useOutsideClick } from './hooks/useOutsideClick';
 export { useInputFocus } from './hooks/useInputFocus';
 export { useUnupdatableHandler } from './hooks/useUnupdatableHandler';
+export { useLoadingSubmit } from './hooks/useLoadingSubmit';
 
 export { breakpoints } from './breakpoints';
 export { useMobile, useTablet, useLargeTablet, useMiniLaptop } from './hooks/useMedia';
