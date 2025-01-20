@@ -17,6 +17,7 @@ export type TProps = Pick<TInputLabelProps, 'label'> &
         | 'paddingRight'
         | 'type'
         | 'isOnlyNumbers'
+        | 'autoFocus'
     > & {
         value: string;
         onChange: (value: string) => void;

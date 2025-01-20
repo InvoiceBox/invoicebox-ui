@@ -31,7 +31,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id'> & {
     countrySelectProps?: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
     onCountryChange?: (countryCode: string) => void;
     countries?: Array<{ label: string; value: TSupportedCountries }>;
-    pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom'>;
+    pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom' | 'autoFocus'>;
     size?: TSizes;
 };
 
