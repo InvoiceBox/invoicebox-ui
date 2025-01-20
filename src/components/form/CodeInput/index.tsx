@@ -12,6 +12,7 @@ export type TProps = {
     hasError?: boolean;
     isLarge?: boolean;
     disabled?: boolean;
+    autoFocus?: boolean;
 };
 
 export const CodeInput: FC<TProps> = ({
@@ -21,6 +22,7 @@ export const CodeInput: FC<TProps> = ({
     value,
     isLarge = true,
     disabled,
+    autoFocus,
 }) => {
     const palette = useComponentPalette<TCodeInputPalette>('codeInput');
 
@@ -97,6 +99,7 @@ export const CodeInput: FC<TProps> = ({
                     placeholder="-"
                     $hasError={hasError}
                     disabled={!!disabled}
+                    autoFocus={autoFocus}
                 />
             ))}
         </S.Wrapper>
