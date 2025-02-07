@@ -7,10 +7,10 @@ import { Typography } from '../Typography';
 
 export const toast = {
     error: (message: string) => {
-        libToast.error(<Typography variant="bodyMRegular">{message}</Typography>);
+        libToast.error(() => <Typography variant="bodyMRegular">{message}</Typography>);
     },
     success: (message: string) => {
-        libToast.success(<Typography variant="bodyMRegular">{message}</Typography>);
+        libToast.success(() => <Typography variant="bodyMRegular">{message}</Typography>);
     },
 };
 
