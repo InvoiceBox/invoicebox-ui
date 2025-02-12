@@ -244,6 +244,7 @@ export const PhoneInput: FC<TProps> = ({
                         name={name}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
                         autoComplete={'off'}
+                        inputMode="numeric"
                         {...SIZE_PADDING_MAP[size]}
                         {...pureInputProps}
                     />
