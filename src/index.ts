@@ -68,6 +68,7 @@ export { useLoadingSubmit } from './hooks/useLoadingSubmit';
 
 export { breakpoints } from './breakpoints';
 export { useMobile, useTablet, useLargeTablet, useMiniLaptop } from './hooks/useMedia';
+export { useModal } from './hooks/useModal';
 
 export { LENGTH_VAT_NUMBER } from './validate/utils/vatNumberValidateHelpers';
 export { Validate } from './validate';
