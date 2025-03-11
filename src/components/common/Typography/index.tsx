@@ -1,9 +1,6 @@
 import React, { ButtonHTMLAttributes, forwardRef, HTMLAttributes, InputHTMLAttributes } from 'react';
 import * as S from './styles';
 import { typography } from './typography';
-import { useCss } from '../../../hooks/useCss';
-
-const CSS_ID = 'INVOICEBOX_UI_TYPOGRAPHY';
 
 type TDivProps = { element?: 'div' } & HTMLAttributes<HTMLDivElement>;
 type TParagraphProps = { element: 'p' } & HTMLAttributes<HTMLParagraphElement>;
@@ -20,11 +17,6 @@ export type TProps = {
 
 export const Typography = forwardRef<HTMLInputElement, TProps>(
     ({ variant, element = 'div', ...rest }, ref) => {
-        useCss({
-            id: CSS_ID,
-            css: `@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap')`,
-        });
-
         return <S.Wrapper ref={ref} as={element} $variant={variant} {...rest} />;
     },
 );

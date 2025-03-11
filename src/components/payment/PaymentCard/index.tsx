@@ -34,7 +34,7 @@ export const PaymentCard: FC<TProps> = ({
             $isDisabled={isDisabled}
             onClick={isDisabled ? undefined : onClick}
         >
-            <S.RadioWrpper>
+            <S.RadioWrapper>
                 {isActive ? (
                     <SelectedRadioIcon
                         bgColor={palette.radioBgActive}
@@ -43,7 +43,7 @@ export const PaymentCard: FC<TProps> = ({
                 ) : (
                     <UnselectedRadioIcon borderColor={palette.radioBorderInactive} />
                 )}
-            </S.RadioWrpper>
+            </S.RadioWrapper>
             <S.Content>
                 <S.Title $pallete={palette} variant="bodyMRegular" $ellipsis={!children}>
                     {title}
