@@ -40,9 +40,12 @@ export const Wrapper = styled.div.attrs({ role: 'button' })<{
               `};
 `;
 
-export const RadioWrpper = styled.div`
+export const RadioWrapper = styled.div`
     flex-shrink: 0;
     flex-grow: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const Content = styled.div`
@@ -92,7 +95,7 @@ export const Comment = styled(Typography)<{ $pallete: TPaymentCardPalette; $isAc
     padding: 0 8px;
     box-sizing: border-box;
     background: ${({ $pallete }) => $pallete.commentBg};
-    border-radius: 6px 0px 0px 0px;
+    border-radius: 6px 0 0 0;
 
     ${({ $isActive, $pallete }) =>
         $isActive
