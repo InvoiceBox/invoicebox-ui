@@ -128,6 +128,16 @@ export const typography = {
         font-weight: 400;
         line-height: 18px;
     `,
+    labelsHintsRegular: css`
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+    `,
+    labelsHintsBold: css`
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px;
+    `,
     captionSRegular: css`
         font-size: 10px;
         font-weight: 400;
