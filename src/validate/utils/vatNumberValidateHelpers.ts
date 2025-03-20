@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import { TCreateErrorFunc } from '../types';
 
 export const LENGTH_VAT_NUMBER = {
     RUS_INDIVIDUAL_ENTREPRENEUR: 12,
@@ -17,85 +17,48 @@ export const LENGTH_VAT_NUMBER = {
 const checkDigitFunc = (inn: string, coefficients: number[], valueDigit: number) =>
     coefficients.reduce((sum, current, index) => sum + current * Number(inn[index]), 0) % valueDigit;
 
-const checkKaz = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+const checkKaz = (value: string, createError: TCreateErrorFunc) => {
     const checkNumber = checkDigitFunc(value, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 11);
     if (checkNumber === 10) {
         const replyCheckNumber = checkDigitFunc(value, [3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2], 11);
         if (replyCheckNumber === 10 || replyCheckNumber !== Number(value[11])) {
-            return createError({
-                path,
-                message: 'Неверное контрольное число',
-            });
+            return createError('Неверное контрольное число');
         }
         return true;
     }
     if (checkNumber !== Number(value[11])) {
-        return createError({
-            path,
-            message: 'Неверное контрольное число',
-        });
+        return createError('Неверное контрольное число');
     }
     return true;
 };
 
-export const BLRValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const BLRValidate = (value: string, createError: TCreateErrorFunc) => {
     if (value.length !== LENGTH_VAT_NUMBER.BLR_VAT_NUMBER) {
-        return createError({
-            path,
-            message: 'УНБ должен состоять из 9 цифр',
-        });
+        return createError('УНБ должен состоять из 9 цифр');
     }
 
     if (checkDigitFunc(value, [29, 23, 19, 17, 13, 7, 5, 3], 11) === Number(value[8])) {
         return true;
     }
 
-    return createError({
-        path,
-        message: 'Неверное контрольное число',
-    });
+    return createError('Неверное контрольное число');
 };
 
-export const AZEValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const AZEValidate = (value: string, createError: TCreateErrorFunc) => {
     if (value.length !== LENGTH_VAT_NUMBER.AZE_VAT_NUMBER) {
-        return createError({
-            path,
-            message: 'ИНН должен состоять из 10 цифр',
-        });
+        return createError('ИНН должен состоять из 10 цифр');
     }
 
     if (Number(value[value.length - 1]) === 1) {
         return true;
     }
 
-    return createError({
-        path,
-        message: 'Неверное контрольное число',
-    });
+    return createError('Неверное контрольное число');
 };
 
-export const MDAValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const MDAValidate = (value: string, createError: TCreateErrorFunc) => {
     if (value.length !== LENGTH_VAT_NUMBER.MDA_VAT_NUMBER) {
-        return createError({
-            path,
-            message: 'IDNO должен состоять из 13 цифр',
-        });
+        return createError('IDNO должен состоять из 13 цифр');
     }
 
     if (
@@ -105,22 +68,12 @@ export const MDAValidate = (
         return true;
     }
 
-    return createError({
-        path,
-        message: 'Неверное контрольное число',
-    });
+    return createError('Неверное контрольное число');
 };
 
-export const KAZValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const KAZValidate = (value: string, createError: TCreateErrorFunc) => {
     if (value.length !== LENGTH_VAT_NUMBER.KAZ_VAT_NUMBER) {
-        return createError({
-            path,
-            message: 'ИИН/БИН должен состоять из 12 цифр',
-        });
+        return createError('ИИН/БИН должен состоять из 12 цифр');
     }
 
     const iinFourthValue = ['0', '1', '2', '3'];
@@ -133,101 +86,60 @@ export const KAZValidate = (
             Number(value.substring(2, 3)) > 12 ||
             Number(value.substring(0, 1)) > 31
         ) {
-            return createError({
-                path,
-                message: 'Неверное контрольное число',
-            });
+            return createError('Неверное контрольное число');
         }
-        return checkKaz(value, path, createError);
+        return checkKaz(value, createError);
     }
 
     if (binFourthValue.includes(value[4])) {
-        return checkKaz(value, path, createError);
+        return checkKaz(value, createError);
     }
 
-    return createError({
-        path,
-        message: 'Неверное контрольное число',
-    });
+    return createError('Неверное контрольное число');
 };
 
-export const ARMValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const ARMValidate = (value: string, createError: TCreateErrorFunc) => {
     if (value.length !== LENGTH_VAT_NUMBER.ARM_VAT_NUMBER) {
-        return createError({
-            path,
-            message: 'УНН должен состоять из 8 цифр',
-        });
+        return createError('УНН должен состоять из 8 цифр');
     }
 
     return true;
 };
 
-export const UZBValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const UZBValidate = (value: string, createError: TCreateErrorFunc) => {
     if (value.length !== LENGTH_VAT_NUMBER.UZB_VAT_NUMBER) {
-        return createError({
-            path,
-            message: 'ИНН должен состоять из 9 цифр',
-        });
+        return createError('ИНН должен состоять из 9 цифр');
     }
 
     return true;
 };
 
-export const TJKValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const TJKValidate = (value: string, createError: TCreateErrorFunc) => {
     if (
         value.length !== LENGTH_VAT_NUMBER.TJK_VAT_NUMBER_LONG &&
         value.length !== LENGTH_VAT_NUMBER.TJK_VAT_NUMBER_SHORT
     ) {
-        return createError({
-            path,
-            message: 'ИНН должен состоять из 9 или 10 цифр',
-        });
+        return createError('ИНН должен состоять из 9 или 10 цифр');
     }
 
     return true;
 };
 
-export const KGZValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const KGZValidate = (value: string, createError: TCreateErrorFunc) => {
     if (value.length !== LENGTH_VAT_NUMBER.KGZ_VAT_NUMBER) {
-        return createError({
-            path,
-            message: 'ИНН должен состоять из 14 цифр',
-        });
+        return createError('ИНН должен состоять из 14 цифр');
     }
 
     return true;
 };
 
-export const RUSValidate = (
-    value: string,
-    path: string,
-    createError: (params?: yup.CreateErrorOptions | undefined) => yup.ValidationError,
-) => {
+export const RUSValidate = (value: string, createError: TCreateErrorFunc) => {
     if (
         [LENGTH_VAT_NUMBER.RUS_LEGAL_ENTREPRENEUR, LENGTH_VAT_NUMBER.RUS_INDIVIDUAL_ENTREPRENEUR].indexOf(
             value.length,
         ) === -1
     ) {
-        return createError({
-            path,
-            message: 'ИНН должен состоять из 10 или 12 цифр',
-        });
+        return createError('ИНН должен состоять из 10 или 12 цифр');
     } else {
         switch (value.length) {
             case LENGTH_VAT_NUMBER.RUS_LEGAL_ENTREPRENEUR: {
@@ -246,14 +158,8 @@ export const RUSValidate = (
                 break;
             }
             default:
-                return createError({
-                    path,
-                    message: 'Неверное контрольное число',
-                });
+                return createError('Неверное контрольное число');
         }
-        return createError({
-            path,
-            message: 'Неверное контрольное число',
-        });
+        return createError('Неверное контрольное число');
     }
 };

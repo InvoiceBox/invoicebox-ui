@@ -1,5 +1,3 @@
-import * as yup from 'yup';
-
 import {
     ARMValidate,
     AZEValidate,
@@ -13,38 +11,25 @@ import {
     UZBValidate,
 } from './utils/vatNumberValidateHelpers';
 import { RUS_COUNTRY_CODE } from '../components/form/PhoneInput/types';
+import { TCreateErrorFunc } from './types';
 
 export class Validate {
-    static bic(
-        value: string,
-        path: string,
-        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
-    ) {
+    static bic(value: string, createError: TCreateErrorFunc) {
         if (value === '') {
             return true;
         }
 
         if (/[^0-9]/.test(value)) {
-            return createError({
-                path,
-                message: 'БИК может состоять только из цифр',
-            });
+            return createError('БИК может состоять только из цифр');
         }
 
         if (value.length !== 9) {
-            return createError({
-                path,
-                message: 'БИК может состоять только из 9 цифр',
-            });
+            return createError('БИК может состоять только из 9 цифр');
         }
         return true;
     }
 
-    static website(
-        value: string,
-        path: string,
-        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
-    ) {
+    static website(value: string, createError: TCreateErrorFunc) {
         if (value === '') {
             return true;
         }
@@ -56,72 +41,59 @@ export class Validate {
         ) {
             return true;
         }
-        return createError({ path, message: 'Некорректный адрес' });
+        return createError('Некорректный адрес');
     }
 
-    static vatNumber(
-        value: string,
-        path: string,
-        countryId: string,
-        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
-    ) {
+    static vatNumber(value: string, countryId: string, createError: TCreateErrorFunc) {
         switch (countryId) {
             case 'KAZ': {
-                return KAZValidate(value, path, createError);
+                return KAZValidate(value, createError);
             }
             case 'BLR': {
-                return BLRValidate(value, path, createError);
+                return BLRValidate(value, createError);
             }
             case 'MDA': {
-                return MDAValidate(value, path, createError);
+                return MDAValidate(value, createError);
             }
             case 'AZE': {
-                return AZEValidate(value, path, createError);
+                return AZEValidate(value, createError);
             }
             case 'ARM': {
-                return ARMValidate(value, path, createError);
+                return ARMValidate(value, createError);
             }
             case 'UZB': {
-                return UZBValidate(value, path, createError);
+                return UZBValidate(value, createError);
             }
             case 'TJK': {
-                return TJKValidate(value, path, createError);
+                return TJKValidate(value, createError);
             }
             case 'KGZ': {
-                return KGZValidate(value, path, createError);
+                return KGZValidate(value, createError);
             }
             default:
-                return RUSValidate(value, path, createError);
+                return RUSValidate(value, createError);
         }
     }
 
-    static taxRegistrationReasonCode(
-        value: string,
-        path: string,
-        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
-    ) {
+    static taxRegistrationReasonCode(value: string, createError: TCreateErrorFunc) {
         if (value === '') {
             return true;
         }
 
         if (value.length !== 9) {
-            return createError({
-                path,
-                message: 'КПП может состоять только из 9 знаков',
-            });
+            return createError('КПП может состоять только из 9 знаков');
         }
         if (!/^[0-9]{4}[0-9A-Z]{2}[0-9]{3}$/.test(value)) {
-            return createError({ path, message: 'Неправильный формат КПП' });
+            return createError('Неправильный формат КПП');
         }
         return true;
     }
 
     static registrationNumber(
         value: string,
-        path: string,
         vatNumber: string,
         countryId: string,
-        createError: (params?: yup.CreateErrorOptions) => yup.ValidationError,
+        createError: TCreateErrorFunc,
     ) {
         if (!vatNumber || !countryId) {
             // eslint-disable-next-line no-console
@@ -139,10 +111,7 @@ export class Validate {
                 if (n13 === parseInt(value[12], 10)) {
                     return true;
                 } else {
-                    return createError({
-                        path,
-                        message: 'Неправильное контрольное число',
-                    });
+                    return createError('Неправильное контрольное число');
                 }
             }
 
@@ -152,17 +121,11 @@ export class Validate {
                 if (n15 === parseInt(value[14], 10)) {
                     return true;
                 } else {
-                    return createError({
-                        path,
-                        message: 'Неправильное контрольное число',
-                    });
+                    return createError('Неправильное контрольное число');
                 }
             }
 
-            return createError({
-                path,
-                message: 'ОГРН состоит из 13 или 15 знаков',
-            });
+            return createError('ОГРН состоит из 13 или 15 знаков');
         }
 
         return true;
