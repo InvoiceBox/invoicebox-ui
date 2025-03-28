@@ -61,7 +61,8 @@ export const DateInput: FC<TProps> = ({
         if (stringValue && value === resetValue) {
             setStringValue('');
         }
-    }, [stringValue, value]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
 
     const handleStringValueChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setStringValue(event.target.value);
