@@ -11,21 +11,6 @@ const meta: Meta<typeof Select> = {
 
 export default meta;
 
-const selectOptions = [
-    { label: 'Option 1', value: 'option-1', groupId: '1' },
-    { label: 'Option 2', value: 'option-2', groupId: '1' },
-    { label: 'Option 3', value: 'option-3', groupId: '2' },
-    { label: 'Option 4', value: 'option-4', groupId: '2' },
-    { label: 'Option 5', value: 'option-5' },
-    { label: 'Option 6', value: 'option-6' },
-    { label: 'Option 7', value: 'option-7' },
-    { label: 'Option 8', value: 'option-8' },
-    { label: 'Option 9', value: 'option-9' },
-    { label: 'Option 10', value: 'option-10' },
-    { label: 'Option 11', value: 'option-11' },
-    { label: 'Option 12', value: 'option-12' },
-];
-
 const Component = (props: TProps<string>) => {
     const [value, setValue] = useState<string | null>(null);
 
@@ -34,7 +19,7 @@ const Component = (props: TProps<string>) => {
         action('onChange')(newValue);
     }, []);
 
-    return <Select {...props} value={value} onChange={handleChange} options={selectOptions} />;
+    return <Select {...props} value={value} onChange={handleChange} />;
 };
 
 const COMMON_ARGS = {
@@ -43,6 +28,20 @@ const COMMON_ARGS = {
     name: 'name',
     placeholder: 'Placeholder',
     isEnableResetButton: false,
+    options: [
+        { label: 'Option 1', value: 'option-1', groupId: '1' },
+        { label: 'Option 2', value: 'option-2', groupId: '1' },
+        { label: 'Option 3', value: 'option-3', groupId: '2' },
+        { label: 'Option 4', value: 'option-4', groupId: '2' },
+        { label: 'Option 5', value: 'option-5' },
+        { label: 'Option 6', value: 'option-6' },
+        { label: 'Option 7', value: 'option-7' },
+        { label: 'Option 8', value: 'option-8' },
+        { label: 'Option 9', value: 'option-9' },
+        { label: 'Option 10', value: 'option-10' },
+        { label: 'Option 11', value: 'option-11' },
+        { label: 'Option 12', value: 'option-12' },
+    ],
 };
 
 export const Default: StoryObj<TProps<string>> = {
