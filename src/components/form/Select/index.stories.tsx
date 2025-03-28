@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Select } from '.';
+import { Select, TProps } from '.';
 
 const meta: Meta<typeof Select> = {
     title: 'form/Select',
@@ -26,12 +26,35 @@ const selectOptions = [
     { label: 'Option 12', value: 'option-12' },
 ];
 
-export const Default: StoryObj<typeof Select> = {
+const Component = (props: TProps<string>) => {
+    const [value, setValue] = useState<string | null>(null);
+
+    const handleChange = useCallback((newValue: string | null) => {
+        setValue(newValue);
+        action('onChange')(newValue);
+    }, []);
+
+    return <Select {...props} value={value} onChange={handleChange} options={selectOptions} />;
+};
+
+const COMMON_ARGS = {
+    hasError: false,
+    label: 'Label',
+    name: 'name',
+    placeholder: 'Placeholder',
+    isEnableResetButton: false,
+};
+
+export const Default: StoryObj<TProps<string>> = {
     args: {
-        hasError: false,
-        label: 'Label',
-        name: 'name',
-        placeholder: 'Placeholder',
+        ...COMMON_ARGS,
+    },
+    render: Component,
+};
+
+export const WithGroups: StoryObj<TProps<string>> = {
+    args: {
+        ...COMMON_ARGS,
         groups: [
             {
                 label: 'Group 1',
@@ -43,14 +66,5 @@ export const Default: StoryObj<typeof Select> = {
             },
         ],
     },
-    render: function Component(props) {
-        const [value, setValue] = useState<string | null>(null);
-
-        const handleChange = useCallback((newValue: string | null) => {
-            setValue(newValue);
-            action('onChange')(newValue);
-        }, []);
-
-        return <Select {...props} value={value} onChange={handleChange} options={selectOptions} />;
-    },
+    render: Component,
 };

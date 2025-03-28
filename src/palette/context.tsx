@@ -41,6 +41,7 @@ import {
     TEntityAutocompleteOptionsDrawerPalette,
 } from '../components/common/EntityAutocompleteOptionsDrawer/palette';
 import { generateCodeInputPalette, TCodeInputPalette } from '../components/form/CodeInput/palette';
+import { generateResetButtonPalette, TResetButtonPalette } from '../components/form/ResetButton/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -66,6 +67,7 @@ type TContext = {
     drawer: TDrawerPalette;
     entityAutocompleteOptionsDrawer: TEntityAutocompleteOptionsDrawerPalette;
     codeInput: TCodeInputPalette;
+    resetButton: TResetButtonPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -92,4 +94,5 @@ export const PaletteContext = createContext<TContext>({
     drawer: generateDrawerPalette(defaultAbstractPalette),
     entityAutocompleteOptionsDrawer: generateEntityAutocompleteOptionsDrawerPalette(defaultAbstractPalette),
     codeInput: generateCodeInputPalette(defaultAbstractPalette),
+    resetButton: generateResetButtonPalette(defaultAbstractPalette),
 });
