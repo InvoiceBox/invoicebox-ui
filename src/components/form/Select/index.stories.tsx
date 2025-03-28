@@ -27,7 +27,7 @@ const COMMON_ARGS = {
     label: 'Label',
     name: 'name',
     placeholder: 'Placeholder',
-    isEnableResetButton: false,
+    isResetButtonEnabled: false,
     options: [
         { label: 'Option 1', value: 'option-1', groupId: '1' },
         { label: 'Option 2', value: 'option-2', groupId: '1' },

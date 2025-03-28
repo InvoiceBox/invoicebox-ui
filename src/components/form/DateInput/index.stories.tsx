@@ -24,13 +24,18 @@ const Component = (props: TProps) => {
     }, []);
 
     return (
-        <DateInput
-            {...props}
-            maxDate={maxDate ? new Date(maxDate) : undefined}
-            minDate={minDate ? new Date(minDate) : undefined}
-            value={value}
-            onChange={handleChange}
-        />
+        <>
+            <DateInput
+                {...props}
+                maxDate={maxDate ? new Date(maxDate) : undefined}
+                minDate={minDate ? new Date(minDate) : undefined}
+                value={value}
+                onChange={handleChange}
+            />
+            <button type={'button'} onClick={() => setValue(null)}>
+                Reset
+            </button>
+        </>
     );
 };
 

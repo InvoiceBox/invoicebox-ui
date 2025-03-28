@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
 import { logic } from './logic';
 
@@ -18,6 +18,8 @@ export type TProps = {
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'>;
+
+const resetValue = null;
 
 export const DateInput: FC<TProps> = ({
     onChange,
@@ -54,6 +56,13 @@ export const DateInput: FC<TProps> = ({
     );
 
     const [stringValue, setStringValue] = useState(logic.valueToString(value));
+
+    useEffect(() => {
+        if (stringValue && value === resetValue) {
+            setStringValue('');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
 
     const handleStringValueChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         setStringValue(event.target.value);
