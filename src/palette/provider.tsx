@@ -25,6 +25,7 @@ import { generateOrganizationAutocompleteItemPalette } from '../components/form/
 import { generateDrawerPalette } from '../components/common/Drawer/palette';
 import { generateEntityAutocompleteOptionsDrawerPalette } from '../components/common/EntityAutocompleteOptionsDrawer/palette';
 import { generateCodeInputPalette } from '../components/form/CodeInput/palette';
+import { generateResetButtonPalette } from '../components/form/ResetButton/palette';
 
 type TProps = {
     children: ReactNode;
@@ -66,6 +67,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             entityAutocompleteOptionsDrawer:
                 generateEntityAutocompleteOptionsDrawerPalette(mergedAbstractPalette),
             codeInput: generateCodeInputPalette(mergedAbstractPalette),
+            resetButton: generateResetButtonPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );

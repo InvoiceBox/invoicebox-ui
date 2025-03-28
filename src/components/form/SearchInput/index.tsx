@@ -4,9 +4,9 @@ import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as PureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { SearchIcon } from './components/SearchIcon';
-import { CrossIcon } from './components/CrossIcon';
 import { useComponentPalette } from '../../../palette';
 import { TSearchInputPalette } from './palette';
+import { ResetButton } from '../ResetButton';
 
 export type TProps = Pick<
     PureInputProps,
@@ -64,13 +64,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     isOnlyNumbers={isOnlyNumbers}
                 />
                 <S.IconWrapper $inFocus={inFocus} $palette={palette}>
-                    {value ? (
-                        <S.ResetButton type="button" onClick={handleInputReset}>
-                            <CrossIcon />
-                        </S.ResetButton>
-                    ) : (
-                        <SearchIcon />
-                    )}
+                    {value ? <ResetButton onClick={handleInputReset} /> : <SearchIcon />}
                 </S.IconWrapper>
             </InputLabel>
         );
