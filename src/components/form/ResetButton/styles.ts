@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ButtonWrapper = styled.button<{ $color: string }>`
+export const StyledButton = styled.button<{ $color: string }>`
     display: flex;
     align-content: center;
     justify-content: center;

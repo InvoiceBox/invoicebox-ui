@@ -12,8 +12,8 @@ export const ResetButton: FC<TProps> = ({ onClick }) => {
     const palette = useComponentPalette<TResetButtonPalette>('resetButton');
 
     return (
-        <S.ButtonWrapper type="button" onClick={onClick} $color={palette.color}>
+        <S.StyledButton type="button" onClick={onClick} $color={palette.color}>
             <CrossIcon />
-        </S.ButtonWrapper>
+        </S.StyledButton>
     );
 };
