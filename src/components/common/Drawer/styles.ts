@@ -1,9 +1,13 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { BottomSheet as LibBottomSheet } from 'react-spring-bottom-sheet';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { TDrawerPalette } from './palette';
 
-export const BottomSheet = styled(LibBottomSheet)<{ $isHaveHeader: boolean; $palette: TDrawerPalette }>`
+export const BottomSheet = styled(LibBottomSheet)<{
+    $isHaveHeader: boolean;
+    $palette: TDrawerPalette;
+    $overflow?: string;
+}>`
     --rsbs-backdrop-bg: ${({ $palette }) => $palette.backdropBg};
     --rsbs-bg: ${({ $palette }) => $palette.bg};
     --rsbs-overlay-rounded: 10px;
@@ -37,6 +41,18 @@ export const BottomSheet = styled(LibBottomSheet)<{ $isHaveHeader: boolean; $pal
             margin-bottom: -20px;
         `}
     }
+
+    ${({ $overflow }) =>
+        $overflow &&
+        css`
+            [data-rsbs-content] {
+                overflow: visible;
+            }
+
+            [data-rsbs-scroll] {
+                overflow: visible;
+            }
+        `}
 `;
 
 export const Title = styled.div<{ $bg: string }>`
@@ -45,9 +61,14 @@ export const Title = styled.div<{ $bg: string }>`
     border-radius: inherit;
 `;
 
-export const Body = styled.div<{ $isErrorBorder?: boolean; $isPadding: boolean; $errorColor: string }>`
+export const Body = styled.div<{
+    $isErrorBorder?: boolean;
+    $isPadding: boolean;
+    $errorColor: string;
+    $overflow?: string;
+}>`
     position: relative;
-    overflow: auto;
+    overflow: ${({ $overflow }) => $overflow || 'auto'};
     flex: 1;
     border-radius: 10px 10px 0 0;
     ${({ $isErrorBorder, $errorColor }) => $isErrorBorder && `border-top: 2px solid ${$errorColor};`}
