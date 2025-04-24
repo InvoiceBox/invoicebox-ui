@@ -5,8 +5,10 @@ export type TProps = {
     value: string;
     image?: string;
     bgColor?: string;
+    fgColor?: string;
     size?: number;
     id?: string;
+    imageSettings: { src?: string; height?: number; width?: number; excavate?: boolean };
 };
 
 export const QRCode: FC<TProps> = ({ image, ...others }) => (
@@ -21,6 +23,7 @@ export const QRCode: FC<TProps> = ({ image, ...others }) => (
                       height: 39,
                       width: 39,
                       excavate: false,
+                      ...others.imageSettings,
                   }
                 : undefined
         }
