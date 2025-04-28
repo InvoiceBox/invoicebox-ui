@@ -22,7 +22,7 @@ export const Default: StoryObj<typeof PaymentCard> = {
     },
 };
 
-export const ShortLogo: StoryObj<typeof PaymentCard> = {
+export const DefaultCircleLogo: StoryObj<typeof PaymentCard> = {
     args: {
         title: 'Альфа-банк',
         isActive: false,
@@ -32,7 +32,7 @@ export const ShortLogo: StoryObj<typeof PaymentCard> = {
     },
 };
 
-export const LongLogo: StoryObj<typeof PaymentCard> = {
+export const NotCircleLogo: StoryObj<typeof PaymentCard> = {
     args: {
         title: 'Альфа-банк',
         isActive: false,
