@@ -39,7 +39,7 @@ export const LongLogo: StoryObj<typeof PaymentCard> = {
         isDisabled: false,
         comment: 'Комиссия 10 руб',
         icon: <WbPayIcon />,
-        isOutContainerIcon: true,
+        isCircleIconLayout: false,
     },
 };
 

@@ -14,7 +14,7 @@ type TProps = {
     onClick?: () => void;
     icon?: ReactNode;
     comment?: string;
-    isOutContainerIcon?: boolean;
+    isCircleIconLayout?: boolean;
 };
 
 export const PaymentCard: FC<TProps> = ({
@@ -25,7 +25,7 @@ export const PaymentCard: FC<TProps> = ({
     isDisabled = false,
     children,
     comment,
-    isOutContainerIcon,
+    isCircleIconLayout = true,
 }) => {
     const palette = useComponentPalette<TPaymentCardPalette>('paymentCard');
 
@@ -52,12 +52,12 @@ export const PaymentCard: FC<TProps> = ({
                 </S.Title>
                 {children}
             </S.Content>
-            {isOutContainerIcon ? (
-                <S.OutContainerIconWrapper>{icon}</S.OutContainerIconWrapper>
-            ) : (
+            {isCircleIconLayout ? (
                 <S.IconWrapper $pallete={palette} $isActive={isActive}>
                     {icon || <DefaultLogo />}
                 </S.IconWrapper>
+            ) : (
+                <S.OutContainerIconWrapper>{icon || <DefaultLogo />}</S.OutContainerIconWrapper>
             )}
             {comment && (
                 <S.Comment $pallete={palette} $isActive={isActive} variant="captionSRegular">
