@@ -75,6 +75,10 @@ export const Title = styled(Typography)<{ $ellipsis: boolean; $pallete: TPayment
     color: ${({ $pallete }) => $pallete.title};
 `;
 
+export const OutContainerIconWrapper = styled.div`
+    flex-shrink: 0;
+`;
+
 export const IconWrapper = styled.div<{ $isActive: boolean; $pallete: TPaymentCardPalette }>`
     flex-shrink: 0;
     flex-grow: 0;
