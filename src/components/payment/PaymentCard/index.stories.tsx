@@ -2,6 +2,8 @@ import React from 'react';
 import type { Meta } from '@storybook/react';
 import { StoryObj } from '@storybook/react';
 import { PaymentCard } from '.';
+import { QiwiLogo } from './components/QiwiLogo';
+import { WbPayIcon } from './components/WbPayIcon';
 
 const meta: Meta<typeof PaymentCard> = {
     title: 'payment/PaymentCard',
@@ -17,6 +19,27 @@ export const Default: StoryObj<typeof PaymentCard> = {
         isActive: false,
         isDisabled: false,
         comment: 'Комиссия 10 руб',
+    },
+};
+
+export const ShortLogo: StoryObj<typeof PaymentCard> = {
+    args: {
+        title: 'Альфа-банк',
+        isActive: false,
+        isDisabled: false,
+        comment: 'Комиссия 10 руб',
+        icon: <QiwiLogo />,
+    },
+};
+
+export const LongLogo: StoryObj<typeof PaymentCard> = {
+    args: {
+        title: 'Альфа-банк',
+        isActive: false,
+        isDisabled: false,
+        comment: 'Комиссия 10 руб',
+        icon: <WbPayIcon />,
+        isOutContainerIcon: true,
     },
 };
 
