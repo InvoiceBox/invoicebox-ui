@@ -75,15 +75,21 @@ export const Title = styled(Typography)<{ $ellipsis: boolean; $pallete: TPayment
     color: ${({ $pallete }) => $pallete.title};
 `;
 
-export const OutContainerIconWrapper = styled.div`
+export const OutContainerIconWrapper = styled.div<{ $isActive: boolean; $pallete: TPaymentCardPalette }>`
     flex-shrink: 0;
+    height: 36px;
+    padding: 0 5px;
+    background-color: ${({ $isActive, $pallete }) => ($isActive ? 'transparent' : $pallete.iconBg)};
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
 `;
 
 export const IconWrapper = styled.div<{ $isActive: boolean; $pallete: TPaymentCardPalette }>`
     flex-shrink: 0;
     flex-grow: 0;
     width: 36px;
-    height: 36px;
+
     border-radius: 50%;
     background-color: ${({ $isActive, $pallete }) => ($isActive ? 'transparent' : $pallete.iconBg)};
     display: flex;
