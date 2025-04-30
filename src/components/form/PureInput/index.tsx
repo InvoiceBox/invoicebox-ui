@@ -53,8 +53,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             <S.Wrapper
                 ref={ref}
                 variant="bodyMRegular"
-                // When never is remove then error
-                element={element as never}
+                element={element}
                 $paddingLeft={paddingLeft}
                 $paddingRight={paddingRight}
                 $paddingTop={paddingTop}
