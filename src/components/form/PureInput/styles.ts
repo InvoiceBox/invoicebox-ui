@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { TPureInputPalette } from './palette';
-import { Typography } from '../../common/Typography';
+import { InputWithTypography } from '../../common/Typography';
 
-export const Wrapper = styled(Typography)<{
+export const Wrapper = styled(InputWithTypography)<{
     $paddingLeft: number;
     $paddingRight: number;
     $paddingTop: number;

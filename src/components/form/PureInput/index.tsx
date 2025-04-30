@@ -1,19 +1,21 @@
-import React, { ChangeEvent, InputHTMLAttributes, useCallback } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes, TextareaHTMLAttributes, useCallback } from 'react';
 import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TPureInputPalette } from './palette';
 
-export type TProps = InputHTMLAttributes<HTMLInputElement> & {
-    paddingLeft?: number;
-    paddingRight?: number;
-    paddingTop?: number;
-    paddingBottom?: number;
-    hasError?: boolean;
-    inFocus?: boolean;
-    hasBorder?: boolean;
-    isOnlyNumbers?: boolean;
-    className?: never;
-};
+export type TProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' | 'onChange' | 'onFocus'> &
+    InputHTMLAttributes<HTMLInputElement> & {
+        paddingLeft?: number;
+        paddingRight?: number;
+        paddingTop?: number;
+        paddingBottom?: number;
+        hasError?: boolean;
+        inFocus?: boolean;
+        hasBorder?: boolean;
+        isOnlyNumbers?: boolean;
+        className?: never;
+        element?: 'input' | 'textarea';
+    };
 
 export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
     (
@@ -29,6 +31,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             className,
             onChange,
+            element = 'input',
             ...rest
         },
         ref,
@@ -50,7 +53,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             <S.Wrapper
                 ref={ref}
                 variant="bodyMRegular"
-                element="input"
+                element={element}
                 $paddingLeft={paddingLeft}
                 $paddingRight={paddingRight}
                 $paddingTop={paddingTop}
