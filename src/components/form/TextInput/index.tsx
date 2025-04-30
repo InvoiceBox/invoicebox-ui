@@ -18,12 +18,14 @@ export type TProps = Pick<TInputLabelProps, 'label'> &
         | 'type'
         | 'isOnlyNumbers'
         | 'autoFocus'
+        | 'rows'
     > & {
         value: string;
         onChange: (value: string) => void;
         maxLength?: number;
         size?: TSizes;
         children?: ReactNode;
+        element?: 'input' | 'textarea';
     };
 
 export const TextInput: FC<TProps> = ({
@@ -43,6 +45,7 @@ export const TextInput: FC<TProps> = ({
     size = 'L',
     isOnlyNumbers,
     autoFocus,
+    element = 'input',
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -70,6 +73,7 @@ export const TextInput: FC<TProps> = ({
                     type={type}
                     isOnlyNumbers={isOnlyNumbers}
                     autoFocus={autoFocus}
+                    element={element}
                     {...SIZE_PADDING_MAP[size]}
                 />
                 {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
