@@ -34,11 +34,12 @@ export const Typography: FC<TProps> = ({ variant, element = 'div', ...rest }) =>
     return <S.Wrapper as={element} $variant={variant} {...rest} />;
 };
 
-export const InputWithTypography = forwardRef<HTMLInputElement, TGeneralProps & TInputProps>(
-    ({ variant, element = 'input', ...rest }, ref) => {
-        return <S.Wrapper ref={ref} as={element} $variant={variant} {...rest} />;
-    },
-);
+export const InputWithTypography = forwardRef<
+    HTMLInputElement,
+    TGeneralProps & (TInputProps | TTextAreaProps)
+>(({ variant, element = 'input', ...rest }, ref) => {
+    return <S.Wrapper ref={ref} as={element} $variant={variant} {...rest} />;
+});
 
 Typography.displayName = 'Typography';
 InputWithTypography.displayName = 'InputWithTypography';
