@@ -12,6 +12,7 @@ export const Wrapper = styled(InputWithTypography)<{
     $hasBorder: boolean;
     $palette: TPureInputPalette;
 }>`
+    resize: none;
     color: ${({ $palette }) => $palette.text};
     border-radius: 10px;
     outline: none;
