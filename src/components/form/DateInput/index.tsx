@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './styles';
 import { logic } from './logic';
 
@@ -35,6 +35,7 @@ export const DateInput: FC<TProps> = ({
     withTime = false,
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const [isOpen, setOpenFlag] = useState(false);
 
@@ -90,8 +91,14 @@ export const DateInput: FC<TProps> = ({
     const handleCalendarChange = useCallback(
         (newValue: Date) => {
             handleClose();
-            setStringValue(logic.valueToString(newValue, withTime));
-            onChange(newValue);
+
+            if (withTime) {
+                setStringValue(logic.valueToString(newValue, false) + ' ');
+                inputRef.current?.focus();
+            } else {
+                setStringValue(logic.valueToString(newValue, false));
+                onChange(newValue);
+            }
         },
         [handleClose, withTime, onChange],
     );
@@ -101,6 +108,7 @@ export const DateInput: FC<TProps> = ({
             <InputLabel inFocus={inFocus} label={label}>
                 <S.InputWrapper>
                     <PureInput
+                        ref={inputRef}
                         hasError={hasError}
                         inFocus={inFocus}
                         name={name}

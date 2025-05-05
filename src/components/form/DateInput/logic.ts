@@ -35,7 +35,7 @@ class Logic {
         const [dateStr, timeStr] = str.split(' ');
 
         const [dd, mm, yyyy] = dateStr.split('.');
-        const [hours, minutes] = timeStr.split(':');
+        const [hours, minutes] = timeStr ? timeStr.split(':') : ['00', '00'];
 
         const formattedDateStr = [mm, dd, yyyy].filter((i) => i).join('/');
         const formattedTimeStr = [hours, minutes, '00'].filter((i) => i).join(':');
