@@ -22,7 +22,7 @@ export const Icon = styled.div<{ $palette: TDateInputPalette }>`
     color: ${({ $palette }) => $palette.icon};
 `;
 
-export const Calendar = styled.div`
+export const CalendarWrapper = styled.div`
     padding: 30px;
 
     @media ${breakpoints.sm} {

@@ -15,6 +15,7 @@ import { TDateInputPalette } from './palette';
 export type TProps = {
     value: Date | null;
     onChange: (value: Date) => void;
+    withTime?: boolean;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'>;
@@ -31,6 +32,7 @@ export const DateInput: FC<TProps> = ({
     label,
     minDate,
     maxDate,
+    withTime = false,
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
 
@@ -55,7 +57,7 @@ export const DateInput: FC<TProps> = ({
         [focusHandler, handleClose],
     );
 
-    const [stringValue, setStringValue] = useState(logic.valueToString(value));
+    const [stringValue, setStringValue] = useState(logic.valueToString(value, withTime));
 
     useEffect(() => {
         if (stringValue && value === resetValue) {
@@ -72,26 +74,26 @@ export const DateInput: FC<TProps> = ({
         (event: FocusEvent<HTMLInputElement>) => {
             blurHandler(event);
 
-            const newValue = logic.stringToDate(stringValue);
+            const newValue = logic.stringToDate(stringValue, withTime);
 
             if (!logic.isValid(newValue) || !logic.isBetweenMinAndMax(newValue, minDate, maxDate)) {
-                setStringValue(logic.valueToString(value));
+                setStringValue(logic.valueToString(value, withTime));
                 return;
             }
 
-            setStringValue(logic.valueToString(newValue));
+            setStringValue(logic.valueToString(newValue, withTime));
             onChange(newValue);
         },
-        [blurHandler, value, stringValue, onChange, maxDate, minDate],
+        [blurHandler, stringValue, minDate, maxDate, withTime, onChange, value],
     );
 
     const handleCalendarChange = useCallback(
         (newValue: Date) => {
             handleClose();
-            setStringValue(logic.valueToString(newValue));
+            setStringValue(logic.valueToString(newValue, withTime));
             onChange(newValue);
         },
-        [onChange, handleClose],
+        [handleClose, withTime, onChange],
     );
 
     return (
@@ -102,7 +104,7 @@ export const DateInput: FC<TProps> = ({
                         hasError={hasError}
                         inFocus={inFocus}
                         name={name}
-                        placeholder={logic.getPlaceholder()}
+                        placeholder={logic.getPlaceholder(withTime)}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         value={stringValue}
@@ -115,14 +117,14 @@ export const DateInput: FC<TProps> = ({
                 </S.InputWrapper>
             </InputLabel>
             <Dropdown isOpen={isOpen} isAutoPosition>
-                <S.Calendar>
+                <S.CalendarWrapper>
                     <Calendar
                         value={value}
                         onChange={handleCalendarChange}
                         minDate={minDate}
                         maxDate={maxDate}
                     />
-                </S.Calendar>
+                </S.CalendarWrapper>
             </Dropdown>
         </S.Wrapper>
     );

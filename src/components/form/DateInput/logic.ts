@@ -1,8 +1,8 @@
 class Logic {
     private today = new Date();
 
-    getPlaceholder() {
-        return this.valueToString(this.today);
+    getPlaceholder(withTime: boolean) {
+        return this.valueToString(this.today, withTime);
     }
 
     isValid(date: Date): boolean {
@@ -16,17 +16,31 @@ class Logic {
     }
 
     // Date => 31.01.2023
-    valueToString(value: null | Date): string {
+    valueToString(value: null | Date, withTime: boolean): string {
         if (!value) return '';
         const toTwoDigits = (item: number) => `0${item}`.slice(-2);
-        const date = [toTwoDigits(value.getDate()), toTwoDigits(value.getMonth() + 1), value.getFullYear()];
-        return date.join('.');
+        const date = [
+            toTwoDigits(value.getDate()),
+            toTwoDigits(value.getMonth() + 1),
+            value.getFullYear(),
+        ].join('.');
+
+        const time = [toTwoDigits(value.getHours()), toTwoDigits(value.getMinutes())].join(':');
+
+        return withTime ? date + ' ' + time : date;
     }
 
     // 31.01.2023 => Date
-    stringToDate(str: string): Date {
-        const [dd, mm, yyyy] = str.split('.');
-        return new Date([mm, dd, yyyy].filter((i) => i).join('/'));
+    stringToDate(str: string, withTime: boolean): Date {
+        const [dateStr, timeStr] = str.split(' ');
+
+        const [dd, mm, yyyy] = dateStr.split('.');
+        const [hours, minutes] = timeStr.split(':');
+
+        const formattedDateStr = [mm, dd, yyyy].filter((i) => i).join('/');
+        const formattedTimeStr = [hours, minutes, '00'].filter((i) => i).join(':');
+
+        return new Date(withTime ? formattedDateStr + ' ' + formattedTimeStr : formattedDateStr);
     }
 }
 
