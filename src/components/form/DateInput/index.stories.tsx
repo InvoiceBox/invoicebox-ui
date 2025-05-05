@@ -39,10 +39,17 @@ const Component = (props: TProps) => {
     );
 };
 
+const COMMON_ARGS = {
+    hasError: false,
+    label: 'Label',
+};
+
 export const Default: StoryObj<typeof DateInput> = {
-    args: {
-        hasError: false,
-        label: 'Label',
-    },
+    args: COMMON_ARGS,
+    render: Component,
+};
+
+export const WithTime: StoryObj<typeof DateInput> = {
+    args: { ...COMMON_ARGS, withTime: true },
     render: Component,
 };
