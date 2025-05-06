@@ -21,7 +21,7 @@ export const Toggle: FC<TProps> = ({ checked, variant = 'small', label, onChange
     };
 
     return (
-        <S.Label>
+        <S.Label $color={palette.label}>
             <S.StyledInput
                 $variant={variant as TToggleSize}
                 $palette={palette}
