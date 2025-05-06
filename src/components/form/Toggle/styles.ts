@@ -4,12 +4,13 @@ import { TTogglePalette } from './palette';
 
 export type TToggleSize = 'small' | 'medium';
 
-export const Label = styled.label`
+export const Label = styled.label<{ $color: string }>`
     display: inline-flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
     box-sizing: border-box;
+    color: ${({ $color }) => $color};
 `;
 
 export const INPUT_VARIANT_MAP: Record<
