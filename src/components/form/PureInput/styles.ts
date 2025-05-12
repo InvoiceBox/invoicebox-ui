@@ -13,6 +13,10 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     $hasBorder: boolean;
     $palette: TPureInputPalette;
 }>`
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+
     resize: none;
     color: ${({ $palette }) => $palette.text};
     border-radius: 10px;
