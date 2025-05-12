@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { TPureInputPalette } from './palette';
 import { InputWithTypography } from '../../common/Typography';
+import { ElementType } from 'react';
 
-export const Wrapper = styled(InputWithTypography)<{
+export const getPureInputStyled = (component: ElementType) => styled(component)<{
     $paddingLeft: number;
     $paddingRight: number;
     $paddingTop: number;
@@ -66,3 +67,5 @@ export const Wrapper = styled(InputWithTypography)<{
             color 0s 600000s !important;
     }
 `;
+
+export const Wrapper = getPureInputStyled(InputWithTypography);
