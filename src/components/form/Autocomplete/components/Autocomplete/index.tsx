@@ -18,6 +18,7 @@ import { InputLabel } from '../../../InputLabel';
 import { PureInput } from '../../../PureInput';
 import { Dropdown } from '../../../../common/Dropdown';
 import { Scrollbar } from '../../../../common/Scrollbar';
+import { SIZE_PADDING_MAP, TSizes } from '../../../constants';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -49,6 +50,7 @@ type TControlProps = {
     hasError?: boolean;
     isLoading?: boolean;
     optionsLoader?: ReactNode;
+    size?: TSizes;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -74,6 +76,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             optionsLoader,
             inputMaxLength,
             isInputOnlyNumbers = false,
+            size = 'L',
         },
         ref,
     ) => {
@@ -130,6 +133,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             paddingLeft={inputPaddingLeft}
                             maxLength={inputMaxLength}
                             isOnlyNumbers={isInputOnlyNumbers}
+                            {...SIZE_PADDING_MAP[size]}
                         />
                     </S.InputLabelContent>
                 </InputLabel>
