@@ -31,7 +31,7 @@ export const PositiveIntegerInput: FC<TProps> = ({
     onFocus,
     onBlur,
     name,
-    size = 'L',
+    size = 'M',
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 

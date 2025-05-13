@@ -31,7 +31,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             autoFocus,
             isOnlyNumbers,
             maxLength,
-            size = 'L',
+            size = 'M',
         },
         ref,
     ) => {

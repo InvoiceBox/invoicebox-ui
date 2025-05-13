@@ -42,7 +42,7 @@ export const TextInput: FC<TProps> = ({
     paddingRight,
     type,
     children,
-    size = 'L',
+    size = 'M',
     isOnlyNumbers,
     autoFocus,
     element = 'input',

@@ -51,7 +51,7 @@ export const PhoneInput: FC<TProps> = ({
     countries,
     onCountryChange,
     pureInputProps,
-    size = 'L',
+    size = 'M',
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
