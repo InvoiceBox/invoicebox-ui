@@ -11,6 +11,7 @@ import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
 import { Icon } from './components/Icon';
 import { useComponentPalette } from '../../../palette';
 import { TDateInputPalette } from './palette';
+import { SIZE_PADDING_MAP, TSizes } from '../constants';
 
 export type TProps = {
     value: Date | null;
@@ -18,7 +19,7 @@ export type TProps = {
     withTime?: boolean;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
-    Pick<TCalendarProps, 'maxDate' | 'minDate'>;
+    Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
 
 const resetValue = null;
 
@@ -33,6 +34,7 @@ export const DateInput: FC<TProps> = ({
     minDate,
     maxDate,
     withTime = false,
+    size = 'L',
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -118,6 +120,7 @@ export const DateInput: FC<TProps> = ({
                         value={stringValue}
                         onChange={handleStringValueChange}
                         paddingRight={44}
+                        {...SIZE_PADDING_MAP[size]}
                     />
                     <S.Icon onClick={handleTrigger} $palette={palette}>
                         <Icon />

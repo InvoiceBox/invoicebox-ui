@@ -8,6 +8,7 @@ import { useFilters } from './hooks/useFilters';
 import { useNormalizers } from './hooks/useNormalizers';
 import { useIncrement } from './hooks/useIncrement';
 import { useIncrementDisabledFlags } from './hooks/useIncrementDisabledFlags';
+import { SIZE_PADDING_MAP, TSizes } from '../constants';
 
 export type TProps = {
     value: number | null;
@@ -15,7 +16,9 @@ export type TProps = {
     max?: number;
     upAndDown?: boolean;
 } & Pick<TInputLabelProps, 'label'> &
-    Pick<TPureInputProps, 'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name'>;
+    Pick<TPureInputProps, 'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name'> & {
+        size?: TSizes;
+    };
 
 export const PositiveIntegerInput: FC<TProps> = ({
     value,
@@ -28,6 +31,7 @@ export const PositiveIntegerInput: FC<TProps> = ({
     onFocus,
     onBlur,
     name,
+    size = 'L',
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -66,6 +70,7 @@ export const PositiveIntegerInput: FC<TProps> = ({
                     value={normalizeFrom(value)}
                     onChange={handleChange}
                     paddingRight={upAndDown ? 44 : undefined}
+                    {...SIZE_PADDING_MAP[size]}
                 />
                 {upAndDown && (
                     <S.Arrows>

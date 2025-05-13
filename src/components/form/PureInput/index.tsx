@@ -20,10 +20,10 @@ export type TProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' 
 export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
     (
         {
-            paddingLeft = 18,
-            paddingRight = 18,
-            paddingTop = 12,
-            paddingBottom = 12,
+            paddingLeft = 20,
+            paddingRight = 12,
+            paddingTop = 16,
+            paddingBottom = 16,
             hasError = false,
             inFocus = false,
             hasBorder = true,

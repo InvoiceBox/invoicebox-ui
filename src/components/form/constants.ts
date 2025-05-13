@@ -1,6 +1,7 @@
-export type TSizes = 'M' | 'L';
+export type TSizes = 'M' | 'L' | 'XS';
 
 export const SIZE_PADDING_MAP: Record<TSizes, { paddingTop: number; paddingBottom: number }> = {
-    L: { paddingTop: 12, paddingBottom: 12 },
-    M: { paddingTop: 8, paddingBottom: 8 },
+    L: { paddingTop: 16, paddingBottom: 16 },
+    M: { paddingTop: 13, paddingBottom: 13 },
+    XS: { paddingTop: 10, paddingBottom: 10 },
 };
