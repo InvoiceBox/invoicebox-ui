@@ -19,7 +19,7 @@ export type TProps = Pick<
 
 export const CoreCurrencyInput: FC<TProps> = ({
     label,
-    size = 'L',
+    size = 'M',
     hasError = false,
     value,
     allowNegativeValue = false,

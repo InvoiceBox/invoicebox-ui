@@ -22,8 +22,8 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
         {
             paddingLeft = 20,
             paddingRight = 12,
-            paddingTop = 16,
-            paddingBottom = 16,
+            paddingTop = 13,
+            paddingBottom = 13,
             hasError = false,
             inFocus = false,
             hasBorder = true,

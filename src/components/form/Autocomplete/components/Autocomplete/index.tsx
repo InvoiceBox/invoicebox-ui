@@ -76,7 +76,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             optionsLoader,
             inputMaxLength,
             isInputOnlyNumbers = false,
-            size = 'L',
+            size = 'M',
         },
         ref,
     ) => {

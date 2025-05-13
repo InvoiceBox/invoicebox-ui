@@ -21,7 +21,7 @@ export const Input: FC<TProps> = ({
     label,
     isOpen,
     onReset,
-    size = 'L',
+    size = 'M',
 }) => {
     const isShowResetIcon = !!value && !!onReset;
 

@@ -34,7 +34,7 @@ export const DateInput: FC<TProps> = ({
     minDate,
     maxDate,
     withTime = false,
-    size = 'L',
+    size = 'M',
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
