@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../../InputLabel';
 import { useInputFocus } from '../../../../hooks/useInputFocus';
 import { StyledCurrencyInputFromLibrary } from './styles';
-import { SIZE_PADDING_MAP, TSizes } from '../../constants';
+import { SIZE_PARAMS_MAP, TSizes } from '../../constants';
 import { useComponentPalette } from '../../../../palette';
 import { TPureInputPalette } from '../../PureInput/palette';
 import { CurrencyInputProps } from 'react-currency-input-field';
@@ -31,7 +31,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
     const { inFocus, handleFocus, handleBlur } = useInputFocus();
     const palette = useComponentPalette<TPureInputPalette>('pureInput');
 
-    const { paddingBottom, paddingTop } = SIZE_PADDING_MAP[size];
+    const { paddingBottom, paddingTop, variant } = SIZE_PARAMS_MAP[size];
 
     return (
         <InputLabel inFocus={inFocus} label={label} disabled={disabled}>
@@ -40,6 +40,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
                 $hasBorder
                 $paddingLeft={18}
                 $paddingRight={18}
+                $variant={variant}
                 $paddingTop={paddingTop}
                 $paddingBottom={paddingBottom}
                 $hasError={hasError}

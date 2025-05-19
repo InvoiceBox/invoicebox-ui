@@ -7,7 +7,7 @@ import { SearchIcon } from './components/SearchIcon';
 import { useComponentPalette } from '../../../palette';
 import { TSearchInputPalette } from './palette';
 import { ResetButton } from '../ResetButton';
-import { SIZE_PADDING_MAP, TSizes } from '../constants';
+import { SIZE_PARAMS_MAP, TSizes } from '../constants';
 
 export type TProps = Pick<
     PureInputProps,
@@ -65,7 +65,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     name={name}
                     maxLength={maxLength}
                     isOnlyNumbers={isOnlyNumbers}
-                    {...SIZE_PADDING_MAP[size]}
+                    {...SIZE_PARAMS_MAP[size]}
                 />
                 <S.IconWrapper $inFocus={inFocus} $palette={palette}>
                     {value ? <ResetButton onClick={handleInputReset} /> : <SearchIcon />}

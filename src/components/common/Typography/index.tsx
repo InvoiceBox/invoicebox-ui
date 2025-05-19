@@ -27,19 +27,20 @@ type TGeneralProps = {
     variant: keyof typeof typography;
 };
 
-export type TProps = TGeneralProps &
+export type TTypographyProps = TGeneralProps &
     (TDivProps | TParagraphProps | TSpanProps | THeadingProps | TButtonProps | TInputProps | TTextAreaProps);
 
-export const Typography: FC<TProps> = ({ variant, element = 'div', ...rest }) => {
+export const Typography: FC<TTypographyProps> = ({ variant, element = 'div', ...rest }) => {
     return <S.Wrapper as={element} $variant={variant} {...rest} />;
 };
 
-export const InputWithTypography = forwardRef<
-    HTMLInputElement,
-    TGeneralProps & (TInputProps | TTextAreaProps)
->(({ variant, element = 'input', ...rest }, ref) => {
-    return <S.Wrapper ref={ref} as={element} $variant={variant} {...rest} />;
-});
+export type TInputWithTypographyProps = TGeneralProps & (TInputProps | TTextAreaProps);
+
+export const InputWithTypography = forwardRef<HTMLInputElement, TInputWithTypographyProps>(
+    ({ variant, element = 'input', ...rest }, ref) => {
+        return <S.Wrapper ref={ref} as={element} $variant={variant} {...rest} />;
+    },
+);
 
 Typography.displayName = 'Typography';
 InputWithTypography.displayName = 'InputWithTypography';

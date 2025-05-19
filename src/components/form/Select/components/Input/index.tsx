@@ -4,7 +4,7 @@ import { InputLabel, TProps as TInputLabelProps } from '../../../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../../../PureInput';
 import { Arrow, TProps as TArrowProps } from '../../../../common/Arrow';
 import { ResetButton } from '../../../ResetButton';
-import { SIZE_PADDING_MAP, TSizes } from '../../../constants';
+import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 
 export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label'> &
     Pick<TPureInputProps, 'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value'> &
@@ -38,7 +38,7 @@ export const Input: FC<TProps> = ({
                     value={value}
                     readOnly
                     paddingRight={52}
-                    {...SIZE_PADDING_MAP[size]}
+                    {...SIZE_PARAMS_MAP[size]}
                 />
 
                 <S.IconWrapper $pointerEvents={isShowResetIcon ? 'default' : 'none'}>

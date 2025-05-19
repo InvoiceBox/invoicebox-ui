@@ -3,7 +3,7 @@ import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
-import { SIZE_PADDING_MAP, TSizes } from '../constants';
+import { SIZE_PARAMS_MAP, TSizes } from '../constants';
 
 export type TProps = Pick<TInputLabelProps, 'label'> &
     Pick<
@@ -76,7 +76,7 @@ export const TextInput: FC<TProps> = ({
                     autoFocus={autoFocus}
                     element={element}
                     rows={rows}
-                    {...SIZE_PADDING_MAP[size]}
+                    {...SIZE_PARAMS_MAP[size]}
                 />
                 {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
             </S.InputLabelContent>

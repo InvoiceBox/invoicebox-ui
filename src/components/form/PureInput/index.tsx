@@ -2,9 +2,11 @@ import React, { ChangeEvent, InputHTMLAttributes, TextareaHTMLAttributes, useCal
 import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TPureInputPalette } from './palette';
+import { TInputWithTypographyProps } from '../../common/Typography';
 
 export type TProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' | 'onChange' | 'onFocus'> &
-    InputHTMLAttributes<HTMLInputElement> & {
+    InputHTMLAttributes<HTMLInputElement> &
+    Partial<Pick<TInputWithTypographyProps, 'variant'>> & {
         paddingLeft?: number;
         paddingRight?: number;
         paddingTop?: number;
@@ -32,6 +34,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             className,
             onChange,
             element = 'input',
+            variant = 'bodyMRegular',
             ...rest
         },
         ref,
@@ -52,7 +55,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
         return (
             <S.Wrapper
                 ref={ref}
-                variant="bodyMRegular"
+                variant={variant}
                 element={element}
                 $paddingLeft={paddingLeft}
                 $paddingRight={paddingRight}

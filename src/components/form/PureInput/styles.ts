@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { TPureInputPalette } from './palette';
 import { InputWithTypography } from '../../common/Typography';
 import { ElementType } from 'react';
+import { typography } from '../../common/Typography/typography';
 
 export const getPureInputStyled = (component: ElementType) => styled(component)<{
     $paddingLeft: number;
@@ -12,10 +13,10 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     $inFocus: boolean;
     $hasBorder: boolean;
     $palette: TPureInputPalette;
+    // only for StyledCurrencyInputFromLibrary
+    $variant?: keyof typeof typography;
 }>`
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
+    ${({ $variant }) => $variant && typography[$variant]}
 
     resize: none;
     color: ${({ $palette }) => $palette.text};
