@@ -57,6 +57,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
                 decimalSeparator={','}
                 groupSeparator={' '}
                 disabled={disabled}
+                disableAbbreviations={true}
             />
         </InputLabel>
     );
