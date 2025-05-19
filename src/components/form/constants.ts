@@ -6,7 +6,7 @@ export const SIZE_PARAMS_MAP: Record<
     TSizes,
     { paddingTop: number; paddingBottom: number; variant: keyof typeof typography }
 > = {
-    L: { paddingTop: 15, paddingBottom: 15, variant: 'bodyMRegular' },
-    M: { paddingTop: 12, paddingBottom: 12, variant: 'bodyMRegular' },
-    XS: { paddingTop: 9, paddingBottom: 9, variant: 'labelsHintsRegular' },
+    L: { paddingTop: 16, paddingBottom: 16, variant: 'bodyMRegular' },
+    M: { paddingTop: 13, paddingBottom: 13, variant: 'bodyMRegular' },
+    XS: { paddingTop: 10, paddingBottom: 10, variant: 'labelsHintsRegular' },
 };

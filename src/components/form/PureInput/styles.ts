@@ -21,7 +21,7 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     resize: none;
     color: ${({ $palette }) => $palette.text};
     border-radius: 10px;
-    outline: none;
+    border: none;
     width: 100%;
     background-color: ${({ $palette }) => $palette.bg};
     transition: all 0.2s ease-in-out 0s;
@@ -30,7 +30,7 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     padding-left: ${({ $paddingLeft }) => $paddingLeft}px;
     padding-top: ${({ $paddingTop }) => $paddingTop}px;
     padding-bottom: ${({ $paddingBottom }) => $paddingBottom}px;
-    border: 1px solid
+    outline: 1px solid
         ${({ $hasError, $inFocus, $hasBorder, $palette }) =>
             !$hasBorder
                 ? 'transparent'
