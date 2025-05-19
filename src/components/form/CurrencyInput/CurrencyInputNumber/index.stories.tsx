@@ -11,7 +11,7 @@ const meta: Meta<typeof CurrencyInputNumber> = {
 export default meta;
 
 const Component = (props: TProps) => {
-    const [value, setValue] = useState<number | undefined>(11);
+    const [value, setValue] = useState<number | undefined>(0);
     const [key, setKey] = useState(1);
 
     return (
@@ -19,7 +19,7 @@ const Component = (props: TProps) => {
             <button
                 type={'button'}
                 onClick={() => {
-                    setValue(11);
+                    setValue(0);
                     setKey((prevState) => prevState + 1);
                 }}
             >
