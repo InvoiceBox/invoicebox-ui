@@ -8,7 +8,7 @@ import { useFilters } from './hooks/useFilters';
 import { useNormalizers } from './hooks/useNormalizers';
 import { useIncrement } from './hooks/useIncrement';
 import { useIncrementDisabledFlags } from './hooks/useIncrementDisabledFlags';
-import { SIZE_PADDING_MAP, TSizes } from '../constants';
+import { SIZE_PARAMS_MAP, TSizes } from '../constants';
 
 export type TProps = {
     value: number | null;
@@ -70,7 +70,7 @@ export const PositiveIntegerInput: FC<TProps> = ({
                     value={normalizeFrom(value)}
                     onChange={handleChange}
                     paddingRight={upAndDown ? 44 : undefined}
-                    {...SIZE_PADDING_MAP[size]}
+                    {...SIZE_PARAMS_MAP[size]}
                 />
                 {upAndDown && (
                     <S.Arrows>

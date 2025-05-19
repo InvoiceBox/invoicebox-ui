@@ -18,7 +18,7 @@ import { InputLabel } from '../../../InputLabel';
 import { PureInput } from '../../../PureInput';
 import { Dropdown } from '../../../../common/Dropdown';
 import { Scrollbar } from '../../../../common/Scrollbar';
-import { SIZE_PADDING_MAP, TSizes } from '../../../constants';
+import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -133,7 +133,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             paddingLeft={inputPaddingLeft}
                             maxLength={inputMaxLength}
                             isOnlyNumbers={isInputOnlyNumbers}
-                            {...SIZE_PADDING_MAP[size]}
+                            {...SIZE_PARAMS_MAP[size]}
                         />
                     </S.InputLabelContent>
                 </InputLabel>
