@@ -28,6 +28,7 @@ const COMMON_ARGS = {
     name: 'name',
     placeholder: 'Placeholder',
     isResetButtonEnabled: false,
+    size: 'L' as const,
     options: [
         { label: 'Option 1', value: 'option-1', groupId: '1' },
         { label: 'Option 2', value: 'option-2', groupId: '1' },

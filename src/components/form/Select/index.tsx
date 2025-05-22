@@ -17,7 +17,7 @@ export type TGroup = { label: string; id: string };
 
 export type TProps<TValue> = Pick<
     TInputProps,
-    'label' | 'hasError' | 'placeholder' | 'onFocus' | 'onBlur' | 'name'
+    'label' | 'hasError' | 'placeholder' | 'onFocus' | 'onBlur' | 'name' | 'size'
 > & {
     value: TValue | null;
     onChange: (value: TValue | null) => void;
@@ -38,6 +38,7 @@ export const Select = <TValue extends string | number>({
     options,
     groups = [],
     isResetButtonEnabled = false,
+    size,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -126,6 +127,7 @@ export const Select = <TValue extends string | number>({
                     name={name}
                     isOpen={isOpen}
                     onReset={isResetButtonEnabled ? handleReset : undefined}
+                    size={size}
                 />
             </S.InputWrapper>
 
