@@ -21,6 +21,7 @@ const args: TProps = {
     zIndex: 5,
     onCloseTransitionEnd: action('closeTransitionEnd'),
     children: Array(100).fill('children ').join(''),
+    isTopPosition: false,
 };
 
 export const Default: StoryObj<TProps> = {
