@@ -19,6 +19,7 @@ export type TProps = {
     width?: string;
     zIndex?: number;
     onCloseTransitionEnd?: () => void;
+    isTopPosition?: boolean;
 };
 
 export const Dropdown: FC<TProps> = ({
@@ -32,6 +33,7 @@ export const Dropdown: FC<TProps> = ({
     width = 'auto',
     zIndex,
     onCloseTransitionEnd,
+    isTopPosition = false,
 }) => {
     const palette = useComponentPalette<TDropdownPalette>('dropdown');
 
@@ -94,7 +96,7 @@ export const Dropdown: FC<TProps> = ({
                       belowHeight,
                       dropdownIndent: positionVertical,
                   })
-                : { isAbove: false, translateY: '0px' };
+                : { isAbove: isTopPosition, translateY: '0px' };
         }
     }
 
