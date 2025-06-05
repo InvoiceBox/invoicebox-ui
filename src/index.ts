@@ -36,6 +36,8 @@ export { WarningIcon } from './components/common/WarningIcon';
 export type { TProps as TWarningIconProps } from './components/common/WarningIcon';
 export { Divider } from './components/common/Divider';
 export type { TProps as TDividerProps } from './components/common/Divider';
+export { ReadOnlyLabelValueField } from './components/common/ReadOnlyLabelValueField';
+export type { TProps as TReadOnlyLabelValueFieldProps } from './components/common/ReadOnlyLabelValueField';
 export { SearchInput } from './components/form/SearchInput';
 export type { TProps as TSearchInputProps } from './components/form/SearchInput';
 export { CodeInput } from './components/form/CodeInput';
