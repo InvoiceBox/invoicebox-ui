@@ -43,6 +43,10 @@ import {
 import { generateCodeInputPalette, TCodeInputPalette } from '../components/form/CodeInput/palette';
 import { generateResetButtonPalette, TResetButtonPalette } from '../components/form/ResetButton/palette';
 import { generateTogglePalette, TTogglePalette } from '../components/form/Toggle/palette';
+import {
+    generateReadOnlyLabelValueFieldPalette,
+    TReadOnlyLabelValueFieldPalette,
+} from '../components/common/ReadOnlyLabelValueField/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -70,6 +74,7 @@ type TContext = {
     codeInput: TCodeInputPalette;
     resetButton: TResetButtonPalette;
     toggle: TTogglePalette;
+    readOnlyLabelValueField: TReadOnlyLabelValueFieldPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -98,4 +103,5 @@ export const PaletteContext = createContext<TContext>({
     codeInput: generateCodeInputPalette(defaultAbstractPalette),
     resetButton: generateResetButtonPalette(defaultAbstractPalette),
     toggle: generateTogglePalette(defaultAbstractPalette),
+    readOnlyLabelValueField: generateReadOnlyLabelValueFieldPalette(defaultAbstractPalette),
 });
