@@ -27,6 +27,7 @@ import { generateEntityAutocompleteOptionsDrawerPalette } from '../components/co
 import { generateCodeInputPalette } from '../components/form/CodeInput/palette';
 import { generateResetButtonPalette } from '../components/form/ResetButton/palette';
 import { generateTogglePalette } from '../components/form/Toggle/palette';
+import { generateReadOnlyLabelValueFieldPalette } from '../components/common/ReadOnlyLabelValueField/palette';
 
 type TProps = {
     children: ReactNode;
@@ -70,6 +71,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             codeInput: generateCodeInputPalette(mergedAbstractPalette),
             resetButton: generateResetButtonPalette(mergedAbstractPalette),
             toggle: generateTogglePalette(mergedAbstractPalette),
+            readOnlyLabelValueField: generateReadOnlyLabelValueFieldPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );
