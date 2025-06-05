@@ -28,6 +28,7 @@ export { Select } from './components/form/Select';
 export type { TProps as TSelectProps } from './components/form/Select';
 export { Toggle } from './components/form/Toggle';
 export type { TProps as TToggleProps } from './components/form/Toggle';
+export { PointsLoader } from './components/common/PointsLoader';
 export { Calendar } from './components/common/Calendar';
 export type { TProps as TCalendarProps } from './components/common/Calendar';
 export { DateInput } from './components/form/DateInput';
