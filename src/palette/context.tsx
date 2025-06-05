@@ -47,6 +47,7 @@ import {
     generateReadOnlyLabelValueFieldPalette,
     TReadOnlyLabelValueFieldPalette,
 } from '../components/common/ReadOnlyLabelValueField/palette';
+import { generatePointsLoaderPalette, TPointsLoaderPalette } from '../components/common/PointsLoader/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -75,6 +76,7 @@ type TContext = {
     resetButton: TResetButtonPalette;
     toggle: TTogglePalette;
     readOnlyLabelValueField: TReadOnlyLabelValueFieldPalette;
+    pointsLoader: TPointsLoaderPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -104,4 +106,5 @@ export const PaletteContext = createContext<TContext>({
     resetButton: generateResetButtonPalette(defaultAbstractPalette),
     toggle: generateTogglePalette(defaultAbstractPalette),
     readOnlyLabelValueField: generateReadOnlyLabelValueFieldPalette(defaultAbstractPalette),
+    pointsLoader: generatePointsLoaderPalette(defaultAbstractPalette),
 });
