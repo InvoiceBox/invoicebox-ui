@@ -66,12 +66,17 @@ export const Body = styled.div<{
     $isPadding: boolean;
     $errorColor: string;
     $overflow?: string;
+    $borderColor?: string;
 }>`
     position: relative;
     overflow: ${({ $overflow }) => $overflow || 'auto'};
     flex: 1;
     border-radius: 10px 10px 0 0;
-    ${({ $isErrorBorder, $errorColor }) => $isErrorBorder && `border-top: 2px solid ${$errorColor};`}
+    ${({ $isErrorBorder, $errorColor, $borderColor }) =>
+        ($isErrorBorder || $borderColor) &&
+        css`
+            border-top: 2px solid ${$borderColor || $errorColor};
+        `}
 
     ${({ $isPadding }) => $isPadding && 'padding: 32px 16px 36px'};
 `;
