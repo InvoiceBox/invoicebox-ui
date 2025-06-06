@@ -29,6 +29,7 @@ const commonArgs = {
     isErrorBorder: false,
     onClose: action('close'),
     isPadding: false,
+    borderColor: undefined,
 };
 
 export const Default: StoryObj<TProps> = {

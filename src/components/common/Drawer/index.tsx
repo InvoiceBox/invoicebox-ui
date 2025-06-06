@@ -12,6 +12,7 @@ type TDialogCommonProps = {
     isOpen: boolean;
     isPadding?: boolean;
     overflow?: string;
+    borderColor?: string;
 };
 
 export type TProps = TDialogCommonProps & {
@@ -27,6 +28,7 @@ export const Drawer: FC<TProps> = ({
     isPadding = true,
     initialFocusRef,
     overflow,
+    borderColor,
 }) => {
     const palette = useComponentPalette<TDrawerPalette>('drawer');
 
@@ -53,6 +55,7 @@ export const Drawer: FC<TProps> = ({
                 $isPadding={isPadding}
                 $isErrorBorder={isErrorBorder}
                 $errorColor={palette.error}
+                $borderColor={borderColor}
             >
                 {children}
             </S.Body>
