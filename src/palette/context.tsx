@@ -26,7 +26,6 @@ import {
 } from '../components/form/CountrySelect/palette';
 import { TBgCardPalette, generateBgCardPalette } from '../components/common/BgCard/palette';
 import { TToastPalette, generateToastPalette } from '../components/common/Toast/palette';
-import { generatePaymentCardPalette, TPaymentCardPalette } from '../components/payment/PaymentCard/palette';
 import {
     generateAutocompleteDefaultOptionPalette,
     TAutocompleteDefaultOptionPalette,
@@ -67,7 +66,6 @@ type TContext = {
     calendar: TCalendarPalette;
     bgCard: TBgCardPalette;
     toast: TToastPalette;
-    paymentCard: TPaymentCardPalette;
     autocompleteDefaultOption: TAutocompleteDefaultOptionPalette;
     organizationAutocompleteItem: TOrganizationAutocompleteItemPalette;
     drawer: TDrawerPalette;
@@ -97,7 +95,6 @@ export const PaletteContext = createContext<TContext>({
     calendar: generateCalendarPalette(defaultAbstractPalette),
     bgCard: generateBgCardPalette(defaultAbstractPalette),
     toast: generateToastPalette(defaultAbstractPalette),
-    paymentCard: generatePaymentCardPalette(defaultAbstractPalette),
     autocompleteDefaultOption: generateAutocompleteDefaultOptionPalette(defaultAbstractPalette),
     organizationAutocompleteItem: generateOrganizationAutocompleteItemPalette(defaultAbstractPalette),
     drawer: generateDrawerPalette(defaultAbstractPalette),

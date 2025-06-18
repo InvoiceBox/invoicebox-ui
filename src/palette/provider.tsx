@@ -19,7 +19,6 @@ import { generateSearchInputPalette } from '../components/form/SearchInput/palet
 import { generateCountrySelectPalette } from '../components/form/CountrySelect/palette';
 import { generateBgCardPalette } from '../components/common/BgCard/palette';
 import { generateToastPalette } from '../components/common/Toast/palette';
-import { generatePaymentCardPalette } from '../components/payment/PaymentCard/palette';
 import { generateAutocompleteDefaultOptionPalette } from '../components/form/Autocomplete/components/AutocompleteDefaultOption/palette';
 import { generateOrganizationAutocompleteItemPalette } from '../components/form/Autocomplete/components/OrganizationAutocompleteItem/palette';
 import { generateDrawerPalette } from '../components/common/Drawer/palette';
@@ -63,7 +62,6 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             calendar: generateCalendarPalette(mergedAbstractPalette),
             bgCard: generateBgCardPalette(mergedAbstractPalette),
             toast: generateToastPalette(mergedAbstractPalette),
-            paymentCard: generatePaymentCardPalette(mergedAbstractPalette),
             autocompleteDefaultOption: generateAutocompleteDefaultOptionPalette(mergedAbstractPalette),
             organizationAutocompleteItem: generateOrganizationAutocompleteItemPalette(mergedAbstractPalette),
             drawer: generateDrawerPalette(mergedAbstractPalette),
