@@ -56,7 +56,6 @@ export type { TProps as TCurrencyInputStringProps } from './components/form/Curr
 export { phoneLogic } from './components/form/PhoneInput/externalPhoneLogic';
 export { BgCard } from './components/common/BgCard';
 export { ToastContainer, toast } from './components/common/Toast';
-export { PaymentCard } from './components/payment/PaymentCard';
 export { AppCardLink } from './components/common/AppCardLink';
 export { InvoiceboxLogo } from './components/common/InvoiceboxLogo';
 export type { TProps as TAutocompleteProps } from './components/form/Autocomplete/index';
