@@ -15,18 +15,10 @@ export const InputWrapper = styled.div`
     }
 `;
 
-export const Options = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
 export const Option = styled(Typography)<{ $palette: TSelectPalette; $isGrouped: boolean }>`
     overflow: hidden;
-    display: flex;
     width: 100%;
     text-align: left;
-    flex-direction: column;
-    padding: 12px 20px;
     transition: all 0.2s ease-in-out 0s;
     box-sizing: border-box;
     cursor: pointer;
@@ -43,5 +35,9 @@ export const Option = styled(Typography)<{ $palette: TSelectPalette; $isGrouped:
 `;
 
 export const Group = styled(Typography)`
+    padding: 12px 20px;
+`;
+
+export const DefaultOptionWrapper = styled.div`
     padding: 12px 20px;
 `;
