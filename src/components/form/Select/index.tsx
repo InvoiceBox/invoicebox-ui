@@ -1,4 +1,13 @@
-import React, { FocusEvent, Fragment, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+    FocusEvent,
+    Fragment,
+    MouseEvent,
+    ReactNode,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import * as S from './styles';
 import { Input, TProps as TInputProps } from './components/Input';
 import { useInputFocus } from '../../../hooks/useInputFocus';
@@ -12,7 +21,7 @@ import { useOptionGroups } from './hooks/useOptionGroups';
 const LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
 
-export type TOption<TValue> = { label: string; value: TValue; groupId?: string };
+export type TOption<TValue> = { label: string; value: TValue; groupId?: string; entity?: unknown };
 export type TGroup = { label: string; id: string };
 
 export type TProps<TValue> = Pick<
@@ -24,6 +33,8 @@ export type TProps<TValue> = Pick<
     options: TOption<TValue>[];
     groups?: TGroup[];
     isResetButtonEnabled?: boolean;
+    renderOption?: (entity?: any) => ReactNode;
+    dropdownHeader?: ReactNode;
 };
 
 export const Select = <TValue extends string | number>({
@@ -39,6 +50,8 @@ export const Select = <TValue extends string | number>({
     groups = [],
     isResetButtonEnabled = false,
     size,
+    renderOption,
+    dropdownHeader,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -132,28 +145,32 @@ export const Select = <TValue extends string | number>({
             </S.InputWrapper>
 
             <Dropdown isOpen={isOpen} isAutoPosition width="100%">
-                <S.Options>
-                    <Scrollbar maxHeight={LIST_HEIGHT}>
-                        {optionGroups.map(({ group, options: groupOptions }) => (
-                            <Fragment key={group?.id || null}>
-                                {!group ? null : <S.Group variant="headerText">{group.label}</S.Group>}
-                                {groupOptions.map((option) => (
-                                    <S.Option
-                                        key={option.value}
-                                        $palette={palette}
-                                        variant="bodyMRegular"
-                                        onClick={handleSelect}
-                                        data-value={JSON.stringify(option.value)}
-                                        data-option-identifier={OPTION_IDENTIFIER}
-                                        $isGrouped={!!group}
-                                    >
-                                        {option.label}
-                                    </S.Option>
-                                ))}
-                            </Fragment>
-                        ))}
-                    </Scrollbar>
-                </S.Options>
+                <Scrollbar maxHeight={LIST_HEIGHT}>
+                    {dropdownHeader}
+
+                    {optionGroups.map(({ group, options: groupOptions }) => (
+                        <Fragment key={group?.id || null}>
+                            {!group ? null : <S.Group variant="headerText">{group.label}</S.Group>}
+                            {groupOptions.map((option) => (
+                                <S.Option
+                                    key={option.value}
+                                    $palette={palette}
+                                    variant="bodyMRegular"
+                                    onClick={handleSelect}
+                                    data-value={JSON.stringify(option.value)}
+                                    data-option-identifier={OPTION_IDENTIFIER}
+                                    $isGrouped={!!group}
+                                >
+                                    {renderOption ? (
+                                        renderOption(option.entity)
+                                    ) : (
+                                        <S.DefaultOptionWrapper> {option.label}</S.DefaultOptionWrapper>
+                                    )}
+                                </S.Option>
+                            ))}
+                        </Fragment>
+                    ))}
+                </Scrollbar>
             </Dropdown>
         </S.Wrapper>
     );
