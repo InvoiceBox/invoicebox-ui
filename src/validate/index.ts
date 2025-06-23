@@ -89,6 +89,71 @@ export class Validate {
         return true;
     }
 
+    static settlementAccount(value: string, bic: string, createError: TCreateErrorFunc) {
+        if (!bic) {
+            // eslint-disable-next-line no-console
+            console.error('Form dont have bic');
+        }
+
+        if (value === '') {
+            return true;
+        }
+
+        if (/[^0-9]/.test(value)) {
+            return createError('Расчётный счёт может состоять только из цифр');
+        }
+
+        if (value.length !== 20) {
+            return createError('Расчётный счёт может состоять только из 20 цифр');
+        }
+
+        let checksum = 0;
+        const bikRs = bic.toString().slice(-3) + value;
+        const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
+
+        coefficients.forEach((coefficient, i) => {
+            checksum += coefficient * (Number(bikRs[i]) % 10);
+        });
+
+        if (checksum % 10 !== 0) {
+            return createError('Неправильное контрольное число');
+        }
+        return true;
+    }
+
+    static correspondentAccount(value: string, bic: string, createError: TCreateErrorFunc) {
+        if (!bic) {
+            // eslint-disable-next-line no-console
+            console.error('Form dont have bic');
+        }
+
+        if (value === '') {
+            return true;
+        }
+
+        if (/[^0-9]/.test(value)) {
+            return createError('Кор. счёт может состоять только из цифр');
+        }
+
+        if (value.length !== 20) {
+            return createError('Кор. счёт может состоять только из 20 цифр');
+        }
+
+        let checksum = 0;
+        const bikKs = `0${String(bic).slice(4, 6)}${value}`;
+        const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
+
+        coefficients.forEach((coefficient, i) => {
+            checksum += coefficient * (Number(bikKs[i]) % 10);
+        });
+
+        if (checksum % 10 !== 0) {
+            return createError('Неправильное контрольное число');
+        }
+
+        return true;
+    }
+
     static registrationNumber(
         value: string,
         vatNumber: string,
