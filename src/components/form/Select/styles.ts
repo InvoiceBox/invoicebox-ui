@@ -41,3 +41,7 @@ export const Group = styled(Typography)`
 export const DefaultOptionWrapper = styled.div`
     padding: 12px 20px;
 `;
+
+export const DrawerInner = styled.div`
+    padding: 36px 0;
+`;
