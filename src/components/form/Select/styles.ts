@@ -42,6 +42,10 @@ export const DefaultOptionWrapper = styled.div`
     padding: 12px 20px;
 `;
 
-export const DrawerInner = styled.div`
-    padding: 36px 0;
+export const DrawerContent = styled.div`
+    padding-top: 36px;
+`;
+
+export const DrawerBottom = styled.div`
+    height: 36px;
 `;

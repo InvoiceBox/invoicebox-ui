@@ -129,7 +129,7 @@ export const Select = <TValue extends string | number>({
     };
 
     const dropdownContent = (
-        <Scrollbar maxHeight={scrollbarMaxHeight}>
+        <>
             {dropdownHeader}
 
             {optionGroups.map(({ group, options: groupOptions }) => (
@@ -154,7 +154,7 @@ export const Select = <TValue extends string | number>({
                     ))}
                 </Fragment>
             ))}
-        </Scrollbar>
+        </>
     );
 
     return (
@@ -179,11 +179,16 @@ export const Select = <TValue extends string | number>({
 
             {isDrawerOptions ? (
                 <Drawer onClose={handleHide} isOpen={isOpen} isPadding={false}>
-                    <S.DrawerInner>{dropdownContent}</S.DrawerInner>
+                    <S.DrawerContent>
+                        <Scrollbar maxHeight={scrollbarMaxHeight}>
+                            {dropdownContent}
+                            <S.DrawerBottom />
+                        </Scrollbar>
+                    </S.DrawerContent>
                 </Drawer>
             ) : (
                 <Dropdown isOpen={isOpen} isAutoPosition width="100%">
-                    {dropdownContent}
+                    <Scrollbar maxHeight={scrollbarMaxHeight}>{dropdownContent}</Scrollbar>
                 </Dropdown>
             )}
         </S.Wrapper>
