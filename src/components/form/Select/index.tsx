@@ -17,17 +17,15 @@ import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useComponentPalette } from '../../../palette';
 import { TSelectPalette } from './palette';
 import { useOptionGroups } from './hooks/useOptionGroups';
+import { Drawer } from '../../common/Drawer';
 
-const LIST_HEIGHT = 294;
+const MAX_LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
 
 export type TOption<TValue> = { label: string; value: TValue; groupId?: string; entity?: unknown };
 export type TGroup = { label: string; id: string };
 
-export type TProps<TValue> = Pick<
-    TInputProps,
-    'label' | 'hasError' | 'placeholder' | 'onFocus' | 'onBlur' | 'name' | 'size'
-> & {
+export type TProps<TValue> = Pick<TInputProps, 'label' | 'hasError' | 'placeholder' | 'name' | 'size'> & {
     value: TValue | null;
     onChange: (value: TValue | null) => void;
     options: TOption<TValue>[];
@@ -35,14 +33,14 @@ export type TProps<TValue> = Pick<
     isResetButtonEnabled?: boolean;
     renderOption?: (entity?: any) => ReactNode;
     dropdownHeader?: ReactNode;
+    isDrawerOptions?: boolean;
+    scrollbarMaxHeight?: number;
 };
 
 export const Select = <TValue extends string | number>({
     label,
     hasError,
     placeholder,
-    onFocus,
-    onBlur,
     name,
     value,
     onChange,
@@ -52,14 +50,12 @@ export const Select = <TValue extends string | number>({
     size,
     renderOption,
     dropdownHeader,
+    isDrawerOptions = false,
+    scrollbarMaxHeight = MAX_LIST_HEIGHT,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
-    const {
-        inFocus,
-        handleFocus: focusHandler,
-        handleBlur: blurHandler,
-    } = useInputFocus({ onFocus, onBlur });
+    const { inFocus, handleFocus: focusHandler, handleBlur: blurHandler } = useInputFocus();
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -78,6 +74,7 @@ export const Select = <TValue extends string | number>({
         так появилась логика delayBlur
     */
     const delayBlur = useRef<null | (() => void)>(null);
+    const inputRef = useRef<null | HTMLInputElement>(null);
 
     const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
 
@@ -126,52 +123,69 @@ export const Select = <TValue extends string | number>({
 
     const handleReset = useCallback(() => onChange(null), [onChange]);
 
+    const handleInputClick = () => {
+        inputRef.current?.blur();
+        handleShow();
+    };
+
+    const dropdownContent = (
+        <Scrollbar maxHeight={scrollbarMaxHeight}>
+            {dropdownHeader}
+
+            {optionGroups.map(({ group, options: groupOptions }) => (
+                <Fragment key={group?.id || null}>
+                    {!group ? null : <S.Group variant="headerText">{group.label}</S.Group>}
+                    {groupOptions.map((option) => (
+                        <S.Option
+                            key={option.value}
+                            $palette={palette}
+                            variant="bodyMRegular"
+                            onClick={handleSelect}
+                            data-value={JSON.stringify(option.value)}
+                            data-option-identifier={OPTION_IDENTIFIER}
+                            $isGrouped={!!group}
+                        >
+                            {renderOption ? (
+                                renderOption(option.entity)
+                            ) : (
+                                <S.DefaultOptionWrapper> {option.label}</S.DefaultOptionWrapper>
+                            )}
+                        </S.Option>
+                    ))}
+                </Fragment>
+            ))}
+        </Scrollbar>
+    );
+
     return (
-        <S.Wrapper ref={wrapperRef}>
+        <S.Wrapper ref={isDrawerOptions ? undefined : wrapperRef}>
             <S.InputWrapper>
                 <Input
+                    ref={inputRef}
                     label={label}
                     hasError={hasError}
                     inFocus={inFocus}
                     placeholder={placeholder}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
+                    onFocus={isDrawerOptions ? undefined : handleFocus}
+                    onBlur={isDrawerOptions ? undefined : handleBlur}
                     value={selectedOption?.label || ''}
                     name={name}
                     isOpen={isOpen}
                     onReset={isResetButtonEnabled ? handleReset : undefined}
                     size={size}
+                    onClick={isDrawerOptions ? handleInputClick : undefined}
                 />
             </S.InputWrapper>
 
-            <Dropdown isOpen={isOpen} isAutoPosition width="100%">
-                <Scrollbar maxHeight={LIST_HEIGHT}>
-                    {dropdownHeader}
-
-                    {optionGroups.map(({ group, options: groupOptions }) => (
-                        <Fragment key={group?.id || null}>
-                            {!group ? null : <S.Group variant="headerText">{group.label}</S.Group>}
-                            {groupOptions.map((option) => (
-                                <S.Option
-                                    key={option.value}
-                                    $palette={palette}
-                                    variant="bodyMRegular"
-                                    onClick={handleSelect}
-                                    data-value={JSON.stringify(option.value)}
-                                    data-option-identifier={OPTION_IDENTIFIER}
-                                    $isGrouped={!!group}
-                                >
-                                    {renderOption ? (
-                                        renderOption(option.entity)
-                                    ) : (
-                                        <S.DefaultOptionWrapper> {option.label}</S.DefaultOptionWrapper>
-                                    )}
-                                </S.Option>
-                            ))}
-                        </Fragment>
-                    ))}
-                </Scrollbar>
-            </Dropdown>
+            {isDrawerOptions ? (
+                <Drawer onClose={handleHide} isOpen={isOpen} isPadding={false}>
+                    <S.DrawerInner>{dropdownContent}</S.DrawerInner>
+                </Drawer>
+            ) : (
+                <Dropdown isOpen={isOpen} isAutoPosition width="100%">
+                    {dropdownContent}
+                </Dropdown>
+            )}
         </S.Wrapper>
     );
 };
