@@ -47,6 +47,8 @@ const COMMON_ARGS = {
 
 const renderOption = (entity: { name: string }) => <div>Hello {entity.name} </div>;
 
+const renderGroup = (group: { name: string }) => <div>Group name is: {group.name} </div>;
+
 export const Default: StoryObj<TProps<string>> = {
     args: {
         ...COMMON_ARGS,
@@ -102,5 +104,30 @@ export const RenderOptionWithGroups: StoryObj<TProps<string>> = {
         ],
         renderOption,
     },
+    render: Component,
+};
+
+export const WithCustomGroups: StoryObj<TProps<string>> = {
+    args: {
+        ...COMMON_ARGS,
+        groups: [
+            {
+                label: 'Group 1',
+                id: '1',
+                entity: {
+                    name: 'name group 1',
+                },
+            },
+            {
+                label: 'Group 2',
+                id: '2',
+                entity: {
+                    name: 'name group 2',
+                },
+            },
+        ],
+        renderGroup,
+    },
+
     render: Component,
 };
