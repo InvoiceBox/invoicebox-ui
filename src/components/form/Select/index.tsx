@@ -133,6 +133,7 @@ export const Select = <TValue extends string | number>({
     const handleOptionRender = (option: TOption<TValue>) => {
         if (renderOption) {
             if (!option.entity) {
+                // eslint-disable-next-line no-console
                 console.error('option.entity not found');
                 return;
             }
@@ -147,6 +148,7 @@ export const Select = <TValue extends string | number>({
         if (group) {
             if (renderGroup) {
                 if (!group.entity) {
+                    // eslint-disable-next-line no-console
                     console.error('group.entity not found');
                     return;
                 }
