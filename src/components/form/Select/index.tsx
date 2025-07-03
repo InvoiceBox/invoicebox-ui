@@ -177,7 +177,7 @@ export const Select = <TValue extends string | number>({
                             onClick={handleSelect}
                             data-value={JSON.stringify(option.value)}
                             data-option-identifier={OPTION_IDENTIFIER}
-                            $isGrouped={!!group}
+                            $isGrouped={!!group && !renderGroup}
                         >
                             {handleOptionRender(option)}
                         </S.Option>
