@@ -23,7 +23,7 @@ const MAX_LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
 
 export type TOption<TValue> = { label: string; value: TValue; groupId?: string; entity?: unknown };
-export type TGroup = { label: string; id: string };
+export type TGroup = { label: string; id: string; entity?: unknown };
 
 export type TProps<TValue> = Pick<TInputProps, 'label' | 'hasError' | 'placeholder' | 'name' | 'size'> & {
     value: TValue | null;
@@ -32,6 +32,7 @@ export type TProps<TValue> = Pick<TInputProps, 'label' | 'hasError' | 'placehold
     groups?: TGroup[];
     isResetButtonEnabled?: boolean;
     renderOption?: (entity?: any) => ReactNode;
+    renderGroup?: (entity?: any) => ReactNode;
     dropdownHeader?: ReactNode;
     isDrawerOptions?: boolean;
     scrollbarMaxHeight?: number;
@@ -51,6 +52,7 @@ export const Select = <TValue extends string | number>({
     renderOption,
     dropdownHeader,
     isDrawerOptions = false,
+    renderGroup,
     scrollbarMaxHeight = MAX_LIST_HEIGHT,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
@@ -128,13 +130,43 @@ export const Select = <TValue extends string | number>({
         handleShow();
     };
 
+    const handleOptionRender = (option: TOption<TValue>) => {
+        if (renderOption) {
+            if (!option.entity) {
+                console.error('option.entity not found');
+                return;
+            }
+
+            return renderOption(option.entity);
+        }
+
+        return <S.DefaultOptionWrapper> {option.label}</S.DefaultOptionWrapper>;
+    };
+
+    const handleGroupRender = (group: TGroup | null) => {
+        if (group) {
+            if (renderGroup) {
+                if (!group.entity) {
+                    console.error('group.entity not found');
+                    return;
+                }
+
+                return renderGroup(group.entity);
+            }
+
+            return <S.Group variant="headerText">{group.label}</S.Group>;
+        }
+
+        return null;
+    };
+
     const dropdownContent = (
         <>
             {dropdownHeader}
 
             {optionGroups.map(({ group, options: groupOptions }) => (
                 <Fragment key={group?.id || null}>
-                    {!group ? null : <S.Group variant="headerText">{group.label}</S.Group>}
+                    {handleGroupRender(group)}
                     {groupOptions.map((option) => (
                         <S.Option
                             key={option.value}
@@ -145,11 +177,7 @@ export const Select = <TValue extends string | number>({
                             data-option-identifier={OPTION_IDENTIFIER}
                             $isGrouped={!!group}
                         >
-                            {renderOption ? (
-                                renderOption(option.entity)
-                            ) : (
-                                <S.DefaultOptionWrapper> {option.label}</S.DefaultOptionWrapper>
-                            )}
+                            {handleOptionRender(option)}
                         </S.Option>
                     ))}
                 </Fragment>
