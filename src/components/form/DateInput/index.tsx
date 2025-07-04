@@ -12,11 +12,16 @@ import { Icon } from './components/Icon';
 import { useComponentPalette } from '../../../palette';
 import { TDateInputPalette } from './palette';
 import { SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { TDropdownProps } from '../../../index';
 
 export type TProps = {
     value: Date | null;
     onChange: (value: Date) => void;
     withTime?: boolean;
+    dropdownProps?: Pick<
+        TDropdownProps,
+        'isAutoPosition' | 'positionLeft' | 'positionRight' | 'positionVertical'
+    >;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
@@ -35,6 +40,7 @@ export const DateInput: FC<TProps> = ({
     maxDate,
     withTime = false,
     size = 'M',
+    dropdownProps,
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -127,7 +133,7 @@ export const DateInput: FC<TProps> = ({
                     </S.Icon>
                 </S.InputWrapper>
             </InputLabel>
-            <Dropdown isOpen={isOpen} isAutoPosition>
+            <Dropdown isOpen={isOpen} isAutoPosition {...dropdownProps}>
                 <S.CalendarWrapper>
                     <Calendar
                         value={value}
