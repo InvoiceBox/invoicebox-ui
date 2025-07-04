@@ -49,3 +49,7 @@ export const DrawerContent = styled.div`
 export const DrawerBottom = styled.div`
     height: 36px;
 `;
+
+export const EmptyLabel = styled(Typography)<{ $color: string }>`
+    color: ${({ $color }) => $color};
+`;

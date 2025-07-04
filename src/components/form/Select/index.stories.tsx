@@ -29,6 +29,7 @@ const COMMON_ARGS = {
     placeholder: 'Placeholder',
     isResetButtonEnabled: false,
     size: 'L' as const,
+    isLoading: false,
     options: [
         { label: 'Option 1', value: 'option-1', groupId: '1', entity: { name: 'name option 1' } },
         { label: 'Option 2', value: 'option-2', groupId: '1', entity: { name: 'name option 2' } },
@@ -56,10 +57,19 @@ export const Default: StoryObj<TProps<string>> = {
     render: Component,
 };
 
+export const EmptyOptions: StoryObj<TProps<string>> = {
+    args: {
+        ...COMMON_ARGS,
+        options: [],
+    },
+    render: Component,
+};
+
 export const WithDropdownHeader: StoryObj<TProps<string>> = {
     args: {
         ...COMMON_ARGS,
         dropdownHeader: <div>Dropdown header</div>,
+        options: [],
     },
     render: Component,
 };
