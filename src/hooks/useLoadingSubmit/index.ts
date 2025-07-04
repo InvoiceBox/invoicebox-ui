@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export const useLoadingSubmit = (initialIsLoading = false) => {
     const [isLoadingSubmit, setIsLoadingSubmit] = useState(initialIsLoading);
 
-    const startLoadingSubmit = () => {
+    const startLoadingSubmit = useCallback(() => {
         setIsLoadingSubmit(true);
-    };
+    }, []);
 
-    const endLoadingSubmit = () => {
+    const endLoadingSubmit = useCallback(() => {
         setIsLoadingSubmit(false);
-    };
+    }, []);
 
-    const toggleLoadingSubmit = () => setIsLoadingSubmit((v) => !v);
+    const toggleLoadingSubmit = useCallback(() => setIsLoadingSubmit((v) => !v), []);
     return { isLoadingSubmit, startLoadingSubmit, endLoadingSubmit, toggleLoadingSubmit };
 };
