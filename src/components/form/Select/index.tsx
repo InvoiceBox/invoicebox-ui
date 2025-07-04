@@ -34,6 +34,7 @@ export type TProps<TValue> = Pick<TInputProps, 'label' | 'hasError' | 'placehold
     renderOption?: (entity?: any) => ReactNode;
     renderGroup?: (entity?: any) => ReactNode;
     dropdownHeader?: ReactNode;
+    scrollbarHeader?: ReactNode;
     isDrawerOptions?: boolean;
     scrollbarMaxHeight?: number;
 };
@@ -54,6 +55,7 @@ export const Select = <TValue extends string | number>({
     isDrawerOptions = false,
     renderGroup,
     scrollbarMaxHeight = MAX_LIST_HEIGHT,
+    scrollbarHeader,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -162,9 +164,9 @@ export const Select = <TValue extends string | number>({
         return null;
     };
 
-    const dropdownContent = (
+    const scrollbarContent = (
         <>
-            {dropdownHeader}
+            {scrollbarHeader}
 
             {optionGroups.map(({ group, options: groupOptions }) => (
                 <Fragment key={group?.id || null}>
@@ -210,15 +212,17 @@ export const Select = <TValue extends string | number>({
             {isDrawerOptions ? (
                 <Drawer onClose={handleHide} isOpen={isOpen} isPadding={false}>
                     <S.DrawerContent>
+                        {dropdownHeader}
                         <Scrollbar maxHeight={scrollbarMaxHeight}>
-                            {dropdownContent}
+                            {scrollbarContent}
                             <S.DrawerBottom />
                         </Scrollbar>
                     </S.DrawerContent>
                 </Drawer>
             ) : (
                 <Dropdown isOpen={isOpen} isAutoPosition width="100%">
-                    <Scrollbar maxHeight={scrollbarMaxHeight}>{dropdownContent}</Scrollbar>
+                    {dropdownHeader}
+                    <Scrollbar maxHeight={scrollbarMaxHeight}>{scrollbarContent}</Scrollbar>
                 </Dropdown>
             )}
         </S.Wrapper>

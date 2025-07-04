@@ -35,9 +35,7 @@ export class Validate {
         }
 
         if (
-            value.match(
-                /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm,
-            )
+            value.match(/^(https?:\/\/)?(www\.)?([a-zA-Z0-9а-яА-ЯёЁ-]+\.[a-zA-Zа-яА-ЯёЁ]{2,})(\/[^\s]*)?$/iu)
         ) {
             return true;
         }
