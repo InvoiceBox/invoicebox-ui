@@ -18,6 +18,7 @@ import { useComponentPalette } from '../../../palette';
 import { TSelectPalette } from './palette';
 import { useOptionGroups } from './hooks/useOptionGroups';
 import { Drawer } from '../../common/Drawer';
+import Loader from './components/Loader';
 
 const MAX_LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
@@ -37,6 +38,8 @@ export type TProps<TValue> = Pick<TInputProps, 'label' | 'hasError' | 'placehold
     scrollbarHeader?: ReactNode;
     isDrawerOptions?: boolean;
     scrollbarMaxHeight?: number;
+    emptyOptionsLabel?: string;
+    isLoading?: boolean;
 };
 
 export const Select = <TValue extends string | number>({
@@ -56,6 +59,8 @@ export const Select = <TValue extends string | number>({
     renderGroup,
     scrollbarMaxHeight = MAX_LIST_HEIGHT,
     scrollbarHeader,
+    emptyOptionsLabel,
+    isLoading,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -189,6 +194,57 @@ export const Select = <TValue extends string | number>({
         </>
     );
 
+    const emptyLabel = (
+        <S.DefaultOptionWrapper>
+            <S.EmptyLabel variant={'bodyMRegular'} $color={palette.empty}>
+                {emptyOptionsLabel || 'Нет значений'}
+            </S.EmptyLabel>
+        </S.DefaultOptionWrapper>
+    );
+
+    const loader = (
+        <S.DefaultOptionWrapper>
+            <Loader />
+        </S.DefaultOptionWrapper>
+    );
+
+    const handleDropdownContentRender = () => {
+        if (isLoading) {
+            return loader;
+        }
+
+        if (optionGroups.length) {
+            return (
+                <>
+                    {dropdownHeader}
+                    <Scrollbar maxHeight={scrollbarMaxHeight}>{scrollbarContent}</Scrollbar>
+                </>
+            );
+        }
+
+        return emptyLabel;
+    };
+
+    const handleDrawerContentRender = () => {
+        if (isLoading) {
+            return loader;
+        }
+
+        if (optionGroups.length) {
+            return (
+                <>
+                    {dropdownHeader}
+                    <Scrollbar maxHeight={scrollbarMaxHeight}>
+                        {scrollbarContent}
+                        <S.DrawerBottom />
+                    </Scrollbar>
+                </>
+            );
+        }
+
+        return emptyLabel;
+    };
+
     return (
         <S.Wrapper ref={isDrawerOptions ? undefined : wrapperRef}>
             <S.InputWrapper>
@@ -211,18 +267,11 @@ export const Select = <TValue extends string | number>({
 
             {isDrawerOptions ? (
                 <Drawer onClose={handleHide} isOpen={isOpen} isPadding={false}>
-                    <S.DrawerContent>
-                        {dropdownHeader}
-                        <Scrollbar maxHeight={scrollbarMaxHeight}>
-                            {scrollbarContent}
-                            <S.DrawerBottom />
-                        </Scrollbar>
-                    </S.DrawerContent>
+                    <S.DrawerContent>{handleDrawerContentRender()}</S.DrawerContent>
                 </Drawer>
             ) : (
                 <Dropdown isOpen={isOpen} isAutoPosition width="100%">
-                    {dropdownHeader}
-                    <Scrollbar maxHeight={scrollbarMaxHeight}>{scrollbarContent}</Scrollbar>
+                    {handleDropdownContentRender()}
                 </Dropdown>
             )}
         </S.Wrapper>
