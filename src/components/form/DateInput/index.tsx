@@ -116,6 +116,7 @@ export const DateInput: FC<TProps> = ({
             <InputLabel inFocus={inFocus} label={label}>
                 <S.InputWrapper>
                     <PureInput
+                        onClick={handleTrigger}
                         ref={inputRef}
                         hasError={hasError}
                         inFocus={inFocus}
