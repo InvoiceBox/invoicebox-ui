@@ -31,7 +31,10 @@ type TOption = {
     entity?: any;
 };
 
-type TFieldProps = Pick<InputHTMLAttributes<HTMLInputElement>, 'name' | 'onBlur' | 'onFocus'> & {
+type TFieldProps = Pick<
+    InputHTMLAttributes<HTMLInputElement>,
+    'name' | 'onBlur' | 'onFocus' | 'autoFocus'
+> & {
     value: string;
     onChange: (value: string, option?: TOption) => void;
 };
@@ -77,6 +80,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             inputMaxLength,
             isInputOnlyNumbers = false,
             size = 'M',
+            autoFocus,
         },
         ref,
     ) => {
@@ -133,6 +137,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             paddingLeft={inputPaddingLeft}
                             maxLength={inputMaxLength}
                             isOnlyNumbers={isInputOnlyNumbers}
+                            autoFocus={autoFocus}
                             {...SIZE_PARAMS_MAP[size]}
                         />
                     </S.InputLabelContent>
