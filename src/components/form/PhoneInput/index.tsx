@@ -26,7 +26,7 @@ type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     hasError?: boolean;
 };
 
-type TControlProps = Pick<TPureInputProps, 'disabled' | 'id'> & {
+type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus'> & {
     label: string;
     countrySelectProps?: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
     onCountryChange?: (countryCode: string) => void;
@@ -52,6 +52,7 @@ export const PhoneInput: FC<TProps> = ({
     onCountryChange,
     pureInputProps,
     size = 'M',
+    autoFocus,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
@@ -246,6 +247,7 @@ export const PhoneInput: FC<TProps> = ({
                         // for disable autocomplete
                         autoComplete={'new-password'}
                         inputMode="numeric"
+                        autoFocus={autoFocus}
                         {...SIZE_PARAMS_MAP[size]}
                         {...pureInputProps}
                     />
