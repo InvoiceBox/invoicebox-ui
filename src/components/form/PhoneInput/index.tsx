@@ -243,7 +243,8 @@ export const PhoneInput: FC<TProps> = ({
                         inFocus={inFocus}
                         name={name}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
-                        autoComplete={'off'}
+                        // for disable autocomplete
+                        autoComplete={'new-password'}
                         inputMode="numeric"
                         {...SIZE_PARAMS_MAP[size]}
                         {...pureInputProps}
