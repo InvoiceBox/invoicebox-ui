@@ -101,6 +101,7 @@ export const CodeInput: FC<TProps> = ({
                     disabled={!!disabled}
                     autoFocus={autoFocus}
                     autoComplete={'one-time-code'}
+                    type="text"
                 />
             ))}
         </S.Wrapper>
