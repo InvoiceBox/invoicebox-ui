@@ -100,6 +100,7 @@ export const CodeInput: FC<TProps> = ({
                     $hasError={hasError}
                     disabled={!!disabled}
                     autoFocus={autoFocus}
+                    autoComplete={'one-time-code'}
                 />
             ))}
         </S.Wrapper>
