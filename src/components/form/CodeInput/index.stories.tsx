@@ -11,12 +11,14 @@ const meta: Meta<typeof CodeInput> = {
 
 export default meta;
 
+const COMMON_ARGS = { hasError: false, codeLength: 4, value: '12', disabled: false, autoFocus: true };
+
 export const Default: StoryObj<TProps> = {
-    args: { hasError: false, codeLength: 4, value: '12', disabled: false },
+    args: COMMON_ARGS,
 };
 
 export const Live: StoryObj<TProps> = {
-    args: { hasError: false, codeLength: 4 },
+    args: COMMON_ARGS,
     render: function Render(args) {
         const [value, setValue] = useState('');
 
