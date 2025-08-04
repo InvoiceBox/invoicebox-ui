@@ -17,5 +17,6 @@ export const Default: StoryObj<typeof PureInput> = {
         inFocus: false,
         hasBorder: true,
         placeholder: 'Введите текст',
+        autoFocus: false,
     },
 };

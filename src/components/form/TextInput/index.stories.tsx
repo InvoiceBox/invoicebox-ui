@@ -30,6 +30,7 @@ export const Default: StoryObj<TProps> = {
         disabled: false,
         children: <div>Children</div>,
         size: 'L',
+        autoFocus: false,
     },
     render: Component,
 };
