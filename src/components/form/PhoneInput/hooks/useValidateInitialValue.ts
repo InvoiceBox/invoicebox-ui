@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { phoneInputLogic } from '../phoneInputLogic';
-import { allCountriesPhoneRules } from '../constants';
 import { RUS_COUNTRY_CODE, TCountryRule } from '../types';
+import { PhoneInputLogic } from '../phoneInputLogic';
 
 export const useValidateInitialValue = (
+    phoneInputLogic: PhoneInputLogic,
     initialValue: string,
     currentCountriesPhoneRules: { [p: string]: TCountryRule },
     onValid: (currentInputValue: string, countryCode: string) => void,
@@ -22,7 +22,7 @@ export const useValidateInitialValue = (
             const countryCode = currentCountry ? currentCountry[0] : RUS_COUNTRY_CODE;
             const isValidInputValue = phoneInputLogic.getIsValidPhoneInputByCountry(
                 notFormattedValue,
-                currentCountry ? currentCountry[1] : allCountriesPhoneRules.RUS,
+                currentCountry ? currentCountry[1] : phoneInputLogic.getRusCountry(),
             );
             if (isValidInputValue) {
                 onValid(notFormattedValue, countryCode);

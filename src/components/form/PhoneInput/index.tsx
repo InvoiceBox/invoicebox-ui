@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import InputMask from '@mona-health/react-input-mask';
 import * as S from './styles';
-import { phoneInputLogic } from './phoneInputLogic';
+import { PhoneInputLogic } from './phoneInputLogic';
 import { useValidateInitialValue } from './hooks/useValidateInitialValue';
 import { RUS_COUNTRY_CODE, TSupportedCountries } from './types';
 import { useInputFocus } from '../../../hooks/useInputFocus';
@@ -33,6 +33,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus'> & {
     countries?: Array<{ label: string; value: TSupportedCountries }>;
     pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom' | 'autoFocus'>;
     size?: TSizes;
+    isSupportCityRusPhoneNumber?: boolean;
 };
 
 export type TProps = TControlProps & TFieldProps;
@@ -53,21 +54,27 @@ export const PhoneInput: FC<TProps> = ({
     pureInputProps,
     size = 'M',
     autoFocus,
+    isSupportCityRusPhoneNumber = false,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
 
+    const phoneInputLogic = useMemo(
+        () => new PhoneInputLogic(isSupportCityRusPhoneNumber),
+        [isSupportCityRusPhoneNumber],
+    );
+
     const countrySelectOptions = useMemo(
         () => phoneInputLogic.getCountriesSelectOptions(countries),
-        [countries],
+        [countries, phoneInputLogic],
     );
     const isHaveSelectCountries = useMemo(
         () => phoneInputLogic.getIsHaveCountriesSelectOptions(countrySelectOptions),
-        [countrySelectOptions],
+        [countrySelectOptions, phoneInputLogic],
     );
     const currentCountriesPhoneRules = useMemo(
         () => phoneInputLogic.getCountriesPhoneRulesBySelectOptions(countrySelectOptions),
-        [countrySelectOptions],
+        [countrySelectOptions, phoneInputLogic],
     );
 
     const {
@@ -110,7 +117,13 @@ export const PhoneInput: FC<TProps> = ({
         [onChange],
     );
 
-    useValidateInitialValue(value, currentCountriesPhoneRules, handleInitialValid, handleInitialUnValid);
+    useValidateInitialValue(
+        phoneInputLogic,
+        value,
+        currentCountriesPhoneRules,
+        handleInitialValid,
+        handleInitialUnValid,
+    );
 
     const getNewCountryByInputValue = useCallback(
         (currentValue: string) => {
@@ -131,7 +144,7 @@ export const PhoneInput: FC<TProps> = ({
 
             return isNeedAndCanChangeCountry ? newCountry[1] : currentCountry;
         },
-        [country, currentCountriesPhoneRules, handleChangeCountry],
+        [country, currentCountriesPhoneRules, handleChangeCountry, phoneInputLogic],
     );
 
     const getIsValidValue = useCallback(
@@ -140,7 +153,7 @@ export const PhoneInput: FC<TProps> = ({
 
             return phoneInputLogic.getIsValidPhoneInputByCountry(currentValue, currentCountry);
         },
-        [getNewCountryByInputValue],
+        [getNewCountryByInputValue, phoneInputLogic],
     );
 
     const handleInputValueChange = useCallback(
@@ -157,7 +170,7 @@ export const PhoneInput: FC<TProps> = ({
             onChange(isValidInputValue ? intermediateValue : '');
             setInputValue(intermediateValue);
         },
-        [country, getIsValidValue, onChange],
+        [country, getIsValidValue, onChange, phoneInputLogic],
     );
 
     const handleChange = useCallback(
@@ -192,7 +205,7 @@ export const PhoneInput: FC<TProps> = ({
                 inputRef.current?.focus();
             }, 0);
         },
-        [currentCountriesPhoneRules, handleChangeCountry, inputValue, onChange],
+        [currentCountriesPhoneRules, handleChangeCountry, inputValue, onChange, phoneInputLogic],
     );
 
     const handlePaste = useCallback(

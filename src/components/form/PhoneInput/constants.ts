@@ -1,7 +1,10 @@
 import { TCountryRule, TSupportedCountries } from './types';
 
 export const MASK_DIGIT_ITEM = '9';
-export const allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule> = {
+
+export const getAllCountriesPhoneRules: (
+    isSupportCityRusPhoneNumber: boolean,
+) => Record<TSupportedCountries, TCountryRule> = (isSupportCityRusPhoneNumber) => ({
     BLR: {
         placeholder: '+375 XX XXX-XX-XX',
         mask: '+999 99 999-99-99',
@@ -34,7 +37,7 @@ export const allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule> =
         placeholder: '+7 (XXX) XXX-XX-XX',
         mask: '+9 (999) 999-99-99',
         startSubsequence: '7',
-        regexp: /^\+?7(9\d{9})$/,
+        regexp: isSupportCityRusPhoneNumber ? /^7\d{10}$/ : /^\+?7(9\d{9})$/,
         flag: 'RUS' as const,
     },
     KGZ: {
@@ -67,4 +70,4 @@ export const allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule> =
         regexp: /^\d{7,}$/,
         flag: 'UNKNOWN' as const,
     },
-};
+});
