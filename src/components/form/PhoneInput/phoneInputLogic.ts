@@ -1,11 +1,23 @@
 import { TCountryRule, TCountrySelectOption, TSupportedCountries, UNKNOWN_COUNTRY_CODE } from './types';
-import { allCountriesPhoneRules, MASK_DIGIT_ITEM } from './constants';
+import { getAllCountriesPhoneRules, MASK_DIGIT_ITEM } from './constants';
 import { TFlagKey } from '../../common/Flag';
 import { ChangeEvent } from 'react';
 
-class PhoneInputLogic {
+export class PhoneInputLogic {
+    private isSupportCityRusPhoneNumber: boolean;
+    private allCountriesPhoneRules: Record<TSupportedCountries, TCountryRule>;
+
+    constructor(isSupportCityRusPhoneNumber: boolean) {
+        this.isSupportCityRusPhoneNumber = isSupportCityRusPhoneNumber;
+        this.allCountriesPhoneRules = getAllCountriesPhoneRules(isSupportCityRusPhoneNumber);
+    }
+
+    getRusCountry() {
+        return this.allCountriesPhoneRules.RUS;
+    }
+
     private getCaretPositionByRusValue(value: string) {
-        const mask = allCountriesPhoneRules.RUS.mask.split('');
+        const mask = this.getRusCountry().mask.split('');
         let counter = 0;
         let position = 0;
         mask.forEach((maskItem, index) => {
@@ -25,14 +37,14 @@ class PhoneInputLogic {
     }
 
     getSupportedCountriesByCountryNames(countries?: Array<TSupportedCountries>) {
-        return countries?.filter((country) => allCountriesPhoneRules[country]);
+        return countries?.filter((country) => this.allCountriesPhoneRules[country]);
     }
 
     getCountriesSelectOptions(countries?: Array<{ label: string; value: TSupportedCountries }>) {
-        const supportedCountries = countries?.filter((country) => allCountriesPhoneRules[country.value]);
+        const supportedCountries = countries?.filter((country) => this.allCountriesPhoneRules[country.value]);
 
         return supportedCountries?.map((country) => {
-            const countryRules = allCountriesPhoneRules[country.value];
+            const countryRules = this.allCountriesPhoneRules[country.value];
             return {
                 ...country,
                 description: countryRules.startSubsequence ? `+${countryRules.startSubsequence}` : '',
@@ -50,25 +62,25 @@ class PhoneInputLogic {
     getCountriesPhoneRulesBySelectOptions(countrySelectOptions?: Array<TCountrySelectOption>) {
         return this.getIsHaveCountriesSelectOptions(countrySelectOptions)
             ? Object.fromEntries(
-                  Object.entries(allCountriesPhoneRules).filter((ruleItem) =>
+                  Object.entries(this.allCountriesPhoneRules).filter((ruleItem) =>
                       countrySelectOptions?.find(
                           (countrySelectOption) => countrySelectOption.value === ruleItem[0],
                       ),
                   ),
               )
-            : { RUS: allCountriesPhoneRules.RUS };
+            : { RUS: this.getRusCountry() };
     }
 
     getCountriesPhoneRulesByCountryNames(countrySelectOptions?: Array<TSupportedCountries>) {
         return this.getIsHaveCountriesSelectOptions(countrySelectOptions)
             ? Object.fromEntries(
-                  Object.entries(allCountriesPhoneRules).filter((ruleItem) =>
+                  Object.entries(this.allCountriesPhoneRules).filter((ruleItem) =>
                       countrySelectOptions?.find(
                           (countrySelectOption) => countrySelectOption === ruleItem[0],
                       ),
                   ),
               )
-            : { RUS: allCountriesPhoneRules.RUS };
+            : { RUS: this.getRusCountry() };
     }
 
     getIsHaveStartSequenceInString(value: string, subsequence: string) {
@@ -122,5 +134,3 @@ class PhoneInputLogic {
         );
     }
 }
-
-export const phoneInputLogic = new PhoneInputLogic();

@@ -1,9 +1,14 @@
 import { TSupportedCountries } from './types';
-import { allCountriesPhoneRules } from './constants';
-import { phoneInputLogic } from './phoneInputLogic';
+import { PhoneInputLogic } from './phoneInputLogic';
 
 class ExternalPhoneLogic {
-    getIsValidPhone(value: string, countries?: Array<TSupportedCountries>) {
+    getIsValidPhone(
+        value: string,
+        countries?: Array<TSupportedCountries>,
+        isSupportCityRusPhoneNumber?: boolean,
+    ) {
+        const phoneInputLogic = new PhoneInputLogic(isSupportCityRusPhoneNumber || false);
+
         const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(value);
         const supportedCountries = phoneInputLogic.getSupportedCountriesByCountryNames(countries);
         const currentCountriesPhoneRules =
@@ -14,12 +19,14 @@ class ExternalPhoneLogic {
         );
         return phoneInputLogic.getIsValidPhoneInputByCountry(
             notFormattedValue,
-            country ? country[1] : allCountriesPhoneRules.RUS,
+            country ? country[1] : phoneInputLogic.getRusCountry(),
         );
     }
 
-    getIsValidRusPhone(phone?: string) {
-        return phoneInputLogic.getIsValidPhoneInputByCountry(phone || '', allCountriesPhoneRules.RUS);
+    getIsValidRusPhone(phone?: string, isSupportCityRusPhoneNumber?: boolean) {
+        const phoneInputLogic = new PhoneInputLogic(isSupportCityRusPhoneNumber || false);
+
+        return phoneInputLogic.getIsValidPhoneInputByCountry(phone || '', phoneInputLogic.getRusCountry());
     }
 }
 
