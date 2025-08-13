@@ -34,6 +34,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus'> & {
     pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom' | 'autoFocus'>;
     size?: TSizes;
     isSupportCityRusPhoneNumber?: boolean;
+    isInnerErrorHighlight?: boolean;
 };
 
 export type TProps = TControlProps & TFieldProps;
@@ -55,6 +56,7 @@ export const PhoneInput: FC<TProps> = ({
     size = 'M',
     autoFocus,
     isSupportCityRusPhoneNumber = false,
+    isInnerErrorHighlight = true,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
@@ -218,6 +220,16 @@ export const PhoneInput: FC<TProps> = ({
         [handleInputValueChange],
     );
 
+    const hasPureInputError = useMemo(() => {
+        if (hasError) return true;
+
+        if (isFirstBlur) return false;
+
+        if (isInnerErrorHighlight) return isHaveInputError;
+
+        return false;
+    }, [hasError, isFirstBlur, isHaveInputError, isInnerErrorHighlight]);
+
     return (
         <InputLabel inFocus={inFocus} label={label} disabled={disabled}>
             <S.InputLabelContent>
@@ -253,7 +265,7 @@ export const PhoneInput: FC<TProps> = ({
                 >
                     <PureInput
                         id={id}
-                        hasError={hasError || (isFirstBlur ? false : isHaveInputError)}
+                        hasError={hasPureInputError}
                         inFocus={inFocus}
                         name={name}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
