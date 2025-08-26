@@ -15,16 +15,17 @@ export type TProps = Pick<TInputLabelProps, 'label'> & { hasError?: boolean } & 
     value?: Array<string>;
     onChange: (value?: Array<string>) => void;
     size?: TSizes;
+    palette?: Partial<TTagsInputPalette>;
 };
 
-export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, value, onChange }) => {
+export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, value, onChange, palette }) => {
     const [newValue, setNewValue] = useState('');
     const { inFocus, handleFocus, handleBlur } = useInputFocus();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
     const pureInputPalette = useComponentPalette<TPureInputPalette>('pureInput');
-    const tagsInputPalette = useComponentPalette<TTagsInputPalette>('tagsInput');
+    const tagsInputPalette = useComponentPalette<TTagsInputPalette>('tagsInput', palette);
 
     const { paddingBottom, paddingTop } = SIZE_PARAMS_MAP[size];
 
