@@ -47,6 +47,7 @@ import {
     TReadOnlyLabelValueFieldPalette,
 } from '../components/common/ReadOnlyLabelValueField/palette';
 import { generatePointsLoaderPalette, TPointsLoaderPalette } from '../components/common/PointsLoader/palette';
+import { generateTagsInputPalette, TTagsInputPalette } from '../components/form/TagsInput/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -75,6 +76,7 @@ type TContext = {
     toggle: TTogglePalette;
     readOnlyLabelValueField: TReadOnlyLabelValueFieldPalette;
     pointsLoader: TPointsLoaderPalette;
+    tagsInput: TTagsInputPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -104,4 +106,5 @@ export const PaletteContext = createContext<TContext>({
     toggle: generateTogglePalette(defaultAbstractPalette),
     readOnlyLabelValueField: generateReadOnlyLabelValueFieldPalette(defaultAbstractPalette),
     pointsLoader: generatePointsLoaderPalette(defaultAbstractPalette),
+    tagsInput: generateTagsInputPalette(defaultAbstractPalette),
 });

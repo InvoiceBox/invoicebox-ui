@@ -11,6 +11,7 @@ export type TProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' 
         paddingRight?: number;
         paddingTop?: number;
         paddingBottom?: number;
+        borderRadius?: number;
         hasError?: boolean;
         inFocus?: boolean;
         hasBorder?: boolean;
@@ -26,6 +27,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             paddingRight = 12,
             paddingTop = 13,
             paddingBottom = 13,
+            borderRadius = 10,
             hasError = false,
             inFocus = false,
             hasBorder = true,
@@ -65,6 +67,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
                 $inFocus={inFocus}
                 $hasBorder={hasBorder}
                 $palette={palette}
+                $borderRadius={borderRadius}
                 onChange={handleChange}
                 {...rest}
             />
