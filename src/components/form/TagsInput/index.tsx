@@ -34,7 +34,7 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
     }, []);
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement> & KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && newValue.length) {
             onChange(value?.includes(newValue) ? value : [...(value ? value : []), newValue]);
             setNewValue('');
         }
