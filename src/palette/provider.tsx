@@ -28,6 +28,7 @@ import { generateResetButtonPalette } from '../components/form/ResetButton/palet
 import { generateTogglePalette } from '../components/form/Toggle/palette';
 import { generateReadOnlyLabelValueFieldPalette } from '../components/common/ReadOnlyLabelValueField/palette';
 import { generatePointsLoaderPalette } from '../components/common/PointsLoader/palette';
+import { generateTagsInputPalette } from '../components/form/TagsInput/palette';
 
 type TProps = {
     children: ReactNode;
@@ -72,6 +73,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             toggle: generateTogglePalette(mergedAbstractPalette),
             readOnlyLabelValueField: generateReadOnlyLabelValueFieldPalette(mergedAbstractPalette),
             pointsLoader: generatePointsLoaderPalette(mergedAbstractPalette),
+            tagsInput: generateTagsInputPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );

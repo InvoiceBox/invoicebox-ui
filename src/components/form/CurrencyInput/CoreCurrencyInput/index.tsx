@@ -40,6 +40,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
                 $hasBorder
                 $paddingLeft={18}
                 $paddingRight={18}
+                $borderRadius={10}
                 $variant={variant}
                 $paddingTop={paddingTop}
                 $paddingBottom={paddingBottom}

@@ -9,6 +9,7 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     $paddingRight: number;
     $paddingTop: number;
     $paddingBottom: number;
+    $borderRadius: number;
     $hasError: boolean;
     $inFocus: boolean;
     $hasBorder: boolean;
@@ -20,7 +21,7 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
 
     resize: none;
     color: ${({ $palette }) => $palette.text};
-    border-radius: 10px;
+    border-radius: ${({ $borderRadius }) => $borderRadius}px;
     border: none;
     width: 100%;
     background-color: ${({ $palette }) => $palette.bg};
