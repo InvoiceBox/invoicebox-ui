@@ -48,7 +48,7 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
         clearNewValueAutofillInterval();
 
         if (event.target.value) {
-            newValueAutofillIntervalRef.current = setInterval(() => {
+            newValueAutofillIntervalRef.current = setTimeout(() => {
                 acceptNewValue(event.target.value);
             }, 3000);
         }
