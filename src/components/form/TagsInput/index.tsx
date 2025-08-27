@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useCallback, useState, KeyboardEvent, useRef } from 'react';
+import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput } from '../PureInput';
 import * as S from './styles';
@@ -19,7 +19,9 @@ export type TProps = Pick<TInputLabelProps, 'label'> & { hasError?: boolean } & 
 };
 
 export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, value, onChange, palette }) => {
-    const [newValue, setNewValue] = useState('');
+    const newValueAutofillIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const [inputValue, setInputValue] = useState('');
     const { inFocus, handleFocus, handleBlur } = useInputFocus();
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -29,14 +31,36 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
 
     const { paddingBottom, paddingTop } = SIZE_PARAMS_MAP[size];
 
-    const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        setNewValue(event.target.value);
-    }, []);
+    const clearNewValueAutofillInterval = () => {
+        if (newValueAutofillIntervalRef.current) {
+            clearInterval(newValueAutofillIntervalRef.current);
+        }
+    };
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement> & KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === 'Enter' && newValue.length) {
-            onChange(value?.includes(newValue) ? value : [...(value ? value : []), newValue]);
-            setNewValue('');
+    const acceptNewValue = (newValue: string) => {
+        onChange(value?.includes(newValue) ? value : [...(value ? value : []), newValue]);
+        setInputValue('');
+    };
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+
+        clearNewValueAutofillInterval();
+
+        if (event.target.value) {
+            newValueAutofillIntervalRef.current = setInterval(() => {
+                acceptNewValue(event.target.value);
+            }, 3000);
+        }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+        const target = event.target as HTMLInputElement;
+
+        if (event.key === 'Enter' && inputValue.length) {
+            clearNewValueAutofillInterval();
+
+            acceptNewValue(target.value);
         }
     };
 
@@ -47,6 +71,15 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
 
     const handlePureInputClick = () => {
         inputRef.current?.focus();
+    };
+
+    const handlePureInputBlur = (event: FocusEvent<HTMLInputElement>) => {
+        handleBlur(event);
+        clearNewValueAutofillInterval();
+
+        if (event.target.value) {
+            acceptNewValue(event.target.value);
+        }
     };
 
     return (
@@ -91,10 +124,10 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
                             paddingTop={0}
                             paddingLeft={0}
                             borderRadius={0}
-                            value={newValue}
+                            value={inputValue}
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
-                            onBlur={handleBlur}
+                            onBlur={handlePureInputBlur}
                             onFocus={handleFocus}
                         />
                     </S.InputWrapper>
