@@ -2,7 +2,11 @@ import React, { FC, ReactNode } from 'react';
 import { getPureInputStyled } from '../PureInput/styles';
 import styled from 'styled-components';
 
-const Wrapper: FC<{ children: ReactNode }> = ({ children, ...other }) => <div {...other}>{children}</div>;
+const Wrapper: FC<{ children: ReactNode }> = ({ children, ...other }) => (
+    <div style={{ overflow: 'hidden' }} {...other}>
+        {children}
+    </div>
+);
 
 export const PureInputStyledWrapper = getPureInputStyled(Wrapper);
 
