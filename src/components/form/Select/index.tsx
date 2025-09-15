@@ -26,7 +26,10 @@ const OPTION_IDENTIFIER = 'option-identifier';
 export type TOption<TValue> = { label: string; value: TValue; groupId?: string; entity?: unknown };
 export type TGroup = { label: string; id: string; entity?: unknown };
 
-export type TProps<TValue> = Pick<TInputProps, 'label' | 'hasError' | 'placeholder' | 'name' | 'size'> & {
+export type TProps<TValue> = Pick<
+    TInputProps,
+    'label' | 'hasError' | 'placeholder' | 'name' | 'size' | 'onBlur'
+> & {
     value: TValue | null;
     onChange: (value: TValue | null) => void;
     options: TOption<TValue>[];
@@ -61,10 +64,11 @@ export const Select = <TValue extends string | number>({
     scrollbarHeader,
     emptyOptionsLabel,
     isLoading,
+    onBlur,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
-    const { inFocus, handleFocus: focusHandler, handleBlur: blurHandler } = useInputFocus();
+    const { inFocus, handleFocus: focusHandler, handleBlur: blurHandler } = useInputFocus({ onBlur });
 
     const [isOpen, setIsOpen] = useState(false);
 
