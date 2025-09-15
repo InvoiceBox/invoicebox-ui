@@ -29,16 +29,24 @@ export class Validate {
         return true;
     }
 
-    static website(value: string, createError: TCreateErrorFunc) {
+    static website(value: string, createError: TCreateErrorFunc, isOnlyHttpsFormat?: boolean) {
         if (value === '') {
             return true;
         }
 
-        if (
-            value.match(/^(https?:\/\/)?(www\.)?([a-zA-Z0-9а-яА-ЯёЁ-]+\.[a-zA-Zа-яА-ЯёЁ]{2,})(\/[^\s]*)?$/iu)
-        ) {
+        const basePattern =
+            "(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?::\\d{1,5})?(?:/[\\w\\-.~!$&'()*+,;=:@%/?#]*)?";
+
+        const prefix = isOnlyHttpsFormat ? '^https://' : '^(https://)?';
+
+        const pattern = `${prefix}${basePattern}$`;
+
+        const regex = new RegExp(pattern, 'iu');
+
+        if (value.match(regex)) {
             return true;
         }
+
         return createError('Некорректный адрес');
     }
 
