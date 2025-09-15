@@ -29,13 +29,27 @@ export class Validate {
         return true;
     }
 
-    static website(value: string, createError: TCreateErrorFunc) {
+    static website(value: string, createError: TCreateErrorFunc, isOnlyHttpsFormat?: boolean) {
         if (value === '') {
             return true;
         }
 
         if (
-            value.match(/^(https?:\/\/)?(www\.)?([a-zA-Z0-9а-яА-ЯёЁ-]+\.[a-zA-Zа-яА-ЯёЁ]{2,})(\/[^\s]*)?$/iu)
+            isOnlyHttpsFormat &&
+            value.match(
+                // eslint-disable-next-line
+                /^https:\/\/(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?::\d{1,5})?(?:\/[\w\-\.~!$&'()*+,;=:@%\/?#]*)?$/iu,
+            )
+        ) {
+            return true;
+        }
+
+        if (
+            !isOnlyHttpsFormat &&
+            value.match(
+                // eslint-disable-next-line
+                /^(https:\/\/)?(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?::\d{1,5})?(?:\/[\w\-\.~!$&'()*+,;=:@%\/?#]*)?$/iu,
+            )
         ) {
             return true;
         }
