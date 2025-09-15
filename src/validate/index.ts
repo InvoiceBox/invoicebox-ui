@@ -34,25 +34,19 @@ export class Validate {
             return true;
         }
 
-        if (
-            isOnlyHttpsFormat &&
-            value.match(
-                // eslint-disable-next-line
-                /^https:\/\/(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?::\d{1,5})?(?:\/[\w\-\.~!$&'()*+,;=:@%\/?#]*)?$/iu,
-            )
-        ) {
+        const basePattern =
+            "(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?::\\d{1,5})?(?:/[\\w\\-.~!$&'()*+,;=:@%/?#]*)?";
+
+        const prefix = isOnlyHttpsFormat ? '^https://' : '^(https://)?';
+
+        const pattern = `${prefix}${basePattern}$`;
+
+        const regex = new RegExp(pattern, 'iu');
+
+        if (value.match(regex)) {
             return true;
         }
 
-        if (
-            !isOnlyHttpsFormat &&
-            value.match(
-                // eslint-disable-next-line
-                /^(https:\/\/)?(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)*[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9](?::\d{1,5})?(?:\/[\w\-\.~!$&'()*+,;=:@%\/?#]*)?$/iu,
-            )
-        ) {
-            return true;
-        }
         return createError('Некорректный адрес');
     }
 
