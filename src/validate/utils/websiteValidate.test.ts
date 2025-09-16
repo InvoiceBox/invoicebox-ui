@@ -1,4 +1,4 @@
-import { Validate } from '../index';
+import { Validate, WEBSITE_WRONG_MESSAGE } from '../index';
 
 describe('Website validate', () => {
     const validateAllFunc = (value: string) => Validate.website(value, (result: string) => result);
@@ -12,10 +12,10 @@ describe('Website validate', () => {
         expect(validateAllFunc('https://дом.рф')).toBe(true);
         expect(validateAllFunc('дом.рф')).toBe(true);
 
-        expect(validateAllFunc('https://www')).toBe('Некорректный адрес');
-        expect(validateAllFunc('www')).toBe('Некорректный адрес');
-        expect(validateAllFunc('.com')).toBe('Некорректный адрес');
-        expect(validateAllFunc('дом')).toBe('Некорректный адрес');
+        expect(validateAllFunc('https://www')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateAllFunc('www')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateAllFunc('.com')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateAllFunc('дом')).toBe(WEBSITE_WRONG_MESSAGE);
     });
 
     const validateHttpsFunc = (value: string) => Validate.website(value, (result: string) => result, true);
@@ -24,13 +24,13 @@ describe('Website validate', () => {
         expect(validateHttpsFunc('https://www.abc.com')).toBe(true);
         expect(validateHttpsFunc('https://дом.рф')).toBe(true);
 
-        expect(validateHttpsFunc('дом.рф')).toBe('Некорректный адрес');
-        expect(validateHttpsFunc('http://www.abc.com')).toBe('Некорректный адрес');
-        expect(validateHttpsFunc('abc.com')).toBe('Некорректный адрес');
-        expect(validateHttpsFunc('http://abc.com')).toBe('Некорректный адрес');
-        expect(validateHttpsFunc('https://www')).toBe('Некорректный адрес');
-        expect(validateHttpsFunc('www')).toBe('Некорректный адрес');
-        expect(validateHttpsFunc('.com')).toBe('Некорректный адрес');
-        expect(validateHttpsFunc('дом')).toBe('Некорректный адрес');
+        expect(validateHttpsFunc('дом.рф')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('http://www.abc.com')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('abc.com')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('http://abc.com')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://www')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('www')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('.com')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('дом')).toBe(WEBSITE_WRONG_MESSAGE);
     });
 });

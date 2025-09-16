@@ -13,6 +13,8 @@ import {
 import { RUS_COUNTRY_CODE } from '../components/form/PhoneInput/types';
 import { TCreateErrorFunc } from './types';
 
+export const WEBSITE_WRONG_MESSAGE = 'Некорректный адрес';
+
 export class Validate {
     static bic(value: string, createError: TCreateErrorFunc) {
         if (value === '') {
@@ -47,7 +49,7 @@ export class Validate {
             return true;
         }
 
-        return createError('Некорректный адрес');
+        return createError(WEBSITE_WRONG_MESSAGE);
     }
 
     static vatNumber(value: string, countryId: string, createError: TCreateErrorFunc) {
