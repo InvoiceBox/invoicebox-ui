@@ -13,6 +13,8 @@ import {
 import { RUS_COUNTRY_CODE } from '../components/form/PhoneInput/types';
 import { TCreateErrorFunc } from './types';
 
+export const WEBSITE_WRONG_MESSAGE = 'Некорректный адрес';
+
 export class Validate {
     static bic(value: string, createError: TCreateErrorFunc) {
         if (value === '') {
@@ -35,19 +37,19 @@ export class Validate {
         }
 
         const basePattern =
-            "(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?::\\d{1,5})?(?:\\/[\\w\\-\\.~!$&'()*+,;=:@%\\/?#]*)?";
+            '(?:(?:[a-z\u00a1-\uffff](?:[a-z\u00a1-\uffff-]{0,61}[a-z\u00a1-\uffff])?\\.)+([a-z\u00a1-\uffff]{2,63}))(?::\\d+)?)(?:\\/[\\w \\/-]*)*';
 
-        const prefix = isOnlyHttpsFormat ? '^https://' : '^(https://)?';
+        const prefix = isOnlyHttpsFormat ? '^((https:\\/\\/)' : '^((?:https?:\\/\\/)?';
 
         const pattern = `${prefix}${basePattern}$`;
 
-        const regex = new RegExp(pattern, 'iu');
+        const regex = new RegExp(pattern, 'i');
 
         if (value.match(regex)) {
             return true;
         }
 
-        return createError('Некорректный адрес');
+        return createError(WEBSITE_WRONG_MESSAGE);
     }
 
     static vatNumber(value: string, countryId: string, createError: TCreateErrorFunc) {

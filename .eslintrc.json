@@ -8,14 +8,15 @@
     "parserOptions": {
         "project": "tsconfig.json"
     },
-    "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks"],
+    "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks", "jest"],
     "extends": [
         "plugin:storybook/recommended",
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:jest/recommended"
     ],
     "rules": {
         "prettier/prettier": "error",
@@ -27,5 +28,13 @@
         "@typescript-eslint/await-thenable": "error",
         "@typescript-eslint/no-misused-promises": 2,
         "react/prop-types": 0
+    },
+    "overrides": [
+    {
+      "files": ["**/*.test.js", "**/*.test.jsx", "**/*.test.ts", "**/*.test.tsx"],
+      "env": {
+        "jest/globals": true
+      }
     }
+  ]
 }
