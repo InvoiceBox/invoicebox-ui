@@ -35,13 +35,13 @@ export class Validate {
         }
 
         const basePattern =
-            "(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?::\\d{1,5})?(?:\\/[\\w\\-\\.~!$&'()*+,;=:@%\\/?#]*)?";
+            '(?:(?:[a-z\u00a1-\uffff](?:[a-z\u00a1-\uffff-]{0,61}[a-z\u00a1-\uffff])?\\.)+([a-z\u00a1-\uffff]{2,63}))(?::\\d+)?)(?:\\/[\\w \\/-]*)*';
 
-        const prefix = isOnlyHttpsFormat ? '^https://' : '^(https://)?';
+        const prefix = isOnlyHttpsFormat ? '^((https:\\/\\/)' : '^((?:https?:\\/\\/)?';
 
         const pattern = `${prefix}${basePattern}$`;
 
-        const regex = new RegExp(pattern, 'iu');
+        const regex = new RegExp(pattern, 'i');
 
         if (value.match(regex)) {
             return true;
