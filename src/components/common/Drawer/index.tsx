@@ -32,6 +32,8 @@ export const Drawer: FC<TProps> = ({
 }) => {
     const palette = useComponentPalette<TDrawerPalette>('drawer');
 
+    if (!isOpen) return null;
+
     return (
         <S.BottomSheet
             open={isOpen}
