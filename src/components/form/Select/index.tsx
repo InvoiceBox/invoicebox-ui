@@ -43,6 +43,7 @@ export type TProps<TValue> = Pick<
     scrollbarMaxHeight?: number;
     emptyOptionsLabel?: string;
     isLoading?: boolean;
+    required?: boolean;
 };
 
 export const Select = <TValue extends string | number>({
@@ -65,6 +66,7 @@ export const Select = <TValue extends string | number>({
     emptyOptionsLabel,
     isLoading,
     onBlur,
+    required,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -266,6 +268,7 @@ export const Select = <TValue extends string | number>({
                     onReset={isResetButtonEnabled ? handleReset : undefined}
                     size={size}
                     onClick={isDrawerOptions ? handleInputClick : undefined}
+                    required={required}
                 />
             </S.InputWrapper>
 

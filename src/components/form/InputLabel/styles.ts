@@ -5,6 +5,7 @@ import { TInputLabelPalette } from './palette';
 export const Label = styled(Typography)<{
     $inFocus: boolean;
     $palette: TInputLabelPalette;
+    $required?: boolean;
 }>`
     border-radius: 10px;
     position: absolute;
@@ -15,6 +16,14 @@ export const Label = styled(Typography)<{
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;
     color: ${({ $inFocus, $palette }) => ($inFocus ? $palette.textHighlight : $palette.text)};
+
+    ${({ $required, $palette }) =>
+        $required &&
+        css`
+      &::after {
+        content: " *";
+        color: ${() => $palette.error};
+    `}
 `;
 
 export const Wrapper = styled.div<{
