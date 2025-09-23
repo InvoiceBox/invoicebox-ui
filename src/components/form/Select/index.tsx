@@ -28,7 +28,7 @@ export type TGroup = { label: string; id: string; entity?: unknown };
 
 export type TProps<TValue> = Pick<
     TInputProps,
-    'label' | 'hasError' | 'placeholder' | 'name' | 'size' | 'onBlur'
+    'label' | 'hasError' | 'placeholder' | 'name' | 'size' | 'onBlur' | 'required'
 > & {
     value: TValue | null;
     onChange: (value: TValue | null) => void;
