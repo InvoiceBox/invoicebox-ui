@@ -6,7 +6,7 @@ import { Arrow, TProps as TArrowProps } from '../../../../common/Arrow';
 import { ResetButton } from '../../../ResetButton';
 import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 
-export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label'> &
+export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label' | 'required'> &
     Pick<TPureInputProps, 'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value' | 'onClick'> &
     Pick<TArrowProps, 'isOpen'> & { onReset?: () => void; size?: TSizes };
 
@@ -25,13 +25,14 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             onReset,
             size = 'M',
             onClick,
+            required,
         },
         ref,
     ) => {
         const isShowResetIcon = !!value && !!onReset;
 
         return (
-            <InputLabel inFocus={inFocus} label={label}>
+            <InputLabel inFocus={inFocus} label={label} required={required}>
                 <S.ControlWrapper>
                     <PureInput
                         ref={ref}
