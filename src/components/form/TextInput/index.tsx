@@ -5,7 +5,7 @@ import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { SIZE_PARAMS_MAP, TSizes } from '../constants';
 
-export type TProps = Pick<TInputLabelProps, 'label'> &
+export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
     Pick<
         TPureInputProps,
         | 'placeholder'
@@ -26,6 +26,7 @@ export type TProps = Pick<TInputLabelProps, 'label'> &
         size?: TSizes;
         children?: ReactNode;
         element?: 'input' | 'textarea';
+        required?: boolean;
     };
 
 export const TextInput: FC<TProps> = ({
@@ -47,6 +48,7 @@ export const TextInput: FC<TProps> = ({
     autoFocus,
     element = 'input',
     rows,
+    required = false,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -58,7 +60,7 @@ export const TextInput: FC<TProps> = ({
     );
 
     return (
-        <InputLabel inFocus={inFocus} label={label} disabled={disabled}>
+        <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
             <S.InputLabelContent>
                 <PureInput
                     name={name}
