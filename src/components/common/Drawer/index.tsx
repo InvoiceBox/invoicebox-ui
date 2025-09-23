@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import * as S from './styles';
 import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
@@ -32,7 +32,19 @@ export const Drawer: FC<TProps> = ({
 }) => {
     const palette = useComponentPalette<TDrawerPalette>('drawer');
 
-    if (!isOpen) return null;
+    const [shouldRender, setShouldRender] = useState(false);
+
+    // delay for close drawer and unmount
+    useEffect(() => {
+        if (isOpen) {
+            setShouldRender(true);
+        } else {
+            const timer = setTimeout(() => setShouldRender(false), 300);
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen]);
+
+    if (!shouldRender) return null;
 
     return (
         <S.BottomSheet

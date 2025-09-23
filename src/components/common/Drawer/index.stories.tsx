@@ -11,12 +11,28 @@ const meta: Meta<typeof Drawer> = {
 
 export default meta;
 
+const Counter = () => {
+    const [count, setCount] = useState(0);
+
+    return (
+        <div>
+            {count}
+            <button type={'button'} onClick={() => setCount((prevState) => prevState + 1)}>
+                Increment
+            </button>
+        </div>
+    );
+};
+
 function Render(args: TProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div>
-            <Drawer {...args} onClose={() => setIsOpen(false)} isOpen={isOpen} />
+            <Drawer {...args} onClose={() => setIsOpen(false)} isOpen={isOpen}>
+                Content
+                <Counter />
+            </Drawer>
             <button type={'button'} onClick={() => setIsOpen(true)}>
                 Open
             </button>
