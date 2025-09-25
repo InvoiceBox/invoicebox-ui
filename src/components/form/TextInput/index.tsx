@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, ReactNode, useCallback } from 'react';
+import React, { ChangeEvent, FC, ReactNode, Ref, useCallback } from 'react';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
@@ -27,6 +27,7 @@ export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
         children?: ReactNode;
         element?: 'input' | 'textarea';
         required?: boolean;
+        ref?: Ref<HTMLInputElement>;
     };
 
 export const TextInput: FC<TProps> = ({
@@ -49,6 +50,7 @@ export const TextInput: FC<TProps> = ({
     element = 'input',
     rows,
     required = false,
+    ref,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -63,6 +65,7 @@ export const TextInput: FC<TProps> = ({
         <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
             <S.InputLabelContent>
                 <PureInput
+                    ref={ref}
                     name={name}
                     disabled={disabled}
                     hasError={hasError}
