@@ -54,6 +54,7 @@ type TControlProps = {
     isLoading?: boolean;
     optionsLoader?: ReactNode;
     size?: TSizes;
+    required?: boolean;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -81,6 +82,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             isInputOnlyNumbers = false,
             size = 'M',
             autoFocus,
+            required = false,
         },
         ref,
     ) => {
@@ -120,7 +122,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
 
         return (
             <S.Wrapper ref={wrapperRef}>
-                <InputLabel inFocus={inFocus} label={label} disabled={disabled}>
+                <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
                     <S.InputLabelContent>
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
                         <PureInput
