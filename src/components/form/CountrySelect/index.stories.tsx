@@ -42,6 +42,7 @@ export const Default: StoryObj<TProps> = {
             },
         ],
         placeholder: 'Поиск',
+        disabled: false,
     },
     render: Component,
 };

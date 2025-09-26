@@ -13,6 +13,7 @@ export const HeaderWrapper = styled.button`
     background: transparent;
     border: none;
     cursor: pointer;
+    height: 24px;
 `;
 
 export const ListWrapper = styled.div`
