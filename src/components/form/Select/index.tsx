@@ -228,7 +228,11 @@ export const Select = <TValue extends string | number>({
             );
         }
 
-        return emptyLabel;
+        return (
+            <>
+                {dropdownHeader} {emptyLabel}
+            </>
+        );
     };
 
     const handleDrawerContentRender = () => {
