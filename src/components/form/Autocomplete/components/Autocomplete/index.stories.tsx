@@ -48,6 +48,7 @@ export const Default: StoryObj<TStpryProps> = {
         isCustomOptionRender: false,
         children: 'children',
         inputPaddingLeft: 60,
+        readOnly: false,
     },
     render: Component,
 };

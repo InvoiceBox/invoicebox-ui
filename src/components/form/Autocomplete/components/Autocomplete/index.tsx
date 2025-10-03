@@ -33,7 +33,7 @@ type TOption = {
 
 type TFieldProps = Pick<
     InputHTMLAttributes<HTMLInputElement>,
-    'name' | 'onBlur' | 'onFocus' | 'autoFocus'
+    'name' | 'onBlur' | 'onFocus' | 'autoFocus' | 'readOnly'
 > & {
     value: string;
     onChange: (value: string, option?: TOption) => void;
@@ -83,6 +83,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             size = 'M',
             autoFocus,
             required = false,
+            readOnly,
         },
         ref,
     ) => {
@@ -140,6 +141,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             maxLength={inputMaxLength}
                             isOnlyNumbers={isInputOnlyNumbers}
                             autoFocus={autoFocus}
+                            readOnly={readOnly}
                             {...SIZE_PARAMS_MAP[size]}
                         />
                     </S.InputLabelContent>
