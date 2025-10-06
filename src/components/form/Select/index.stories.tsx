@@ -31,7 +31,13 @@ const COMMON_ARGS = {
     size: 'L' as const,
     isLoading: false,
     options: [
-        { label: 'Option 1', value: 'option-1', groupId: '1', entity: { name: 'name option 1' } },
+        {
+            label: 'Option 1',
+            value: 'option-1',
+            groupId: '1',
+            disabled: true,
+            entity: { name: 'name option 1' },
+        },
         { label: 'Option 2', value: 'option-2', groupId: '1', entity: { name: 'name option 2' } },
         { label: 'Option 3', value: 'option-3', groupId: '2', entity: { name: 'name option 3' } },
         { label: 'Option 4', value: 'option-4', groupId: '2', entity: { name: 'name option 4' } },

@@ -23,7 +23,13 @@ import Loader from './components/Loader';
 const MAX_LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
 
-export type TOption<TValue> = { label: string; value: TValue; groupId?: string; entity?: unknown };
+export type TOption<TValue> = {
+    label: string;
+    value: TValue;
+    groupId?: string;
+    entity?: unknown;
+    disabled?: boolean;
+};
 export type TGroup = { label: string; id: string; entity?: unknown };
 
 export type TProps<TValue> = Pick<
@@ -191,6 +197,7 @@ export const Select = <TValue extends string | number>({
                             data-value={JSON.stringify(option.value)}
                             data-option-identifier={OPTION_IDENTIFIER}
                             $isGrouped={!!group && !renderOption}
+                            $disabled={!!option.disabled}
                         >
                             {handleOptionRender(option)}
                         </S.Option>

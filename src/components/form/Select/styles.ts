@@ -15,7 +15,11 @@ export const InputWrapper = styled.div`
     }
 `;
 
-export const Option = styled(Typography)<{ $palette: TSelectPalette; $isGrouped: boolean }>`
+export const Option = styled(Typography)<{
+    $palette: TSelectPalette;
+    $isGrouped: boolean;
+    $disabled?: boolean;
+}>`
     overflow: hidden;
     width: 100%;
     text-align: left;
@@ -26,6 +30,13 @@ export const Option = styled(Typography)<{ $palette: TSelectPalette; $isGrouped:
     &:hover {
         background-color: ${({ $palette }) => $palette.bgHover};
     }
+
+    ${({ $disabled }) =>
+        $disabled &&
+        css`
+            cursor: not-allowed;
+            pointer-events: none;
+        `}
 
     ${({ $isGrouped }) =>
         $isGrouped &&
