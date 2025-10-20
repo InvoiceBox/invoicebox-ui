@@ -37,6 +37,7 @@ export type TProps<TValue> = Pick<
     isResetButtonEnabled?: boolean;
     renderOption?: (entity?: any) => ReactNode;
     renderGroup?: (entity?: any) => ReactNode;
+    renderValue?: (entity?: any) => ReactNode;
     dropdownHeader?: ReactNode;
     scrollbarHeader?: ReactNode;
     isDrawerOptions?: boolean;
@@ -52,6 +53,7 @@ export const Select = <TValue extends string | number>({
     placeholder,
     name,
     value,
+    renderValue,
     onChange,
     options,
     groups = [],
@@ -255,6 +257,11 @@ export const Select = <TValue extends string | number>({
         return emptyLabel;
     };
 
+    const renderedValue: ReactNode | undefined = useMemo(() => {
+        if (!renderValue || !selectedOption?.entity) return;
+        return renderValue(selectedOption?.entity);
+    }, [renderValue, selectedOption?.entity]);
+
     return (
         <S.Wrapper ref={isDrawerOptions ? undefined : wrapperRef}>
             <S.InputWrapper>
@@ -267,11 +274,12 @@ export const Select = <TValue extends string | number>({
                     onFocus={isDrawerOptions ? undefined : handleFocus}
                     onBlur={isDrawerOptions ? undefined : handleBlur}
                     value={selectedOption?.label || ''}
+                    renderedValue={renderedValue}
                     name={name}
                     isOpen={isOpen}
                     onReset={isResetButtonEnabled ? handleReset : undefined}
                     size={size}
-                    onClick={isDrawerOptions ? handleInputClick : undefined}
+                    onClick={isDrawerOptions || !!renderedValue ? handleInputClick : undefined}
                     required={required}
                 />
             </S.InputWrapper>

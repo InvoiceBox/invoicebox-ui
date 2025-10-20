@@ -18,6 +18,7 @@ export type TProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' 
         isOnlyNumbers?: boolean;
         className?: never;
         element?: 'input' | 'textarea';
+        renderedValue?: React.ReactNode;
     };
 
 export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
@@ -37,6 +38,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             onChange,
             element = 'input',
             variant = 'bodyMRegular',
+            renderedValue,
             ...rest
         },
         ref,
@@ -58,7 +60,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             <S.Wrapper
                 ref={ref}
                 variant={variant}
-                element={element}
+                element={renderedValue ? 'div' : element}
                 $paddingLeft={paddingLeft}
                 $paddingRight={paddingRight}
                 $paddingTop={paddingTop}
@@ -70,7 +72,9 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
                 $borderRadius={borderRadius}
                 onChange={handleChange}
                 {...rest}
-            />
+            >
+                {renderedValue}
+            </S.Wrapper>
         );
     },
 );
