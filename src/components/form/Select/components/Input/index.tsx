@@ -8,7 +8,7 @@ import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 
 export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label' | 'required'> &
     Pick<TPureInputProps, 'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value' | 'onClick'> &
-    Pick<TArrowProps, 'isOpen'> & { onReset?: () => void; size?: TSizes };
+    Pick<TArrowProps, 'isOpen'> & { onReset?: () => void; size?: TSizes; renderedValue?: React.ReactNode };
 
 export const Input = forwardRef<HTMLInputElement, TProps>(
     (
@@ -19,6 +19,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             onFocus,
             onBlur,
             value,
+            renderedValue,
             name,
             label,
             isOpen,
@@ -43,6 +44,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                         onFocus={onFocus}
                         onBlur={onBlur}
                         value={value}
+                        renderedValue={renderedValue}
                         readOnly
                         paddingRight={52}
                         onClick={onClick}
