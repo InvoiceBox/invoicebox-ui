@@ -35,6 +35,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus'> & {
     size?: TSizes;
     isSupportCityRusPhoneNumber?: boolean;
     isInnerErrorHighlight?: boolean;
+    isInnerValidationDisabled?: boolean;
 };
 
 export type TProps = TControlProps & TFieldProps;
@@ -57,6 +58,7 @@ export const PhoneInput: FC<TProps> = ({
     autoFocus,
     isSupportCityRusPhoneNumber = false,
     isInnerErrorHighlight = true,
+    isInnerValidationDisabled = false,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
@@ -120,6 +122,7 @@ export const PhoneInput: FC<TProps> = ({
     );
 
     useValidateInitialValue(
+        isInnerValidationDisabled,
         phoneInputLogic,
         value,
         currentCountriesPhoneRules,
@@ -167,12 +170,17 @@ export const PhoneInput: FC<TProps> = ({
                     ? phoneInputLogic.formatRusPhoneToUnifiedView(notFormattedValue, moveCaret)
                     : notFormattedValue;
 
-            const isValidInputValue = getIsValidValue(intermediateValue);
-            setIsHaveInputError(!isValidInputValue);
-            onChange(isValidInputValue ? intermediateValue : '');
+            let valueFinal = intermediateValue;
+            if (!isInnerValidationDisabled) {
+                const isValidInputValue = getIsValidValue(intermediateValue);
+                setIsHaveInputError(!isValidInputValue);
+                valueFinal = isValidInputValue ? intermediateValue : '';
+            }
+
+            onChange(valueFinal);
             setInputValue(intermediateValue);
         },
-        [country, getIsValidValue, onChange, phoneInputLogic],
+        [country, getIsValidValue, isInnerValidationDisabled, onChange, phoneInputLogic],
     );
 
     const handleChange = useCallback(

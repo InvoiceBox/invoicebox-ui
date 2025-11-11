@@ -7,6 +7,7 @@ const meta: Meta<typeof PhoneInput> = {
     component: PhoneInput,
     tags: ['autodocs'],
     argTypes: {
+        onChange: { action: 'onChange' },
         onBlur: { action: 'onBlur' },
         onFocus: { action: 'onFocus' },
         onCountryChange: { action: 'onCountryChange' },
@@ -109,5 +110,13 @@ export const MultiCountryWithUnknown: StoryObj<TProps> = {
 
 export const DefaultRusCountry: StoryObj<TProps> = {
     args: commonProps,
+    render: Component,
+};
+
+export const WithoutInnerValidation: StoryObj<TProps> = {
+    args: {
+        ...commonProps,
+        isInnerValidationDisabled: true,
+    },
     render: Component,
 };

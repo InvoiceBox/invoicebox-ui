@@ -3,6 +3,7 @@ import { RUS_COUNTRY_CODE, TCountryRule } from '../types';
 import { PhoneInputLogic } from '../phoneInputLogic';
 
 export const useValidateInitialValue = (
+    isDisabled: boolean,
     phoneInputLogic: PhoneInputLogic,
     initialValue: string,
     currentCountriesPhoneRules: { [p: string]: TCountryRule },
@@ -12,6 +13,7 @@ export const useValidateInitialValue = (
     const [isInitialValidateDone, setIsInitialValidateDone] = useState(false);
 
     useEffect(() => {
+        if (isDisabled) return;
         if (isInitialValidateDone) return;
 
         if (initialValue) {
