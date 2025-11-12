@@ -18,6 +18,7 @@ export type TProps = {
     value: Date | null;
     onChange: (value: Date) => void;
     withTime?: boolean;
+    placeholder?: string;
     dropdownProps?: Pick<
         TDropdownProps,
         'isAutoPosition' | 'positionLeft' | 'positionRight' | 'positionVertical'
@@ -41,6 +42,7 @@ export const DateInput: FC<TProps> = ({
     withTime = false,
     size = 'M',
     dropdownProps,
+    placeholder,
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -121,7 +123,7 @@ export const DateInput: FC<TProps> = ({
                         hasError={hasError}
                         inFocus={inFocus}
                         name={name}
-                        placeholder={logic.getPlaceholder(withTime)}
+                        placeholder={placeholder || logic.getPlaceholder(withTime)}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         value={stringValue}
