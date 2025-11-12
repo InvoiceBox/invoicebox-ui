@@ -55,6 +55,7 @@ export const Calendar: FC<TProps> = ({ onChange, value, minDate, maxDate, select
             $tileActive={palette.tileActive}
             $tileBgActive={palette.tileBgActive}
             $tileBgRangeBetween={palette.tileBgRangeBetween}
+            $month={palette.month}
         />
     );
 };
