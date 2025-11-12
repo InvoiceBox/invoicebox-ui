@@ -29,6 +29,7 @@ import { generateTogglePalette } from '../components/form/Toggle/palette';
 import { generateReadOnlyLabelValueFieldPalette } from '../components/common/ReadOnlyLabelValueField/palette';
 import { generatePointsLoaderPalette } from '../components/common/PointsLoader/palette';
 import { generateTagsInputPalette } from '../components/form/TagsInput/palette';
+import { generateTimePickerPalette } from '../components/form/DateInput/components/TimePicker/palette';
 
 type TProps = {
     children: ReactNode;
@@ -74,6 +75,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             readOnlyLabelValueField: generateReadOnlyLabelValueFieldPalette(mergedAbstractPalette),
             pointsLoader: generatePointsLoaderPalette(mergedAbstractPalette),
             tagsInput: generateTagsInputPalette(mergedAbstractPalette),
+            timePicker: generateTimePickerPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );
