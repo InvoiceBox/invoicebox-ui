@@ -47,9 +47,3 @@ export const ValueWrapper = styled.button<{
     cursor: pointer;
     outline: none;
 `;
-
-export const Border = styled.div`
-    width: 1px;
-    height: 100%;
-    background: red;
-`;
