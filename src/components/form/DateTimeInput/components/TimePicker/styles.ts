@@ -46,4 +46,8 @@ export const ValueWrapper = styled.button<{
     border: none;
     cursor: pointer;
     outline: none;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
 `;

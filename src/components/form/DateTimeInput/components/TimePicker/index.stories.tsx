@@ -11,13 +11,14 @@ const meta: Meta<typeof TimePicker> = {
 export default meta;
 
 export const Default: StoryObj<TProps> = {
-    render: function Render() {
+    args: {
+        height: 300,
+        minTime: [10, 30],
+        maxTime: [22, 15],
+    },
+    render: function Render(props) {
         const [time, setTime] = useState<[number, number]>([0, 0]);
 
-        return (
-            <div style={{ height: '300px', overflow: 'hidden' }}>
-                <TimePicker value={time} onChange={setTime} />
-            </div>
-        );
+        return <TimePicker {...props} value={time} onChange={setTime} />;
     },
 };
