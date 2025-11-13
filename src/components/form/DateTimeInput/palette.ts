@@ -6,6 +6,7 @@ export type TDateTimeInputPalette = {
     divider: string;
     cancelButton: string;
     applyButton: string;
+    disabledButton: string;
 };
 
 export const generateDateTimeInputPalette = (abstractPalette: TAbstractPalette): TDateTimeInputPalette => {
@@ -14,5 +15,6 @@ export const generateDateTimeInputPalette = (abstractPalette: TAbstractPalette):
         divider: hexToRgba(abstractPalette.primary, 0.1),
         cancelButton: abstractPalette.neutralUsual,
         applyButton: abstractPalette.secondary,
+        disabledButton: abstractPalette.neutralFoggy,
     };
 };

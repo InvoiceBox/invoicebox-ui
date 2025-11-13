@@ -42,6 +42,16 @@ class Logic {
 
         return new Date(withTime ? formattedDateStr + ' ' + formattedTimeStr : formattedDateStr);
     }
+
+    addHoursAndMinutesToDate(date: Date, hours: number, minutes: number) {
+        const newDate = new Date(date);
+        newDate.setHours(hours, minutes, 0, 0);
+        return newDate;
+    }
+
+    getHoursAndMinutesFromDate(date: Date) {
+        return [date.getHours(), date.getMinutes()];
+    }
 }
 
 export const logic = new Logic();

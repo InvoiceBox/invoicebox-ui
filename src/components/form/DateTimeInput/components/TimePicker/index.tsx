@@ -39,15 +39,15 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
     const handleMinuteChange = (newMinute: number) => onChange([hour, newMinute]);
 
     const getIsDisabledMinute = (current: number) => {
-        if (value[0] === maxTime?.[0] && value[0] === minTime?.[0]) {
+        if (hour === maxTime?.[0] && hour === minTime?.[0]) {
             return getIsDisabled(current, maxTime[1], minTime[1]);
         }
 
-        if (value[0] === maxTime?.[0]) {
+        if (hour === maxTime?.[0]) {
             return getIsDisabled(current, maxTime[1], 0);
         }
 
-        if (value[0] === minTime?.[0]) {
+        if (hour === minTime?.[0]) {
             return getIsDisabled(current, 59, minTime[1]);
         }
 
