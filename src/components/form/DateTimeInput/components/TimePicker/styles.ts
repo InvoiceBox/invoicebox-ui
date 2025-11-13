@@ -11,6 +11,7 @@ export const Wrapper = styled.div<{ $height: number }>`
 export const ColumnWrapper = styled.div<{ $borderColor: string }>`
     display: flex;
     flex-direction: column;
+    width: 46px;
 
     &:last-child {
         border-left: 1px solid ${({ $borderColor }) => $borderColor};
@@ -36,6 +37,7 @@ export const ValueWrapper = styled.button<{
     $colorActive: string;
     $isActive: boolean;
     $bgActive: string;
+    $colorDisabled: string;
 }>`
     padding: 2px 0;
     display: flex;
@@ -49,5 +51,6 @@ export const ValueWrapper = styled.button<{
 
     &:disabled {
         cursor: not-allowed;
+        color: ${({ $colorDisabled }) => $colorDisabled};
     }
 `;

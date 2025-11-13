@@ -6,6 +6,7 @@ export type TTimePickerPalette = {
     tile: string;
     tileActive: string;
     tileBgActive: string;
+    tileDisabled: string;
     divider: string;
 };
 
@@ -16,5 +17,6 @@ export const generateTimePickerPalette = (abstractPalette: TAbstractPalette): TT
         divider: hexToRgba(abstractPalette.primary, 0.1),
         tileActive: abstractPalette.primary,
         tileBgActive: abstractPalette.secondary,
+        tileDisabled: abstractPalette.neutralFoggy,
     };
 };
