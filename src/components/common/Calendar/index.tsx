@@ -6,6 +6,7 @@ import { LibCalendar } from './styles';
 type TGeneralProps = {
     minDate?: Date;
     maxDate?: Date;
+    onActiveStartDateChange?: () => void;
 };
 
 export type TProps = TGeneralProps &
@@ -22,7 +23,14 @@ export type TProps = TGeneralProps &
           }
     );
 
-export const Calendar: FC<TProps> = ({ onChange, value, minDate, maxDate, selectRange }) => {
+export const Calendar: FC<TProps> = ({
+    onChange,
+    value,
+    minDate,
+    maxDate,
+    selectRange,
+    onActiveStartDateChange,
+}) => {
     const palette = useComponentPalette<TCalendarPalette>('calendar');
 
     const handleChange = useCallback(
@@ -48,6 +56,7 @@ export const Calendar: FC<TProps> = ({ onChange, value, minDate, maxDate, select
             onChange={handleChange}
             value={value}
             selectRange={selectRange}
+            onActiveStartDateChange={onActiveStartDateChange}
             // styles
             $arrow={palette.arrow}
             $weekDay={palette.weekday}

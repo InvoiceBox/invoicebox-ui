@@ -51,7 +51,11 @@ import { generateTagsInputPalette, TTagsInputPalette } from '../components/form/
 import {
     generateTimePickerPalette,
     TTimePickerPalette,
-} from '../components/form/DateInput/components/TimePicker/palette';
+} from '../components/form/DateTimeInput/components/TimePicker/palette';
+import {
+    generateDateTimeInputPalette,
+    TDateTimeInputPalette,
+} from '../components/form/DateTimeInput/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -82,6 +86,7 @@ type TContext = {
     pointsLoader: TPointsLoaderPalette;
     tagsInput: TTagsInputPalette;
     timePicker: TTimePickerPalette;
+    dateTimeInput: TDateTimeInputPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -113,4 +118,5 @@ export const PaletteContext = createContext<TContext>({
     pointsLoader: generatePointsLoaderPalette(defaultAbstractPalette),
     tagsInput: generateTagsInputPalette(defaultAbstractPalette),
     timePicker: generateTimePickerPalette(defaultAbstractPalette),
+    dateTimeInput: generateDateTimeInputPalette(defaultAbstractPalette),
 });
