@@ -11,6 +11,7 @@ export const Wrapper = styled.div<{ $height: number }>`
 export const ColumnWrapper = styled.div<{ $borderColor: string }>`
     display: flex;
     flex-direction: column;
+    width: 46px;
 
     &:last-child {
         border-left: 1px solid ${({ $borderColor }) => $borderColor};
