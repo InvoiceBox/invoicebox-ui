@@ -23,7 +23,7 @@ export const Icon = styled.div<{ $palette: TDateInputPalette }>`
 `;
 
 export const CalendarWrapper = styled.div`
-    padding: 30px;
+    padding: 16px;
 
     @media ${breakpoints.sm} {
         padding: 15px;

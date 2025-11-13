@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TimePicker, TProps } from '.';
+import { TimePicker, TProps } from './index';
 import React, { useState } from 'react';
 
 const meta: Meta<typeof TimePicker> = {
-    title: 'form/DateInput/_components/TimePicker',
+    title: 'form/DateTimeInput/_components/TimePicker',
     component: TimePicker,
     tags: ['autodocs'],
 };

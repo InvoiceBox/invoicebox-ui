@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CheckIcon } from '.';
+import { CheckIcon } from './index';
 
 const meta: Meta<typeof CheckIcon> = {
-    title: 'form/DateInput/_components/CheckIcon',
+    title: 'form/DateTimeInput/_components/CheckIcon',
     component: CheckIcon,
     tags: ['autodocs'],
 };

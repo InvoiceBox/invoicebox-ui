@@ -1,14 +1,13 @@
 import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './styles';
 import { logic } from './logic';
-
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
-import { Icon } from './components/Icon';
+import { CalendarIcon } from './components/CalendarIcon';
 import { useComponentPalette } from '../../../palette';
 import { TDateInputPalette } from './palette';
 import { SIZE_PARAMS_MAP, TSizes } from '../constants';
@@ -17,6 +16,7 @@ import { TDropdownProps } from '../../../index';
 export type TProps = {
     value: Date | null;
     onChange: (value: Date) => void;
+    // todo remove when dateTimeInput will be released
     withTime?: boolean;
     placeholder?: string;
     dropdownProps?: Pick<
@@ -132,7 +132,7 @@ export const DateInput: FC<TProps> = ({
                         {...SIZE_PARAMS_MAP[size]}
                     />
                     <S.Icon onClick={handleTrigger} $palette={palette}>
-                        <Icon />
+                        <CalendarIcon />
                     </S.Icon>
                 </S.InputWrapper>
             </InputLabel>
