@@ -24,14 +24,18 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
     const palette = useComponentPalette<TTimePickerPalette>('timePicker');
 
     const [hour, minute] = value;
+    const maxTimeHour = maxTime?.[0];
+    const maxTimeMinute = maxTime?.[1];
+    const minTimeHour = minTime?.[0];
+    const minTimeMinute = minTime?.[1];
 
     const handleHourChange = (newHour: number) => {
-        if (newHour === maxTime?.[0] && minute > maxTime[1]) {
-            return onChange([newHour, maxTime[1]]);
+        if (newHour === maxTimeHour && maxTimeMinute && minute > maxTimeMinute) {
+            return onChange([newHour, maxTimeMinute]);
         }
 
-        if (newHour === minTime?.[0] && minute < minTime[1]) {
-            return onChange([newHour, minTime[1]]);
+        if (newHour === minTimeHour && minTimeMinute && minute < minTimeMinute) {
+            return onChange([newHour, minTimeMinute]);
         }
 
         return onChange([newHour, minute]);
@@ -39,16 +43,16 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
     const handleMinuteChange = (newMinute: number) => onChange([hour, newMinute]);
 
     const getIsDisabledMinute = (current: number) => {
-        if (hour === maxTime?.[0] && hour === minTime?.[0]) {
-            return getIsDisabled(current, maxTime[1], minTime[1]);
+        if (hour === maxTimeHour && maxTimeMinute && hour === minTimeHour && minTimeMinute) {
+            return getIsDisabled(current, maxTimeMinute, minTimeMinute);
         }
 
-        if (hour === maxTime?.[0]) {
-            return getIsDisabled(current, maxTime[1], 0);
+        if (hour === maxTimeHour && maxTimeMinute) {
+            return getIsDisabled(current, maxTimeMinute, 0);
         }
 
-        if (hour === minTime?.[0]) {
-            return getIsDisabled(current, 59, minTime[1]);
+        if (hour === minTimeHour && minTimeMinute) {
+            return getIsDisabled(current, 59, minTimeMinute);
         }
 
         return false;
@@ -74,8 +78,8 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                                 onClick={() => handleHourChange(hourItem)}
                                 disabled={getIsDisabled(
                                     hourItem,
-                                    maxTime ? maxTime[0] : 23,
-                                    minTime ? minTime[0] : 0,
+                                    maxTimeHour ? maxTimeHour : 23,
+                                    minTimeHour ? minTimeHour : 0,
                                 )}
                             >
                                 <Typography variant={'captionRegular'}>{hourItem}</Typography>
