@@ -8,6 +8,7 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
     $tileActive: string;
     $tileBgActive: string;
     $tileBgRangeBetween: string;
+    $month: string;
     selectRange?: boolean;
 }>`
     border: none;
@@ -55,6 +56,7 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
         font-size: 14px;
         background-color: transparent !important;
         cursor: default;
+        color: ${({ $month }) => $month};
     }
 
     /* weekdays */

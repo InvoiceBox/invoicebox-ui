@@ -48,6 +48,10 @@ import {
 } from '../components/common/ReadOnlyLabelValueField/palette';
 import { generatePointsLoaderPalette, TPointsLoaderPalette } from '../components/common/PointsLoader/palette';
 import { generateTagsInputPalette, TTagsInputPalette } from '../components/form/TagsInput/palette';
+import {
+    generateTimePickerPalette,
+    TTimePickerPalette,
+} from '../components/form/DateInput/components/TimePicker/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -77,6 +81,7 @@ type TContext = {
     readOnlyLabelValueField: TReadOnlyLabelValueFieldPalette;
     pointsLoader: TPointsLoaderPalette;
     tagsInput: TTagsInputPalette;
+    timePicker: TTimePickerPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -107,4 +112,5 @@ export const PaletteContext = createContext<TContext>({
     readOnlyLabelValueField: generateReadOnlyLabelValueFieldPalette(defaultAbstractPalette),
     pointsLoader: generatePointsLoaderPalette(defaultAbstractPalette),
     tagsInput: generateTagsInputPalette(defaultAbstractPalette),
+    timePicker: generateTimePickerPalette(defaultAbstractPalette),
 });
