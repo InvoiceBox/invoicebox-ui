@@ -69,6 +69,7 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                                 $colorActive={palette.tileActive}
                                 $isActive={hour === hourItem}
                                 $bgActive={palette.tileBgActive}
+                                $colorDisabled={palette.tileDisabled}
                                 type={'button'}
                                 onClick={() => handleHourChange(hourItem)}
                                 disabled={getIsDisabled(
@@ -97,6 +98,7 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                                 $colorActive={palette.tileActive}
                                 $isActive={minute === minuteItem}
                                 $bgActive={palette.tileBgActive}
+                                $colorDisabled={palette.tileDisabled}
                                 type={'button'}
                                 onClick={() => handleMinuteChange(minuteItem)}
                                 disabled={getIsDisabledMinute(minuteItem)}
