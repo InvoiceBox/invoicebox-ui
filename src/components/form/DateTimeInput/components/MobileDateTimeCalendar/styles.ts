@@ -41,3 +41,7 @@ export const MobileCalendarWrapper = styled.div`
     display: flex;
     justify-content: center;
 `;
+
+export const TimePickerWrapper = styled.div`
+    padding-bottom: 30px;
+`;

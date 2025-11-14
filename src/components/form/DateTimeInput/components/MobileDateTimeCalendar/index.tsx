@@ -82,24 +82,29 @@ export const MobileDateTimeCalendar: FC<TProps> = ({
                     />
                 </S.MobileCalendarWrapper>
             ) : (
-                <TimePicker
-                    value={[calendarDropdownValue?.getHours() || 0, calendarDropdownValue?.getMinutes() || 0]}
-                    onChange={onTimeChange}
-                    maxTime={
-                        calendarDropdownValue &&
-                        maxDate &&
-                        calendarDropdownValue.getDay() === maxDate.getDay()
-                            ? [maxDate.getHours(), maxDate.getMinutes()]
-                            : undefined
-                    }
-                    minTime={
-                        calendarDropdownValue &&
-                        minDate &&
-                        calendarDropdownValue.getDay() === minDate.getDay()
-                            ? [minDate.getHours(), minDate.getMinutes()]
-                            : undefined
-                    }
-                />
+                <S.TimePickerWrapper>
+                    <TimePicker
+                        value={[
+                            calendarDropdownValue?.getHours() || 0,
+                            calendarDropdownValue?.getMinutes() || 0,
+                        ]}
+                        onChange={onTimeChange}
+                        maxTime={
+                            calendarDropdownValue &&
+                            maxDate &&
+                            calendarDropdownValue.getDay() === maxDate.getDay()
+                                ? [maxDate.getHours(), maxDate.getMinutes()]
+                                : undefined
+                        }
+                        minTime={
+                            calendarDropdownValue &&
+                            minDate &&
+                            calendarDropdownValue.getDay() === minDate.getDay()
+                                ? [minDate.getHours(), minDate.getMinutes()]
+                                : undefined
+                        }
+                    />
+                </S.TimePickerWrapper>
             )}
         </Drawer>
     );

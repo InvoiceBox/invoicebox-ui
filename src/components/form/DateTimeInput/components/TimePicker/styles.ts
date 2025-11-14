@@ -11,6 +11,7 @@ export const Wrapper = styled.div<{ $height: number }>`
     @media ${breakpoints.sm} {
         flex-direction: column;
         width: auto;
+        height: auto;
     }
 `;
 
