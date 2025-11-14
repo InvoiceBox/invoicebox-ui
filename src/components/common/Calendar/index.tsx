@@ -7,6 +7,7 @@ type TGeneralProps = {
     minDate?: Date;
     maxDate?: Date;
     onActiveStartDateChange?: () => void;
+    isLargeMobileSize?: boolean;
 };
 
 export type TProps = TGeneralProps &
@@ -30,6 +31,7 @@ export const Calendar: FC<TProps> = ({
     maxDate,
     selectRange,
     onActiveStartDateChange,
+    isLargeMobileSize = false,
 }) => {
     const palette = useComponentPalette<TCalendarPalette>('calendar');
 
@@ -65,6 +67,7 @@ export const Calendar: FC<TProps> = ({
             $tileBgActive={palette.tileBgActive}
             $tileBgRangeBetween={palette.tileBgRangeBetween}
             $month={palette.month}
+            $isLargeMobileSize={isLargeMobileSize}
         />
     );
 };

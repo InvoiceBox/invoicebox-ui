@@ -1,5 +1,42 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import CalendarFromLibrary from 'react-calendar';
+import { breakpoints } from '../../../breakpoints';
+
+const largeMobileStyles = css`
+    @media ${breakpoints.sm} {
+        width: 328px;
+    }
+
+    .react-calendar__navigation {
+        @media ${breakpoints.sm} {
+            margin-bottom: 18px;
+        }
+    }
+
+    .react-calendar__navigation__label {
+        @media ${breakpoints.sm} {
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 25px;
+        }
+    }
+
+    .react-calendar__month-view__weekdays {
+        @media ${breakpoints.sm} {
+            margin-bottom: 6px;
+        }
+    }
+
+    .react-calendar__tile {
+        @media ${breakpoints.sm} {
+            height: 48px;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 20px;
+            border-radius: 50%;
+        }
+    }
+`;
 
 export const LibCalendar = styled(CalendarFromLibrary)<{
     $arrow: string;
@@ -9,16 +46,13 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
     $tileBgActive: string;
     $tileBgRangeBetween: string;
     $month: string;
+    $isLargeMobileSize: boolean;
     selectRange?: boolean;
 }>`
     border: none;
     width: 210px;
     min-width: 210px;
     background: transparent;
-
-    @media (max-width: 320px) {
-        width: 225px;
-    }
 
     /* navigation block */
 
@@ -68,7 +102,6 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
         line-height: 18px;
         width: 30px;
         height: 22px;
-        flex: 0 0 14.29% !important;
         padding: 0;
         display: flex;
         justify-content: center;
@@ -88,9 +121,7 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
         padding: 0;
         border-radius: 5px;
         margin-bottom: 4px;
-        width: 30px;
         height: 22px;
-        flex: 0 0 14.29% !important;
     }
 
     .react-calendar__tile:disabled {
@@ -138,4 +169,6 @@ export const LibCalendar = styled(CalendarFromLibrary)<{
                 background-color: ${$tileBgActive} !important;
             }
     `}
+
+    ${({ $isLargeMobileSize }) => $isLargeMobileSize && largeMobileStyles}
 `;
