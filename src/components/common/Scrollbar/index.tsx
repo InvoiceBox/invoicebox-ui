@@ -6,10 +6,10 @@ import { TScrollbarPalette } from './palette';
 export type TProps = {
     children: ReactNode;
     maxHeight?: number;
-    width?: number;
+    trackWidth?: number;
 };
 
-export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', width = 6 }) => {
+export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', trackWidth = 6 }) => {
     const palette = useComponentPalette<TScrollbarPalette>('scrollbar');
 
     const props = useMemo(
@@ -34,7 +34,7 @@ export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', width = 6 
             trackYProps: {
                 style: {
                     backgroundColor: 'transparent',
-                    width: `${width}px`,
+                    width: `${trackWidth}px`,
                     height: 'calc(100% - 4px)',
                     top: '2px',
                     right: '2px',
@@ -55,7 +55,7 @@ export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', width = 6 
                 },
             },
         }),
-        [maxHeight, palette.thumb, width],
+        [maxHeight, palette.thumb, trackWidth],
     );
 
     return (

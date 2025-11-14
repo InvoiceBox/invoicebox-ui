@@ -31,6 +31,7 @@ import { generatePointsLoaderPalette } from '../components/common/PointsLoader/p
 import { generateTagsInputPalette } from '../components/form/TagsInput/palette';
 import { generateTimePickerPalette } from '../components/form/DateTimeInput/components/TimePicker/palette';
 import { generateDateTimeInputPalette } from '../components/form/DateTimeInput/palette';
+import { generateMobileDateTimeCalendarPalette } from '../components/form/DateTimeInput/components/MobileDateTimeCalendar/palette';
 
 type TProps = {
     children: ReactNode;
@@ -78,6 +79,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             tagsInput: generateTagsInputPalette(mergedAbstractPalette),
             timePicker: generateTimePickerPalette(mergedAbstractPalette),
             dateTimeInput: generateDateTimeInputPalette(mergedAbstractPalette),
+            mobileDateTimeCalendar: generateMobileDateTimeCalendarPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );

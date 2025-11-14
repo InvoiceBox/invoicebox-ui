@@ -1,0 +1,43 @@
+import styled from 'styled-components';
+import { Typography } from '../../../../common/Typography';
+
+export const Header = styled.div<{ $borderColor: string }>`
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    border-bottom: 1px solid ${({ $borderColor }) => $borderColor};
+    padding: 28px 16px 8px;
+`;
+
+export const CloseButton = styled.button`
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: inherit;
+`;
+
+export const HeadLabel = styled(Typography)<{ $color: string }>`
+    flex: 1;
+    color: ${({ $color }) => $color};
+`;
+
+export const ApplyButton = styled.button<{ $color: string }>`
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: ${({ $color }) => $color};
+
+    &:disabled {
+        opacity: 0.4;
+    }
+`;
+
+export const MobileCalendarWrapper = styled.div`
+    padding: 18px 16px 30px;
+    display: flex;
+    justify-content: center;
+`;
