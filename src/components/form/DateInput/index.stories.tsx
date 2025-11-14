@@ -48,8 +48,3 @@ export const Default: StoryObj<typeof DateInput> = {
     args: COMMON_ARGS,
     render: Component,
 };
-
-export const WithTime: StoryObj<typeof DateInput> = {
-    args: { ...COMMON_ARGS, withTime: true },
-    render: Component,
-};
