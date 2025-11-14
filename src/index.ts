@@ -56,6 +56,8 @@ export { Toggle } from './components/form/Toggle';
 export type { TProps as TToggleProps } from './components/form/Toggle';
 export { DateInput } from './components/form/DateInput';
 export type { TProps as TDateInputProps } from './components/form/DateInput';
+export { DateTimeInput } from './components/form/DateTimeInput';
+export type { TProps as TDateTimeInputProps } from './components/form/DateTimeInput';
 export { SearchInput } from './components/form/SearchInput';
 export type { TProps as TSearchInputProps } from './components/form/SearchInput';
 export { CodeInput } from './components/form/CodeInput';
