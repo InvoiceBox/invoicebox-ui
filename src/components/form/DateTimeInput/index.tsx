@@ -13,10 +13,11 @@ import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
 import { TimePicker } from './components/TimePicker';
 import { CrossIcon } from './components/CrossIcon';
 import { CheckIcon } from './components/CheckIcon';
-import { TDropdownProps } from '../../../index';
+import { TDropdownProps, useMobile } from '../../../index';
 import { TDateTimeInputPalette } from './palette';
 import { useTimePickerHeight } from './hooks/useTimePickerHeight';
 import { useStringValue } from './hooks/useStringValue';
+import { MobileDateTimeCalendar } from './components/MobileDateTimeCalendar';
 
 export type TProps = {
     value: Date | null;
@@ -46,6 +47,7 @@ export const DateTimeInput: FC<TProps> = ({
 }) => {
     const palette = useComponentPalette<TDateTimeInputPalette>('dateTimeInput');
     const inputRef = useRef<HTMLInputElement>(null);
+    const isMobile = useMobile();
     const withTime = true;
 
     const [isOpen, setOpenFlag] = useState(false);
@@ -135,7 +137,7 @@ export const DateTimeInput: FC<TProps> = ({
     }, [calendarDropdownValue, handleClose, maxDate, minDate, onChange, setStringValue, value, withTime]);
 
     return (
-        <S.Wrapper ref={elRef}>
+        <S.Wrapper ref={isMobile ? undefined : elRef}>
             <InputLabel inFocus={inFocus} label={label}>
                 <S.InputWrapper>
                     <PureInput
@@ -157,63 +159,77 @@ export const DateTimeInput: FC<TProps> = ({
                     </S.Icon>
                 </S.InputWrapper>
             </InputLabel>
-            <Dropdown isOpen={isOpen} isAutoPosition {...dropdownProps}>
-                <S.CalendarWithTimePicker $dividerColor={palette.divider}>
-                    <S.CalendarWrapper ref={calendarRef} $dividerColor={palette.divider}>
-                        <Calendar
-                            value={calendarDropdownValue}
-                            onChange={handleCalendarChange}
-                            minDate={minDate}
-                            maxDate={maxDate}
-                            onActiveStartDateChange={handleTimePickerSetHeight}
+            {!isMobile ? (
+                <Dropdown isOpen={isOpen} isAutoPosition {...dropdownProps}>
+                    <S.CalendarWithTimePicker $dividerColor={palette.divider}>
+                        <S.CalendarWrapper ref={calendarRef} $dividerColor={palette.divider}>
+                            <Calendar
+                                value={calendarDropdownValue}
+                                onChange={handleCalendarChange}
+                                minDate={minDate}
+                                maxDate={maxDate}
+                                onActiveStartDateChange={handleTimePickerSetHeight}
+                            />
+                        </S.CalendarWrapper>
+                        <TimePicker
+                            value={[
+                                calendarDropdownValue?.getHours() || 0,
+                                calendarDropdownValue?.getMinutes() || 0,
+                            ]}
+                            onChange={handleTimePickerChange}
+                            height={timePickerHeight}
+                            maxTime={
+                                calendarDropdownValue &&
+                                maxDate &&
+                                calendarDropdownValue.getDay() === maxDate.getDay()
+                                    ? [maxDate.getHours(), maxDate.getMinutes()]
+                                    : undefined
+                            }
+                            minTime={
+                                calendarDropdownValue &&
+                                minDate &&
+                                calendarDropdownValue.getDay() === minDate.getDay()
+                                    ? [minDate.getHours(), minDate.getMinutes()]
+                                    : undefined
+                            }
                         />
-                    </S.CalendarWrapper>
-                    <TimePicker
-                        value={[
-                            calendarDropdownValue?.getHours() || 0,
-                            calendarDropdownValue?.getMinutes() || 0,
-                        ]}
-                        onChange={handleTimePickerChange}
-                        height={timePickerHeight}
-                        maxTime={
-                            calendarDropdownValue &&
-                            maxDate &&
-                            calendarDropdownValue.getDay() === maxDate.getDay()
-                                ? [maxDate.getHours(), maxDate.getMinutes()]
-                                : undefined
-                        }
-                        minTime={
-                            calendarDropdownValue &&
-                            minDate &&
-                            calendarDropdownValue.getDay() === minDate.getDay()
-                                ? [minDate.getHours(), minDate.getMinutes()]
-                                : undefined
-                        }
-                    />
-                </S.CalendarWithTimePicker>
-                <S.DropdownActionButtons>
-                    <S.ActionButton
-                        type={'button'}
-                        $bgColor={palette.cancelButton}
-                        $disabledBgColor={palette.disabledButton}
-                        onClick={handleCloseAndSkipDropdownValue}
-                    >
-                        <CrossIcon />
-                    </S.ActionButton>
-                    <S.ActionButton
-                        type={'button'}
-                        $bgColor={palette.applyButton}
-                        $disabledBgColor={palette.disabledButton}
-                        onClick={handleApply}
-                        disabled={
-                            !calendarDropdownValue ||
-                            !logic.isBetweenMinAndMax(calendarDropdownValue, minDate, maxDate)
-                        }
-                    >
-                        <CheckIcon />
-                    </S.ActionButton>
-                </S.DropdownActionButtons>
-            </Dropdown>
+                    </S.CalendarWithTimePicker>
+                    <S.DropdownActionButtons>
+                        <S.ActionButton
+                            type={'button'}
+                            $bgColor={palette.cancelButton}
+                            $disabledBgColor={palette.disabledButton}
+                            onClick={handleCloseAndSkipDropdownValue}
+                        >
+                            <CrossIcon />
+                        </S.ActionButton>
+                        <S.ActionButton
+                            type={'button'}
+                            $bgColor={palette.applyButton}
+                            $disabledBgColor={palette.disabledButton}
+                            onClick={handleApply}
+                            disabled={
+                                !calendarDropdownValue ||
+                                !logic.isBetweenMinAndMax(calendarDropdownValue, minDate, maxDate)
+                            }
+                        >
+                            <CheckIcon />
+                        </S.ActionButton>
+                    </S.DropdownActionButtons>
+                </Dropdown>
+            ) : (
+                <MobileDateTimeCalendar
+                    isOpen={isOpen}
+                    onClose={handleCloseAndSkipDropdownValue}
+                    calendarDropdownValue={calendarDropdownValue}
+                    onCalendarChange={handleCalendarChange}
+                    onSubmit={handleApply}
+                    afterSubmit={handleClose}
+                    maxDate={maxDate}
+                    minDate={minDate}
+                    onTimeChange={handleTimePickerChange}
+                />
+            )}
         </S.Wrapper>
     );
 };

@@ -56,6 +56,10 @@ import {
     generateDateTimeInputPalette,
     TDateTimeInputPalette,
 } from '../components/form/DateTimeInput/palette';
+import {
+    generateMobileDateTimeCalendarPalette,
+    TMobileDateTimeCalendarPalette,
+} from '../components/form/DateTimeInput/components/MobileDateTimeCalendar/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -87,6 +91,7 @@ type TContext = {
     tagsInput: TTagsInputPalette;
     timePicker: TTimePickerPalette;
     dateTimeInput: TDateTimeInputPalette;
+    mobileDateTimeCalendar: TMobileDateTimeCalendarPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -119,4 +124,5 @@ export const PaletteContext = createContext<TContext>({
     tagsInput: generateTagsInputPalette(defaultAbstractPalette),
     timePicker: generateTimePickerPalette(defaultAbstractPalette),
     dateTimeInput: generateDateTimeInputPalette(defaultAbstractPalette),
+    mobileDateTimeCalendar: generateMobileDateTimeCalendarPalette(defaultAbstractPalette),
 });

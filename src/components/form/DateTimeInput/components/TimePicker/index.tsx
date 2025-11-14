@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import * as S from './styles';
-import { Typography } from '../../../../common/Typography';
 import { useComponentPalette } from '../../../../../palette';
 import { TTimePickerPalette } from './palette';
 import { Scrollbar } from '../../../../common/Scrollbar';
@@ -64,54 +63,58 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                 <S.Label $color={palette.label} variant={'captionRegular'}>
                     час
                 </S.Label>
-                <Scrollbar width={3}>
-                    <S.ValuesWrapper>
-                        {HOURS.map((hourItem) => (
-                            <S.ValueWrapper
-                                key={hourItem}
-                                $color={palette.tile}
-                                $colorActive={palette.tileActive}
-                                $isActive={hour === hourItem}
-                                $bgActive={palette.tileBgActive}
-                                $colorDisabled={palette.tileDisabled}
-                                type={'button'}
-                                onClick={() => handleHourChange(hourItem)}
-                                disabled={getIsDisabled(
-                                    hourItem,
-                                    maxTimeHour ? maxTimeHour : 23,
-                                    minTimeHour ? minTimeHour : 0,
-                                )}
-                            >
-                                <Typography variant={'captionRegular'}>{hourItem}</Typography>
-                            </S.ValueWrapper>
-                        ))}
-                    </S.ValuesWrapper>
-                </Scrollbar>
+                <S.MobileScrollWrapper>
+                    <Scrollbar trackWidth={3}>
+                        <S.ValuesWrapper>
+                            {HOURS.map((hourItem) => (
+                                <S.ValueWrapper
+                                    key={hourItem}
+                                    $color={palette.tile}
+                                    $colorActive={palette.tileActive}
+                                    $isActive={hour === hourItem}
+                                    $bgActive={palette.tileBgActive}
+                                    $colorDisabled={palette.tileDisabled}
+                                    type={'button'}
+                                    onClick={() => handleHourChange(hourItem)}
+                                    disabled={getIsDisabled(
+                                        hourItem,
+                                        maxTimeHour ? maxTimeHour : 23,
+                                        minTimeHour ? minTimeHour : 0,
+                                    )}
+                                >
+                                    <S.Value variant={'captionRegular'}>{hourItem}</S.Value>
+                                </S.ValueWrapper>
+                            ))}
+                        </S.ValuesWrapper>
+                    </Scrollbar>
+                </S.MobileScrollWrapper>
             </S.ColumnWrapper>
 
             <S.ColumnWrapper $borderColor={palette.divider}>
                 <S.Label $color={palette.label} variant={'captionRegular'}>
                     мин
                 </S.Label>
-                <Scrollbar width={3}>
-                    <S.ValuesWrapper>
-                        {MINUTES.map((minuteItem) => (
-                            <S.ValueWrapper
-                                key={minuteItem}
-                                $color={palette.tile}
-                                $colorActive={palette.tileActive}
-                                $isActive={minute === minuteItem}
-                                $bgActive={palette.tileBgActive}
-                                $colorDisabled={palette.tileDisabled}
-                                type={'button'}
-                                onClick={() => handleMinuteChange(minuteItem)}
-                                disabled={getIsDisabledMinute(minuteItem)}
-                            >
-                                <Typography variant={'captionRegular'}>{minuteItem}</Typography>
-                            </S.ValueWrapper>
-                        ))}
-                    </S.ValuesWrapper>
-                </Scrollbar>
+                <S.MobileScrollWrapper>
+                    <Scrollbar trackWidth={3}>
+                        <S.ValuesWrapper>
+                            {MINUTES.map((minuteItem) => (
+                                <S.ValueWrapper
+                                    key={minuteItem}
+                                    $color={palette.tile}
+                                    $colorActive={palette.tileActive}
+                                    $isActive={minute === minuteItem}
+                                    $bgActive={palette.tileBgActive}
+                                    $colorDisabled={palette.tileDisabled}
+                                    type={'button'}
+                                    onClick={() => handleMinuteChange(minuteItem)}
+                                    disabled={getIsDisabledMinute(minuteItem)}
+                                >
+                                    <S.Value variant={'captionRegular'}>{minuteItem}</S.Value>
+                                </S.ValueWrapper>
+                            ))}
+                        </S.ValuesWrapper>
+                    </Scrollbar>
+                </S.MobileScrollWrapper>
             </S.ColumnWrapper>
         </S.Wrapper>
     );
