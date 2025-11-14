@@ -22,6 +22,9 @@ export const CloseButton = styled.button`
 export const HeadLabel = styled(Typography)<{ $color: string }>`
     flex: 1;
     color: ${({ $color }) => $color};
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 `;
 
 export const ApplyButton = styled.button<{ $color: string }>`

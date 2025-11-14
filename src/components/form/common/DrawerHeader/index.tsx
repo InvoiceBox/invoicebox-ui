@@ -7,7 +7,7 @@ import { TDrawerHeaderPalette } from './palette';
 
 export type TProps = {
     onClose: () => void;
-    onSubmit: () => void;
+    onSubmit?: () => void;
     label: string;
     isSubmitDisabled?: boolean;
 };
@@ -23,14 +23,16 @@ export const DrawerHeader: FC<TProps> = ({ onClose, label, onSubmit, isSubmitDis
             <S.HeadLabel $color={palette.headLabel} variant={'headline3'}>
                 {label}
             </S.HeadLabel>
-            <S.ApplyButton
-                disabled={isSubmitDisabled}
-                onClick={onSubmit}
-                type={'button'}
-                $color={palette.applyButton}
-            >
-                <Typography variant={'headline6'}>Готово</Typography>
-            </S.ApplyButton>
+            {onSubmit && (
+                <S.ApplyButton
+                    disabled={isSubmitDisabled}
+                    onClick={onSubmit}
+                    type={'button'}
+                    $color={palette.applyButton}
+                >
+                    <Typography variant={'headline6'}>Готово</Typography>
+                </S.ApplyButton>
+            )}
         </S.Wrapper>
     );
 };
