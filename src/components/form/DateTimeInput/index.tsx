@@ -66,7 +66,7 @@ export const DateTimeInput: FC<TProps> = ({
     );
 
     const elRef = useOutsideClick(handleCloseAndSkipDropdownValue);
-    const { calendarRef, handleTimePickerSetHeight, timePickerHeight } = useTimePickerHeight();
+    const { calendarRef, handleTimePickerSetHeight, timePickerHeight } = useTimePickerHeight(isOpen);
 
     const {
         inFocus,

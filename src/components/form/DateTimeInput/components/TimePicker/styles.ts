@@ -55,11 +55,16 @@ export const ValuesWrapper = styled.div`
     flex-direction: column;
     gap: 4px;
     width: 30px;
-    padding: 8px;
+    padding: 8px 0;
+    box-sizing: border-box;
+    margin: 0 auto;
 
     @media ${breakpoints.sm} {
         flex-direction: row;
         gap: 0;
+        margin: 0;
+        width: auto;
+        padding: 8px 0;
     }
 `;
 
@@ -92,6 +97,7 @@ export const ValueWrapper = styled.button<{
         height: 48px;
         flex-shrink: 0;
         border-radius: 50%;
+        padding: 0;
     }
 `;
 

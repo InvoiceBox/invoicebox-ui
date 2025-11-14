@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useTimePickerHeight = () => {
+export const useTimePickerHeight = (isOpen: boolean) => {
     const calendarRef = useRef<HTMLDivElement>(null);
 
     const [timePickerHeight, setTimePickerHeight] = useState(0);
@@ -13,7 +13,7 @@ export const useTimePickerHeight = () => {
 
     useEffect(() => {
         handleTimePickerSetHeight();
-    }, []);
+    }, [isOpen]);
 
     return { calendarRef, timePickerHeight, handleTimePickerSetHeight };
 };
