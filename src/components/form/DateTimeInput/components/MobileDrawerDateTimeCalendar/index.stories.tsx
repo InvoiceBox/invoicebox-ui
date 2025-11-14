@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { MobileDateTimeCalendar, TProps } from './index';
+import { MobileDrawerDateTimeCalendar, TProps } from './index';
 import React, { useCallback, useState } from 'react';
 
 import 'react-calendar/dist/Calendar.css';
 import { logic } from '../../../DateInput/logic';
 
-const meta: Meta<typeof MobileDateTimeCalendar> = {
-    title: 'form/DateTimeInput/_components/MobileDateTimeCalendar',
-    component: MobileDateTimeCalendar,
+const meta: Meta<typeof MobileDrawerDateTimeCalendar> = {
+    title: 'form/DateTimeInput/_components/MobileDrawerDateTimeCalendar',
+    component: MobileDrawerDateTimeCalendar,
     tags: ['autodocs'],
 };
 
@@ -53,7 +53,7 @@ export const Default: StoryObj<TProps> = {
                 <button type={'button'} onClick={handleOpen}>
                     Open
                 </button>
-                <MobileDateTimeCalendar
+                <MobileDrawerDateTimeCalendar
                     calendarDropdownValue={calendarDropdownValue}
                     onCalendarChange={handleCalendarChange}
                     isOpen={isOpen}

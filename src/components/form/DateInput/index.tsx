@@ -11,7 +11,8 @@ import { CalendarIcon } from './components/CalendarIcon';
 import { useComponentPalette } from '../../../palette';
 import { TDateInputPalette } from './palette';
 import { SIZE_PARAMS_MAP, TSizes } from '../constants';
-import { TDropdownProps } from '../../../index';
+import { TDropdownProps, useMobile } from '../../../index';
+import { MobileDrawerDateCalendar } from './components/MobileDrawerDateCalendar';
 
 export type TProps = {
     value: Date | null;
@@ -43,6 +44,7 @@ export const DateInput: FC<TProps> = ({
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
+    const isMobile = useMobile();
 
     const [isOpen, setOpenFlag] = useState(false);
 
@@ -105,7 +107,7 @@ export const DateInput: FC<TProps> = ({
     );
 
     return (
-        <S.Wrapper ref={elRef}>
+        <S.Wrapper ref={isMobile ? undefined : elRef}>
             <InputLabel inFocus={inFocus} label={label}>
                 <S.InputWrapper>
                     <PureInput
@@ -127,16 +129,27 @@ export const DateInput: FC<TProps> = ({
                     </S.Icon>
                 </S.InputWrapper>
             </InputLabel>
-            <Dropdown isOpen={isOpen} isAutoPosition {...dropdownProps}>
-                <S.CalendarWrapper>
-                    <Calendar
-                        value={value}
-                        onChange={handleCalendarChange}
-                        minDate={minDate}
-                        maxDate={maxDate}
-                    />
-                </S.CalendarWrapper>
-            </Dropdown>
+            {isMobile ? (
+                <MobileDrawerDateCalendar
+                    isOpen={isOpen}
+                    onClose={handleClose}
+                    value={value}
+                    onChange={handleCalendarChange}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                />
+            ) : (
+                <Dropdown isOpen={isOpen} isAutoPosition {...dropdownProps}>
+                    <S.CalendarWrapper>
+                        <Calendar
+                            value={value}
+                            onChange={handleCalendarChange}
+                            minDate={minDate}
+                            maxDate={maxDate}
+                        />
+                    </S.CalendarWrapper>
+                </Dropdown>
+            )}
         </S.Wrapper>
     );
 };

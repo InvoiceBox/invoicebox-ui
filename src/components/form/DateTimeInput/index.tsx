@@ -17,7 +17,7 @@ import { TDropdownProps, useMobile } from '../../../index';
 import { TDateTimeInputPalette } from './palette';
 import { useTimePickerHeight } from './hooks/useTimePickerHeight';
 import { useStringValue } from './hooks/useStringValue';
-import { MobileDateTimeCalendar } from './components/MobileDateTimeCalendar';
+import { MobileDrawerDateTimeCalendar } from './components/MobileDrawerDateTimeCalendar';
 
 export type TProps = {
     value: Date | null;
@@ -218,7 +218,7 @@ export const DateTimeInput: FC<TProps> = ({
                     </S.DropdownActionButtons>
                 </Dropdown>
             ) : (
-                <MobileDateTimeCalendar
+                <MobileDrawerDateTimeCalendar
                     isOpen={isOpen}
                     onClose={handleCloseAndSkipDropdownValue}
                     calendarDropdownValue={calendarDropdownValue}
