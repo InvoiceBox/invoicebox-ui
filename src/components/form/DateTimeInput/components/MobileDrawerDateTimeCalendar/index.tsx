@@ -16,7 +16,7 @@ export type TProps = Pick<TCalendarProps, 'maxDate' | 'minDate'> & {
     afterSubmit: () => void;
 };
 
-export const MobileDateTimeCalendar: FC<TProps> = ({
+export const MobileDrawerDateTimeCalendar: FC<TProps> = ({
     isOpen,
     onClose,
     maxDate,
