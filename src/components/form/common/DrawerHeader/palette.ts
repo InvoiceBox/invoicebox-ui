@@ -1,15 +1,13 @@
-import { TAbstractPalette } from '../../../../../palette';
 import hexToRgba from 'hex-to-rgba';
+import { TAbstractPalette } from '../../../../palette';
 
-export type TMobileDateTimeCalendarPalette = {
+export type TDrawerHeaderPalette = {
     headLabel: string;
     applyButton: string;
     border: string;
 };
 
-export const generateMobileDateTimeCalendarPalette = (
-    abstractPalette: TAbstractPalette,
-): TMobileDateTimeCalendarPalette => {
+export const generateDrawerHeaderPalette = (abstractPalette: TAbstractPalette): TDrawerHeaderPalette => {
     return {
         headLabel: abstractPalette.primary,
         applyButton: hexToRgba(abstractPalette.primary, 0.5),

@@ -1,13 +1,10 @@
 import React, { FC, useState } from 'react';
 import { Drawer } from '../../../../common/Drawer';
-import { Cross24Icon } from '../Cross24Icon';
 import * as S from './styles';
-import { useComponentPalette } from '../../../../../palette';
-import { TMobileDateTimeCalendarPalette } from './palette';
-import { Typography } from '../../../../common/Typography';
 import { Calendar, TProps as TCalendarProps } from '../../../../common/Calendar';
 import { TimePicker } from '../TimePicker';
 import { logic } from '../../../DateInput/logic';
+import { DrawerHeader } from '../../../common/DrawerHeader';
 
 export type TProps = Pick<TCalendarProps, 'maxDate' | 'minDate'> & {
     isOpen: boolean;
@@ -30,7 +27,6 @@ export const MobileDateTimeCalendar: FC<TProps> = ({
     onSubmit,
     onTimeChange,
 }) => {
-    const palette = useComponentPalette<TMobileDateTimeCalendarPalette>('mobileDateTimeCalendar');
     const [isDateStep, setIsDateStep] = useState(true);
 
     const handleClose = () => {
@@ -50,27 +46,17 @@ export const MobileDateTimeCalendar: FC<TProps> = ({
 
     return (
         <Drawer onClose={handleClose} isOpen={isOpen} isPadding={false}>
-            <S.Header $borderColor={palette.border}>
-                <S.CloseButton type={'button'} onClick={handleClose}>
-                    <Cross24Icon />
-                </S.CloseButton>
-                <S.HeadLabel $color={palette.headLabel} variant={'headline3'}>
-                    {isDateStep ? 'Выберите дату' : 'Выберите время'}
-                </S.HeadLabel>
-                <S.ApplyButton
-                    disabled={
-                        isDateStep
-                            ? !calendarDropdownValue
-                            : !calendarDropdownValue ||
-                              !logic.isBetweenMinAndMax(calendarDropdownValue, minDate, maxDate)
-                    }
-                    onClick={handleDone}
-                    type={'button'}
-                    $color={palette.applyButton}
-                >
-                    <Typography variant={'headline6'}>Готово</Typography>
-                </S.ApplyButton>
-            </S.Header>
+            <DrawerHeader
+                onClose={handleClose}
+                onSubmit={handleDone}
+                label={isDateStep ? 'Выберите дату' : 'Выберите время'}
+                isSubmitDisabled={
+                    isDateStep
+                        ? !calendarDropdownValue
+                        : !calendarDropdownValue ||
+                          !logic.isBetweenMinAndMax(calendarDropdownValue, minDate, maxDate)
+                }
+            />
             {isDateStep ? (
                 <S.MobileCalendarWrapper>
                     <Calendar
