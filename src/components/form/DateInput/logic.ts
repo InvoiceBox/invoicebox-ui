@@ -1,7 +1,7 @@
 class Logic {
     private today = new Date();
 
-    getPlaceholder(withTime: boolean) {
+    getPlaceholder(withTime?: boolean) {
         return this.valueToString(this.today, withTime);
     }
 
@@ -16,7 +16,7 @@ class Logic {
     }
 
     // Date => 31.01.2023
-    valueToString(value: null | Date, withTime: boolean): string {
+    valueToString(value: null | Date, withTime?: boolean): string {
         if (!value) return '';
         const toTwoDigits = (item: number) => `0${item}`.slice(-2);
         const date = [
@@ -31,7 +31,7 @@ class Logic {
     }
 
     // 31.01.2023 => Date
-    stringToDate(str: string, withTime: boolean): Date {
+    stringToDate(str: string, withTime?: boolean): Date {
         const [dateStr, timeStr] = str.split(' ');
 
         const [dd, mm, yyyy] = dateStr.split('.');
