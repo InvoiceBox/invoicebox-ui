@@ -30,7 +30,7 @@ export const Wrapper = styled.div<{
     $palette: TDropdownPalette;
 }>`
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 16px;
     box-shadow: 0px 10px 17px ${({ $palette }) => $palette.shadow};
     background: ${({ $palette }) => $palette.bg};
 
