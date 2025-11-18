@@ -19,6 +19,8 @@ import { PureInput } from '../../../PureInput';
 import { Dropdown } from '../../../../common/Dropdown';
 import { Scrollbar } from '../../../../common/Scrollbar';
 import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
+import { useComponentPalette } from '../../../../../palette';
+import { TAutocompleteDefaultOptionPalette } from '../AutocompleteDefaultOption/palette';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -55,6 +57,7 @@ type TControlProps = {
     optionsLoader?: ReactNode;
     size?: TSizes;
     required?: boolean;
+    usePadding?: boolean;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -84,11 +87,14 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             autoFocus,
             required = false,
             readOnly,
+            usePadding = false,
         },
         ref,
     ) => {
         const isMobile = useMobile();
         const [isOpen, setIsOpen] = useState(false);
+        const palette = useComponentPalette<TAutocompleteDefaultOptionPalette>('autocompleteDefaultOption');
+
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
         const handleOpen = useCallback(() => setIsOpen(true), []);
@@ -152,6 +158,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     isAutoPosition
                     width="100%"
                     minWidth={isMobile ? '100%' : '340px'}
+                    usePadding={usePadding}
                 >
                     {isLoading ? (
                         optionsLoader || (
@@ -164,20 +171,27 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     ) : (
                         <Scrollbar maxHeight={listHeight}>
                             {options.map((option, index) => (
-                                <S.OptionWrapper
-                                    // eslint-disable-next-line react/no-array-index-key
+                                <S.OptionContainer
+                                    $hoverBg={palette.hoverBg}
+                                    $recalculateWidthAndBorder={usePadding}
                                     key={`${option.value}${index}`}
-                                    tabIndex={-1}
-                                    type="button"
-                                    onClick={handleSelect}
-                                    data-index={JSON.stringify(index)}
                                 >
-                                    {renderOption ? (
-                                        renderOption(option)
-                                    ) : (
-                                        <AutocompleteDefaultOption>{option.value}</AutocompleteDefaultOption>
-                                    )}
-                                </S.OptionWrapper>
+                                    <S.OptionWrapper
+                                        key={`${option.value}${index}`}
+                                        tabIndex={-1}
+                                        type="button"
+                                        onClick={handleSelect}
+                                        data-index={JSON.stringify(index)}
+                                    >
+                                        {renderOption ? (
+                                            renderOption(option)
+                                        ) : (
+                                            <AutocompleteDefaultOption>
+                                                {option.value}
+                                            </AutocompleteDefaultOption>
+                                        )}
+                                    </S.OptionWrapper>
+                                </S.OptionContainer>
                             ))}
                         </Scrollbar>
                     )}

@@ -5,6 +5,7 @@ export type TOrganizationAutocompleteItemPalette = {
     title: string;
     description: string;
     label: string;
+    hoverBg: string;
 };
 
 export const generateOrganizationAutocompleteItemPalette = (
@@ -14,5 +15,6 @@ export const generateOrganizationAutocompleteItemPalette = (
         title: abstractPalette.primary,
         description: hexToRgba(abstractPalette.primary, 0.5),
         label: hexToRgba(abstractPalette.primary, 0.3),
+        hoverBg: hexToRgba(abstractPalette.neutralUsual, 0.5),
     };
 };

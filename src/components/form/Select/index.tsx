@@ -45,6 +45,7 @@ export type TProps<TValue> = Pick<
     emptyOptionsLabel?: string;
     isLoading?: boolean;
     required?: boolean;
+    usePadding?: boolean;
 };
 
 export const Select = <TValue extends string | number>({
@@ -69,6 +70,7 @@ export const Select = <TValue extends string | number>({
     isLoading,
     onBlur,
     required,
+    usePadding = false,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -193,6 +195,7 @@ export const Select = <TValue extends string | number>({
                             data-value={JSON.stringify(option.value)}
                             data-option-identifier={OPTION_IDENTIFIER}
                             $isGrouped={!!group && !renderOption}
+                            $recalculateWidthAndBorder={usePadding}
                         >
                             {handleOptionRender(option)}
                         </S.Option>
@@ -289,7 +292,7 @@ export const Select = <TValue extends string | number>({
                     <S.DrawerContent>{handleDrawerContentRender()}</S.DrawerContent>
                 </Drawer>
             ) : (
-                <Dropdown isOpen={isOpen} isAutoPosition width="100%" usePadding={true}>
+                <Dropdown isOpen={isOpen} isAutoPosition width="100%" usePadding={usePadding}>
                     {handleDropdownContentRender()}
                 </Dropdown>
             )}

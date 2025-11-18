@@ -8,6 +8,14 @@ export const OrganizationWrapper = styled.div`
     gap: 4px;
 `;
 
+export const OptionContainer = styled.div<{ $recalculateWidthAndBorder?: boolean; $hoverBg: string }>`
+    width: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? 'calc(100% - 14px)' : '100%')};
+    border-radius: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? '12px' : 'none')};
+    &:hover {
+        background-color: ${({ $hoverBg }) => $hoverBg};
+    }
+`;
+
 export const OrganizationName = styled(Typography).attrs({ element: 'span' })<{
     $color: string;
 }>`

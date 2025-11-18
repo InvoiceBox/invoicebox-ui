@@ -15,14 +15,18 @@ export const InputWrapper = styled.div`
     }
 `;
 
-export const Option = styled(Typography)<{ $palette: TSelectPalette; $isGrouped: boolean }>`
+export const Option = styled(Typography)<{
+    $palette: TSelectPalette;
+    $isGrouped: boolean;
+    $recalculateWidthAndBorder: boolean;
+}>`
     overflow: hidden;
-    width: calc(100% - 12px);
+    width: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? 'calc(100% - 14px)' : '100%')};
     text-align: left;
     transition: all 0.2s ease-in-out 0s;
     box-sizing: border-box;
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? '12px' : 'none')};
 
     &:hover {
         background-color: ${({ $palette }) => $palette.bgHover};
