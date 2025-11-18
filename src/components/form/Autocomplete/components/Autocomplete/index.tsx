@@ -6,6 +6,8 @@ import React, {
     MouseEvent,
     ReactNode,
     useCallback,
+    useLayoutEffect,
+    useRef,
     useState,
 } from 'react';
 import * as S from './styles';
@@ -27,6 +29,8 @@ const DefaultSkeletonItem = () => (
         <Skeleton height="20px" />
     </S.DefaultSkeletonWrapper>
 );
+
+const MAX_LIST_HEIGHT = 294;
 
 type TOption = {
     value: string;
@@ -58,6 +62,7 @@ type TControlProps = {
     size?: TSizes;
     required?: boolean;
     usePadding?: boolean;
+    dropdownWidth?: string;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -77,7 +82,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             renderOption,
             children,
             inputPaddingLeft,
-            listHeight = 294,
+            listHeight = MAX_LIST_HEIGHT,
             hasError,
             isLoading,
             optionsLoader,
@@ -88,12 +93,16 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             required = false,
             readOnly,
             usePadding = false,
+            dropdownWidth,
         },
         ref,
     ) => {
         const isMobile = useMobile();
         const [isOpen, setIsOpen] = useState(false);
         const palette = useComponentPalette<TAutocompleteDefaultOptionPalette>('autocompleteDefaultOption');
+
+        const optionsContentRef = useRef<HTMLDivElement | null>(null);
+        const [hasScrollbar, setHasScrollbar] = useState(false);
 
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -127,6 +136,20 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             [handleOpen, handleFocus],
         );
 
+        useLayoutEffect(() => {
+            if (!isOpen || isLoading) {
+                setHasScrollbar(false);
+                return;
+            }
+
+            const frameId = requestAnimationFrame(() => {
+                const contentHeight = optionsContentRef.current?.getBoundingClientRect().height ?? 0;
+                setHasScrollbar(contentHeight > listHeight);
+            });
+
+            return () => cancelAnimationFrame(frameId);
+        }, [isLoading, isOpen, listHeight]);
+
         return (
             <S.Wrapper ref={wrapperRef}>
                 <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
@@ -156,7 +179,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                 <Dropdown
                     isOpen={isOpen && (!!options.length || !!isLoading)}
                     isAutoPosition
-                    width="100%"
+                    width={dropdownWidth || '100%'}
                     minWidth={isMobile ? '100%' : '340px'}
                     usePadding={usePadding}
                 >
@@ -170,29 +193,32 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                         )
                     ) : (
                         <Scrollbar maxHeight={listHeight}>
-                            {options.map((option, index) => (
-                                <S.OptionContainer
-                                    $hoverBg={palette.hoverBg}
-                                    $recalculateWidthAndBorder={usePadding}
-                                    key={`${option.value}${index}`}
-                                >
-                                    <S.OptionWrapper
+                            <S.ScrollbarContent ref={optionsContentRef}>
+                                {options.map((option, index) => (
+                                    <S.OptionContainer
+                                        $hoverBg={palette.hoverBg}
+                                        $usePadding={usePadding}
+                                        $hasScrollbar={hasScrollbar}
                                         key={`${option.value}${index}`}
-                                        tabIndex={-1}
-                                        type="button"
-                                        onClick={handleSelect}
-                                        data-index={JSON.stringify(index)}
                                     >
-                                        {renderOption ? (
-                                            renderOption(option)
-                                        ) : (
-                                            <AutocompleteDefaultOption usePadding={usePadding}>
-                                                {option.value}
-                                            </AutocompleteDefaultOption>
-                                        )}
-                                    </S.OptionWrapper>
-                                </S.OptionContainer>
-                            ))}
+                                        <S.OptionWrapper
+                                            key={`${option.value}${index}`}
+                                            tabIndex={-1}
+                                            type="button"
+                                            onClick={handleSelect}
+                                            data-index={JSON.stringify(index)}
+                                        >
+                                            {renderOption ? (
+                                                renderOption(option)
+                                            ) : (
+                                                <AutocompleteDefaultOption usePadding={usePadding}>
+                                                    {option.value}
+                                                </AutocompleteDefaultOption>
+                                            )}
+                                        </S.OptionWrapper>
+                                    </S.OptionContainer>
+                                ))}
+                            </S.ScrollbarContent>
                         </Scrollbar>
                     )}
                 </Dropdown>

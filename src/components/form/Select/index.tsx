@@ -4,6 +4,7 @@ import React, {
     MouseEvent,
     ReactNode,
     useCallback,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -46,6 +47,7 @@ export type TProps<TValue> = Pick<
     isLoading?: boolean;
     required?: boolean;
     usePadding?: boolean;
+    dropdownWidth?: string;
 };
 
 export const Select = <TValue extends string | number>({
@@ -71,6 +73,7 @@ export const Select = <TValue extends string | number>({
     onBlur,
     required,
     usePadding = false,
+    dropdownWidth,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -98,6 +101,9 @@ export const Select = <TValue extends string | number>({
     const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
 
     const optionGroups = useOptionGroups(options, groups);
+
+    const optionsContentRef = useRef<HTMLDivElement | null>(null);
+    const [hasScrollbar, setHasScrollbar] = useState(false);
 
     const handleShow = useCallback(() => setIsOpen(true), []);
     const handleHide = useCallback(() => setIsOpen(false), []);
@@ -179,8 +185,22 @@ export const Select = <TValue extends string | number>({
         return null;
     };
 
+    useLayoutEffect(() => {
+        if (!isOpen || isLoading) {
+            setHasScrollbar(false);
+            return;
+        }
+
+        const frameId = requestAnimationFrame(() => {
+            const contentHeight = optionsContentRef.current?.getBoundingClientRect().height ?? 0;
+            setHasScrollbar(contentHeight > scrollbarMaxHeight);
+        });
+
+        return () => cancelAnimationFrame(frameId);
+    }, [isLoading, isOpen, optionGroups, scrollbarMaxHeight]);
+
     const scrollbarContent = (
-        <>
+        <S.ScrollbarContent ref={optionsContentRef}>
             {scrollbarHeader}
 
             {optionGroups.map(({ group, options: groupOptions }) => (
@@ -195,14 +215,15 @@ export const Select = <TValue extends string | number>({
                             data-value={JSON.stringify(option.value)}
                             data-option-identifier={OPTION_IDENTIFIER}
                             $isGrouped={!!group && !renderOption}
-                            $recalculateWidthAndBorder={usePadding}
+                            $usePadding={usePadding}
+                            $hasScrollbar={hasScrollbar}
                         >
                             {handleOptionRender(option)}
                         </S.Option>
                     ))}
                 </Fragment>
             ))}
-        </>
+        </S.ScrollbarContent>
     );
 
     const emptyLabel = (
@@ -292,7 +313,12 @@ export const Select = <TValue extends string | number>({
                     <S.DrawerContent>{handleDrawerContentRender()}</S.DrawerContent>
                 </Drawer>
             ) : (
-                <Dropdown isOpen={isOpen} isAutoPosition width="100%" usePadding={usePadding}>
+                <Dropdown
+                    isOpen={isOpen}
+                    isAutoPosition
+                    width={dropdownWidth || '100%'}
+                    usePadding={usePadding}
+                >
                     {handleDropdownContentRender()}
                 </Dropdown>
             )}

@@ -5,9 +5,10 @@ export const Wrapper = styled.div`
     box-sizing: border-box;
 `;
 
-export const OptionContainer = styled.div<{ $recalculateWidthAndBorder: boolean; $hoverBg: string }>`
-    width: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? 'calc(100% - 14px)' : '100%')};
-    border-radius: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? '12px' : 'none')};
+export const OptionContainer = styled.div<{ $usePadding: boolean; $hasScrollbar: boolean; $hoverBg: string }>`
+    width: ${({ $usePadding, $hasScrollbar }) =>
+        $hasScrollbar && $usePadding ? 'calc(100% - 14px)' : '100%'};
+    border-radius: ${({ $usePadding }) => ($usePadding ? '12px' : 'none')};
     &:hover {
         background-color: ${({ $hoverBg }) => $hoverBg};
     }
@@ -39,3 +40,5 @@ export const InputLabelContent = styled.div`
 export const DefaultSkeletonWrapper = styled.div`
     padding: 6px 12px;
 `;
+
+export const ScrollbarContent = styled.div``;
