@@ -5,13 +5,16 @@ export const Wrapper = styled.div`
     box-sizing: border-box;
 `;
 
-export const OptionContainer = styled.div<{ $usePadding: boolean; $hasScrollbar: boolean; $hoverBg: string }>`
-    width: ${({ $usePadding, $hasScrollbar }) =>
-        $hasScrollbar && $usePadding ? 'calc(100% - 14px)' : '100%'};
+export const OptionContainer = styled.div<{ $usePadding: boolean; $hoverBg: string }>`
+    width: 100%;
     border-radius: ${({ $usePadding }) => ($usePadding ? '12px' : 'none')};
     &:hover {
         background-color: ${({ $hoverBg }) => $hoverBg};
     }
+`;
+
+export const OptionWrapperWithPadding = styled.div<{ $usePadding: boolean }>`
+    padding: ${({ $usePadding }) => ($usePadding ? '0 8px' : 'none')};
 `;
 
 export const OptionWrapper = styled.button`
@@ -40,5 +43,3 @@ export const InputLabelContent = styled.div`
 export const DefaultSkeletonWrapper = styled.div`
     padding: 6px 12px;
 `;
-
-export const ScrollbarContent = styled.div``;

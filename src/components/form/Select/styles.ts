@@ -15,15 +15,17 @@ export const InputWrapper = styled.div`
     }
 `;
 
+export const OptionWrapper = styled.div<{ $usePadding: boolean }>`
+    padding: ${({ $usePadding }) => ($usePadding ? '0 8px' : 'none')};
+`;
+
 export const Option = styled(Typography)<{
     $palette: TSelectPalette;
     $isGrouped: boolean;
     $usePadding: boolean;
-    $hasScrollbar: boolean;
 }>`
     overflow: hidden;
-    width: ${({ $usePadding, $hasScrollbar }) =>
-        $hasScrollbar && $usePadding ? 'calc(100% - 14px)' : '100%'};
+    width: 100%;
     text-align: left;
     transition: all 0.2s ease-in-out 0s;
     box-sizing: border-box;

@@ -6,8 +6,6 @@ import React, {
     MouseEvent,
     ReactNode,
     useCallback,
-    useLayoutEffect,
-    useRef,
     useState,
 } from 'react';
 import * as S from './styles';
@@ -23,6 +21,7 @@ import { Scrollbar } from '../../../../common/Scrollbar';
 import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 import { useComponentPalette } from '../../../../../palette';
 import { TAutocompleteDefaultOptionPalette } from '../AutocompleteDefaultOption/palette';
+import { OptionWrapperWithPadding } from './styles';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -101,9 +100,6 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
         const [isOpen, setIsOpen] = useState(false);
         const palette = useComponentPalette<TAutocompleteDefaultOptionPalette>('autocompleteDefaultOption');
 
-        const optionsContentRef = useRef<HTMLDivElement | null>(null);
-        const [hasScrollbar, setHasScrollbar] = useState(false);
-
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
         const handleOpen = useCallback(() => setIsOpen(true), []);
@@ -135,20 +131,6 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             },
             [handleOpen, handleFocus],
         );
-
-        useLayoutEffect(() => {
-            if (!isOpen || isLoading) {
-                setHasScrollbar(false);
-                return;
-            }
-
-            const frameId = requestAnimationFrame(() => {
-                const contentHeight = optionsContentRef.current?.getBoundingClientRect().height ?? 0;
-                setHasScrollbar(contentHeight > listHeight);
-            });
-
-            return () => cancelAnimationFrame(frameId);
-        }, [isLoading, isOpen, listHeight]);
 
         return (
             <S.Wrapper ref={wrapperRef}>
@@ -193,12 +175,14 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                         )
                     ) : (
                         <Scrollbar maxHeight={listHeight}>
-                            <S.ScrollbarContent ref={optionsContentRef}>
-                                {options.map((option, index) => (
+                            {options.map((option, index) => (
+                                <S.OptionWrapperWithPadding
+                                    $usePadding={usePadding}
+                                    key={`${option.value}${index}`}
+                                >
                                     <S.OptionContainer
                                         $hoverBg={palette.hoverBg}
                                         $usePadding={usePadding}
-                                        $hasScrollbar={hasScrollbar}
                                         key={`${option.value}${index}`}
                                     >
                                         <S.OptionWrapper
@@ -217,8 +201,8 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                                             )}
                                         </S.OptionWrapper>
                                     </S.OptionContainer>
-                                ))}
-                            </S.ScrollbarContent>
+                                </S.OptionWrapperWithPadding>
+                            ))}
                         </Scrollbar>
                     )}
                 </Dropdown>

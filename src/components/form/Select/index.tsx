@@ -4,7 +4,6 @@ import React, {
     MouseEvent,
     ReactNode,
     useCallback,
-    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -102,9 +101,6 @@ export const Select = <TValue extends string | number>({
 
     const optionGroups = useOptionGroups(options, groups);
 
-    const optionsContentRef = useRef<HTMLDivElement | null>(null);
-    const [hasScrollbar, setHasScrollbar] = useState(false);
-
     const handleShow = useCallback(() => setIsOpen(true), []);
     const handleHide = useCallback(() => setIsOpen(false), []);
 
@@ -185,41 +181,28 @@ export const Select = <TValue extends string | number>({
         return null;
     };
 
-    useLayoutEffect(() => {
-        if (!isOpen || isLoading) {
-            setHasScrollbar(false);
-            return;
-        }
-
-        const frameId = requestAnimationFrame(() => {
-            const contentHeight = optionsContentRef.current?.getBoundingClientRect().height ?? 0;
-            setHasScrollbar(contentHeight > scrollbarMaxHeight);
-        });
-
-        return () => cancelAnimationFrame(frameId);
-    }, [isLoading, isOpen, optionGroups, scrollbarMaxHeight]);
-
     const scrollbarContent = (
-        <S.ScrollbarContent ref={optionsContentRef}>
+        <S.ScrollbarContent>
             {scrollbarHeader}
 
             {optionGroups.map(({ group, options: groupOptions }) => (
                 <Fragment key={group?.id || null}>
                     {handleGroupRender(group)}
                     {groupOptions.map((option) => (
-                        <S.Option
-                            key={option.value}
-                            $palette={palette}
-                            variant="bodyMRegular"
-                            onClick={handleSelect}
-                            data-value={JSON.stringify(option.value)}
-                            data-option-identifier={OPTION_IDENTIFIER}
-                            $isGrouped={!!group && !renderOption}
-                            $usePadding={usePadding}
-                            $hasScrollbar={hasScrollbar}
-                        >
-                            {handleOptionRender(option)}
-                        </S.Option>
+                        <S.OptionWrapper $usePadding={usePadding} key={option.value}>
+                            <S.Option
+                                key={option.value}
+                                $palette={palette}
+                                variant="bodyMRegular"
+                                onClick={handleSelect}
+                                data-value={JSON.stringify(option.value)}
+                                data-option-identifier={OPTION_IDENTIFIER}
+                                $isGrouped={!!group && !renderOption}
+                                $usePadding={usePadding}
+                            >
+                                {handleOptionRender(option)}
+                            </S.Option>
+                        </S.OptionWrapper>
                     ))}
                 </Fragment>
             ))}
