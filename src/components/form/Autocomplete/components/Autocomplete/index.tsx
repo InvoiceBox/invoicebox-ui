@@ -186,7 +186,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                                         {renderOption ? (
                                             renderOption(option)
                                         ) : (
-                                            <AutocompleteDefaultOption>
+                                            <AutocompleteDefaultOption usePadding={usePadding}>
                                                 {option.value}
                                             </AutocompleteDefaultOption>
                                         )}
