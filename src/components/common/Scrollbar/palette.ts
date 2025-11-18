@@ -6,6 +6,6 @@ export type TScrollbarPalette = {
 
 export const generateScrollbarPalette = (abstractPalette: TAbstractPalette): TScrollbarPalette => {
     return {
-        thumb: abstractPalette.neutralFoggy,
+        thumb: abstractPalette.neutralUsual,
     };
 };

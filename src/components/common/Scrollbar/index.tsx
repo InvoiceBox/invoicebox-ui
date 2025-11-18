@@ -9,7 +9,7 @@ export type TProps = {
     trackWidth?: number;
 };
 
-export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', trackWidth = 6 }) => {
+export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', trackWidth = 4 }) => {
     const palette = useComponentPalette<TScrollbarPalette>('scrollbar');
 
     const props = useMemo(

@@ -289,7 +289,7 @@ export const Select = <TValue extends string | number>({
                     <S.DrawerContent>{handleDrawerContentRender()}</S.DrawerContent>
                 </Drawer>
             ) : (
-                <Dropdown isOpen={isOpen} isAutoPosition width="100%">
+                <Dropdown isOpen={isOpen} isAutoPosition width="100%" usePadding={true}>
                     {handleDropdownContentRender()}
                 </Dropdown>
             )}

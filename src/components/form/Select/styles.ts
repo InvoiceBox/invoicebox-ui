@@ -17,11 +17,12 @@ export const InputWrapper = styled.div`
 
 export const Option = styled(Typography)<{ $palette: TSelectPalette; $isGrouped: boolean }>`
     overflow: hidden;
-    width: 100%;
+    width: calc(100% - 12px);
     text-align: left;
     transition: all 0.2s ease-in-out 0s;
     box-sizing: border-box;
     cursor: pointer;
+    border-radius: 12px;
 
     &:hover {
         background-color: ${({ $palette }) => $palette.bgHover};
