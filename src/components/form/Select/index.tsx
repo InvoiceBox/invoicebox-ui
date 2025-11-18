@@ -158,7 +158,7 @@ export const Select = <TValue extends string | number>({
             return renderOption(option.entity);
         }
 
-        return <S.DefaultOptionWrapper> {option.label}</S.DefaultOptionWrapper>;
+        return <S.DefaultOptionWrapper $usePadding={usePadding}> {option.label}</S.DefaultOptionWrapper>;
     };
 
     const handleGroupRender = (group: TGroup | null) => {

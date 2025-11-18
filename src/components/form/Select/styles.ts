@@ -43,8 +43,8 @@ export const Group = styled(Typography)`
     padding: 12px 20px;
 `;
 
-export const DefaultOptionWrapper = styled.div`
-    padding: 12px 20px;
+export const DefaultOptionWrapper = styled.div<{ $usePadding?: boolean }>`
+    padding: ${({ $usePadding }) => ($usePadding ? '12px' : '12px 20px')};
 `;
 
 export const DrawerContent = styled.div`
