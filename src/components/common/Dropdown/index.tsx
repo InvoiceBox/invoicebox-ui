@@ -20,6 +20,7 @@ export type TProps = {
     zIndex?: number;
     onCloseTransitionEnd?: () => void;
     isTopPosition?: boolean;
+    usePadding?: boolean;
 };
 
 export const Dropdown: FC<TProps> = ({
@@ -34,6 +35,7 @@ export const Dropdown: FC<TProps> = ({
     zIndex,
     onCloseTransitionEnd,
     isTopPosition = false,
+    usePadding = false,
 }) => {
     const palette = useComponentPalette<TDropdownPalette>('dropdown');
 
@@ -114,6 +116,7 @@ export const Dropdown: FC<TProps> = ({
             $zIndex={zIndex}
             onTransitionEnd={handleCloseTransitionEnd}
             $palette={palette}
+            $usePadding={usePadding}
         >
             {children}
         </S.Wrapper>

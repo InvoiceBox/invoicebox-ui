@@ -5,6 +5,14 @@ export const Wrapper = styled.div`
     box-sizing: border-box;
 `;
 
+export const OptionContainer = styled.div<{ $recalculateWidthAndBorder: boolean; $hoverBg: string }>`
+    width: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? 'calc(100% - 14px)' : '100%')};
+    border-radius: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? '12px' : 'none')};
+    &:hover {
+        background-color: ${({ $hoverBg }) => $hoverBg};
+    }
+`;
+
 export const OptionWrapper = styled.button`
     width: 100%;
     background: transparent;
