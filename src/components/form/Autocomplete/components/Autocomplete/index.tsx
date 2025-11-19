@@ -21,12 +21,15 @@ import { Scrollbar } from '../../../../common/Scrollbar';
 import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 import { useComponentPalette } from '../../../../../palette';
 import { TAutocompleteDefaultOptionPalette } from '../AutocompleteDefaultOption/palette';
+import { OptionWrapperWithPadding } from './styles';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
         <Skeleton height="20px" />
     </S.DefaultSkeletonWrapper>
 );
+
+const MAX_LIST_HEIGHT = 294;
 
 type TOption = {
     value: string;
@@ -58,6 +61,7 @@ type TControlProps = {
     size?: TSizes;
     required?: boolean;
     usePadding?: boolean;
+    dropdownWidth?: string;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -77,7 +81,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             renderOption,
             children,
             inputPaddingLeft,
-            listHeight = 294,
+            listHeight = MAX_LIST_HEIGHT,
             hasError,
             isLoading,
             optionsLoader,
@@ -88,6 +92,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             required = false,
             readOnly,
             usePadding = false,
+            dropdownWidth,
         },
         ref,
     ) => {
@@ -156,7 +161,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                 <Dropdown
                     isOpen={isOpen && (!!options.length || !!isLoading)}
                     isAutoPosition
-                    width="100%"
+                    width={dropdownWidth || '100%'}
                     minWidth={isMobile ? '100%' : '340px'}
                     usePadding={usePadding}
                 >
@@ -171,27 +176,32 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     ) : (
                         <Scrollbar maxHeight={listHeight}>
                             {options.map((option, index) => (
-                                <S.OptionContainer
-                                    $hoverBg={palette.hoverBg}
-                                    $recalculateWidthAndBorder={usePadding}
+                                <S.OptionWrapperWithPadding
+                                    $usePadding={usePadding}
                                     key={`${option.value}${index}`}
                                 >
-                                    <S.OptionWrapper
+                                    <S.OptionContainer
+                                        $hoverBg={palette.hoverBg}
+                                        $usePadding={usePadding}
                                         key={`${option.value}${index}`}
-                                        tabIndex={-1}
-                                        type="button"
-                                        onClick={handleSelect}
-                                        data-index={JSON.stringify(index)}
                                     >
-                                        {renderOption ? (
-                                            renderOption(option)
-                                        ) : (
-                                            <AutocompleteDefaultOption usePadding={usePadding}>
-                                                {option.value}
-                                            </AutocompleteDefaultOption>
-                                        )}
-                                    </S.OptionWrapper>
-                                </S.OptionContainer>
+                                        <S.OptionWrapper
+                                            key={`${option.value}${index}`}
+                                            tabIndex={-1}
+                                            type="button"
+                                            onClick={handleSelect}
+                                            data-index={JSON.stringify(index)}
+                                        >
+                                            {renderOption ? (
+                                                renderOption(option)
+                                            ) : (
+                                                <AutocompleteDefaultOption usePadding={usePadding}>
+                                                    {option.value}
+                                                </AutocompleteDefaultOption>
+                                            )}
+                                        </S.OptionWrapper>
+                                    </S.OptionContainer>
+                                </S.OptionWrapperWithPadding>
                             ))}
                         </Scrollbar>
                     )}

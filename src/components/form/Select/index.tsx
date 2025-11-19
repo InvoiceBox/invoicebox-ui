@@ -46,6 +46,7 @@ export type TProps<TValue> = Pick<
     isLoading?: boolean;
     required?: boolean;
     usePadding?: boolean;
+    dropdownWidth?: string;
 };
 
 export const Select = <TValue extends string | number>({
@@ -71,6 +72,7 @@ export const Select = <TValue extends string | number>({
     onBlur,
     required,
     usePadding = false,
+    dropdownWidth,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -180,29 +182,31 @@ export const Select = <TValue extends string | number>({
     };
 
     const scrollbarContent = (
-        <>
+        <S.ScrollbarContent>
             {scrollbarHeader}
 
             {optionGroups.map(({ group, options: groupOptions }) => (
                 <Fragment key={group?.id || null}>
                     {handleGroupRender(group)}
                     {groupOptions.map((option) => (
-                        <S.Option
-                            key={option.value}
-                            $palette={palette}
-                            variant="bodyMRegular"
-                            onClick={handleSelect}
-                            data-value={JSON.stringify(option.value)}
-                            data-option-identifier={OPTION_IDENTIFIER}
-                            $isGrouped={!!group && !renderOption}
-                            $recalculateWidthAndBorder={usePadding}
-                        >
-                            {handleOptionRender(option)}
-                        </S.Option>
+                        <S.OptionWrapper $usePadding={usePadding} key={option.value}>
+                            <S.Option
+                                key={option.value}
+                                $palette={palette}
+                                variant="bodyMRegular"
+                                onClick={handleSelect}
+                                data-value={JSON.stringify(option.value)}
+                                data-option-identifier={OPTION_IDENTIFIER}
+                                $isGrouped={!!group && !renderOption}
+                                $usePadding={usePadding}
+                            >
+                                {handleOptionRender(option)}
+                            </S.Option>
+                        </S.OptionWrapper>
                     ))}
                 </Fragment>
             ))}
-        </>
+        </S.ScrollbarContent>
     );
 
     const emptyLabel = (
@@ -292,7 +296,12 @@ export const Select = <TValue extends string | number>({
                     <S.DrawerContent>{handleDrawerContentRender()}</S.DrawerContent>
                 </Drawer>
             ) : (
-                <Dropdown isOpen={isOpen} isAutoPosition width="100%" usePadding={usePadding}>
+                <Dropdown
+                    isOpen={isOpen}
+                    isAutoPosition
+                    width={dropdownWidth || '100%'}
+                    usePadding={usePadding}
+                >
                     {handleDropdownContentRender()}
                 </Dropdown>
             )}

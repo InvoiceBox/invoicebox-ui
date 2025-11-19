@@ -15,18 +15,22 @@ export const InputWrapper = styled.div`
     }
 `;
 
+export const OptionWrapper = styled.div<{ $usePadding: boolean }>`
+    padding: ${({ $usePadding }) => ($usePadding ? '0 8px' : 'none')};
+`;
+
 export const Option = styled(Typography)<{
     $palette: TSelectPalette;
     $isGrouped: boolean;
-    $recalculateWidthAndBorder: boolean;
+    $usePadding: boolean;
 }>`
     overflow: hidden;
-    width: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? 'calc(100% - 14px)' : '100%')};
+    width: 100%;
     text-align: left;
     transition: all 0.2s ease-in-out 0s;
     box-sizing: border-box;
     cursor: pointer;
-    border-radius: ${({ $recalculateWidthAndBorder }) => ($recalculateWidthAndBorder ? '12px' : 'none')};
+    border-radius: ${({ $usePadding }) => ($usePadding ? '12px' : 'none')};
 
     &:hover {
         background-color: ${({ $palette }) => $palette.bgHover};
@@ -58,3 +62,5 @@ export const DrawerBottom = styled.div`
 export const EmptyLabel = styled(Typography)<{ $color: string }>`
     color: ${({ $color }) => $color};
 `;
+
+export const ScrollbarContent = styled.div``;

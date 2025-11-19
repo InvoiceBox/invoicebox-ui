@@ -30,7 +30,7 @@ export const Wrapper = styled.div<{
     $palette: TDropdownPalette;
     $usePadding?: boolean;
 }>`
-    padding: ${({ $usePadding }) => ($usePadding ? '8px;' : 'none')};
+    padding: ${({ $usePadding }) => ($usePadding ? '8px 0;' : 'none')};
     overflow: hidden;
     border-radius: 20px;
     box-shadow: 0 10px 17px ${({ $palette }) => $palette.shadow};
