@@ -35,6 +35,7 @@ export const Wrapper = styled.div<{
     border-radius: 20px;
     box-shadow: 0 10px 17px ${({ $palette }) => $palette.shadow};
     background: ${({ $palette }) => $palette.bg};
+    outline: 1px solid ${({ $palette }) => $palette.bg};
 
     min-width: ${({ $minWidth }) => $minWidth};
     width: ${({ $width }) => $width};
