@@ -21,6 +21,10 @@ export const BottomSheet = styled(LibBottomSheet)<{
         z-index: 9999;
     }
 
+    [data-rsbs-backdrop]:not(:first-child) {
+        display: none;
+    }
+
     [data-rsbs-header] {
         ${({ $isHaveHeader }) =>
             !$isHaveHeader &&

@@ -48,6 +48,16 @@ export const Drawer: FC<TProps> = ({
 
     return (
         <S.BottomSheet
+            sibling={
+                <div
+                    data-rsbs-backdrop="true"
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        onClose();
+                    }}
+                />
+            }
             open={isOpen}
             onDismiss={onClose}
             expandOnContentDrag={false}
