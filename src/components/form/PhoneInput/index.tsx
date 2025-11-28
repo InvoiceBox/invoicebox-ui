@@ -159,7 +159,10 @@ export const PhoneInput: FC<TProps> = ({
     );
 
     const handleInputValueChange = useCallback(
-        (currentInputValue: string, event?: ChangeEvent<HTMLInputElement>) => {
+        (
+            currentInputValue: string,
+            event?: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLInputElement>,
+        ) => {
             const notFormattedValue = phoneInputLogic.getOnlyNumbersFromString(currentInputValue);
             const moveCaret = event ? phoneInputLogic.moveCaretByValue(event) : undefined;
             const intermediateValue =
@@ -215,7 +218,7 @@ export const PhoneInput: FC<TProps> = ({
             event.preventDefault();
 
             const pasteText = event.clipboardData.getData('Text').trim();
-            handleInputValueChange(pasteText);
+            handleInputValueChange(pasteText, event);
         },
         [handleInputValueChange],
     );

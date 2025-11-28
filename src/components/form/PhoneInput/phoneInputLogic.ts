@@ -1,7 +1,7 @@
 import { TCountryRule, TCountrySelectOption, TSupportedCountries, UNKNOWN_COUNTRY_CODE } from './types';
 import { getAllCountriesPhoneRules, MASK_DIGIT_ITEM } from './constants';
 import { TFlagKey } from '../../common/Flag';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ClipboardEvent } from 'react';
 
 export class PhoneInputLogic {
     private isSupportCityRusPhoneNumber: boolean;
@@ -98,14 +98,12 @@ export class PhoneInputLogic {
             result = `7${value}`;
         }
         if (value[0] === '9') {
-            const newValue = `79${value.slice(1)}`;
-            result = newValue;
-            if (moveCaret) {
-                // когда пользователь вводит номер с "9", мы подставляем в инпут "79", но каретка не переносится после "9", нужно это делать вручную
-                moveCaret(this.getCaretPositionByRusValue(newValue));
-            }
+            result = `79${value.slice(1)}`;
         }
-
+        if (moveCaret) {
+            // когда пользователь вводит номер с "9", мы подставляем в инпут "79", но каретка не переносится после "9" - также при вставке, нужно это делать вручную
+            moveCaret(this.getCaretPositionByRusValue(result));
+        }
         return result;
     }
 
@@ -114,10 +112,12 @@ export class PhoneInputLogic {
     }
 
     // хак для того чтобы сдвигать каретку в случае если при вводе "9" надо заменить на "79", каретка не двигается сама и остаётся между "7" и "9" без этой функции
-    moveCaretByValue(event: ChangeEvent<HTMLInputElement>) {
+    moveCaretByValue(event: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLInputElement>) {
         return (positionCaret: number) => {
             setTimeout(() => {
-                event.target.setSelectionRange(positionCaret, positionCaret);
+                if ('setSelectionRange' in event.target) {
+                    event.target.setSelectionRange(positionCaret, positionCaret);
+                }
             }, 0);
         };
     }
