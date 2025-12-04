@@ -94,7 +94,11 @@ export class PhoneInputLogic {
         if (value[0] === '8') {
             result = `7${value.slice(1)}`;
         }
-        if (value.length === 10 && value[0] !== '7' && value[0] !== '8') {
+        if (
+            value.length === 10 &&
+            value[0] !== '7' &&
+            (value[0] !== '8' || (this.isSupportCityRusPhoneNumber && value[0] === '8'))
+        ) {
             result = `7${value}`;
         }
         if (value[0] === '9') {
