@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent } from 'react';
+import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent, MouseEvent } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput } from '../PureInput';
 import * as S from './styles';
@@ -62,6 +62,18 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
 
             acceptNewValue(target.value);
         }
+
+        if (event.key === 'Backspace' && inputValue === '' && value?.length) {
+            // нужно чтобы после выполнения кода ниже - в handleChange не передалось значение и автоматически ч-з backspace не стёрся крайний символ
+            event.preventDefault();
+            const lastTagValue = value[value.length - 1];
+            setInputValue(lastTagValue);
+            handleTagRemove(lastTagValue);
+
+            newValueAutofillIntervalRef.current = setTimeout(() => {
+                acceptNewValue(lastTagValue);
+            }, 3000);
+        }
     };
 
     const handleTagRemove = (tagRemoved: string) => {
@@ -80,6 +92,14 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
         if (event.target.value) {
             acceptNewValue(event.target.value);
         }
+    };
+
+    const handleChipClick = (chipValue: string) => {
+        setInputValue(chipValue);
+        handleTagRemove(chipValue);
+        newValueAutofillIntervalRef.current = setTimeout(() => {
+            acceptNewValue(chipValue);
+        }, 3000);
     };
 
     return (
@@ -102,7 +122,12 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
                             key={tagItem + index}
                             label={
                                 <S.ChipLabel>
-                                    <Typography variant={'labelsHintsBold'}>{tagItem}</Typography>
+                                    <Typography
+                                        variant={'labelsHintsBold'}
+                                        onClick={() => handleChipClick(tagItem)}
+                                    >
+                                        {tagItem}
+                                    </Typography>
                                     <S.ChipRemoveButton
                                         type={'button'}
                                         onClick={() => handleTagRemove(tagItem)}
