@@ -62,6 +62,18 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
 
             acceptNewValue(target.value);
         }
+
+        if (event.key === 'Backspace' && inputValue === '' && value?.length) {
+            // нужно чтобы после выполнения кода ниже - в handleChange не передалось значение и автоматически ч-з backspace не стёрся крайний символ
+            event.preventDefault();
+            const lastTagValue = value[value.length - 1];
+            setInputValue(lastTagValue);
+            handleTagRemove(lastTagValue);
+
+            newValueAutofillIntervalRef.current = setTimeout(() => {
+                acceptNewValue(lastTagValue);
+            }, 3000);
+        }
     };
 
     const handleTagRemove = (tagRemoved: string) => {
