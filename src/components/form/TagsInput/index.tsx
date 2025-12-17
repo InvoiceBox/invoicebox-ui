@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent } from 'react';
+import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent, MouseEvent } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput } from '../PureInput';
 import * as S from './styles';
@@ -94,6 +94,14 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
         }
     };
 
+    const handleChipClick = (chipValue: string) => {
+        setInputValue(chipValue);
+        handleTagRemove(chipValue);
+        newValueAutofillIntervalRef.current = setTimeout(() => {
+            acceptNewValue(chipValue);
+        }, 3000);
+    };
+
     return (
         <InputLabel label={label}>
             <S.PureInputStyledWrapper
@@ -114,7 +122,12 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
                             key={tagItem + index}
                             label={
                                 <S.ChipLabel>
-                                    <Typography variant={'labelsHintsBold'}>{tagItem}</Typography>
+                                    <Typography
+                                        variant={'labelsHintsBold'}
+                                        onClick={() => handleChipClick(tagItem)}
+                                    >
+                                        {tagItem}
+                                    </Typography>
                                     <S.ChipRemoveButton
                                         type={'button'}
                                         onClick={() => handleTagRemove(tagItem)}
