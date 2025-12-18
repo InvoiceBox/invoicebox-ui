@@ -17,6 +17,6 @@ const Component = (props: TProps) => {
 };
 
 export const Default: StoryObj<TProps> = {
-    args: { size: 'M', label: 'Label', hasError: false },
+    args: { size: 'M', label: 'Label', hasError: false, saveLabel: 'Сохранить' },
     render: Component,
 };

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent, MouseEvent } from 'react';
+import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput } from '../PureInput';
 import * as S from './styles';
@@ -12,13 +12,22 @@ import { useInputFocus } from '../../../hooks/useInputFocus';
 import { TTagsInputPalette } from './palette';
 
 export type TProps = Pick<TInputLabelProps, 'label'> & { hasError?: boolean } & {
+    saveLabel: string;
     value?: Array<string>;
     onChange: (value?: Array<string>) => void;
     size?: TSizes;
     palette?: Partial<TTagsInputPalette>;
 };
 
-export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, value, onChange, palette }) => {
+export const TagsInput: FC<TProps> = ({
+    hasError = false,
+    size = 'M',
+    label,
+    value,
+    onChange,
+    palette,
+    saveLabel,
+}) => {
     const newValueAutofillIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const [inputValue, setInputValue] = useState('');
@@ -42,27 +51,23 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
         setInputValue('');
     };
 
+    const acceptValueByTimeout = (newValue: string) => {
+        newValueAutofillIntervalRef.current = setTimeout(() => {
+            acceptNewValue(newValue);
+        }, 3000);
+    };
+
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
 
         clearNewValueAutofillInterval();
 
         if (event.target.value) {
-            newValueAutofillIntervalRef.current = setTimeout(() => {
-                acceptNewValue(event.target.value);
-            }, 3000);
+            acceptValueByTimeout(event.target.value);
         }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-        const target = event.target as HTMLInputElement;
-
-        if (event.key === 'Enter' && inputValue.length) {
-            clearNewValueAutofillInterval();
-
-            acceptNewValue(target.value);
-        }
-
         if (event.key === 'Backspace' && inputValue === '' && value?.length) {
             // нужно чтобы после выполнения кода ниже - в handleChange не передалось значение и автоматически ч-з backspace не стёрся крайний символ
             event.preventDefault();
@@ -70,9 +75,7 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
             setInputValue(lastTagValue);
             handleTagRemove(lastTagValue);
 
-            newValueAutofillIntervalRef.current = setTimeout(() => {
-                acceptNewValue(lastTagValue);
-            }, 3000);
+            acceptValueByTimeout(lastTagValue);
         }
     };
 
@@ -81,25 +84,35 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
         onChange(valueWithoutRemovedTag?.length ? valueWithoutRemovedTag : undefined);
     };
 
-    const handlePureInputClick = () => {
-        inputRef.current?.focus();
-    };
+    const handlePureInputWrapperBlur = (event: FocusEvent<HTMLInputElement>) => {
+        const newFocusedElement = event.relatedTarget;
 
-    const handlePureInputBlur = (event: FocusEvent<HTMLInputElement>) => {
-        handleBlur(event);
-        clearNewValueAutofillInterval();
+        if (!event.currentTarget.contains(newFocusedElement)) {
+            handleBlur(event);
+            clearNewValueAutofillInterval();
 
-        if (event.target.value) {
-            acceptNewValue(event.target.value);
+            if (event.target.value) {
+                acceptNewValue(event.target.value);
+            }
         }
     };
 
+    const handlePureInputWrapperFocus = (event: FocusEvent<HTMLInputElement>) => {
+        handleFocus(event);
+        inputRef.current?.focus();
+    };
+
     const handleChipClick = (chipValue: string) => {
+        clearNewValueAutofillInterval();
         setInputValue(chipValue);
         handleTagRemove(chipValue);
-        newValueAutofillIntervalRef.current = setTimeout(() => {
-            acceptNewValue(chipValue);
-        }, 3000);
+        acceptValueByTimeout(chipValue);
+    };
+
+    const handleSaveButtonClick = () => {
+        clearNewValueAutofillInterval();
+        acceptNewValue(inputValue);
+        inputRef.current?.focus();
     };
 
     return (
@@ -114,7 +127,9 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
                 $paddingBottom={paddingBottom}
                 $hasError={hasError}
                 $inFocus={inFocus}
-                onClick={handlePureInputClick}
+                onBlur={handlePureInputWrapperBlur}
+                onFocus={handlePureInputWrapperFocus}
+                tabIndex={-1}
             >
                 <S.TagsWrapper>
                     {value?.map((tagItem, index) => (
@@ -140,22 +155,26 @@ export const TagsInput: FC<TProps> = ({ hasError = false, size = 'M', label, val
                             bgColor={tagsInputPalette.chipBg}
                         />
                     ))}
-                    <S.InputWrapper>
+                    <S.InputWithSaveButtonWrapper>
                         <PureInput
                             ref={inputRef}
-                            hasBorder={false}
+                            hasBorder={inFocus}
                             paddingBottom={0}
                             paddingRight={0}
                             paddingTop={0}
-                            paddingLeft={0}
-                            borderRadius={0}
+                            paddingLeft={4}
+                            borderRadius={6}
                             value={inputValue}
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
-                            onBlur={handlePureInputBlur}
-                            onFocus={handleFocus}
                         />
-                    </S.InputWrapper>
+
+                        {!!inputValue.length && (value?.length ? !value.includes(inputValue) : true) && (
+                            <S.SaveButton type={'button'} onClick={handleSaveButtonClick}>
+                                <Typography variant={'captionRegular'}>{saveLabel}</Typography>
+                            </S.SaveButton>
+                        )}
+                    </S.InputWithSaveButtonWrapper>
                 </S.TagsWrapper>
             </S.PureInputStyledWrapper>
         </InputLabel>
