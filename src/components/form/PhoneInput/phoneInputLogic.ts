@@ -93,6 +93,10 @@ export class PhoneInputLogic {
 
         if (value[0] === '8') {
             result = `7${value.slice(1)}`;
+            if (moveCaret) {
+                // когда пользователь вводит номер с "9", мы подставляем в инпут "79", но каретка не переносится после "9" - также при вставке, нужно это делать вручную
+                moveCaret(this.getCaretPositionByRusValue(result));
+            }
         }
         if (
             value.length === 10 &&
@@ -100,13 +104,15 @@ export class PhoneInputLogic {
             (value[0] !== '8' || (this.isSupportCityRusPhoneNumber && value[0] === '8'))
         ) {
             result = `7${value}`;
+            if (moveCaret) {
+                moveCaret(this.getCaretPositionByRusValue(result));
+            }
         }
         if (value[0] === '9') {
             result = `79${value.slice(1)}`;
-        }
-        if (moveCaret) {
-            // когда пользователь вводит номер с "9", мы подставляем в инпут "79", но каретка не переносится после "9" - также при вставке, нужно это делать вручную
-            moveCaret(this.getCaretPositionByRusValue(result));
+            if (moveCaret) {
+                moveCaret(this.getCaretPositionByRusValue(result));
+            }
         }
         return result;
     }
