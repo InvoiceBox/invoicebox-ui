@@ -98,11 +98,6 @@ export class Validate {
     }
 
     static settlementAccount(value: string, bic: string, createError: TCreateErrorFunc) {
-        if (!bic) {
-            // eslint-disable-next-line no-console
-            console.error('Form dont have bic');
-        }
-
         if (value === '') {
             return true;
         }
@@ -130,11 +125,6 @@ export class Validate {
     }
 
     static correspondentAccount(value: string, bic: string, createError: TCreateErrorFunc) {
-        if (!bic) {
-            // eslint-disable-next-line no-console
-            console.error('Form dont have bic');
-        }
-
         if (value === '') {
             return true;
         }
