@@ -51,6 +51,7 @@ export const StyledInput = styled.input<{
     width: ${({ $variant }) => INPUT_VARIANT_MAP[$variant].width}px;
     height: ${({ $variant }) => INPUT_VARIANT_MAP[$variant].height}px;
     cursor: pointer;
+    flex-shrink: 0;
 
     -webkit-appearance: none;
     box-shadow: none;
