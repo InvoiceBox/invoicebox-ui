@@ -27,6 +27,7 @@ export type TProps = {
         TDropdownProps,
         'isAutoPosition' | 'positionLeft' | 'positionRight' | 'positionVertical'
     >;
+    required?: boolean;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
@@ -44,6 +45,7 @@ export const DateTimeInput: FC<TProps> = ({
     size = 'M',
     dropdownProps,
     placeholder,
+    required = false,
 }) => {
     const palette = useComponentPalette<TDateTimeInputPalette>('dateTimeInput');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -138,7 +140,7 @@ export const DateTimeInput: FC<TProps> = ({
 
     return (
         <S.Wrapper ref={isMobile ? undefined : elRef}>
-            <InputLabel inFocus={inFocus} label={label}>
+            <InputLabel inFocus={inFocus} label={label} required={required}>
                 <S.InputWrapper>
                     <PureInput
                         onClick={handleTrigger}
