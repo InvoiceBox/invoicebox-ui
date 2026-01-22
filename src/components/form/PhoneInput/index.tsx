@@ -35,6 +35,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus'> & {
     size?: TSizes;
     isSupportCityRusPhoneNumber?: boolean;
     isInnerErrorHighlight?: boolean;
+    required?: boolean;
 };
 
 export type TProps = TControlProps & TFieldProps;
@@ -57,6 +58,7 @@ export const PhoneInput: FC<TProps> = ({
     autoFocus,
     isSupportCityRusPhoneNumber = false,
     isInnerErrorHighlight = true,
+    required = false,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
@@ -234,7 +236,7 @@ export const PhoneInput: FC<TProps> = ({
     }, [hasError, isFirstBlur, isHaveInputError, isInnerErrorHighlight]);
 
     return (
-        <InputLabel inFocus={inFocus} label={label} disabled={disabled}>
+        <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
             <S.InputLabelContent>
                 {!!countrySelectOptions?.length && (
                     <S.InputLabelFloatWrapper>
