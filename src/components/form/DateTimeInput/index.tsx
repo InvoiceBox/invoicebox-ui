@@ -206,7 +206,7 @@ export const DateTimeInput: FC<TProps> = ({
                             $color={palette.buttonLabel}
                             onClick={handleCloseAndSkipDropdownValue}
                         >
-                            <Typography variant={'buttonM'}>{saveLabel || 'Закрыть'}</Typography>
+                            <Typography variant={'buttonM'}>{cancelLabel || 'Закрыть'}</Typography>
                         </S.ActionButton>
                         <S.ActionButton
                             type={'button'}
