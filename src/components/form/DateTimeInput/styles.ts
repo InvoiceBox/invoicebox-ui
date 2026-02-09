@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { breakpoints } from '../../../breakpoints';
-import { TDateInputPalette } from '../DateInput/palette';
 
 export const Wrapper = styled.div`
     position: relative;
@@ -10,7 +9,7 @@ export const InputWrapper = styled.div`
     position: relative;
 `;
 
-export const Icon = styled.div<{ $palette: TDateInputPalette }>`
+export const Icon = styled.div<{ $color: string }>`
     position: absolute;
     right: 12px;
     top: 0;
@@ -19,7 +18,7 @@ export const Icon = styled.div<{ $palette: TDateInputPalette }>`
     justify-content: center;
     flex-direction: column;
     cursor: pointer;
-    color: ${({ $palette }) => $palette.icon};
+    color: ${({ $color }) => $color};
 `;
 
 export const CalendarWithTimePicker = styled.div<{ $dividerColor: string }>`
@@ -45,16 +44,22 @@ export const DropdownActionButtons = styled.div`
     gap: 8px;
 `;
 
-export const ActionButton = styled.button<{ $bgColor: string; $disabledBgColor: string; disabled?: boolean }>`
-    width: 36px;
+export const ActionButton = styled.button<{
+    $color: string;
+    $bgColor: string;
+    $disabledBgColor: string;
+    disabled?: boolean;
+}>`
     height: 36px;
-    border-radius: 50%;
+    padding: 8px 16px;
+    border-radius: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
     cursor: pointer;
     outline: none;
+    color: ${({ $color }) => $color};
     background-color: ${({ $bgColor }) => $bgColor};
 
     &:hover {

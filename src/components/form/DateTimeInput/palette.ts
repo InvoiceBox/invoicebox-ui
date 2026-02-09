@@ -3,6 +3,7 @@ import hexToRgba from 'hex-to-rgba';
 
 export type TDateTimeInputPalette = {
     icon: string;
+    buttonLabel: string;
     divider: string;
     cancelButton: string;
     applyButton: string;
@@ -12,6 +13,7 @@ export type TDateTimeInputPalette = {
 export const generateDateTimeInputPalette = (abstractPalette: TAbstractPalette): TDateTimeInputPalette => {
     return {
         icon: abstractPalette.primary,
+        buttonLabel: abstractPalette.primary,
         divider: hexToRgba(abstractPalette.primary, 0.1),
         cancelButton: abstractPalette.neutralUsual,
         applyButton: abstractPalette.secondary,

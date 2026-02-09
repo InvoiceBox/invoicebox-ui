@@ -11,9 +11,7 @@ import { CalendarIcon } from '../DateInput/components/CalendarIcon';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
 import { TimePicker } from './components/TimePicker';
-import { CrossIcon } from './components/CrossIcon';
-import { CheckIcon } from './components/CheckIcon';
-import { TDropdownProps, useMobile } from '../../../index';
+import { TDropdownProps, Typography, useMobile } from '../../../index';
 import { TDateTimeInputPalette } from './palette';
 import { useTimePickerHeight } from './hooks/useTimePickerHeight';
 import { useStringValue } from './hooks/useStringValue';
@@ -27,6 +25,8 @@ export type TProps = {
         TDropdownProps,
         'isAutoPosition' | 'positionLeft' | 'positionRight' | 'positionVertical'
     >;
+    saveLabel?: string;
+    cancelLabel?: string;
     required?: boolean;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
@@ -45,6 +45,8 @@ export const DateTimeInput: FC<TProps> = ({
     size = 'M',
     dropdownProps,
     placeholder,
+    saveLabel,
+    cancelLabel,
     required = false,
 }) => {
     const palette = useComponentPalette<TDateTimeInputPalette>('dateTimeInput');
@@ -156,7 +158,7 @@ export const DateTimeInput: FC<TProps> = ({
                         paddingRight={44}
                         {...SIZE_PARAMS_MAP[size]}
                     />
-                    <S.Icon onClick={handleTrigger} $palette={palette}>
+                    <S.Icon onClick={handleTrigger} $color={palette.icon}>
                         <CalendarIcon />
                     </S.Icon>
                 </S.InputWrapper>
@@ -201,21 +203,23 @@ export const DateTimeInput: FC<TProps> = ({
                             type={'button'}
                             $bgColor={palette.cancelButton}
                             $disabledBgColor={palette.disabledButton}
+                            $color={palette.buttonLabel}
                             onClick={handleCloseAndSkipDropdownValue}
                         >
-                            <CrossIcon />
+                            <Typography variant={'buttonM'}>{cancelLabel || 'Закрыть'}</Typography>
                         </S.ActionButton>
                         <S.ActionButton
                             type={'button'}
                             $bgColor={palette.applyButton}
                             $disabledBgColor={palette.disabledButton}
+                            $color={palette.buttonLabel}
                             onClick={handleApply}
                             disabled={
                                 !calendarDropdownValue ||
                                 !logic.isBetweenMinAndMax(calendarDropdownValue, minDate, maxDate)
                             }
                         >
-                            <CheckIcon />
+                            <Typography variant={'buttonM'}>{saveLabel || 'Сохранить'}</Typography>
                         </S.ActionButton>
                     </S.DropdownActionButtons>
                 </Dropdown>
