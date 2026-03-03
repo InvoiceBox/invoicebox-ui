@@ -44,6 +44,19 @@ export const MobileDrawerDateTimeCalendar: FC<TProps> = ({
         }
     };
 
+    const maxTime: [number, number] | undefined =
+        calendarDropdownValue && maxDate && calendarDropdownValue.getDay() === maxDate.getDay()
+            ? [maxDate.getHours(), maxDate.getMinutes()]
+            : undefined;
+
+    const minTime: [number, number] | undefined =
+        calendarDropdownValue && minDate && calendarDropdownValue.getDay() === minDate.getDay()
+            ? [minDate.getHours(), minDate.getMinutes()]
+            : undefined;
+
+    const currentHour = calendarDropdownValue?.getHours() || 0;
+    const currentMinute = calendarDropdownValue?.getMinutes() || 0;
+
     return (
         <Drawer onClose={handleClose} isOpen={isOpen} isPadding={false}>
             <DrawerHeader
@@ -70,25 +83,10 @@ export const MobileDrawerDateTimeCalendar: FC<TProps> = ({
             ) : (
                 <S.TimePickerWrapper>
                     <TimePicker
-                        value={[
-                            calendarDropdownValue?.getHours() || 0,
-                            calendarDropdownValue?.getMinutes() || 0,
-                        ]}
+                        value={[currentHour, currentMinute]}
                         onChange={onTimeChange}
-                        maxTime={
-                            calendarDropdownValue &&
-                            maxDate &&
-                            calendarDropdownValue.getDay() === maxDate.getDay()
-                                ? [maxDate.getHours(), maxDate.getMinutes()]
-                                : undefined
-                        }
-                        minTime={
-                            calendarDropdownValue &&
-                            minDate &&
-                            calendarDropdownValue.getDay() === minDate.getDay()
-                                ? [minDate.getHours(), minDate.getMinutes()]
-                                : undefined
-                        }
+                        maxTime={maxTime}
+                        minTime={minTime}
                     />
                 </S.TimePickerWrapper>
             )}

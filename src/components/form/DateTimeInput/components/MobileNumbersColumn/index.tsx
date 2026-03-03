@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './styles';
 
 type TProps = {
@@ -12,11 +12,13 @@ const OPACITY_STEPS = [1, 0.8, 0.5, 0.3, 0.2];
 const INCLINE_STEPS = [0, 20, 45, 70, 80];
 
 const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
+    const [centerNumber, setCenterNumber] = useState<string | null>(null);
+
     const containerRef = useRef<HTMLDivElement>(null);
     const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
     const isScrollingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const rafRef = useRef<number | null>(null);
-    const activeIndexRef = useRef<number>(-1);
+    const rafRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
 
     // Функция для центрирования элемента
     const snapToCenter = useCallback((index: number) => {
@@ -59,14 +61,23 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
             }
         });
 
-        if (closestIndex !== -1 && closestIndex !== activeIndexRef.current) {
-            activeIndexRef.current = closestIndex;
-            const number = itemsRef.current[closestIndex]?.textContent || null;
-            onChange(Number(number));
+        const newNumber = numbers.find((a, index) => index === closestIndex);
+
+        if (closestIndex !== -1 && typeof newNumber === 'number') {
+            setCenterNumber(newNumber.toString());
         }
 
         return closestIndex;
-    }, [onChange]);
+    }, [numbers]);
+
+    useEffect(() => {
+        if (value) {
+            const indexValue = numbers.indexOf(value);
+            snapToCenter(indexValue);
+        } else {
+            snapToCenter(0);
+        }
+    }, [numbers, snapToCenter, value]);
 
     // Оптимизированный обработчик скролла
     useEffect(() => {
@@ -82,9 +93,7 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
             rafRef.current = requestAnimationFrame(() => {
                 findCenterElement();
             });
-        };
 
-        const handleScrollEnd = () => {
             if (isScrollingRef.current) {
                 clearTimeout(isScrollingRef.current);
             }
@@ -93,20 +102,20 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
                 const closestIndex = findCenterElement();
                 if (closestIndex !== -1) {
                     snapToCenter(closestIndex);
+                    const newNumber = numbers.find((item, index) => index === closestIndex);
+                    if (typeof newNumber === 'number') {
+                        onChange(newNumber);
+                    }
                 }
             }, 150);
         };
 
         container.addEventListener('scroll', handleScroll, { passive: true });
-        container.addEventListener('touchend', handleScrollEnd, { passive: true });
-        container.addEventListener('mouseup', handleScrollEnd);
 
         setTimeout(() => findCenterElement(), 0);
 
         return () => {
             container.removeEventListener('scroll', handleScroll);
-            container.removeEventListener('touchend', handleScrollEnd);
-            container.removeEventListener('mouseup', handleScrollEnd);
 
             if (rafRef.current) {
                 cancelAnimationFrame(rafRef.current);
@@ -115,29 +124,33 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
                 clearTimeout(isScrollingRef.current);
             }
         };
-    }, [findCenterElement, snapToCenter]);
+    }, [findCenterElement, numbers, onChange, snapToCenter]);
 
     // Функция получения стилей на основе индекса
-    const getItemStyles = useCallback((index: number) => {
-        const activeIndex = activeIndexRef.current;
-        if (activeIndex === -1) return { opacity: 0.2, incline: 80 };
+    const getItemStyles = useCallback(
+        (index: number) => {
+            if (!centerNumber) return { opacity: 0.2, incline: 80 };
 
-        // Расстояние от активного элемента
-        const distance = Math.abs(index - activeIndex);
-        const maxDistance = 5; // Максимальное расстояние для применения эффекта
+            const activeIndex = numbers.indexOf(Number(centerNumber));
 
-        // Выбираем стиль на основе расстояния
-        const stepIndex = Math.min(distance, maxDistance);
+            // Расстояние от активного элемента
+            const distance = Math.abs(index - activeIndex);
+            const maxDistance = 5; // Максимальное расстояние для применения эффекта
 
-        // Используем предвычисленные значения
-        const opacityIndex = Math.min(stepIndex, OPACITY_STEPS.length - 1);
-        const inclineIndex = Math.min(stepIndex, INCLINE_STEPS.length - 1);
+            // Выбираем стиль на основе расстояния
+            const stepIndex = Math.min(distance, maxDistance);
 
-        return {
-            opacity: OPACITY_STEPS[opacityIndex],
-            incline: INCLINE_STEPS[inclineIndex],
-        };
-    }, []);
+            // Используем предвычисленные значения
+            const opacityIndex = Math.min(stepIndex, OPACITY_STEPS.length - 1);
+            const inclineIndex = Math.min(stepIndex, INCLINE_STEPS.length - 1);
+
+            return {
+                opacity: OPACITY_STEPS[opacityIndex],
+                incline: INCLINE_STEPS[inclineIndex],
+            };
+        },
+        [centerNumber, numbers],
+    );
 
     return (
         <S.Wrapper ref={containerRef}>
@@ -147,7 +160,7 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
 
             {numbers.map((numberItem, index) => {
                 const { opacity, incline } = getItemStyles(index);
-                const isActive = value === numberItem;
+                const isActive = centerNumber === numberItem.toString();
 
                 return (
                     <S.Number
@@ -161,7 +174,7 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
                             }
                         }}
                     >
-                        {numberItem}
+                        {numberItem < 10 ? `0${numberItem}` : numberItem}
                     </S.Number>
                 );
             })}

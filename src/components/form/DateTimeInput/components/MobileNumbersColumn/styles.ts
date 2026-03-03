@@ -9,11 +9,8 @@ export const Wrapper = styled.div`
     width: 100%;
     position: relative;
     text-align: right;
-
-    /* Аппаратное ускорение */
     transform: translateZ(0);
     backface-visibility: hidden;
-    perspective: 1000;
     will-change: transform;
 `;
 
@@ -22,18 +19,11 @@ export const Number = styled.div<{ $opacity: number; $incline: number; $isActive
     width: 28px;
     height: 28px;
     flex-shrink: 0;
-
-    /* Аппаратное ускорение для анимаций */
     transform: translateZ(0) rotateX(${({ $incline }) => $incline}deg);
     backface-visibility: hidden;
-    perspective: 1000;
-
-    /* Оптимизация производительности */
     will-change: transform, opacity;
 
-    /* Убираем transition во время скролла */
-    transition: ${({ $isActive }) => ($isActive ? 'margin 0.2s ease' : 'none')};
-
+    transition: all 0.1s ease;
     ${({ $isActive }) =>
         $isActive &&
         css`
