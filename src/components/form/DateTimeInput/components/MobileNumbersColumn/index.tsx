@@ -152,6 +152,13 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
         [centerNumber, numbers],
     );
 
+    const handleNumberClick = useCallback(
+        (index: number) => {
+            snapToCenter(index);
+        },
+        [snapToCenter],
+    );
+
     return (
         <S.Wrapper ref={containerRef}>
             <S.Number $opacity={0} $isActive={false} $incline={0} />
@@ -173,6 +180,7 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
                                 itemsRef.current[index] = el;
                             }
                         }}
+                        onClick={() => handleNumberClick(index)}
                     >
                         {numberItem < 10 ? `0${numberItem}` : numberItem}
                     </S.Number>
