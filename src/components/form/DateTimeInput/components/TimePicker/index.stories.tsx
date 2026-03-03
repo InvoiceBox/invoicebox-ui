@@ -17,7 +17,7 @@ export const Default: StoryObj<TProps> = {
         maxTime: [22, 15],
     },
     render: function Render(props) {
-        const [time, setTime] = useState<[number, number]>([0, 0]);
+        const [time, setTime] = useState<[number, number]>([11, 0]);
 
         return <TimePicker {...props} value={time} onChange={setTime} />;
     },

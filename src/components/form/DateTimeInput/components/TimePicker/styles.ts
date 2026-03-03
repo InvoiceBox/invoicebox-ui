@@ -1,18 +1,11 @@
 import styled from 'styled-components';
 import { Typography } from '../../../../common/Typography';
-import { breakpoints } from '../../../../../breakpoints';
 
 export const Wrapper = styled.div<{ $height: number }>`
     display: flex;
     width: 93px;
     box-sizing: border-box;
     height: ${({ $height }) => $height}px;
-
-    @media ${breakpoints.sm} {
-        flex-direction: column;
-        width: auto;
-        height: auto;
-    }
 `;
 
 export const ColumnWrapper = styled.div<{ $borderColor: string }>`
@@ -23,31 +16,12 @@ export const ColumnWrapper = styled.div<{ $borderColor: string }>`
     &:last-child {
         border-left: 1px solid ${({ $borderColor }) => $borderColor};
     }
-
-    @media ${breakpoints.sm} {
-        flex-direction: row;
-        width: auto;
-        align-items: center;
-        overflow: hidden;
-
-        &:last-child {
-            border: none;
-            border-top: 1px solid ${({ $borderColor }) => $borderColor};
-        }
-    }
 `;
 
 export const Label = styled(Typography)<{ $color: string }>`
     padding: 8px 0;
     color: ${({ $color }) => $color};
     text-align: center;
-
-    @media ${breakpoints.sm} {
-        font-size: 15px;
-        font-weight: 400;
-        line-height: 20px;
-        padding: 14px;
-    }
 `;
 
 export const ValuesWrapper = styled.div`
@@ -58,14 +32,6 @@ export const ValuesWrapper = styled.div`
     padding: 8px 0;
     box-sizing: border-box;
     margin: 0 auto;
-
-    @media ${breakpoints.sm} {
-        flex-direction: row;
-        gap: 0;
-        margin: 0;
-        width: auto;
-        padding: 8px 0;
-    }
 `;
 
 export const ValueWrapper = styled.button<{
@@ -90,30 +56,32 @@ export const ValueWrapper = styled.button<{
         cursor: not-allowed;
         color: ${({ $colorDisabled }) => $colorDisabled};
     }
-
-    @media ${breakpoints.sm} {
-        flex-direction: row;
-        width: 44px;
-        height: 48px;
-        flex-shrink: 0;
-        border-radius: 50%;
-        padding: 0;
-    }
 `;
 
-export const Value = styled(Typography)`
-    @media ${breakpoints.sm} {
-        font-size: 15px;
-        font-weight: 400;
-        line-height: 20px;
-    }
+export const MobileWrapper = styled.div<{ $isIphone: boolean }>`
+    height: 178px;
+    width: 140px;
+    display: flex;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 28px;
+    color: #3c3c4399;
+    position: relative;
+
+    font-family: ${({ $isIphone }) =>
+        $isIphone ? '-apple-system, BlinkMacSystemFont' : "'Roboto', sans-serif"};
 `;
 
-export const MobileScrollWrapper = styled.div`
-    display: contents;
-
-    @media ${breakpoints.sm} {
-        display: block;
-        overflow: hidden;
-    }
+export const SelectedMask = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 34px;
+    background-color: #74748014;
+    z-index: 10;
+    transform: translateY(-50%);
+    flex-shrink: 0;
+    border-radius: 8px;
+    pointer-events: none;
 `;
