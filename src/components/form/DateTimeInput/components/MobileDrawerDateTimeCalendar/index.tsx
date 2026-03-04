@@ -14,6 +14,8 @@ export type TProps = Pick<TCalendarProps, 'maxDate' | 'minDate'> & {
     onTimeChange: (newValue: [number, number]) => void;
     onSubmit: () => void;
     afterSubmit: () => void;
+    minTime?: [number, number];
+    maxTime?: [number, number];
 };
 
 export const MobileDrawerDateTimeCalendar: FC<TProps> = ({
@@ -26,6 +28,8 @@ export const MobileDrawerDateTimeCalendar: FC<TProps> = ({
     afterSubmit,
     onSubmit,
     onTimeChange,
+    maxTime,
+    minTime,
 }) => {
     const [isDateStep, setIsDateStep] = useState(true);
 
@@ -43,16 +47,6 @@ export const MobileDrawerDateTimeCalendar: FC<TProps> = ({
             setIsDateStep(true);
         }
     };
-
-    const maxTime: [number, number] | undefined =
-        calendarDropdownValue && maxDate && calendarDropdownValue.getDay() === maxDate.getDay()
-            ? [maxDate.getHours(), maxDate.getMinutes()]
-            : undefined;
-
-    const minTime: [number, number] | undefined =
-        calendarDropdownValue && minDate && calendarDropdownValue.getDay() === minDate.getDay()
-            ? [minDate.getHours(), minDate.getMinutes()]
-            : undefined;
 
     const currentHour = calendarDropdownValue?.getHours() || 0;
     const currentMinute = calendarDropdownValue?.getMinutes() || 0;

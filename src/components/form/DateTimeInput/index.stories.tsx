@@ -39,11 +39,14 @@ const Component = (props: TProps) => {
     );
 };
 
+const currentDate = new Date();
+const dateAfter29Days = currentDate.setDate(currentDate.getDate() + 29);
+
 const COMMON_ARGS = {
     hasError: false,
     label: 'Label',
-    minDate: new Date().setHours(10, 10, 0, 0) as unknown as Date,
-    maxDate: new Date().setDate(new Date().getDate() + 5) as unknown as Date,
+    minDate: new Date(),
+    maxDate: dateAfter29Days as unknown as Date,
 };
 
 export const Default: StoryObj<typeof DateTimeInput> = {

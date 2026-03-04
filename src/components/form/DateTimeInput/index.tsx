@@ -140,6 +140,24 @@ export const DateTimeInput: FC<TProps> = ({
         handleClose();
     }, [calendarDropdownValue, handleClose, maxDate, minDate, onChange, setStringValue, value, withTime]);
 
+    const maxTime: [number, number] | undefined =
+        calendarDropdownValue &&
+        maxDate &&
+        calendarDropdownValue.getFullYear() === maxDate.getFullYear() &&
+        calendarDropdownValue.getMonth() === maxDate.getMonth() &&
+        calendarDropdownValue.getDate() === maxDate.getDate()
+            ? [maxDate.getHours(), maxDate.getMinutes()]
+            : undefined;
+
+    const minTime: [number, number] | undefined =
+        calendarDropdownValue &&
+        minDate &&
+        calendarDropdownValue.getFullYear() === minDate.getFullYear() &&
+        calendarDropdownValue.getMonth() === minDate.getMonth() &&
+        calendarDropdownValue.getDate() === minDate.getDate()
+            ? [minDate.getHours(), minDate.getMinutes()]
+            : undefined;
+
     return (
         <S.Wrapper ref={isMobile ? undefined : elRef}>
             <InputLabel inFocus={inFocus} label={label} required={required}>
@@ -182,20 +200,8 @@ export const DateTimeInput: FC<TProps> = ({
                             ]}
                             onChange={handleTimePickerChange}
                             height={timePickerHeight}
-                            maxTime={
-                                calendarDropdownValue &&
-                                maxDate &&
-                                calendarDropdownValue.getDay() === maxDate.getDay()
-                                    ? [maxDate.getHours(), maxDate.getMinutes()]
-                                    : undefined
-                            }
-                            minTime={
-                                calendarDropdownValue &&
-                                minDate &&
-                                calendarDropdownValue.getDay() === minDate.getDay()
-                                    ? [minDate.getHours(), minDate.getMinutes()]
-                                    : undefined
-                            }
+                            maxTime={maxTime}
+                            minTime={minTime}
                         />
                     </S.CalendarWithTimePicker>
                     <S.DropdownActionButtons>
@@ -234,6 +240,8 @@ export const DateTimeInput: FC<TProps> = ({
                     maxDate={maxDate}
                     minDate={minDate}
                     onTimeChange={handleTimePickerChange}
+                    maxTime={maxTime}
+                    minTime={minTime}
                 />
             )}
         </S.Wrapper>
