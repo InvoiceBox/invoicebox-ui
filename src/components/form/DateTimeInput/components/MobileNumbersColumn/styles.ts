@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
     height: 100%;
-    overflow: auto;
+    overflow: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,6 +12,12 @@ export const Wrapper = styled.div`
     transform: translateZ(0);
     backface-visibility: hidden;
     will-change: transform;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 export const Number = styled.div<{ $opacity: number; $incline: number; $isActive: boolean }>`

@@ -182,7 +182,7 @@ const MobileNumbersColumn: FC<TProps> = ({ numbers, value, onChange }) => {
                         }}
                         onClick={() => handleNumberClick(index)}
                     >
-                        {numberItem < 10 ? `0${numberItem}` : numberItem}
+                        {numberItem.toString().length === 1 ? `0${numberItem}` : numberItem}
                     </S.Number>
                 );
             })}

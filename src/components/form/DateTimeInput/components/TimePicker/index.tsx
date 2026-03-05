@@ -102,7 +102,9 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                                     minTimeHour ? minTimeHour : 0,
                                 )}
                             >
-                                <Typography variant={'captionRegular'}>{hourItem}</Typography>
+                                <Typography variant={'captionRegular'}>
+                                    {hourItem.toString().length === 1 ? `0${hourItem}` : hourItem}
+                                </Typography>
                             </S.ValueWrapper>
                         ))}
                     </S.ValuesWrapper>
@@ -127,7 +129,9 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                                 onClick={() => handleMinuteChange(minuteItem)}
                                 disabled={getIsDisabledMinute(minuteItem)}
                             >
-                                <Typography variant={'captionRegular'}>{minuteItem}</Typography>
+                                <Typography variant={'captionRegular'}>
+                                    {minuteItem.toString().length === 1 ? `0${minuteItem}` : minuteItem}
+                                </Typography>
                             </S.ValueWrapper>
                         ))}
                     </S.ValuesWrapper>
