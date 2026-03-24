@@ -34,6 +34,7 @@ const MAX_LIST_HEIGHT = 294;
 type TOption = {
     value: string;
     entity?: any;
+    isDisabled?: boolean;
 };
 
 type TFieldProps = Pick<
@@ -189,6 +190,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                                             key={`${option.value}${index}`}
                                             tabIndex={-1}
                                             type="button"
+                                            disabled={option.isDisabled}
                                             onClick={handleSelect}
                                             data-index={JSON.stringify(index)}
                                         >

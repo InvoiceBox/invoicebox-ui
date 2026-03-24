@@ -25,6 +25,10 @@ export const OptionWrapper = styled.button`
     outline: none;
     color: inherit;
     padding: 0;
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 `;
 
 export const ChildrenWrapper = styled.div`
