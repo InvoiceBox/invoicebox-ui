@@ -56,6 +56,7 @@ const commonArgs = {
                 id: '2',
                 name: 'Name two',
             },
+            isDisabled: true,
         },
         {
             value: '3',
