@@ -8,7 +8,7 @@ import { TEntityAutocompleteOptionsDrawerPalette } from './palette';
 
 const loadingList = new Array(4).fill(Skeleton);
 
-type TOption<TEntity> = { value: string; entity: TEntity };
+type TOption<TEntity> = { value: string; entity: TEntity; isDisabled?: boolean };
 
 export type TProps<TEntity> = {
     isOpen: boolean;
@@ -72,6 +72,7 @@ export const EntityAutocompleteOptionsDrawer = <TEntity,>({
                                     key={`${option.value}${index}`}
                                     tabIndex={-1}
                                     type="button"
+                                    disabled={option.isDisabled}
                                     onClick={handleSelect}
                                     data-index={JSON.stringify(index)}
                                 >

@@ -16,6 +16,10 @@ export const OptionWrapper = styled.button`
     cursor: pointer;
     outline: none;
     color: inherit;
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 `;
 
 export const ContentWrapper = styled.div`
