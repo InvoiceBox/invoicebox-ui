@@ -4,13 +4,13 @@ import { TTogglePalette } from './palette';
 
 export type TToggleSize = 'small' | 'medium';
 
-export const Label = styled.label<{ $color: string }>`
+export const Label = styled.label<{ $color: string; $disabled?: boolean; $disabledColor: string }>`
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
     box-sizing: border-box;
-    color: ${({ $color }) => $color};
+    color: ${({ $color, $disabledColor, $disabled }) => ($disabled ? $disabledColor : $color)};
+    cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
 `;
 
 export const INPUT_VARIANT_MAP: Record<
@@ -22,6 +22,7 @@ export const INPUT_VARIANT_MAP: Record<
         labelVariant: keyof typeof typography;
         leftChecked: number;
         left: number;
+        border: number;
     }
 > = {
     small: {
@@ -29,16 +30,18 @@ export const INPUT_VARIANT_MAP: Record<
         height: 16,
         circleSize: 14,
         labelVariant: 'captionRegular',
-        leftChecked: 12,
-        left: 1,
+        leftChecked: 11,
+        left: 0,
+        border: 1,
     },
     medium: {
-        width: 33,
-        height: 20,
+        width: 32.225,
+        height: 19.2,
         circleSize: 16,
         labelVariant: 'headline5',
-        leftChecked: 15.5,
-        left: 1.5,
+        leftChecked: 13,
+        left: 0,
+        border: 1.5,
     },
 };
 
@@ -52,13 +55,15 @@ export const StyledInput = styled.input<{
     height: ${({ $variant }) => INPUT_VARIANT_MAP[$variant].height}px;
     cursor: pointer;
     flex-shrink: 0;
+    box-sizing: border-box;
+    border: ${({ $variant }) => INPUT_VARIANT_MAP[$variant].border}px solid;
+    border-color: rgba(0, 0, 0, 0);
 
     -webkit-appearance: none;
     box-shadow: none;
 
-    border: none;
     background: ${({ $palette }) => $palette.defaultBg};
-    border-radius: 30px;
+    border-radius: 50px;
 
     &:after {
         content: '';
@@ -85,5 +90,12 @@ export const StyledInput = styled.input<{
 
     &:disabled {
         cursor: not-allowed;
+        border: ${({ $variant }) => INPUT_VARIANT_MAP[$variant].border}px solid
+            ${({ $palette }) => $palette.disabledBorder};
+        background: white;
+
+        &:after {
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
     }
 `;

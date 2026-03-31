@@ -20,6 +20,7 @@ export const Default: StoryObj<TProps> = {
     args: {
         label: 'Label',
         variant: 'small',
+        disabled: false,
     },
     render: Component,
 };

@@ -11,7 +11,7 @@ export type TProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
     variant?: TToggleSize;
 };
 
-export const Toggle: FC<TProps> = ({ checked, variant = 'small', label, onChange, ...other }) => {
+export const Toggle: FC<TProps> = ({ checked, variant = 'small', label, onChange, disabled, ...other }) => {
     const palette = useComponentPalette<TTogglePalette>('toggle');
 
     const { labelVariant } = INPUT_VARIANT_MAP[variant as TToggleSize];
@@ -21,13 +21,14 @@ export const Toggle: FC<TProps> = ({ checked, variant = 'small', label, onChange
     };
 
     return (
-        <S.Label $color={palette.label}>
+        <S.Label $color={palette.label} $disabled={disabled} $disabledColor={palette.disabledLabel}>
             <S.StyledInput
                 $variant={variant as TToggleSize}
                 $palette={palette}
                 checked={checked}
                 onChange={handleChange}
                 type="checkbox"
+                disabled={disabled}
                 {...other}
             />
             <Typography variant={labelVariant}>{label}</Typography>
