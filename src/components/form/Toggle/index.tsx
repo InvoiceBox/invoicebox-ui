@@ -31,7 +31,7 @@ export const Toggle: FC<TProps> = ({ checked, variant = 'small', label, onChange
                 disabled={disabled}
                 {...other}
             />
-            <Typography variant={labelVariant}>{label}</Typography>
+            {label && <Typography variant={labelVariant}>{label}</Typography>}
         </S.Label>
     );
 };
