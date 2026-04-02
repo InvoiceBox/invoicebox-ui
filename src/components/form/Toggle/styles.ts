@@ -48,6 +48,7 @@ export const INPUT_VARIANT_MAP: Record<
 export const StyledInput = styled.input<{
     $palette: TTogglePalette;
     $variant: TToggleSize;
+    $alwaysHighlighted: boolean;
     checked?: boolean;
 }>`
     position: relative;
@@ -62,7 +63,8 @@ export const StyledInput = styled.input<{
     -webkit-appearance: none;
     box-shadow: none;
 
-    background: ${({ $palette }) => $palette.defaultBg};
+    background: ${({ $palette, $alwaysHighlighted }) =>
+        $alwaysHighlighted ? $palette.activeBg : $palette.defaultBg};
     border-radius: 50px;
 
     &:after {
