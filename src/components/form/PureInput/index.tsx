@@ -19,6 +19,7 @@ export type TProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' 
         className?: never;
         element?: 'input' | 'textarea';
         renderedValue?: React.ReactNode;
+        useModernStyles?: boolean;
     };
 
 export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
@@ -39,6 +40,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             element = 'input',
             variant = 'bodyMRegular',
             renderedValue,
+            useModernStyles = false,
             ...rest
         },
         ref,
@@ -67,10 +69,11 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
                 $paddingBottom={paddingBottom}
                 $hasError={hasError}
                 $inFocus={inFocus}
-                $hasBorder={hasBorder}
+                $hasBorder={hasBorder && !useModernStyles}
                 $palette={palette}
                 $borderRadius={borderRadius}
                 onChange={handleChange}
+                $useModernStyles={useModernStyles}
                 {...rest}
             >
                 {renderedValue}

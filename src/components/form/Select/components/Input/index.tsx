@@ -1,14 +1,19 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../../../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../../../PureInput';
 import { Arrow, TProps as TArrowProps } from '../../../../common/Arrow';
 import { ResetButton } from '../../../ResetButton';
-import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 
 export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label' | 'required'> &
     Pick<TPureInputProps, 'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value' | 'onClick'> &
-    Pick<TArrowProps, 'isOpen'> & { onReset?: () => void; size?: TSizes; renderedValue?: React.ReactNode };
+    Pick<TArrowProps, 'isOpen'> & {
+        onReset?: () => void;
+        size?: TSizes;
+        renderedValue?: React.ReactNode;
+        useModernStyles?: boolean;
+    };
 
 export const Input = forwardRef<HTMLInputElement, TProps>(
     (
@@ -27,13 +32,28 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             size = 'M',
             onClick,
             required,
+            useModernStyles = false,
         },
         ref,
     ) => {
         const isShowResetIcon = !!value && !!onReset;
 
+        const paddingOptions = useMemo(() => {
+            if (value && useModernStyles) {
+                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+            } else {
+                return SIZE_PARAMS_MAP[size];
+            }
+        }, [size, value, useModernStyles]);
+
         return (
-            <InputLabel inFocus={inFocus} label={label} required={required}>
+            <InputLabel
+                inFocus={inFocus}
+                label={label}
+                required={required}
+                useModernStyles={useModernStyles}
+                size={size}
+            >
                 <S.ControlWrapper>
                     <PureInput
                         ref={ref}
@@ -48,7 +68,8 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                         readOnly
                         paddingRight={52}
                         onClick={onClick}
-                        {...SIZE_PARAMS_MAP[size]}
+                        useModernStyles={useModernStyles}
+                        {...paddingOptions}
                     />
 
                     <S.IconWrapper $pointerEvents={isShowResetIcon ? 'default' : 'none'}>
