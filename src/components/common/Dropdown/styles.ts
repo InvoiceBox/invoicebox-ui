@@ -33,7 +33,7 @@ export const Wrapper = styled.div<{
     padding: ${({ $usePadding }) => ($usePadding ? '8px 0;' : 'none')};
     overflow: hidden;
     border-radius: 20px;
-    box-shadow: 0 10px 17px ${({ $palette }) => $palette.shadow};
+    box-shadow: 0 4px 50px 0 ${({ $palette }) => $palette.shadow};
     background: ${({ $palette }) => $palette.bg};
     outline: 1px solid ${({ $palette }) => $palette.bg};
 

@@ -4,6 +4,7 @@ import { TAbstractPalette } from '../../../palette';
 export type TPureInputPalette = {
     text: string;
     bg: string;
+    bgOpened: string;
     error: string;
     border: string;
     borderFocus: string;
@@ -14,6 +15,7 @@ export const generatePureInputPalette = (abstractPalette: TAbstractPalette): TPu
     return {
         text: abstractPalette.primary,
         bg: abstractPalette.base,
+        bgOpened: abstractPalette.neutralLight,
         error: abstractPalette.error,
         border: hexToRgba(abstractPalette.neutralBrutal, 0.3),
         borderFocus: abstractPalette.primary,

@@ -16,6 +16,7 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     $palette: TPureInputPalette;
     // only for StyledCurrencyInputFromLibrary
     $variant?: keyof typeof typography;
+    $useModernStyles?: boolean;
 }>`
     ${({ $variant }) => $variant && typography[$variant]}
 
@@ -24,7 +25,8 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     border-radius: ${({ $borderRadius }) => $borderRadius}px;
     border: none;
     width: 100%;
-    background-color: ${({ $palette }) => $palette.bg};
+    background-color: ${({ $palette, $useModernStyles }) =>
+        $useModernStyles ? $palette.bgOpened : $palette.bg};
     transition: all 0.2s ease-in-out 0s;
     box-sizing: border-box;
     padding-right: ${({ $paddingRight }) => $paddingRight}px;

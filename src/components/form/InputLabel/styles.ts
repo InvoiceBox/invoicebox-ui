@@ -6,12 +6,14 @@ export const Label = styled(Typography)<{
     $inFocus: boolean;
     $palette: TInputLabelPalette;
     $required?: boolean;
+    $useModernStyles?: boolean;
+    $paddingTop?: number;
 }>`
     border-radius: 10px;
     position: absolute;
-    top: 0;
+    top: ${({ $paddingTop }) => ($paddingTop ? `${$paddingTop}px` : 0)};
     left: 10px;
-    background-color: ${({ $palette }) => $palette.bg};
+    background-color: ${({ $palette, $useModernStyles }) => ($useModernStyles ? 'transparent' : $palette.bg)};
     padding: 0 10px;
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;

@@ -47,6 +47,7 @@ export type TProps<TValue> = Pick<
     required?: boolean;
     usePadding?: boolean;
     dropdownWidth?: string;
+    useModernStyles?: boolean;
 };
 
 export const Select = <TValue extends string | number>({
@@ -73,6 +74,7 @@ export const Select = <TValue extends string | number>({
     required,
     usePadding = false,
     dropdownWidth,
+    useModernStyles = false,
 }: TProps<TValue>) => {
     const palette = useComponentPalette<TSelectPalette>('select');
 
@@ -273,15 +275,39 @@ export const Select = <TValue extends string | number>({
         return renderValue(selectedOption?.entity);
     }, [renderValue, selectedOption?.entity]);
 
+    const inputLabel = useMemo(() => {
+        if (useModernStyles) {
+            if (selectedOption || isOpen) {
+                return label;
+            } else {
+                return undefined;
+            }
+        } else {
+            return label;
+        }
+    }, [isOpen, label, selectedOption, useModernStyles]);
+
+    const inputPlaceholder = useMemo(() => {
+        if (useModernStyles) {
+            if (!isOpen) {
+                return placeholder;
+            } else {
+                return undefined;
+            }
+        } else {
+            return placeholder;
+        }
+    }, [isOpen, placeholder, useModernStyles]);
+
     return (
         <S.Wrapper ref={isDrawerOptions ? undefined : wrapperRef}>
             <S.InputWrapper>
                 <Input
                     ref={inputRef}
-                    label={label}
+                    label={inputLabel}
                     hasError={hasError}
                     inFocus={inFocus}
-                    placeholder={placeholder}
+                    placeholder={inputPlaceholder}
                     onFocus={isDrawerOptions ? undefined : handleFocus}
                     onBlur={isDrawerOptions ? undefined : handleBlur}
                     value={selectedOption?.label || ''}
@@ -292,6 +318,7 @@ export const Select = <TValue extends string | number>({
                     size={size}
                     onClick={isDrawerOptions || !!renderedValue ? handleInputClick : undefined}
                     required={required}
+                    useModernStyles={useModernStyles}
                 />
             </S.InputWrapper>
 
@@ -305,6 +332,7 @@ export const Select = <TValue extends string | number>({
                     isAutoPosition
                     width={dropdownWidth || '100%'}
                     usePadding={usePadding}
+                    positionVertical={useModernStyles ? -1 : undefined}
                 >
                     {handleDropdownContentRender()}
                 </Dropdown>
