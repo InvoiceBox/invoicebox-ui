@@ -19,6 +19,7 @@ export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
         | 'isOnlyNumbers'
         | 'autoFocus'
         | 'rows'
+        | 'id'
     > & {
         value: string;
         onChange: (value: string) => void;
@@ -51,6 +52,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             element = 'input',
             rows,
             required = false,
+            id,
         },
         ref,
     ) => {
@@ -67,6 +69,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
                 <S.InputLabelContent>
                     <PureInput
+                        id={id}
                         ref={ref}
                         name={name}
                         disabled={disabled}
