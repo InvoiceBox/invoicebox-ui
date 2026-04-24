@@ -13,6 +13,7 @@ export type TProps = Pick<
 > &
     Pick<TInputLabelProps, 'label' | 'disabled'> & {
         hasError?: boolean;
+        required?: boolean;
     } & {
         size?: TSizes;
     };
@@ -27,6 +28,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
     defaultValue,
     allowDecimals = true,
     disabled,
+    required = false,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus();
     const palette = useComponentPalette<TPureInputPalette>('pureInput');
@@ -34,7 +36,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
     const { paddingBottom, paddingTop, variant } = SIZE_PARAMS_MAP[size];
 
     return (
-        <InputLabel inFocus={inFocus} label={label} disabled={disabled}>
+        <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
             <StyledCurrencyInputFromLibrary
                 $palette={palette}
                 $hasBorder
