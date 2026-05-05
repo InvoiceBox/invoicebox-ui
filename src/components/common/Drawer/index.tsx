@@ -3,20 +3,16 @@ import * as S from './styles';
 import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
 import { TDrawerPalette } from './palette';
+import { Sheet } from 'react-modal-sheet';
 
-type TDialogCommonProps = {
+export type TProps = {
     children: ReactNode;
     onClose: () => void;
     title?: string;
     isErrorBorder?: boolean;
     isOpen: boolean;
     isPadding?: boolean;
-    overflow?: string;
     borderColor?: string;
-};
-
-export type TProps = TDialogCommonProps & {
-    initialFocusRef?: React.RefObject<HTMLElement> | false;
 };
 
 export const Drawer: FC<TProps> = ({
@@ -26,8 +22,6 @@ export const Drawer: FC<TProps> = ({
     isErrorBorder,
     onClose,
     isPadding = true,
-    initialFocusRef,
-    overflow,
     borderColor,
 }) => {
     const palette = useComponentPalette<TDrawerPalette>('drawer');
@@ -47,42 +41,29 @@ export const Drawer: FC<TProps> = ({
     if (!shouldRender) return null;
 
     return (
-        <S.BottomSheet
-            sibling={
-                <div
-                    data-rsbs-backdrop="true"
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        onClose();
-                    }}
-                />
-            }
-            open={isOpen}
-            onDismiss={onClose}
-            expandOnContentDrag={false}
-            initialFocusRef={initialFocusRef}
-            scrollLocking={false}
-            header={
-                !title ? undefined : (
-                    <S.Title $bg={palette.titleBg}>
-                        <Typography variant="headline4">{title}</Typography>
-                    </S.Title>
-                )
-            }
-            $isHaveHeader={!!title}
-            $palette={palette}
-            $overflow={overflow}
-        >
-            <S.Body
-                $overflow={overflow}
-                $isPadding={isPadding}
+        <Sheet detent="content" isOpen={isOpen} onClose={onClose}>
+            <S.StyledSheetContainer
                 $isErrorBorder={isErrorBorder}
                 $errorColor={palette.error}
                 $borderColor={borderColor}
             >
-                {children}
-            </S.Body>
-        </S.BottomSheet>
+                <Sheet.Content>
+                    <S.DragIndicatorWrapper>
+                        <Sheet.DragIndicator />
+                    </S.DragIndicatorWrapper>
+
+                    {title && (
+                        <S.Title $bg={palette.titleBg}>
+                            <Typography variant="headline4">{title}</Typography>
+                        </S.Title>
+                    )}
+
+                    <S.ChildrenWrapper $bgColor={palette.bg} $isPadding={isPadding}>
+                        {children}
+                    </S.ChildrenWrapper>
+                </Sheet.Content>
+            </S.StyledSheetContainer>
+            <S.StyledSheetBackdrop onTap={onClose} $bgColor={palette.backdropBg} />
+        </Sheet>
     );
 };

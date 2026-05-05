@@ -1,86 +1,41 @@
 import styled, { css } from 'styled-components';
-import { BottomSheet as LibBottomSheet } from '@nipe-solutions/react-spring-bottom-sheet';
-import '@nipe-solutions/react-spring-bottom-sheet/dist/style.css';
-import { TDrawerPalette } from './palette';
-
-export const BottomSheet = styled(LibBottomSheet)<{
-    $isHaveHeader: boolean;
-    $palette: TDrawerPalette;
-    $overflow?: string;
-}>`
-    --rsbs-backdrop-bg: ${({ $palette }) => $palette.backdropBg};
-    --rsbs-bg: ${({ $palette }) => $palette.bg};
-    --rsbs-overlay-rounded: 10px;
-
-    & [data-rsbs-overlay],
-    [data-rsbs-backdrop] {
-        z-index: 9999;
-    }
-
-    &::after {
-        z-index: 9999;
-    }
-
-    [data-rsbs-backdrop]:not(:first-child) {
-        display: none;
-    }
-
-    [data-rsbs-header] {
-        ${({ $isHaveHeader }) =>
-            !$isHaveHeader &&
-            `
-            position: absolute;
-            height: 20px;
-            width: 100%;
-        `}
-        padding: 0;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-
-    [data-rsbs-overlay] {
-        ${({ $isHaveHeader }) =>
-            !$isHaveHeader &&
-            `
-            margin-bottom: -20px;
-        `}
-    }
-
-    ${({ $overflow }) =>
-        $overflow &&
-        css`
-            [data-rsbs-content] {
-                overflow: visible;
-            }
-
-            [data-rsbs-scroll] {
-                overflow: visible;
-            }
-        `}
-`;
+import { Sheet } from 'react-modal-sheet';
 
 export const Title = styled.div<{ $bg: string }>`
-    padding: 30px;
     background-color: ${({ $bg }) => $bg};
-    border-radius: inherit;
+    padding: 30px;
+    position: relative;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
 `;
 
-export const Body = styled.div<{
+export const DragIndicatorWrapper = styled.div`
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+`;
+
+export const ChildrenWrapper = styled.div<{ $isPadding: boolean; $bgColor: string }>`
+    ${({ $isPadding }) => $isPadding && 'padding: 32px 16px 36px'};
+    background-color: ${({ $bgColor }) => $bgColor};
+`;
+
+export const StyledSheetContainer = styled(Sheet.Container)<{
     $isErrorBorder?: boolean;
-    $isPadding: boolean;
     $errorColor: string;
-    $overflow?: string;
     $borderColor?: string;
 }>`
-    position: relative;
-    overflow: ${({ $overflow }) => $overflow || 'auto'};
-    flex: 1;
+    overflow: hidden;
+    box-shadow: none;
     border-radius: 10px 10px 0 0;
     ${({ $isErrorBorder, $errorColor, $borderColor }) =>
         ($isErrorBorder || $borderColor) &&
         css`
             border-top: 2px solid ${$borderColor || $errorColor};
         `}
+`;
 
-    ${({ $isPadding }) => $isPadding && 'padding: 32px 16px 36px'};
+export const StyledSheetBackdrop = styled(Sheet.Backdrop)<{ $bgColor: string }>`
+    background-color: ${({ $bgColor }) => $bgColor} !important;
 `;

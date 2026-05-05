@@ -46,7 +46,7 @@ export const EntityAutocompleteOptionsDrawer = <TEntity,>({
     );
 
     return (
-        <Drawer isOpen={isOpen} onClose={onClose} isPadding={false} initialFocusRef={false}>
+        <Drawer isOpen={isOpen} onClose={onClose} isPadding={false}>
             <S.BodyWrapper>
                 <S.InputWrapper>{searchInputField}</S.InputWrapper>
                 <S.ContentWrapper>

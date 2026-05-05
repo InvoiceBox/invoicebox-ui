@@ -53,15 +53,16 @@
     },
     "dependencies": {
         "@mona-health/react-input-mask": "^3.0.3",
-        "@nipe-solutions/react-spring-bottom-sheet": "^4.0.4",
         "hex-to-rgba": "^2.0.1",
         "lottie-react": "^2.4.0",
+        "motion": "^12.38.0",
         "object.entries": "^1.1.8",
         "object.fromentries": "^2.0.8",
         "qrcode.react": "^3.1.0",
         "react-calendar": "^4.8.0",
         "react-currency-input-field": "^3.10.0",
         "react-custom-scrollbars-2": "^4.5.0",
+        "react-modal-sheet": "^5.6.0",
         "react-responsive": "^9.0.2",
         "react-toastify": "^9.1.3"
     },
