@@ -46,6 +46,7 @@ const commonArgs = {
     onClose: action('close'),
     isPadding: false,
     borderColor: undefined,
+    overflow: 'hidden',
 };
 
 export const Default: StoryObj<TProps> = {

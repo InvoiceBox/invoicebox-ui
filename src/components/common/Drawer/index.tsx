@@ -4,6 +4,7 @@ import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
 import { TDrawerPalette } from './palette';
 import { Sheet } from 'react-modal-sheet';
+import { Select } from '../../form/Select';
 
 export type TProps = {
     children: ReactNode;
@@ -13,6 +14,7 @@ export type TProps = {
     isOpen: boolean;
     isPadding?: boolean;
     borderColor?: string;
+    overflow?: string;
 };
 
 export const Drawer: FC<TProps> = ({
@@ -23,6 +25,7 @@ export const Drawer: FC<TProps> = ({
     onClose,
     isPadding = true,
     borderColor,
+    overflow,
 }) => {
     const palette = useComponentPalette<TDrawerPalette>('drawer');
 
@@ -46,6 +49,7 @@ export const Drawer: FC<TProps> = ({
                 $isErrorBorder={isErrorBorder}
                 $errorColor={palette.error}
                 $borderColor={borderColor}
+                $overflow={overflow}
             >
                 <Sheet.Content>
                     <S.DragIndicatorWrapper>
@@ -58,7 +62,7 @@ export const Drawer: FC<TProps> = ({
                         </S.Title>
                     )}
 
-                    <S.ChildrenWrapper $bgColor={palette.bg} $isPadding={isPadding}>
+                    <S.ChildrenWrapper $isBorderRadius={!title} $bgColor={palette.bg} $isPadding={isPadding}>
                         {children}
                     </S.ChildrenWrapper>
                 </Sheet.Content>

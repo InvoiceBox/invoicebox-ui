@@ -16,23 +16,43 @@ export const DragIndicatorWrapper = styled.div`
     transform: translateX(-50%);
 `;
 
-export const ChildrenWrapper = styled.div<{ $isPadding: boolean; $bgColor: string }>`
+export const ChildrenWrapper = styled.div<{
+    $isPadding: boolean;
+    $bgColor: string;
+    $isBorderRadius?: boolean;
+}>`
     ${({ $isPadding }) => $isPadding && 'padding: 32px 16px 36px'};
     background-color: ${({ $bgColor }) => $bgColor};
+
+    ${({ $isBorderRadius }) =>
+        $isBorderRadius &&
+        css`
+            border-radius: 10px 10px 0 0;
+        `}
 `;
 
 export const StyledSheetContainer = styled(Sheet.Container)<{
     $isErrorBorder?: boolean;
     $errorColor: string;
     $borderColor?: string;
+    $overflow?: string;
 }>`
-    overflow: hidden;
     box-shadow: none;
     border-radius: 10px 10px 0 0;
     ${({ $isErrorBorder, $errorColor, $borderColor }) =>
         ($isErrorBorder || $borderColor) &&
         css`
             border-top: 2px solid ${$borderColor || $errorColor};
+        `}
+
+    ${({ $overflow }) =>
+        $overflow === 'visible' &&
+        css`
+            overflow: visible;
+
+            .react-modal-sheet-content-scroller {
+                overflow-y: visible !important;
+            }
         `}
 `;
 
