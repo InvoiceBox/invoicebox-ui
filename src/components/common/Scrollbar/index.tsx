@@ -1,5 +1,5 @@
-import React, { FC, ReactNode, useMemo } from 'react';
-import { Scrollbar as LibScrollbar } from 'react-scrollbars-custom';
+import React, { FC, ReactNode } from 'react';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useComponentPalette } from '../../../palette';
 import { TScrollbarPalette } from './palette';
 
@@ -7,60 +7,50 @@ export type TProps = {
     children: ReactNode;
     maxHeight?: number;
     trackWidth?: number;
+    autoHeight?: boolean;
 };
 
-export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', trackWidth = 4 }) => {
+export const Scrollbar: FC<TProps> = ({
+    children,
+    maxHeight = '100%',
+    trackWidth = 4,
+    autoHeight = true,
+}) => {
     const palette = useComponentPalette<TScrollbarPalette>('scrollbar');
 
-    const props = useMemo(
-        () => ({
-            style: { maxHeight, minWidth: '100%', maxWidth: '100%' },
-            wrapperProps: {
-                style: {
-                    right: '0px',
-                    bottom: '0px',
-                },
-            },
-            contentProps: {
-                style: {
-                    display: 'block',
-                },
-            },
-            thumbYProps: {
-                style: {
-                    backgroundColor: palette.thumb,
-                },
-            },
-            trackYProps: {
-                style: {
-                    backgroundColor: 'transparent',
-                    width: `${trackWidth}px`,
-                    height: 'calc(100% - 4px)',
-                    top: '2px',
-                    right: '2px',
-                },
-            },
-            thumbXProps: {
-                style: {
-                    backgroundColor: palette.thumb,
-                },
-            },
-            trackXProps: {
-                style: {
-                    backgroundColor: 'transparent',
-                    height: '6px',
-                    width: 'calc(100% - 12px)',
-                    left: '2px',
-                    bottom: '2px',
-                },
-            },
-        }),
-        [maxHeight, palette.thumb, trackWidth],
+    const renderThumbVertical = (thumbProps: any) => (
+        <div
+            {...thumbProps}
+            style={{
+                ...thumbProps.style,
+                backgroundColor: palette.thumb,
+                width: trackWidth,
+                borderRadius: '4px',
+            }}
+        />
+    );
+
+    const renderThumbHorizontal = (thumbProps: any) => (
+        <div
+            {...thumbProps}
+            style={{
+                ...thumbProps.style,
+                backgroundColor: palette.thumb,
+                height: trackWidth,
+                borderRadius: '4px',
+            }}
+        />
     );
 
     return (
-        <LibScrollbar translateContentSizesToHolder {...props}>
+        <Scrollbars
+            autoHeight={autoHeight}
+            autoHeightMin={0}
+            autoHeightMax={maxHeight}
+            renderThumbHorizontal={renderThumbHorizontal}
+            renderThumbVertical={renderThumbVertical}
+        >
             {children}
-        </LibScrollbar>
+        </Scrollbars>
     );
 };

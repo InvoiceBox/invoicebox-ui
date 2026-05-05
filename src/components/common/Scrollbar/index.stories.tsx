@@ -61,7 +61,9 @@ export const Blocks: StoryObj<typeof Scrollbar> = {
 export const ByContainer: StoryObj<typeof Scrollbar> = {
     render: (args) => (
         <div style={{ height: 200 }}>
-            <Scrollbar {...args}>{longDummyText}</Scrollbar>
+            <Scrollbar autoHeight={false} {...args}>
+                {longDummyText}
+            </Scrollbar>
         </div>
     ),
 };

@@ -60,8 +60,8 @@
         "qrcode.react": "^3.1.0",
         "react-calendar": "^4.8.0",
         "react-currency-input-field": "^3.10.0",
+        "react-custom-scrollbars-2": "^4.5.0",
         "react-responsive": "^9.0.2",
-        "react-scrollbars-custom": "^4.1.1",
         "react-spring-bottom-sheet": "^3.4.1",
         "react-toastify": "^9.1.3"
     },
