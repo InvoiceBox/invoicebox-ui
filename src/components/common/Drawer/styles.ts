@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { BottomSheet as LibBottomSheet } from 'react-spring-bottom-sheet';
-import 'react-spring-bottom-sheet/dist/style.css';
+import { BottomSheet as LibBottomSheet } from '@nipe-solutions/react-spring-bottom-sheet';
+import '@nipe-solutions/react-spring-bottom-sheet/dist/style.css';
 import { TDrawerPalette } from './palette';
 
 export const BottomSheet = styled(LibBottomSheet)<{
