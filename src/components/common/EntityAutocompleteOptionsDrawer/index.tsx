@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, MouseEvent } from 'react';
 import * as S from './styles';
-import { Drawer } from '../Drawer';
+import { Drawer, TProps as TDrawerProps } from '../Drawer';
 import { Scrollbar } from '../Scrollbar';
 import { Skeleton } from '../Skeleton';
 import { useComponentPalette } from '../../../palette';
@@ -10,9 +10,7 @@ const loadingList = new Array(4).fill(Skeleton);
 
 type TOption<TEntity> = { value: string; entity: TEntity; isDisabled?: boolean };
 
-export type TProps<TEntity> = {
-    isOpen: boolean;
-    onClose: () => void;
+export type TProps<TEntity> = Pick<TDrawerProps, 'onOpenEnd' | 'isOpen' | 'onClose'> & {
     options: Array<TOption<TEntity>>;
     renderOption: (option: TOption<TEntity>) => ReactNode;
     onChange: (value: string, option?: TOption<TEntity>) => void;
@@ -30,6 +28,7 @@ export const EntityAutocompleteOptionsDrawer = <TEntity,>({
     isLoadingOptions,
     promptMessage,
     searchInputField,
+    onOpenEnd,
 }: TProps<TEntity>) => {
     const palette = useComponentPalette<TEntityAutocompleteOptionsDrawerPalette>(
         'entityAutocompleteOptionsDrawer',
@@ -46,7 +45,7 @@ export const EntityAutocompleteOptionsDrawer = <TEntity,>({
     );
 
     return (
-        <Drawer isOpen={isOpen} onClose={onClose} isPadding={false}>
+        <Drawer isOpen={isOpen} onClose={onClose} isPadding={false} onOpenEnd={onOpenEnd}>
             <S.BodyWrapper>
                 <S.InputWrapper>{searchInputField}</S.InputWrapper>
                 <S.ContentWrapper>
