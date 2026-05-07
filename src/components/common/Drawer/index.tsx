@@ -4,9 +4,9 @@ import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
 import { TDrawerPalette } from './palette';
 import { Sheet } from 'react-modal-sheet';
-import { Select } from '../../form/Select';
+import { SheetProps } from 'react-modal-sheet/src/types';
 
-export type TProps = {
+export type TProps = Pick<SheetProps, 'onOpenEnd'> & {
     children: ReactNode;
     onClose: () => void;
     title?: string;
@@ -26,6 +26,7 @@ export const Drawer: FC<TProps> = ({
     isPadding = true,
     borderColor,
     overflow,
+    onOpenEnd,
 }) => {
     const palette = useComponentPalette<TDrawerPalette>('drawer');
 
@@ -44,7 +45,7 @@ export const Drawer: FC<TProps> = ({
     if (!shouldRender) return null;
 
     return (
-        <Sheet detent="content" isOpen={isOpen} onClose={onClose}>
+        <Sheet detent="content" isOpen={isOpen} onClose={onClose} onOpenEnd={onOpenEnd}>
             <S.StyledSheetContainer
                 $isErrorBorder={isErrorBorder}
                 $errorColor={palette.error}
