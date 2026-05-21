@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import { TSearchInputPalette } from './palette';
 
-export const IconWrapper = styled.span<{ $inFocus: boolean; $palette: TSearchInputPalette }>`
+export const IconWrapper = styled.span<{
+    $inFocus: boolean;
+    $palette: TSearchInputPalette;
+    $wideBottomSpacing: boolean;
+}>`
     position: absolute;
     right: 20px;
-    bottom: 50%;
+    bottom: ${({ $wideBottomSpacing }) => ($wideBottomSpacing ? `calc(50% - 5px)` : '50%')};
     transform: translateY(50%);
     display: flex;
     align-content: center;

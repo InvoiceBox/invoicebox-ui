@@ -29,17 +29,17 @@ export const MODERN_STYLE_SIZE_PARAMS_MAP: Record<
         labelPaddingTop: 14,
     },
     M: {
-        paddingTop: 16,
+        paddingTop: 20,
         paddingBottom: 6,
         variant: 'bodyMRegular',
         labelVariant: 'captionRegular',
         labelPaddingTop: 12,
     },
     XS: {
-        paddingTop: 12,
+        paddingTop: 16,
         paddingBottom: 4,
         variant: 'labelsHintsRegular',
         labelVariant: 'captionSRegular',
-        labelPaddingTop: 10,
+        labelPaddingTop: 12,
     },
 };

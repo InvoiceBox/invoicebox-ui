@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, forwardRef } from 'react';
+import React, { ChangeEvent, useCallback, forwardRef, useMemo } from 'react';
 import * as S from './styles';
 import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as PureInputProps } from '../PureInput';
@@ -16,6 +16,7 @@ export type TProps = Pick<
     value: string;
     onChange: (value: string) => void;
     size?: TSizes;
+    useModernStyles?: boolean;
 };
 
 export const SearchInput = forwardRef<HTMLInputElement, TProps>(
@@ -32,6 +33,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             isOnlyNumbers,
             maxLength,
             size = 'M',
+            useModernStyles = false,
         },
         ref,
     ) => {
@@ -49,14 +51,38 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             [onChange],
         );
 
+        const inputPlaceholder = useMemo(() => {
+            if (useModernStyles) {
+                if (!inFocus) {
+                    return placeholder;
+                } else {
+                    return undefined;
+                }
+            } else {
+                return placeholder;
+            }
+        }, [placeholder, useModernStyles, inFocus]);
+
+        const inputLabel = useMemo(() => {
+            if (useModernStyles) {
+                if (value || inFocus) {
+                    return placeholder;
+                } else {
+                    return undefined;
+                }
+            } else {
+                return placeholder;
+            }
+        }, [inFocus, placeholder, value, useModernStyles]);
+
         return (
-            <InputLabel>
+            <InputLabel useModernStyles={useModernStyles} size={size} label={inputLabel}>
                 <PureInput
                     ref={ref}
                     paddingRight={56}
                     hasBorder={hasBorder}
                     onChange={handleInputChange}
-                    placeholder={placeholder}
+                    placeholder={inputPlaceholder}
                     value={value}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
@@ -66,8 +92,13 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     maxLength={maxLength}
                     isOnlyNumbers={isOnlyNumbers}
                     {...SIZE_PARAMS_MAP[size]}
+                    useModernStyles={useModernStyles}
                 />
-                <S.IconWrapper $inFocus={inFocus} $palette={palette}>
+                <S.IconWrapper
+                    $inFocus={inFocus}
+                    $palette={palette}
+                    $wideBottomSpacing={useModernStyles || !!inputLabel}
+                >
                     {value ? <ResetButton onClick={handleInputReset} /> : <SearchIcon />}
                 </S.IconWrapper>
             </InputLabel>

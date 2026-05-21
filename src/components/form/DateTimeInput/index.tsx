@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { useComponentPalette } from '../../../palette';
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useInputFocus } from '../../../hooks/useInputFocus';
@@ -6,7 +6,7 @@ import { logic } from '../DateInput/logic';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
-import { SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
 import { CalendarIcon } from '../DateInput/components/CalendarIcon';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
@@ -28,6 +28,7 @@ export type TProps = {
     saveLabel?: string;
     cancelLabel?: string;
     required?: boolean;
+    useModernStyles?: boolean;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
@@ -48,6 +49,7 @@ export const DateTimeInput: FC<TProps> = ({
     saveLabel,
     cancelLabel,
     required = false,
+    useModernStyles = false,
 }) => {
     const palette = useComponentPalette<TDateTimeInputPalette>('dateTimeInput');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -158,9 +160,47 @@ export const DateTimeInput: FC<TProps> = ({
             ? [minDate.getHours(), minDate.getMinutes()]
             : undefined;
 
+    const inputLabel = useMemo(() => {
+        if (useModernStyles) {
+            if (stringValue || isOpen) {
+                return label;
+            } else {
+                return undefined;
+            }
+        } else {
+            return label;
+        }
+    }, [isOpen, label, stringValue, useModernStyles]);
+
+    const paddingOptions = useMemo(() => {
+        if ((stringValue || isOpen) && useModernStyles && inputLabel) {
+            return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+        } else {
+            return SIZE_PARAMS_MAP[size];
+        }
+    }, [stringValue, isOpen, useModernStyles, size, inputLabel]);
+
+    const inputPlaceholder = useMemo(() => {
+        if (useModernStyles) {
+            if (!isOpen) {
+                return placeholder || logic.getPlaceholder(withTime);
+            } else {
+                return undefined;
+            }
+        } else {
+            return placeholder || logic.getPlaceholder(withTime);
+        }
+    }, [isOpen, placeholder, useModernStyles, withTime]);
+
     return (
         <S.Wrapper ref={isMobile ? undefined : elRef}>
-            <InputLabel inFocus={inFocus} label={label} required={required}>
+            <InputLabel
+                inFocus={inFocus}
+                label={inputLabel}
+                required={required}
+                useModernStyles={useModernStyles}
+                size={size}
+            >
                 <S.InputWrapper>
                     <PureInput
                         onClick={handleTrigger}
@@ -168,13 +208,14 @@ export const DateTimeInput: FC<TProps> = ({
                         hasError={hasError}
                         inFocus={inFocus}
                         name={name}
-                        placeholder={placeholder || logic.getPlaceholder(withTime)}
+                        placeholder={inputPlaceholder}
                         onFocus={focusHandler}
                         onBlur={handleBlur}
                         value={stringValue}
                         onChange={handleStringValueChange}
                         paddingRight={44}
-                        {...SIZE_PARAMS_MAP[size]}
+                        useModernStyles={useModernStyles}
+                        {...paddingOptions}
                     />
                     <S.Icon onClick={handleTrigger} $color={palette.icon}>
                         <CalendarIcon />

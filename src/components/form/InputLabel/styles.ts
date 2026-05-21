@@ -8,12 +8,14 @@ export const Label = styled(Typography)<{
     $required?: boolean;
     $useModernStyles?: boolean;
     $paddingTop?: number;
+    $left?: number;
 }>`
     border-radius: 10px;
     position: absolute;
     top: ${({ $paddingTop }) => ($paddingTop ? `${$paddingTop}px` : 0)};
-    left: 10px;
-    background-color: ${({ $palette, $useModernStyles }) => ($useModernStyles ? 'transparent' : $palette.bg)};
+    left: ${({ $left }) => ($left ? `${$left}px` : '10px')};
+    background-color: ${({ $palette, $useModernStyles }) =>
+        $useModernStyles ? $palette.bgModern : $palette.bg};
     padding: 0 10px;
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;
@@ -32,9 +34,10 @@ export const Wrapper = styled.div<{
     $disabled: boolean;
     $isLabel: boolean;
     $palette: TInputLabelPalette;
+    $useModernStyles?: boolean;
 }>`
     position: relative;
-    padding-top: ${({ $isLabel }) => ($isLabel ? 10 : 0)}px;
+    padding-top: ${({ $isLabel, $useModernStyles }) => ($isLabel || $useModernStyles ? 10 : 0)}px;
     width: 100%;
     opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
 
