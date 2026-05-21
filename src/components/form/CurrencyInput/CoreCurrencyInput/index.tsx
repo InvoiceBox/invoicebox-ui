@@ -9,7 +9,7 @@ import { CurrencyInputProps } from 'react-currency-input-field';
 
 export type TProps = Pick<
     CurrencyInputProps,
-    'allowNegativeValue' | 'onValueChange' | 'value' | 'defaultValue' | 'allowDecimals'
+    'allowNegativeValue' | 'onValueChange' | 'value' | 'defaultValue' | 'allowDecimals' | 'onBlur'
 > &
     Pick<TInputLabelProps, 'label' | 'disabled'> & {
         hasError?: boolean;
@@ -30,9 +30,10 @@ export const CoreCurrencyInput: FC<TProps> = ({
     allowDecimals = true,
     disabled,
     required = false,
+    onBlur,
     useModernStyles = false,
 }) => {
-    const { inFocus, handleFocus, handleBlur } = useInputFocus();
+    const { inFocus, handleFocus, handleBlur } = useInputFocus({ onBlur });
     const palette = useComponentPalette<TPureInputPalette>('pureInput');
 
     const inputLabel = useMemo(() => {
