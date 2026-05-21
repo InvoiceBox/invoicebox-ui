@@ -1,9 +1,9 @@
-import React, { ChangeEvent, ReactNode, useCallback } from 'react';
+import React, { ChangeEvent, ReactNode, useCallback, useMemo } from 'react';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
-import { SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
 
 export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
     Pick<
@@ -20,6 +20,7 @@ export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
         | 'autoFocus'
         | 'rows'
         | 'id'
+        | 'useModernStyles'
     > & {
         value: string;
         onChange: (value: string) => void;
@@ -52,6 +53,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             element = 'input',
             rows,
             required = false,
+            useModernStyles = false,
             id,
         },
         ref,
@@ -65,8 +67,47 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             [onChange, maxLength],
         );
 
+        const inputLabel = useMemo(() => {
+            if (useModernStyles) {
+                if (value || inFocus) {
+                    return label;
+                } else {
+                    return undefined;
+                }
+            } else {
+                return label;
+            }
+        }, [inFocus, label, value, useModernStyles]);
+
+        const paddingOptions = useMemo(() => {
+            if ((value || inFocus) && useModernStyles && inputLabel) {
+                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+            } else {
+                return SIZE_PARAMS_MAP[size];
+            }
+        }, [value, inFocus, useModernStyles, size, inputLabel]);
+
+        const inputPlaceholder = useMemo(() => {
+            if (useModernStyles) {
+                if (!inFocus) {
+                    return placeholder;
+                } else {
+                    return undefined;
+                }
+            } else {
+                return placeholder;
+            }
+        }, [inFocus, placeholder, useModernStyles]);
+
         return (
-            <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
+            <InputLabel
+                inFocus={inFocus}
+                label={inputLabel}
+                disabled={disabled}
+                required={required}
+                size={size}
+                useModernStyles={useModernStyles}
+            >
                 <S.InputLabelContent>
                     <PureInput
                         id={id}
@@ -79,14 +120,15 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                         onBlur={handleBlur}
                         value={value}
                         onChange={handleChange}
-                        placeholder={placeholder}
+                        placeholder={inputPlaceholder}
                         paddingRight={paddingRight}
                         type={type}
                         isOnlyNumbers={isOnlyNumbers}
                         autoFocus={autoFocus}
                         element={element}
                         rows={rows}
-                        {...SIZE_PARAMS_MAP[size]}
+                        useModernStyles={useModernStyles}
+                        {...paddingOptions}
                     />
                     {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
                 </S.InputLabelContent>

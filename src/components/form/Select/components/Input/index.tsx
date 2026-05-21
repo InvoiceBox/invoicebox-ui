@@ -39,12 +39,12 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
         const isShowResetIcon = !!value && !!onReset;
 
         const paddingOptions = useMemo(() => {
-            if (value && useModernStyles) {
+            if ((value || isOpen) && useModernStyles && label) {
                 return MODERN_STYLE_SIZE_PARAMS_MAP[size];
             } else {
                 return SIZE_PARAMS_MAP[size];
             }
-        }, [size, value, useModernStyles]);
+        }, [value, isOpen, useModernStyles, size, label]);
 
         return (
             <InputLabel

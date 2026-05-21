@@ -12,6 +12,7 @@ export type TProps = {
     children: ReactNode;
     useModernStyles?: boolean;
     size?: TSizes;
+    left?: number;
 };
 
 export const InputLabel: FC<TProps> = ({
@@ -22,11 +23,17 @@ export const InputLabel: FC<TProps> = ({
     required = false,
     useModernStyles = false,
     size,
+    left,
 }) => {
     const palette = useComponentPalette<TInputLabelPalette>('inputLabel');
 
     return (
-        <S.Wrapper $palette={palette} $disabled={disabled} $isLabel={!!label}>
+        <S.Wrapper
+            $palette={palette}
+            $disabled={disabled}
+            $isLabel={!!label}
+            $useModernStyles={useModernStyles}
+        >
             {label && (
                 <S.Label
                     $palette={palette}
@@ -41,6 +48,7 @@ export const InputLabel: FC<TProps> = ({
                     $paddingTop={
                         size && useModernStyles ? MODERN_STYLE_SIZE_PARAMS_MAP[size].labelPaddingTop : 0
                     }
+                    $left={left}
                 >
                     {label}
                 </S.Label>

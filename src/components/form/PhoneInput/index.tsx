@@ -18,7 +18,7 @@ import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { CountrySelect, TProps as TCountrySelectProps } from '../CountrySelect';
 import { useMobile } from '../../../hooks/useMedia';
-import { SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
 
 type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
@@ -26,7 +26,7 @@ type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     hasError?: boolean;
 };
 
-type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus'> & {
+type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus' | 'useModernStyles'> & {
     label: string;
     countrySelectProps?: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
     onCountryChange?: (countryCode: string) => void;
@@ -59,6 +59,7 @@ export const PhoneInput: FC<TProps> = ({
     isSupportCityRusPhoneNumber = false,
     isInnerErrorHighlight = true,
     required = false,
+    useModernStyles = false,
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
@@ -235,8 +236,48 @@ export const PhoneInput: FC<TProps> = ({
         return false;
     }, [hasError, isFirstBlur, isHaveInputError, isInnerErrorHighlight]);
 
+    const inputLabel = useMemo(() => {
+        if (useModernStyles) {
+            if (inputValue || inFocus) {
+                return label;
+            } else {
+                return undefined;
+            }
+        } else {
+            return label;
+        }
+    }, [useModernStyles, inputValue, inFocus, label]);
+
+    const paddingOptions = useMemo(() => {
+        if ((inputValue || inFocus) && useModernStyles && inputLabel) {
+            return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+        } else {
+            return SIZE_PARAMS_MAP[size];
+        }
+    }, [inputValue, useModernStyles, size, inFocus, inputLabel]);
+
+    const inputPlaceholder = useMemo(() => {
+        if (useModernStyles) {
+            if (!inFocus) {
+                return label || currentCountriesPhoneRules[country].placeholder;
+            } else {
+                return undefined;
+            }
+        } else {
+            return currentCountriesPhoneRules[country].placeholder;
+        }
+    }, [country, currentCountriesPhoneRules, inFocus, label, useModernStyles]);
+
     return (
-        <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
+        <InputLabel
+            inFocus={inFocus}
+            label={inputLabel}
+            disabled={disabled}
+            required={required}
+            useModernStyles={useModernStyles}
+            size={size}
+            left={65}
+        >
             <S.InputLabelContent>
                 {!!countrySelectOptions?.length && (
                     <S.InputLabelFloatWrapper>
@@ -265,7 +306,7 @@ export const PhoneInput: FC<TProps> = ({
                     maskPlaceholder={null}
                     disabled={disabled}
                     onPaste={handlePaste}
-                    placeholder={currentCountriesPhoneRules[country].placeholder}
+                    placeholder={inputPlaceholder}
                     ref={inputRef}
                 >
                     <PureInput
@@ -278,7 +319,8 @@ export const PhoneInput: FC<TProps> = ({
                         autoComplete={'new-password'}
                         inputMode="numeric"
                         autoFocus={autoFocus}
-                        {...SIZE_PARAMS_MAP[size]}
+                        {...paddingOptions}
+                        useModernStyles={useModernStyles}
                         {...pureInputProps}
                     />
                 </InputMask>

@@ -6,6 +6,7 @@ import React, {
     MouseEvent,
     ReactNode,
     useCallback,
+    useMemo,
     useState,
 } from 'react';
 import * as S from './styles';
@@ -18,10 +19,9 @@ import { InputLabel } from '../../../InputLabel';
 import { PureInput } from '../../../PureInput';
 import { Dropdown } from '../../../../common/Dropdown';
 import { Scrollbar } from '../../../../common/Scrollbar';
-import { SIZE_PARAMS_MAP, TSizes } from '../../../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 import { useComponentPalette } from '../../../../../palette';
 import { TAutocompleteDefaultOptionPalette } from '../AutocompleteDefaultOption/palette';
-import { OptionWrapperWithPadding } from './styles';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -63,6 +63,7 @@ type TControlProps = {
     required?: boolean;
     usePadding?: boolean;
     dropdownWidth?: string;
+    useModernStyles?: boolean;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -94,6 +95,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             readOnly,
             usePadding = false,
             dropdownWidth,
+            useModernStyles = false,
         },
         ref,
     ) => {
@@ -133,9 +135,48 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             [handleOpen, handleFocus],
         );
 
+        const inputLabel = useMemo(() => {
+            if (useModernStyles) {
+                if (value || isOpen) {
+                    return label;
+                } else {
+                    return undefined;
+                }
+            } else {
+                return label;
+            }
+        }, [isOpen, label, value, useModernStyles]);
+
+        const paddingOptions = useMemo(() => {
+            if ((value || isOpen) && useModernStyles && inputLabel) {
+                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+            } else {
+                return SIZE_PARAMS_MAP[size];
+            }
+        }, [value, isOpen, useModernStyles, size, inputLabel]);
+
+        const inputPlaceholder = useMemo(() => {
+            if (useModernStyles) {
+                if (!isOpen) {
+                    return placeholder;
+                } else {
+                    return undefined;
+                }
+            } else {
+                return placeholder;
+            }
+        }, [isOpen, placeholder, useModernStyles]);
+
         return (
             <S.Wrapper ref={wrapperRef}>
-                <InputLabel inFocus={inFocus} label={label} disabled={disabled} required={required}>
+                <InputLabel
+                    inFocus={inFocus}
+                    label={inputLabel}
+                    disabled={disabled}
+                    required={required}
+                    useModernStyles={useModernStyles}
+                    size={size}
+                >
                     <S.InputLabelContent>
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
                         <PureInput
@@ -147,14 +188,15 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             onFocus={handleInputFocus}
                             onBlur={handleBlur}
                             name={name}
-                            placeholder={placeholder}
+                            placeholder={inputPlaceholder}
                             disabled={disabled}
                             paddingLeft={inputPaddingLeft}
                             maxLength={inputMaxLength}
                             isOnlyNumbers={isInputOnlyNumbers}
                             autoFocus={autoFocus}
                             readOnly={readOnly}
-                            {...SIZE_PARAMS_MAP[size]}
+                            useModernStyles={useModernStyles}
+                            {...paddingOptions}
                         />
                     </S.InputLabelContent>
                 </InputLabel>

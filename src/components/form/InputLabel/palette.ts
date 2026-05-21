@@ -5,6 +5,7 @@ export type TInputLabelPalette = {
     text: string;
     textHighlight: string;
     error: string;
+    bgModern: string;
 };
 
 export const generateInputLabelPalette = (abstractPalette: TAbstractPalette): TInputLabelPalette => {
@@ -13,5 +14,6 @@ export const generateInputLabelPalette = (abstractPalette: TAbstractPalette): TI
         text: abstractPalette.neutralBrutal,
         textHighlight: abstractPalette.primary,
         error: abstractPalette.error,
+        bgModern: abstractPalette.neutralLight,
     };
 };

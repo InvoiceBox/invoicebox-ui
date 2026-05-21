@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CountrySelectWrapper = styled.div`
-    padding-left: 20px;
+    padding-left: 16px;
     width: 100%;
 `;
 
