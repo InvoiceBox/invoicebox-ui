@@ -64,14 +64,10 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
         }, [placeholder, useModernStyles, inFocus]);
 
         const inputLabel = useMemo(() => {
-            if (useModernStyles) {
-                if (value || inFocus) {
-                    return placeholder;
-                } else {
-                    return undefined;
-                }
-            } else {
+            if (useModernStyles && (value || inFocus)) {
                 return placeholder;
+            } else {
+                return undefined;
             }
         }, [inFocus, placeholder, value, useModernStyles]);
 
