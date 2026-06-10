@@ -58,7 +58,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
     }, [defaultValue, useModernStyles, size, inFocus, inputLabel, value]);
 
     const isModernPlaceholderVisible = useMemo(
-        () => !inFocus && !defaultValue && !value,
+        () => !inFocus && !defaultValue && defaultValue !== 0 && !value && value !== 0,
         [defaultValue, inFocus, value],
     );
 
