@@ -175,6 +175,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     required={required}
                     useModernStyles={useModernStyles}
                     size={size}
+                    left={useModernStyles ? inputPaddingLeft : undefined}
                 >
                     <S.InputLabelContent>
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
