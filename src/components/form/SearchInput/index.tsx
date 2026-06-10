@@ -7,7 +7,7 @@ import { SearchIcon } from './components/SearchIcon';
 import { useComponentPalette } from '../../../palette';
 import { TSearchInputPalette } from './palette';
 import { ResetButton } from '../ResetButton';
-import { SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
 
 export type TProps = Pick<
     PureInputProps,
@@ -71,6 +71,14 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             }
         }, [inFocus, placeholder, value, useModernStyles]);
 
+        const paddingOptions = useMemo(() => {
+            if ((value || inFocus) && useModernStyles && inputLabel) {
+                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+            } else {
+                return SIZE_PARAMS_MAP[size];
+            }
+        }, [value, inFocus, useModernStyles, size, inputLabel]);
+
         return (
             <InputLabel useModernStyles={useModernStyles} size={size} label={inputLabel}>
                 <PureInput
@@ -87,7 +95,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     name={name}
                     maxLength={maxLength}
                     isOnlyNumbers={isOnlyNumbers}
-                    {...SIZE_PARAMS_MAP[size]}
+                    {...paddingOptions}
                     useModernStyles={useModernStyles}
                 />
                 <S.IconWrapper
