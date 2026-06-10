@@ -30,4 +30,8 @@ npm login
 
 ```bash
 VERSION=x.x.x npm run release
+
+или 
+
+npm run release
 ```
