@@ -5,6 +5,7 @@ import { PureInput, TProps as TPureInputProps } from '../../../PureInput';
 import { Arrow, TProps as TArrowProps } from '../../../../common/Arrow';
 import { ResetButton } from '../../../ResetButton';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../../constants';
+import { ModernPlaceholder } from '../../../ModernPlaceholder';
 
 export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label' | 'required'> &
     Pick<TPureInputProps, 'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value' | 'onClick'> &
@@ -37,6 +38,10 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
         ref,
     ) => {
         const isShowResetIcon = !!value && !!onReset;
+        const isModernPlaceholderVisible = useMemo(
+            () => useModernStyles && !isOpen && !value,
+            [isOpen, useModernStyles, value],
+        );
 
         const paddingOptions = useMemo(() => {
             if ((value || isOpen) && useModernStyles && label) {
@@ -55,12 +60,22 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                 size={size}
             >
                 <S.ControlWrapper>
+                    {useModernStyles && placeholder && (
+                        <ModernPlaceholder
+                            visible={isModernPlaceholderVisible}
+                            paddingTop={SIZE_PARAMS_MAP[size ?? 'M'].paddingTop}
+                            size={size ?? 'M'}
+                            required={required}
+                        >
+                            {placeholder}
+                        </ModernPlaceholder>
+                    )}
                     <PureInput
                         ref={ref}
                         hasError={hasError}
                         inFocus={inFocus}
                         name={name}
-                        placeholder={placeholder}
+                        placeholder={useModernStyles ? undefined : placeholder}
                         onFocus={onFocus}
                         onBlur={onBlur}
                         value={value}

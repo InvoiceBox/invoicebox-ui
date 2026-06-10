@@ -4,6 +4,7 @@ import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { ModernPlaceholder } from '../ModernPlaceholder';
 
 export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
     Pick<
@@ -89,15 +90,15 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
 
         const inputPlaceholder = useMemo(() => {
             if (useModernStyles) {
-                if (!inFocus) {
-                    return placeholder;
-                } else {
-                    return undefined;
-                }
+                return undefined;
             } else {
                 return placeholder;
             }
-        }, [inFocus, placeholder, useModernStyles]);
+        }, [placeholder, useModernStyles]);
+
+        const isModernPlaceholderVisible = useMemo(() => {
+            return !inFocus && !value;
+        }, [inFocus, value]);
 
         return (
             <InputLabel
@@ -109,6 +110,16 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                 useModernStyles={useModernStyles}
             >
                 <S.InputLabelContent>
+                    {useModernStyles && placeholder && (
+                        <ModernPlaceholder
+                            visible={isModernPlaceholderVisible}
+                            paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                            size={size}
+                            required={required}
+                        >
+                            {placeholder}
+                        </ModernPlaceholder>
+                    )}
                     <PureInput
                         id={id}
                         ref={ref}

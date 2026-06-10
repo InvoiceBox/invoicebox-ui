@@ -287,18 +287,6 @@ export const Select = <TValue extends string | number>({
         }
     }, [isOpen, label, selectedOption, useModernStyles]);
 
-    const inputPlaceholder = useMemo(() => {
-        if (useModernStyles) {
-            if (!isOpen) {
-                return placeholder;
-            } else {
-                return undefined;
-            }
-        } else {
-            return placeholder;
-        }
-    }, [isOpen, placeholder, useModernStyles]);
-
     return (
         <S.Wrapper ref={isDrawerOptions ? undefined : wrapperRef}>
             <S.InputWrapper>
@@ -307,7 +295,7 @@ export const Select = <TValue extends string | number>({
                     label={inputLabel}
                     hasError={hasError}
                     inFocus={inFocus}
-                    placeholder={inputPlaceholder}
+                    placeholder={placeholder}
                     onFocus={isDrawerOptions ? undefined : handleFocus}
                     onBlur={isDrawerOptions ? undefined : handleBlur}
                     value={selectedOption?.label || ''}
