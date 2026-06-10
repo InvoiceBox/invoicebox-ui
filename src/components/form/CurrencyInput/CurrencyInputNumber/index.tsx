@@ -7,7 +7,7 @@ export type TProps = Omit<TCoreCurrencyInputProps, 'value' | 'onValueChange'> & 
 
 export const CurrencyInputNumber: FC<TProps> = ({ onChange, ...other }) => {
     const handleValueChange = (newValue?: string, name?: string, values?: { float: number | null }) => {
-        onChange(values?.float || undefined);
+        onChange(typeof values?.float === 'number' ? values?.float : undefined);
     };
 
     return <CoreCurrencyInput onValueChange={handleValueChange} {...other} />;
