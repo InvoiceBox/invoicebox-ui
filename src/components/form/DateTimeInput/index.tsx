@@ -7,6 +7,7 @@ import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { ModernPlaceholder } from '../ModernPlaceholder';
 import { CalendarIcon } from '../DateInput/components/CalendarIcon';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
@@ -182,15 +183,14 @@ export const DateTimeInput: FC<TProps> = ({
 
     const inputPlaceholder = useMemo(() => {
         if (useModernStyles) {
-            if (!isOpen) {
-                return placeholder || logic.getPlaceholder(withTime);
-            } else {
-                return undefined;
-            }
+            return undefined;
         } else {
             return placeholder || logic.getPlaceholder(withTime);
         }
-    }, [isOpen, placeholder, useModernStyles, withTime]);
+    }, [placeholder, useModernStyles, withTime]);
+
+    const modernPlaceholderText = placeholder || logic.getPlaceholder(withTime);
+    const isModernPlaceholderVisible = useMemo(() => !isOpen && !stringValue, [isOpen, stringValue]);
 
     return (
         <S.Wrapper ref={isMobile ? undefined : elRef}>
@@ -202,6 +202,16 @@ export const DateTimeInput: FC<TProps> = ({
                 size={size}
             >
                 <S.InputWrapper>
+                    {useModernStyles && (
+                        <ModernPlaceholder
+                            visible={isModernPlaceholderVisible}
+                            paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                            size={size}
+                            required={required}
+                        >
+                            {modernPlaceholderText}
+                        </ModernPlaceholder>
+                    )}
                     <PureInput
                         onClick={handleTrigger}
                         ref={inputRef}

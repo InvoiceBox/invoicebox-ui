@@ -19,6 +19,7 @@ import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { CountrySelect, TProps as TCountrySelectProps } from '../CountrySelect';
 import { useMobile } from '../../../hooks/useMedia';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { ModernPlaceholder } from '../ModernPlaceholder';
 
 type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
@@ -258,15 +259,14 @@ export const PhoneInput: FC<TProps> = ({
 
     const inputPlaceholder = useMemo(() => {
         if (useModernStyles) {
-            if (!inFocus) {
-                return label || currentCountriesPhoneRules[country].placeholder;
-            } else {
-                return undefined;
-            }
+            return undefined;
         } else {
             return currentCountriesPhoneRules[country].placeholder;
         }
-    }, [country, currentCountriesPhoneRules, inFocus, label, useModernStyles]);
+    }, [country, currentCountriesPhoneRules, useModernStyles]);
+
+    const modernPlaceholderText = label || currentCountriesPhoneRules[country].placeholder;
+    const isModernPlaceholderVisible = useMemo(() => !inFocus && !inputValue, [inFocus, inputValue]);
 
     return (
         <InputLabel
@@ -279,6 +279,17 @@ export const PhoneInput: FC<TProps> = ({
             left={useModernStyles ? 65 : undefined}
         >
             <S.InputLabelContent>
+                {useModernStyles && (
+                    <ModernPlaceholder
+                        visible={isModernPlaceholderVisible}
+                        paddingLeft={isHaveSelectCountries ? 75 : 18}
+                        paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                        size={size}
+                        required={required}
+                    >
+                        {modernPlaceholderText}
+                    </ModernPlaceholder>
+                )}
                 {!!countrySelectOptions?.length && (
                     <S.InputLabelFloatWrapper>
                         <S.CountrySelectWrapper>

@@ -9,6 +9,7 @@ import { useNormalizers } from './hooks/useNormalizers';
 import { useIncrement } from './hooks/useIncrement';
 import { useIncrementDisabledFlags } from './hooks/useIncrementDisabledFlags';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { ModernPlaceholder } from '../ModernPlaceholder';
 
 export type TProps = {
     value: number | null;
@@ -63,15 +64,13 @@ export const PositiveIntegerInput: FC<TProps> = ({
 
     const inputPlaceholder = useMemo(() => {
         if (useModernStyles) {
-            if (!inFocus) {
-                return placeholder;
-            } else {
-                return undefined;
-            }
+            return undefined;
         } else {
             return placeholder;
         }
-    }, [placeholder, useModernStyles, inFocus]);
+    }, [placeholder, useModernStyles]);
+
+    const isModernPlaceholderVisible = useMemo(() => !inFocus && value === null, [inFocus, value]);
 
     const inputLabel = useMemo(() => {
         if (useModernStyles) {
@@ -96,6 +95,15 @@ export const PositiveIntegerInput: FC<TProps> = ({
     return (
         <InputLabel inFocus={inFocus} label={inputLabel} useModernStyles={useModernStyles} size={size}>
             <S.ControlWrapper>
+                {useModernStyles && placeholder && (
+                    <ModernPlaceholder
+                        visible={isModernPlaceholderVisible}
+                        paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                        size={size}
+                    >
+                        {placeholder}
+                    </ModernPlaceholder>
+                )}
                 <PureInput
                     name={name}
                     hasError={hasError}

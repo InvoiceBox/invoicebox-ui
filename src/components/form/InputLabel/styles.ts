@@ -1,6 +1,17 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { Typography } from '../../common/Typography';
 import { TInputLabelPalette } from './palette';
+
+const labelFadeIn = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
 
 export const Label = styled(Typography)<{
     $inFocus: boolean;
@@ -19,6 +30,7 @@ export const Label = styled(Typography)<{
     padding: 0 10px;
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;
+    animation: ${labelFadeIn} 0.15s ease;
     color: ${({ $inFocus, $palette }) => ($inFocus ? $palette.textHighlight : $palette.text)};
 
     ${({ $required, $palette }) =>

@@ -11,6 +11,7 @@ import { CalendarIcon } from './components/CalendarIcon';
 import { useComponentPalette } from '../../../palette';
 import { TDateInputPalette } from './palette';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { ModernPlaceholder } from '../ModernPlaceholder';
 import { TDropdownProps, useMobile } from '../../../index';
 import { MobileDrawerDateCalendar } from './components/MobileDrawerDateCalendar';
 
@@ -23,6 +24,7 @@ export type TProps = {
         'isAutoPosition' | 'positionLeft' | 'positionRight' | 'positionVertical'
     >;
     useModernStyles?: boolean;
+    required?: boolean;
 } & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
@@ -43,6 +45,7 @@ export const DateInput: FC<TProps> = ({
     dropdownProps,
     placeholder,
     useModernStyles = false,
+    required = false,
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -130,20 +133,35 @@ export const DateInput: FC<TProps> = ({
 
     const inputPlaceholder = useMemo(() => {
         if (useModernStyles) {
-            if (!isOpen) {
-                return placeholder || logic.getPlaceholder();
-            } else {
-                return undefined;
-            }
+            return undefined;
         } else {
             return placeholder || logic.getPlaceholder();
         }
-    }, [isOpen, placeholder, useModernStyles]);
+    }, [placeholder, useModernStyles]);
+
+    const modernPlaceholderText = placeholder || logic.getPlaceholder();
+    const isModernPlaceholderVisible = useMemo(() => !isOpen && !stringValue, [isOpen, stringValue]);
 
     return (
         <S.Wrapper ref={isMobile ? undefined : elRef}>
-            <InputLabel inFocus={inFocus} label={inputLabel} useModernStyles={useModernStyles} size={size}>
+            <InputLabel
+                inFocus={inFocus}
+                label={inputLabel}
+                useModernStyles={useModernStyles}
+                size={size}
+                required={required}
+            >
                 <S.InputWrapper>
+                    {useModernStyles && (
+                        <ModernPlaceholder
+                            visible={isModernPlaceholderVisible}
+                            paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                            required={required}
+                            size={size}
+                        >
+                            {modernPlaceholderText}
+                        </ModernPlaceholder>
+                    )}
                     <PureInput
                         onClick={handleTrigger}
                         ref={inputRef}

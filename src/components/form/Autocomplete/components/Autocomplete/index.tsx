@@ -22,6 +22,7 @@ import { Scrollbar } from '../../../../common/Scrollbar';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 import { useComponentPalette } from '../../../../../palette';
 import { TAutocompleteDefaultOptionPalette } from '../AutocompleteDefaultOption/palette';
+import { ModernPlaceholder } from '../../../ModernPlaceholder';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -157,15 +158,13 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
 
         const inputPlaceholder = useMemo(() => {
             if (useModernStyles) {
-                if (!isOpen) {
-                    return placeholder;
-                } else {
-                    return undefined;
-                }
+                return undefined;
             } else {
                 return placeholder;
             }
-        }, [isOpen, placeholder, useModernStyles]);
+        }, [placeholder, useModernStyles]);
+
+        const isModernPlaceholderVisible = useMemo(() => !isOpen && !value, [isOpen, value]);
 
         return (
             <S.Wrapper ref={wrapperRef}>
@@ -179,6 +178,17 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                 >
                     <S.InputLabelContent>
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
+                        {useModernStyles && placeholder && (
+                            <ModernPlaceholder
+                                visible={isModernPlaceholderVisible}
+                                paddingLeft={inputPaddingLeft ?? 20}
+                                paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                                size={size}
+                                required={required}
+                            >
+                                {placeholder}
+                            </ModernPlaceholder>
+                        )}
                         <PureInput
                             ref={ref}
                             hasError={hasError}

@@ -1,11 +1,12 @@
 import React, { FC, useMemo } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../../InputLabel';
 import { useInputFocus } from '../../../../hooks/useInputFocus';
-import { StyledCurrencyInputFromLibrary } from './styles';
+import { StyledCurrencyInputFromLibrary, InputWrapper } from './styles';
 import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../constants';
 import { useComponentPalette } from '../../../../palette';
 import { TPureInputPalette } from '../../PureInput/palette';
 import { CurrencyInputProps } from 'react-currency-input-field';
+import { ModernPlaceholder } from '../../ModernPlaceholder';
 
 export type TProps = Pick<
     CurrencyInputProps,
@@ -38,7 +39,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
 
     const inputLabel = useMemo(() => {
         if (useModernStyles) {
-            if (value || inFocus) {
+            if (defaultValue || inFocus || value) {
                 return label;
             } else {
                 return undefined;
@@ -46,24 +47,20 @@ export const CoreCurrencyInput: FC<TProps> = ({
         } else {
             return label;
         }
-    }, [useModernStyles, value, inFocus, label]);
+    }, [useModernStyles, defaultValue, inFocus, label, value]);
 
     const paddingOptions = useMemo(() => {
-        if ((value || inFocus) && useModernStyles && inputLabel) {
+        if ((defaultValue || value || inFocus) && useModernStyles && inputLabel) {
             return MODERN_STYLE_SIZE_PARAMS_MAP[size];
         } else {
             return SIZE_PARAMS_MAP[size];
         }
-    }, [value, useModernStyles, size, inFocus, inputLabel]);
+    }, [defaultValue, useModernStyles, size, inFocus, inputLabel, value]);
 
-    const inputPlaceholder = useMemo(() => {
-        if (useModernStyles) {
-            if (!inFocus) {
-                return label;
-            }
-        }
-        return undefined;
-    }, [inFocus, label, useModernStyles]);
+    const isModernPlaceholderVisible = useMemo(
+        () => !inFocus && !defaultValue && !value,
+        [defaultValue, inFocus, value],
+    );
 
     return (
         <InputLabel
@@ -74,33 +71,45 @@ export const CoreCurrencyInput: FC<TProps> = ({
             useModernStyles={useModernStyles}
             size={size}
         >
-            <StyledCurrencyInputFromLibrary
-                $palette={palette}
-                $hasBorder={!useModernStyles}
-                $paddingLeft={18}
-                $paddingRight={18}
-                $borderRadius={10}
-                $variant={paddingOptions.variant}
-                $paddingTop={paddingOptions.paddingTop}
-                $paddingBottom={paddingOptions.paddingBottom}
-                $hasError={hasError}
-                $inFocus={inFocus}
-                onBlur={handleBlur}
-                onFocus={handleFocus}
-                // currency props
-                value={value}
-                allowNegativeValue={allowNegativeValue}
-                onValueChange={onValueChange}
-                defaultValue={defaultValue}
-                allowDecimals={allowDecimals}
-                decimalsLimit={2}
-                decimalSeparator={','}
-                groupSeparator={' '}
-                disabled={disabled}
-                disableAbbreviations={true}
-                $useModernStyles={useModernStyles}
-                placeholder={inputPlaceholder}
-            />
+            <InputWrapper>
+                {useModernStyles && label && (
+                    <ModernPlaceholder
+                        visible={isModernPlaceholderVisible}
+                        paddingLeft={18}
+                        paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                        size={size}
+                        required={required}
+                    >
+                        {label}
+                    </ModernPlaceholder>
+                )}
+                <StyledCurrencyInputFromLibrary
+                    $palette={palette}
+                    $hasBorder={!useModernStyles}
+                    $paddingLeft={18}
+                    $paddingRight={18}
+                    $borderRadius={10}
+                    $variant={paddingOptions.variant}
+                    $paddingTop={paddingOptions.paddingTop}
+                    $paddingBottom={paddingOptions.paddingBottom}
+                    $hasError={hasError}
+                    $inFocus={inFocus}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                    // currency props
+                    value={value}
+                    allowNegativeValue={allowNegativeValue}
+                    onValueChange={onValueChange}
+                    defaultValue={defaultValue}
+                    allowDecimals={allowDecimals}
+                    decimalsLimit={2}
+                    decimalSeparator={','}
+                    groupSeparator={' '}
+                    disabled={disabled}
+                    disableAbbreviations={true}
+                    $useModernStyles={useModernStyles}
+                />
+            </InputWrapper>
         </InputLabel>
     );
 };
