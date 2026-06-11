@@ -39,7 +39,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
 
     const inputLabel = useMemo(() => {
         if (useModernStyles) {
-            if (defaultValue || inFocus || value) {
+            if (typeof defaultValue === 'number' || inFocus || typeof value === 'number') {
                 return label;
             } else {
                 return undefined;
@@ -50,7 +50,11 @@ export const CoreCurrencyInput: FC<TProps> = ({
     }, [useModernStyles, defaultValue, inFocus, label, value]);
 
     const paddingOptions = useMemo(() => {
-        if ((defaultValue || value || inFocus) && useModernStyles && inputLabel) {
+        if (
+            (typeof defaultValue === 'number' || typeof value === 'number' || inFocus) &&
+            useModernStyles &&
+            inputLabel
+        ) {
             return MODERN_STYLE_SIZE_PARAMS_MAP[size];
         } else {
             return SIZE_PARAMS_MAP[size];
