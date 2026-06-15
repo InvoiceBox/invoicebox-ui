@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+@page { size: A4; margin: 18mm 15mm; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10.5pt; line-height: 1.5;
+       color: #1a1a2e; margin: 0; }
+h1 { font-size: 18pt; color: #0d2b52; border-bottom: 3px solid #0d2b52;
+     padding-bottom: 6px; margin: 0 0 14px; page-break-before: always; }
+h1:first-of-type { page-break-before: avoid; }
+h2 { font-size: 13.5pt; color: #14437f; margin: 18px 0 8px; }
+h3 { font-size: 11.5pt; color: #1a1a2e; margin: 14px 0 6px; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0 12px; font-size: 8.6pt; }
+th, td { border: 1px solid #b9c4d4; padding: 4px 7px; text-align: left; vertical-align: top; }
+th { background: #e8eef7; color: #0d2b52; }
+tr:nth-child(even) td { background: #f6f8fb; }
+code { font-family: Consolas, monospace; font-size: 8.8pt; background: #f0f2f6;
+       padding: 1px 4px; border-radius: 3px; }
+pre { background: #0d2b52; color: #e8eef7; border-radius: 4px; padding: 10px 12px;
+      overflow-x: hidden; white-space: pre-wrap; word-wrap: break-word; font-size: 8.6pt; }
+pre code { background: none; padding: 0; color: inherit; }
+a { color: #14437f; text-decoration: none; }
+ul, ol { margin: 6px 0; padding-left: 22px; }
+li { margin: 3px 0; }
+blockquote { border-left: 4px solid #14437f; background: #f6f8fb; margin: 10px 0;
+             padding: 6px 14px; color: #2a2a3e; }
+table, pre { page-break-inside: avoid; }
+h1, h2, h3 { page-break-after: avoid; }
+.cover { text-align: center; padding-top: 180px; page-break-after: always; }
+.cover .badge { display: inline-block; border: 2px solid #b03030; color: #b03030;
+                border-radius: 6px; padding: 4px 14px; font-weight: bold; font-size: 11pt;
+                letter-spacing: 1px; margin-bottom: 40px; }
+.cover h1 { border: none; font-size: 24pt; page-break-before: avoid; margin: 0 auto 18px;
+            max-width: 80%; color: #0d2b52; }
+.cover .sub { color: #555; font-size: 13pt; margin: 6px 0; }
+.cover .meta { color: #777; font-size: 11pt; margin-top: 40px; line-height: 1.8; }
+</style></head><body>
+
+<div class="cover">
+  <div class="badge">КОНФИДЕНЦИАЛЬНО &middot; ДЛЯ ВНУТРЕННЕГО ИСПОЛЬЗОВАНИЯ</div>
+  <h1>Библиотека компонентов @invoicebox/ui</h1>
+  <div class="sub">Итоговый отчёт аудита</div>
+  <div class="sub">и план рефакторинга волнами</div>
+  <div class="meta">
+    Дата аудита: 15 июня 2026<br>
+    Безопасность и утечки данных: security@invoicebox.ru
+  </div>
+</div>
+
+<h1>Аудит библиотеки @invoicebox/ui — сводный отчёт</h1>
+<p>Самостоятельный отчёт для руководства и владельцев. Полная детализация по каждой
+проблеме — в документах <code>audit/00</code>–<code>audit/10</code> и трекере <code>CHECKLIST.md</code>.</p>
+<h2>Контекст</h2>
+<p><code>@invoicebox/ui</code> — публикуемая в npm библиотека React-компонентов (UI-kit): ~38
+компонентов (формы, общие элементы), темизация, валидаторы реквизитов РФ/СНГ. Это <strong>не
+приложение</strong> — нет роутинга, стора, серверной части. Поэтому «страничные» метрики
+(Lighthouse, Web Vitals, OAuth) неприменимы; аудит сфокусирован на том, что влияет на
+потребителей пакета: безопасность, доступность, вес поставки, типобезопасность API,
+тесты и процесс релиза.</p>
+<p>Аудит выполнен 15.06.2026 на ветке <code>develop</code> (версия <code>0.1.0-alpha.292</code>), <strong>до изменений
+кода</strong>.</p>
+<h2>Оценка по направлениям</h2>
+<table>
+<thead>
+<tr>
+<th>Направление</th>
+<th>Оценка</th>
+<th>Главное</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Отказоустойчивость</td>
+<td>🔴</td>
+<td>0 try/catch, 0 ErrorBoundary во всей библиотеке</td>
+</tr>
+<tr>
+<td>Безопасность (код)</td>
+<td>🟡</td>
+<td>непровалидированный <code>href</code>, regex-валидатор; секретов нет</td>
+</tr>
+<tr>
+<td>Безопасность (зависимости)</td>
+<td>🔴</td>
+<td>83 уязвимости (3 critical, 31 high)</td>
+</tr>
+<tr>
+<td>Размер и поставка</td>
+<td>🟡</td>
+<td>CJS-only без tree-shaking, мёртвая зависимость <code>motion</code></td>
+</tr>
+<tr>
+<td>Доступность (WCAG AA)</td>
+<td>🔴</td>
+<td>практически отсутствует (0 <code>aria</code>/<code>role</code>)</td>
+</tr>
+<tr>
+<td>Качество API и типы</td>
+<td>🟢</td>
+<td>god-компонентов нет; точечные <code>any</code>/<code>eslint-disable</code></td>
+</tr>
+<tr>
+<td>Платформа и сборка</td>
+<td>🟡</td>
+<td>устаревшие TS/ESLint, ручной релиз без гейта</td>
+</tr>
+<tr>
+<td>Тесты и CI</td>
+<td>🔴</td>
+<td>4 теста в 1 файле, CI нет</td>
+</tr>
+</tbody>
+</table>
+<h2>Базовая линия (метрики на старте)</h2>
+<table>
+<thead>
+<tr>
+<th>Метрика</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Тестов / тест-файлов</td>
+<td>4 / 1</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>отсутствует</td>
+</tr>
+<tr>
+<td>Уязвимости (<code>npm audit</code>)</td>
+<td>83 (critical 3, high 31, moderate 37, low 12)</td>
+</tr>
+<tr>
+<td>Размер <code>dist</code></td>
+<td>2.4 MB (CJS, без минификации/tree-shaking)</td>
+</tr>
+<tr>
+<td>Мёртвая prod-зависимость</td>
+<td><code>motion</code> ^12.38 (0 использований)</td>
+</tr>
+<tr>
+<td>Компонентов / файлов / stories</td>
+<td>~38 / 270 / 78</td>
+</tr>
+<tr>
+<td><code>any</code> / <code>@ts-ignore</code></td>
+<td>11 / 0</td>
+</tr>
+<tr>
+<td><code>try/catch</code> / ErrorBoundary</td>
+<td>0 / 0</td>
+</tr>
+<tr>
+<td><code>aria-*</code> / <code>role=</code></td>
+<td>0 / 0</td>
+</tr>
+<tr>
+<td>Секреты / <code>dangerouslySetInnerHTML</code></td>
+<td>0 / 0</td>
+</tr>
+</tbody>
+</table>
+<h2>Ключевые риски</h2>
+<ol>
+<li><strong>Нет CI и тестов критичной логики</strong> (🔴). Валидаторы банковских реквизитов, ОГРН,
+   контрольных сумм, денег и дат почти не покрыты; ничего не проверяется автоматически.
+   Ошибка здесь тиражируется во все приложения-потребители. → <code>08</code></li>
+<li><strong>83 уязвимости в зависимостях</strong> (🔴, 3 critical). Почти все — из dev-цепочки
+   Storybook 7 / <code>react-scripts</code> (CRA-пресет). Снимаются миграцией Storybook. → <code>03</code>, <code>07</code></li>
+<li><strong>Доступность близка к нулю</strong> (🔴). Кастомные Select/Dropdown/Autocomplete/Toggle без
+   клавиатуры и ARIA, модалки без фокус-трапа. Для библиотеки форм-инпутов — критично. → <code>05</code></li>
+<li><strong>Непровалидированный <code>href</code> + <code>target="_blank"</code> без <code>rel</code></strong> в <code>AppCardLink</code> (🟠).
+   Потенциальный DOM-XSS и tabnabbing. → <code>03</code></li>
+<li><strong>CJS-only поставка без tree-shaking</strong> + мёртвая <code>motion</code> (🟠). Потребитель тянет
+   лишний вес. → <code>04</code></li>
+<li><strong>Ручной релиз с локальной машины</strong> без прогона тестов/линта/audit, публикация в npm
+   и пуш в <code>main</code> без гейта (🟠). → <code>07</code></li>
+</ol>
+<h2>План рефакторинга (волнами, по приоритету риска)</h2>
+<ul>
+<li><strong>Волна 0 — сетка безопасности.</strong> CI (lint+test+build+audit), jest-конфиг и пороги
+  покрытия, <code>size-limit</code>, a11y-линт (warn), удалить мёртвый <code>motion</code>.</li>
+<li><strong>Волна 1 — высокий риск.</strong> Фикс <code>href</code>/XSS в <code>AppCardLink</code>; правка regex-валидатора;
+  миграция Storybook 7→8/9 (минус десятки CVE); <code>node &gt;=18</code>; тесты всех валидаторов.</li>
+<li><strong>Волна 2 — поставка и типы.</strong> ESM+CJS сборка с <code>exports</code>-map и tree-shaking; апгрейд
+  TS 5 / ESLint 9; убрать <code>any</code>; единый логгер и <code>onError</code>-хуки; компонентные тесты + a11y.</li>
+<li><strong>Волна 3 — доступность и качество.</strong> Клавиатура+ARIA по компонентам, фокус-трап в
+  модалках, контраст/таргеты, <code>prefers-reduced-motion</code>, ErrorBoundary, CLS-стабильность.</li>
+</ul>
+<p>Требуют согласования до старта: миграция Storybook, смена сборщика и формата импорта,
+правки a11y-разметки (могут задеть стили потребителей), удаление <code>motion</code>, перенос
+релиза в CI. Бизнес-логика и публичный API не меняются без отдельного продуктового решения.</p>
+<h2>Положительное</h2>
+<p>God-компонентов нет (макс ~341 LOC), секретов в коде нет, <code>dangerouslySetInnerHTML</code> нет,
+<code>@ts-ignore</code> = 0, структура проекта здоровая и консистентная.</p>
+</body></html>

@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><style>
+@page { size: A4; margin: 18mm 15mm; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10.5pt; line-height: 1.45;
+       color: #1a1a2e; margin: 0; }
+h1 { font-size: 19pt; color: #0d2b52; border-bottom: 3px solid #0d2b52;
+     padding-bottom: 6px; margin: 0 0 14px; }
+h2 { font-size: 14pt; color: #14437f; margin: 18px 0 8px; }
+h3 { font-size: 11.5pt; color: #1a1a2e; margin: 14px 0 6px; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0 12px; font-size: 9pt; }
+th, td { border: 1px solid #b9c4d4; padding: 4px 7px; text-align: left; vertical-align: top; }
+th { background: #e8eef7; color: #0d2b52; }
+tr:nth-child(even) td { background: #f6f8fb; }
+code { font-family: Consolas, monospace; font-size: 9pt; background: #f0f2f6;
+       padding: 1px 4px; border-radius: 3px; }
+pre { background: #f0f2f6; border: 1px solid #d8dee8; border-radius: 4px;
+      padding: 8px 10px; overflow-x: hidden; white-space: pre-wrap; word-wrap: break-word; }
+pre code { background: none; padding: 0; }
+a { color: #14437f; text-decoration: none; }
+ul, ol { margin: 6px 0; padding-left: 22px; }
+li { margin: 2px 0; }
+blockquote { border-left: 3px solid #b9c4d4; margin: 8px 0; padding: 2px 12px; color: #444; }
+.doc-section { page-break-before: always; }
+.doc-section:first-of-type { page-break-before: avoid; }
+table, pre { page-break-inside: avoid; }
+h1, h2, h3 { page-break-after: avoid; }
+.cover { text-align: center; padding-top: 220px; page-break-after: always; }
+.cover h1 { border: none; font-size: 26pt; }
+.cover p { color: #555; font-size: 12pt; }
+.toc { page-break-after: always; }
+.toc h1 { font-size: 17pt; }
+.toc ol { font-size: 11pt; line-height: 2; }
+</style></head><body>
+<div class="cover">
+  <h1>Аудит @invoicebox/ui</h1>
+  <p>Полный анализ библиотеки React-компонентов и план рефакторинга</p>
+  <p>Документация: 12 разделов &middot; Июнь 2026</p>
+</div>
+<div class="toc"><h1>Содержание</h1><ol><li>Аудит @invoicebox/ui</li>
+<li>Карта проекта — @invoicebox/ui</li>
+<li>Базовая линия (baseline) — 2026-06-15</li>
+<li>02 — Отказоустойчивость (обработка ошибок)</li>
+<li>03 — Безопасность</li>
+<li>04 — Скорость и отзывчивость</li>
+<li>05 — Доступность (WCAG 2.1 AA)</li>
+<li>06 — Архитектура и линтер</li>
+<li>07 — Платформа (версии, сборка, CVE, кэш)</li>
+<li>08 — Тесты и CI</li>
+<li>09 — Наблюдаемость</li>
+<li>10 — План рефакторинга (волнами)</li></ol></div>
+<div class="doc-section"><h1>Аудит @invoicebox/ui</h1>
+<p>Полный аудит библиотеки React-компонентов, выполнен 2026-06-15 (ветка <code>projectAnalytics</code>),
+<strong>до каких-либо изменений кода</strong>. Документация ведётся в <code>audit/</code> (не в <code>docs/</code> — её
+затирает <code>release.sh: rm -rf docs</code>).</p>
+<h2>Документы</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Файл</th>
+<th>Содержание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>00-PROJECT-MAP.md</td>
+<td>Карта: стек, структура, API, сборка, ловушки</td>
+</tr>
+<tr>
+<td>01</td>
+<td>01-BASELINE-METRICS.md</td>
+<td>Базовая линия метрик</td>
+</tr>
+<tr>
+<td>02</td>
+<td>02-resilience.md</td>
+<td>Отказоустойчивость</td>
+</tr>
+<tr>
+<td>03</td>
+<td>03-security.md</td>
+<td>Безопасность (XSS, redirect, CVE)</td>
+</tr>
+<tr>
+<td>04</td>
+<td>04-performance.md</td>
+<td>Скорость, бандл, CLS</td>
+</tr>
+<tr>
+<td>05</td>
+<td>05-accessibility.md</td>
+<td>Доступность WCAG 2.1 AA</td>
+</tr>
+<tr>
+<td>06</td>
+<td>06-architecture-lint.md</td>
+<td>Архитектура и линтер</td>
+</tr>
+<tr>
+<td>07</td>
+<td>07-platform.md</td>
+<td>Платформа, версии, релиз</td>
+</tr>
+<tr>
+<td>08</td>
+<td>08-tests.md</td>
+<td>Тесты и CI</td>
+</tr>
+<tr>
+<td>09</td>
+<td>09-observability.md</td>
+<td>Наблюдаемость</td>
+</tr>
+<tr>
+<td>10</td>
+<td>10-REFACTOR-PLAN.md</td>
+<td>План рефакторинга волнами</td>
+</tr>
+</tbody>
+</table>
+<h2>Ключевой вывод</h2>
+<p>Это <strong>npm-библиотека компонентов</strong> (не приложение). Направления аудита адаптированы под
+специфику UI-kit (см. 00, раздел «Направления аудита для UI-библиотеки»): вместо
+«страничных» метрик — вес бандла, поставка, типобезопасность API и доступность.</p>
+<p>Топ-риски: отсутствие CI и тестов критич. логики, 83 CVE в зависимостях (3 critical,
+почти все — dev-цепочка CRA/Storybook), близкое к нулю состояние доступности,
+непровалидированный <code>href</code> в <code>AppCardLink</code>, CJS-only сборка без tree-shaking, мёртвая
+зависимость <code>motion</code>. God-компонентов нет, секретов нет, <code>dangerouslySetInnerHTML</code> нет.</p>
+<p><strong>Код не менялся. Старт работ — после согласования плана (см. документ 10).</strong></p></div><div class="doc-section"><h1>Карта проекта — @invoicebox/ui</h1>
+<blockquote>
+<p>Аудит от 2026-06-15. Базовая ветка: <code>develop</code>. Версия: <code>0.1.0-alpha.292</code>.
+Документ описывает фактическое состояние «как есть» перед рефакторингом. Код не менялся.</p>
+</blockquote>
+<h2>1. Что это</h2>
+<p><code>@invoicebox/ui</code> — <strong>публикуемая в npm библиотека React-компонентов</strong> (UI-kit) Invoicebox.
+Это <strong>не приложение</strong>: здесь нет роутинга, серверного рендеринга, глобального стора,
+страниц и пользовательских сценариев в классическом смысле. Поэтому ряд пунктов
+исходного ТЗ переинтерпретирован под специфику библиотеки (см. раздел «Применимость»).</p>
+<ul>
+<li>Потребитель: внешние/внутренние приложения Invoicebox, импортирующие компоненты.</li>
+<li>Витрина/документация: Storybook, публикуется на GitHub Pages (<code>ui.invoicebox.ru</code>).</li>
+<li>Лицензия: Apache 2.0.</li>
+</ul>
+<h2>2. Стек</h2>
+<table>
+<thead>
+<tr>
+<th>Слой</th>
+<th>Технология</th>
+<th>Версия</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UI</td>
+<td>React (peer)</td>
+<td>^18.2.0</td>
+</tr>
+<tr>
+<td>Стили</td>
+<td>styled-components (peer)</td>
+<td>^6.1.8</td>
+</tr>
+<tr>
+<td>Язык</td>
+<td>TypeScript</td>
+<td>4.9.5</td>
+</tr>
+<tr>
+<td>Сборка библиотеки</td>
+<td>Babel CLI (транспиляция, без бандлинга)</td>
+<td>7.x</td>
+</tr>
+<tr>
+<td>Типы</td>
+<td><code>tsc --emitDeclarationOnly</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Витрина</td>
+<td>Storybook (react-webpack5)</td>
+<td>^7.6.13</td>
+</tr>
+<tr>
+<td>Тесты</td>
+<td>Jest</td>
+<td>^29.7.0</td>
+</tr>
+<tr>
+<td>Линт</td>
+<td>ESLint 8 + @typescript-eslint 5 + Prettier 3</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Runtime (engines)</td>
+<td>node <code>&gt;=16.0.0</code> (локально 16.20.2)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2>3. Структура</h2>
+<pre><code>src/
+  index.ts            — публичный API (единая точка экспорта)
+  components/
+    common/           — презентационные компоненты (Skeleton, Typography, Drawer,
+                        Toast, QRCode, Calendar, Dropdown, Flag, AppCardLink …)
+    form/             — поля ввода (TextInput, Select, PhoneInput, DateInput,
+                        DateTimeInput, CurrencyInput, Autocomplete, CodeInput …)
+    _helpers/         — вспомогательные компоненты для stories
+    constants.ts, selectOptions.ts
+  hooks/              — useOutsideClick, useInputFocus, useUnupdatableHandler,
+                        useLoadingSubmit, useMedia, useModal
+  palette/            — система тем (PaletteProvider, useComponentPalette)
+  validate/           — валидаторы РФ/СНГ (БИК, р/с, ОГРН, КПП, ИНН, website)
+  breakpoints/        — точки адаптива
+  utils/              — transformColorByHsl
+dist/                 — артефакт сборки (закоммичен; перезаписывается release.sh)
+docs/                 — собранный Storybook (закоммичен; ВНИМАНИЕ: release.sh делает rm -rf docs)
+</code></pre>
+<ul>
+<li>~38 компонентов, 270 .ts/.tsx файлов, 78 stories, 1 тест-файл.</li>
+<li>Самые крупные файлы: <code>form/PhoneInput</code> (341), <code>form/Select</code> (330),
+  <code>form/DateTimeInput</code> (300), <code>form/Autocomplete</code> (269). God-компонентов нет.</li>
+</ul>
+<h2>4. Публичный API (поверхность)</h2>
+<p>Единый barrel-экспорт из <code>src/index.ts</code>: ~40 компонентов + типы, 9 хуков,
+<code>PaletteProvider</code>/палитра, <code>breakpoints</code>, <code>Validate</code>. Точечных entry-points нет —
+весь пакет тянется одним <code>main: ./dist/index.js</code> (см. перформанс: нет tree-shaking
+по умолчанию у потребителя через CJS).</p>
+<h2>5. Состояние (state)</h2>
+<p>Глобального стора нет. Состояние — локальное (<code>useState</code>/<code>useEffect</code>) внутри
+компонентов. Тема прокидывается через React Context (<code>PaletteProvider</code> →
+<code>useComponentPalette</code>). Это нормально для UI-kit.</p>
+<h2>6. Сборка / тесты / релиз</h2>
+<table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Действие</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm run storybook</code></td>
+<td>дев-витрина на :6006</td>
+</tr>
+<tr>
+<td><code>npm test</code> (<code>jest</code>)</td>
+<td>прогон тестов</td>
+</tr>
+<tr>
+<td><code>npm run release</code> (<code>./release.sh</code>)</td>
+<td>сборка dist + Storybook, бамп версии, merge в <code>main</code>, <code>npm publish</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>release.sh</code> (ловушки см. ниже): транспиляция Babel → <code>dist</code>, типы → <code>tsc</code>,
+Storybook → <code>docs</code>, CNAME, коммит, бамп <code>prerelease --preid=alpha</code>, merge develop→main,
+<code>npm publish</code>.</p>
+<h2>7. Переменные окружения</h2>
+<p>Не используются. <code>.npmrc</code> фиксирует публичный реестр npm. Секретов в коде нет
+(скан по api_key/secret/token/password — чисто; единственное совпадение —
+<code>autoComplete="new-password"</code>, легитимно).</p>
+<h2>8. Известные ловушки (traps)</h2>
+<ol>
+<li><strong><code>release.sh</code> делает <code>rm -rf dist docs</code></strong> — любая ручная документация в <code>docs/</code>
+   будет уничтожена при релизе. Поэтому аудит лежит в <code>audit/</code>. ⚠️</li>
+<li><strong><code>dist/</code> закоммичен</strong> и при этом в <code>.gitignore</code> — рассинхрон; jest без
+   <code>testPathIgnorePatterns</code> гоняет тесты дважды (из <code>src</code> и из <code>dist</code>).</li>
+<li><strong>Релиз пушит в <code>main</code> и публикует в npm из локальной машины</strong> — нет CI-гейта,
+   нет проверки тестов/линта перед публикацией. Высокий риск выката битого пакета.</li>
+<li><strong><code>engines.node &gt;=16</code></strong>, но Storybook 7 и часть инструментов требуют node 18+.
+   Заявленная совместимость недостоверна.</li>
+<li><strong>CJS-only сборка</strong> (<code>modules: commonjs</code>) без <code>sideEffects</code>/ESM — потребитель не
+   получает tree-shaking; тянет весь пакет.</li>
+<li><strong>Тяжёлая <code>motion</code> (framer-motion-преемник) в dependencies не используется</strong> —
+   мёртвая зависимость в проде.</li>
+</ol>
+<h2>9. Направления аудита для UI-библиотеки</h2>
+<p>ТЗ изначально написано под веб-приложение. Поскольку это <strong>публикуемая библиотека
+компонентов</strong>, направления адаптированы под её специфику: вместо «страничных» метрик
+(маршруты, стор, Lighthouse, OAuth/CSRF, серверные редиректы) — то, что реально влияет
+на потребителей пакета и на качество самого UI-kit.</p>
+<table>
+<thead>
+<tr>
+<th>Направление аудита</th>
+<th>Что это значит для библиотеки</th>
+<th>Документ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Безопасность</td>
+<td>непровалидированный <code>href</code>/<code>target</code> (<code>AppCardLink</code>), regex-валидаторы (<code>Validate.website</code>, ReDoS), CVE в зависимостях, отсутствие секретов</td>
+<td><code>03</code></td>
+</tr>
+<tr>
+<td>Отказоустойчивость</td>
+<td>компонент не должен ронять дерево потребителя: ErrorBoundary, guard-парсинг, безопасный сброс состояний</td>
+<td><code>02</code></td>
+</tr>
+<tr>
+<td>Размер и поставка</td>
+<td>вес <code>dist</code>, CJS-only без tree-shaking, <code>exports</code>-map, мёртвые зависимости, бюджеты <code>size-limit</code></td>
+<td><code>04</code></td>
+</tr>
+<tr>
+<td>Визуальная стабильность</td>
+<td>CLS и мерцание на стороне компонентов (Skeleton/Drawer), <code>prefers-reduced-motion</code></td>
+<td><code>04</code></td>
+</tr>
+<tr>
+<td>Доступность (WCAG AA)</td>
+<td>клавиатура/ARIA/фокус-трап во ВСЕХ инпутах и модалках — тиражируется во все приложения-потребители</td>
+<td><code>05</code></td>
+</tr>
+<tr>
+<td>Качество публичного API</td>
+<td>типобезопасность экспортов (без <code>any</code>), консистентность пропов, отсутствие god-компонентов</td>
+<td><code>06</code></td>
+</tr>
+<tr>
+<td>Платформа и сборка</td>
+<td>актуальность TS/ESLint/Storybook, версия node-engine, воспроизводимость и безопасность релиза/публикации в npm</td>
+<td><code>07</code></td>
+</tr>
+<tr>
+<td>Тесты и CI</td>
+<td>покрытие критичной логики (валидаторы реквизитов/денег), компонентные тесты, гейт в CI</td>
+<td><code>08</code></td>
+</tr>
+<tr>
+<td>Наблюдаемость</td>
+<td>управляемое логирование, <code>onError</code>-хуки для потребителя, CHANGELOG/версия в рантайме</td>
+<td><code>09</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Прямые замеры Lighthouse/Web Vitals/SSR к npm-пакету неприменимы (нет страницы) —
+их роль выполняют размер бандла, <code>size-limit</code> и a11y-проверки на Storybook.</p>
+</blockquote>
+<h2>10. Документы аудита</h2>
+<ul>
+<li><code>01-BASELINE-METRICS.md</code> — стартовые показатели (база сравнения)</li>
+<li><code>02-resilience.md</code> — отказоустойчивость / обработка ошибок</li>
+<li><code>03-security.md</code> — безопасность</li>
+<li><code>04-performance.md</code> — скорость и отзывчивость</li>
+<li><code>05-accessibility.md</code> — доступность WCAG 2.1 AA</li>
+<li><code>06-architecture-lint.md</code> — архитектура и линтер</li>
+<li><code>07-platform.md</code> — платформа (версии, сборка, CVE, кэш)</li>
+<li><code>08-tests.md</code> — тесты и CI</li>
+<li><code>09-observability.md</code> — наблюдаемость</li>
+<li><code>10-REFACTOR-PLAN.md</code> — план рефакторинга волнами</li>
+</ul></div><div class="doc-section"><h1>Базовая линия (baseline) — 2026-06-15</h1>
+<p>Зафиксировано до изменений. Служит точкой сравнения после каждой волны рефакторинга.</p>
+<h2>Замер: окружение</h2>
+<ul>
+<li>node (локально): v16.20.2</li>
+<li>TypeScript: 4.9.5</li>
+<li>Ветка: <code>projectAnalytics</code>, базовая <code>develop</code>.</li>
+</ul>
+<h2>Тесты</h2>
+<table>
+<thead>
+<tr>
+<th>Метрика</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Тест-файлов</td>
+<td>1 (<code>src/validate/utils/websiteValidate.test.ts</code>)</td>
+</tr>
+<tr>
+<td>Тестов (assertions suites)</td>
+<td>4 теста, проходят</td>
+</tr>
+<tr>
+<td>Test Suites при <code>jest</code></td>
+<td>2 (дубль из <code>dist/</code> — нет <code>testPathIgnorePatterns</code>)</td>
+</tr>
+<tr>
+<td>Coverage</td>
+<td>не настроен (нет <code>--coverage</code>, нет порогов)</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>отсутствует (<code>.github/workflows</code> нет)</td>
+</tr>
+</tbody>
+</table>
+<h2>Зависимости / уязвимости (<code>npm audit</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Кол-во</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>critical</td>
+<td>3</td>
+</tr>
+<tr>
+<td>high</td>
+<td>31</td>
+</tr>
+<tr>
+<td>moderate</td>
+<td>37</td>
+</tr>
+<tr>
+<td>low</td>
+<td>12</td>
+</tr>
+<tr>
+<td><strong>total</strong></td>
+<td><strong>83</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Деревья: prod 119, dev 2146, peer 657 (итого 2267 пакетов).
+<strong>Критические:</strong> <code>form-data</code> (unsafe random boundary), <code>handlebars</code> (JS injection),
+<code>shell-quote</code> (escape newlines). Подавляющее большинство high/critical — в dev-цепочке
+Storybook 7 / <code>react-scripts</code> / <code>@svgr</code> / <code>workbox</code> (транзитивно). Подробно — <code>03-security.md</code> / <code>07-platform.md</code>.</p>
+<h2>Размер артефакта</h2>
+<table>
+<thead>
+<tr>
+<th>Метрика</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dist/</code> (транспилированный, без минификации)</td>
+<td><strong>2.4 MB</strong></td>
+</tr>
+<tr>
+<td>Формат</td>
+<td>CommonJS, без бандлинга/tree-shaking/минификации</td>
+</tr>
+<tr>
+<td><code>package-lock.json</code></td>
+<td>2.39 MB</td>
+</tr>
+<tr>
+<td>Мёртвая prod-зависимость</td>
+<td><code>motion</code> ^12.38.0 (0 использований в <code>src</code>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Для библиотеки точный «размер бандла у потребителя» зависит от его сборщика. Зафиксированы:
+размер <code>dist</code>, факт CJS-only и отсутствие <code>sideEffects</code>. После рефакторинга добавить
+измерение per-component через <code>size-limit</code>/<code>esbuild --metafile</code> (см. <code>04-performance.md</code>).</p>
+</blockquote>
+<h2>Код-метрики (статически)</h2>
+<table>
+<thead>
+<tr>
+<th>Метрика</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Файлов .ts/.tsx (src)</td>
+<td>270</td>
+</tr>
+<tr>
+<td>Компонентов</td>
+<td>~38</td>
+</tr>
+<tr>
+<td>Stories</td>
+<td>78</td>
+</tr>
+<tr>
+<td>Крупнейший файл</td>
+<td>341 LOC (PhoneInput)</td>
+</tr>
+<tr>
+<td><code>any</code> / небезоп. assertions (<code>as any</code>,<code>as unknown</code>)</td>
+<td>11 вхождений</td>
+</tr>
+<tr>
+<td><code>@ts-ignore</code> / <code>@ts-expect-error</code></td>
+<td>0 ✅</td>
+</tr>
+<tr>
+<td><code>eslint-disable</code></td>
+<td>22</td>
+</tr>
+<tr>
+<td><code>console.*</code></td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>try/catch</code> блоков</td>
+<td>0</td>
+</tr>
+<tr>
+<td>ErrorBoundary</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>aria-*</code> атрибутов</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>role=</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>onKeyDown/Up/Press</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>prefers-reduced-motion</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>dangerouslySetInnerHTML</code></td>
+<td>0 ✅</td>
+</tr>
+<tr>
+<td>Секреты в коде</td>
+<td>0 ✅</td>
+</tr>
+</tbody>
+</table>
+<h2>Сводный «светофор»</h2>
+<table>
+<thead>
+<tr>
+<th>Направление</th>
+<th>Оценка</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Отказоустойчивость</td>
+<td>🔴 нет обработки ошибок вовсе</td>
+</tr>
+<tr>
+<td>Безопасность (код)</td>
+<td>🟡 точечные (href, regex); секретов нет</td>
+</tr>
+<tr>
+<td>Безопасность (deps)</td>
+<td>🔴 83 уязвимости, 3 critical</td>
+</tr>
+<tr>
+<td>Производительность</td>
+<td>🟡 CJS-only, мёртвый <code>motion</code>, нет tree-shaking</td>
+</tr>
+<tr>
+<td>Доступность</td>
+<td>🔴 практически отсутствует</td>
+</tr>
+<tr>
+<td>Архитектура/типы</td>
+<td>🟢 в целом, точечные <code>any</code>/disable</td>
+</tr>
+<tr>
+<td>Платформа</td>
+<td>🟡 устаревшие TS/ESLint/node-engine, ручной релиз</td>
+</tr>
+<tr>
+<td>Тесты</td>
+<td>🔴 1 файл, нет CI, нет coverage</td>
+</tr>
+<tr>
+<td>Наблюдаемость</td>
+<td>🟡 нет единой стратегии логирования/ошибок</td>
+</tr>
+</tbody>
+</table></div><div class="doc-section"><h1>02 — Отказоустойчивость (обработка ошибок)</h1>
+<p>Принцип для UI-kit: компонент не должен «ронять» дерево приложения-потребителя.
+Сейчас обработка ошибок отсутствует как класс — <code>try/catch</code> = 0, ErrorBoundary = 0.</p>
+<hr />
+<h3>R-1. Нет ни одного ErrorBoundary в библиотеке</h3>
+<ul>
+<li><strong>Где:</strong> весь <code>src</code> (0 совпадений <code>componentDidCatch</code>/<code>getDerivedStateFromError</code>).</li>
+<li><strong>Серьёзность:</strong> medium (для библиотеки — спорно: ErrorBoundary чаще ответственность
+  приложения, но «составные» компоненты с асинхронным контентом стоит защищать).</li>
+<li><strong>Описание:</strong> если внутренний рендер падает (например, кривые данные в <code>Autocomplete</code>/
+  <code>Select</code>/<code>Calendar</code>), исключение всплывает в приложение-потребитель и валит весь экран.</li>
+<li><strong>Решение:</strong> экспортировать опциональный <code>&lt;ErrorBoundary&gt;</code> и оборачивать им
+  «тяжёлые» составные компоненты (Autocomplete, DateTimeInput, Calendar) изнутри
+  с безопасным fallback. Не навязывать — давать проп <code>renderError</code>.</li>
+<li><strong>Эффект:</strong> локализация сбоя одним компонентом вместо падения всей страницы.</li>
+</ul>
+<h3>R-2. Парсинг/числовые операции без защиты от мусора</h3>
+<ul>
+<li><strong>Где:</strong> <code>src/validate/index.ts</code> (<code>parseInt(value.slice…)</code>, <code>Number(bikRs[i])</code>),
+  <code>form/CurrencyInput/*</code>, <code>form/PositiveIntegerInput</code>, <code>form/DateInput</code>/<code>DateTimeInput</code>.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> <code>parseInt</code>/<code>Number</code> на неожиданном вводе дают <code>NaN</code>, который тихо
+  протекает в контрольные суммы и расчёты дат — невалидный результат без явной ошибки.</li>
+<li><strong>Решение:</strong> guard-проверки (<code>Number.isFinite</code>), ранний возврат <code>createError</code>,
+  нормализация ввода до вычислений. Покрыть тестами edge-cases.</li>
+<li><strong>Эффект:</strong> предсказуемые ошибки валидации вместо «тихого» NaN.</li>
+</ul>
+<h3>R-3. <code>useEffect</code> с таймерами/подписками — проверить очистку</h3>
+<ul>
+<li><strong>Где:</strong> <code>common/Drawer/index.tsx</code> (setTimeout 300мс — очистка есть ✅),
+  <code>hooks/useOutsideClick</code>, <code>hooks/useMedia</code>, компоненты с <code>addEventListener</code>.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> часть эффектов корректна; нужен сплошной аудит на утечки слушателей/
+  таймеров при размонтировании.</li>
+<li><strong>Решение:</strong> убедиться, что каждый <code>addEventListener</code>/<code>setTimeout</code>/<code>setInterval</code>
+  имеет cleanup; добавить ESLint <code>react-hooks/exhaustive-deps</code> (сейчас только recommended).</li>
+<li><strong>Эффект:</strong> отсутствие утечек памяти и «фантомных» обработчиков.</li>
+</ul>
+<h3>R-4. Асинхронные обработчики без <code>.catch</code></h3>
+<ul>
+<li><strong>Где:</strong> <code>hooks/useLoadingSubmit</code>, компоненты с <code>onChange</code>/<code>onSubmit</code>, прокидывающие
+  промисы потребителя.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> линт уже включает <code>no-floating-promises</code>/<code>no-misused-promises</code> (хорошо),
+  но в рантайме отклонённый промис из колбэка потребителя может оставить спиннер навсегда.</li>
+<li><strong>Решение:</strong> в <code>useLoadingSubmit</code> оборачивать вызов в <code>try/finally</code>, гарантируя сброс
+  <code>isLoading</code> даже при reject; задокументировать контракт.</li>
+<li><strong>Эффект:</strong> UI не «залипает» в состоянии загрузки при ошибке сабмита.</li>
+</ul>
+<h3>R-5. Нет деградации при отсутствии PaletteProvider</h3>
+<ul>
+<li><strong>Где:</strong> <code>palette/useComponentPalette.ts</code>, <code>usePalette.ts</code>.</li>
+<li><strong>Серьёзность:</strong> low/medium.</li>
+<li><strong>Описание:</strong> если потребитель забыл обернуть в <code>PaletteProvider</code>, доступ к палитре
+  может бросить/вернуть undefined → падение стилей.</li>
+<li><strong>Решение:</strong> дефолтная палитра как fallback + понятный <code>console.warn</code> (dev-only).</li>
+<li><strong>Эффект:</strong> компоненты рендерятся с дефолтной темой, а не падают.</li>
+</ul>
+<hr />
+<p><strong>Приоритет блока:</strong> R-2 и R-4 (medium) — в волну 1; R-1/R-5 — волна 2; R-3 — фоном.</p></div><div class="doc-section"><h1>03 — Безопасность</h1>
+<p>Модель угроз для UI-kit: компонент получает данные/URL от приложения-потребителя,
+часть которых может происходить из пользовательского ввода. Библиотека обязана не
+создавать каналов XSS/open-redirect и не тянуть уязвимые зависимости в прод.</p>
+<p>Хорошие новости: <code>dangerouslySetInnerHTML</code> = 0, секретов/ключей/токенов в коде = 0
+(единственное совпадение — <code>autoComplete="new-password"</code>, легитимно). Сети/OAuth/CSRF
+в библиотеке нет — эти пункты ТЗ неприменимы.</p>
+<hr />
+<h3>S-1. <code>AppCardLink</code>: непровалидированный <code>href</code> + <code>target="_blank"</code> без <code>rel</code></h3>
+<ul>
+<li><strong>Где:</strong> <code>src/components/common/AppCardLink/index.tsx:26</code> — <code>&lt;S.Wrapper href={href} target={'_blank'}&gt;</code>.</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong>.</li>
+<li><strong>Описание:</strong> два дефекта в одной строке:</li>
+<li><code>href</code> рендерится «как есть». Если потребитель передаст <code>javascript:…</code> (или
+     <code>data:</code>) URL из пользовательского ввода — это XSS при клике (DOM-based).</li>
+<li><code>target="_blank"</code> без <code>rel="noopener noreferrer"</code> — reverse tabnabbing и утечка
+     <code>Referer</code>. (Современные браузеры по умолчанию ставят noopener для <code>_blank</code>, но
+     полагаться на это нельзя — это поведение и старые webview.)</li>
+<li><strong>Решение:</strong></li>
+<li>Валидировать схему: разрешать только <code>https:</code>/<code>http:</code> (и относительные), отклонять
+    <code>javascript:</code>/<code>data:</code>/<code>vbscript:</code>. Реализовать <code>isSafeUrl(url)</code> в <code>utils</code>.</li>
+<li>Жёстко проставлять <code>rel="noopener noreferrer"</code> для всех <code>target="_blank"</code>.</li>
+<li><strong>Эффект:</strong> закрыт DOM-XSS и tabnabbing на самой частой ссылочной точке библиотеки.</li>
+<li><strong>Best practice:</strong> OWASP DOM XSS Prevention; React docs — «only <code>http</code>/<code>https</code> URLs».</li>
+</ul>
+<h3>S-2. <code>Validate.website</code> — небезопасный для повторного использования как «санитайзер»</h3>
+<ul>
+<li><strong>Где:</strong> <code>src/validate/index.ts</code> (метод <code>website</code>, экспортируется в публичный API).</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong></li>
+<li>Регулярка <strong>не заякорена справа</strong> (<code>^(…)…?</code> без <code>$</code>) — валидирует «начинается с»,
+     а не «является» URL. Для проверки формата поля терпимо, но опасно, если значение
+     потом используется как <code>href</code>.</li>
+<li>Схема опциональна (<code>(?:https?:\/\/)?</code>) — <code>abc.com</code> проходит без протокола; при
+     построении ссылки потребитель обязан сам добавить <code>https://</code> (иначе относительный
+     путь → open-redirect внутри своего домена).</li>
+<li>Вложенные квантификаторы (<code>{0,61}…)+ … )*</code>) — потенциальный <strong>ReDoS</strong> на
+     спец-входе.</li>
+<li><strong>Решение:</strong> добавить правый якорь <code>$</code>; в JSDoc явно указать «валидация формата, НЕ
+  санитизация для href»; заменить на безопасный парсинг через <code>new URL()</code> где возможно;
+  прогнать regex через ReDoS-чек (например, <code>recheck</code>/<code>safe-regex</code>).</li>
+<li><strong>Эффект:</strong> валидатор перестаёт быть источником ложной уверенности и ReDoS-вектором.</li>
+</ul>
+<h3>S-3. 83 уязвимости в зависимостях (3 critical, 31 high)</h3>
+<ul>
+<li><strong>Где:</strong> <code>npm audit</code> — преимущественно dev-цепочка Storybook 7 / <code>react-scripts</code> /
+  <code>@svgr/*</code> / <code>workbox-*</code> / <code>rollup-plugin-terser</code>.</li>
+<li><strong>Серьёзность:</strong> critical (формально), фактический риск — в основном dev-time.</li>
+<li><strong>Описание:</strong> critical: <code>form-data</code>, <code>handlebars</code>, <code>shell-quote</code>. Большинство — не
+  попадает в опубликованный <code>dist</code> (только peer <code>react</code>/<code>styled-components</code> идут в прод),
+  но влияет на безопасность сборочной машины и доверие к пакету.</li>
+<li><strong>Решение:</strong> см. <code>07-platform.md</code> (апгрейд Storybook 8/9, отказ от <code>react-scripts</code>/
+  <code>@storybook/preset-create-react-app</code>, который и тянет <code>workbox</code>/<code>svgr</code>). Зафиксировать
+  <code>npm audit</code> в CI с порогом.</li>
+<li><strong>Эффект:</strong> снижение CVE-поверхности на десятки пунктов, чистый <code>audit</code> как гейт.</li>
+</ul>
+<h3>S-4. CSP / защитные заголовки — для Storybook на GitHub Pages</h3>
+<ul>
+<li><strong>Где:</strong> публикация <code>docs/</code> (Storybook) на <code>ui.invoicebox.ru</code>.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> статическая витрина без CSP/<code>X-Content-Type-Options</code>/<code>Referrer-Policy</code>.
+  Для самой npm-библиотеки CSP неприменим (заголовки задаёт приложение-потребитель).</li>
+<li><strong>Решение:</strong> добавить мета-CSP в <code>.storybook/preview-head.html</code> или заголовки на
+  уровне хостинга; в README библиотеки — рекомендации по CSP для потребителей.</li>
+<li><strong>Эффект:</strong> базовая защита витрины, явный гайд для интеграторов.</li>
+</ul>
+<h3>S-5. <code>hex-to-rgba</code> и ручные строковые операции с цветом</h3>
+<ul>
+<li><strong>Где:</strong> 17 файлов используют <code>hex-to-rgba</code>; <code>utils/transformColorByHsl.ts</code>.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> цвет приходит из палитры потребителя; некорректный ввод не
+  валидируется — не XSS (вставляется в CSS через styled-components, который
+  экранирует), но возможен «битый» стиль.</li>
+<li><strong>Решение:</strong> валидация/нормализация цвета на входе в <code>PaletteProvider</code>.</li>
+<li><strong>Эффект:</strong> устойчивость темизации к некорректным значениям.</li>
+</ul>
+<hr />
+<p><strong>Приоритет блока:</strong> S-1 (high) — волна 1; S-2/S-3 — волна 1–2; S-4/S-5 — волна 3.</p></div><div class="doc-section"><h1>04 — Скорость и отзывчивость</h1>
+<p>Для библиотеки «производительность» = (а) размер кода, доезжающего до бандла
+потребителя, (б) tree-shakability, (в) отсутствие тяжёлого в критическом пути,
+(г) визуальная стабильность компонентов (CLS, мерцание скелетонов).</p>
+<hr />
+<h3>P-1. CJS-only сборка без tree-shaking</h3>
+<ul>
+<li><strong>Где:</strong> <code>babel.config.json</code> (<code>"modules": "commonjs"</code>), <code>package.json</code>
+  (<code>main: ./dist/index.js</code>, нет <code>module</code>/<code>exports</code>/<code>sideEffects</code>).</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong>.</li>
+<li><strong>Описание:</strong> пакет публикуется только в CommonJS, единым barrel-ом. Потребитель,
+  импортирующий один <code>TextInput</code>, получает в бандл весь граф (<code>react-calendar</code>,
+  <code>qrcode.react</code>, <code>react-modal-sheet</code>, маски и т.д.), т.к. CJS не шейкается.</li>
+<li><strong>Решение:</strong> добавить ESM-сборку и <code>"exports"</code> map с подпутями
+  (<code>@invoicebox/ui/TextInput</code>), проставить <code>"sideEffects": false</code> (с осторожностью к
+  styled-components). Перейти на бандлер библиотек (<code>tsup</code>/<code>rollup</code>/<code>vite lib</code>).</li>
+<li><strong>Эффект:</strong> кратное снижение размера у потребителей, реальный tree-shaking.</li>
+</ul>
+<h3>P-2. Мёртвая зависимость <code>motion</code> (~framer-motion) в проде</h3>
+<ul>
+<li><strong>Где:</strong> <code>package.json</code> dependencies <code>motion ^12.38.0</code>; использований в <code>src</code> = <strong>0</strong>.</li>
+<li><strong>Серьёзность:</strong> high (по соотношению вес/польза).</li>
+<li><strong>Описание:</strong> одна из самых тяжёлых анимационных библиотек объявлена прод-зависимостью
+  и не используется. Тянется в граф установки потребителя.</li>
+<li><strong>Решение:</strong> удалить из <code>dependencies</code> (после подтверждения, что не нужна).</li>
+<li><strong>Эффект:</strong> минус крупная зависимость из дерева, чище установка.</li>
+</ul>
+<h3>P-3. Нет измерения размера бандла per-component</h3>
+<ul>
+<li><strong>Где:</strong> процесс сборки.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> размер <code>dist</code> 2.4 MB (транспиляция без минификации), но реального
+  per-export бюджета нет — регрессии веса не отлавливаются.</li>
+<li><strong>Решение:</strong> <code>size-limit</code> с бюджетами на ключевые экспорты в CI; <code>esbuild --metafile</code>
+  для анализа графа.</li>
+<li><strong>Эффект:</strong> контроль регрессий размера на каждом PR.</li>
+</ul>
+<h3>P-4. Тяжёлые компоненты в общем графе (Calendar/QRCode/масками)</h3>
+<ul>
+<li><strong>Где:</strong> <code>react-calendar</code> (7 файлов), <code>qrcode.react</code>, <code>@mona-health/react-input-mask</code>,
+  <code>react-custom-scrollbars-2</code>.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> редко используемые тяжёлые компоненты (QRCode, Calendar) попадают в граф
+  даже когда не нужны (следствие P-1).</li>
+<li><strong>Решение:</strong> после P-1 — изоляция через подпути-exports + опциональный <code>React.lazy</code>
+  для демонстраций; вынести в peer/optional где уместно.</li>
+<li><strong>Эффект:</strong> критический путь форм не тянет календарь/QR.</li>
+</ul>
+<h3>P-5. CLS / мерцание — Skeleton и Drawer</h3>
+<ul>
+<li><strong>Где:</strong> <code>common/Skeleton</code>, <code>common/Drawer/index.tsx</code> (задержка размонтирования 300мс),
+  загрузочные состояния форм.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> скелетоны без фиксированных размеров вызывают сдвиг макета (CLS) при
+  подмене на контент; множественные независимые скелетоны → «скелетон-шторм» и мерцание.
+  Нужен единый загрузчик с задержкой появления (anti-flicker) и резервированием места.</li>
+<li><strong>Решение:</strong> Skeleton с обязательными <code>width/height</code>; глобальная политика «единый
+  загрузчик с delay 150–200мс и min-display» против мерцания; зарезервированные размеры
+  у всех плейсхолдеров.</li>
+<li><strong>Эффект:</strong> CLS→~0, нет мельтешения при быстрых загрузках.</li>
+</ul>
+<h3>P-6. Анимации без <code>prefers-reduced-motion</code></h3>
+<ul>
+<li><strong>Где:</strong> <code>prefers-reduced-motion</code> = 0 совпадений; анимации в Drawer/Toast/спиннерах.</li>
+<li><strong>Серьёзность:</strong> medium (пересечение с a11y, см. <code>05</code>).</li>
+<li><strong>Описание:</strong> анимации всегда включены — нагрузка на слабые устройства + проблема
+  доступности.</li>
+<li><strong>Решение:</strong> общий хук/CSS-обёртка, отключающая анимации при <code>prefers-reduced-motion: reduce</code>.</li>
+<li><strong>Эффект:</strong> меньше работы рендера на слабых девайсах, выполнение WCAG 2.3.3.</li>
+</ul>
+<hr />
+<p><strong>Приоритет блока:</strong> P-1 + P-2 (high) — волна 1 (измеримый эффект); P-3/P-5 — волна 2;
+P-4/P-6 — волна 3.</p></div><div class="doc-section"><h1>05 — Доступность (WCAG 2.1 AA)</h1>
+<p>Самый слабый блок. По всему <code>src</code>: <code>aria-*</code> = <strong>0</strong>, <code>role=</code> = <strong>0</strong>,
+обработчиков клавиатуры (<code>onKeyDown/Up/Press</code>) = <strong>2</strong>, <code>prefers-reduced-motion</code> = <strong>0</strong>.
+Для библиотеки <strong>форм-инпутов</strong> это критично — недоступность тиражируется во все
+приложения-потребители.</p>
+<hr />
+<h3>A-1. Кастомные интерактивные компоненты не работают с клавиатуры</h3>
+<ul>
+<li><strong>Где:</strong> <code>form/Select</code>, <code>common/Dropdown</code>, <code>form/Autocomplete</code>, <code>form/Toggle</code>,
+  <code>form/DateInput</code>/<code>DateTimeInput</code>, <code>form/CodeInput</code>, <code>common/Drawer</code>.</li>
+<li><strong>Серьёзность:</strong> <strong>critical</strong>.</li>
+<li><strong>Описание:</strong> dropdown/select/autocomplete построены на <code>div</code>-ах без клавиатурной
+  навигации (стрелки/Enter/Esc/Home/End), без <code>tabindex</code>, без управления фокусом.
+  Пользователь клавиатуры/скринридера не может ими пользоваться. Нарушение
+  WCAG 2.1.1 (Keyboard), 4.1.2 (Name/Role/Value).</li>
+<li><strong>Решение:</strong> реализовать паттерны WAI-ARIA Authoring Practices:</li>
+<li>Select/Combobox → <code>role="combobox"</code> + <code>aria-expanded</code>/<code>aria-controls</code>/
+    <code>aria-activedescendant</code>, список <code>role="listbox"</code>, опции <code>role="option"</code>,
+    навигация стрелками, Enter/Esc.</li>
+<li>Toggle → нативный <code>&lt;input type="checkbox/switch"&gt;</code> или <code>role="switch"</code> +
+    <code>aria-checked</code>, активация Space/Enter.</li>
+<li>Рассмотреть Radix UI / React Aria как базу примитивов (доступность «из коробки»).</li>
+<li><strong>Эффект:</strong> полноценная работа с клавиатуры и скринридерами во всех потребителях.</li>
+</ul>
+<h3>A-2. Поля без программной связи label↔control и сообщений об ошибке</h3>
+<ul>
+<li><strong>Где:</strong> <code>form/InputLabel</code>, <code>form/TextInput</code>, <code>form/PureInput</code>, все поля.</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong>.</li>
+<li><strong>Описание:</strong> нет гарантии <code>htmlFor</code>/<code>id</code> связи, ошибки валидации не объявляются
+  (<code>aria-invalid</code>, <code>aria-describedby</code> на текст ошибки). Скринридер не сообщает причину
+  ошибки. WCAG 1.3.1, 3.3.1, 3.3.2, 4.1.3.</li>
+<li><strong>Решение:</strong> <code>InputLabel</code> генерирует/прокидывает <code>id</code>, поле получает <code>aria-invalid</code>,
+  ошибка — <code>role="alert"</code> + связь через <code>aria-describedby</code>.</li>
+<li><strong>Эффект:</strong> доступная валидация форм, корректное озвучивание ошибок.</li>
+</ul>
+<h3>A-3. Модалки/Drawer без фокус-трапа и возврата фокуса</h3>
+<ul>
+<li><strong>Где:</strong> <code>common/Drawer/index.tsx</code> (на <code>react-modal-sheet</code>), <code>hooks/useModal</code>.</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong>.</li>
+<li><strong>Описание:</strong> нет гарантии фокус-трапа внутри открытого Drawer, возврата фокуса на
+  триггер при закрытии, <code>role="dialog"</code>/<code>aria-modal</code>/<code>aria-labelledby</code>, закрытия по Esc.
+  WCAG 2.1.2 (No keyboard trap наоборот — нужен управляемый трап), 2.4.3 (Focus Order).</li>
+<li><strong>Решение:</strong> focus-trap (focus-trap-react или примитив диалога Radix), возврат фокуса,
+  <code>aria-modal="true"</code> + <code>aria-labelledby</code> на заголовок, Esc-закрытие, блокировка фона.</li>
+<li><strong>Эффект:</strong> доступные модальные сценарии, корректный порядок фокуса.</li>
+</ul>
+<h3>A-4. Контраст и размеры тач-таргетов не верифицированы</h3>
+<ul>
+<li><strong>Где:</strong> <code>palette/constants.ts</code>, <code>Typography</code>, кнопки/чипы/иконки.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> нет проверки контраста текста/фона (≥4.5:1 для обычного текста) и
+  минимального размера интерактивных целей (≈44×44px). WCAG 1.4.3, 2.5.5.</li>
+<li><strong>Решение:</strong> прогнать палитру через контраст-чекер, задокументировать допустимые пары;
+  гарантировать min-таргеты в стилях кнопок/иконок-кнопок.</li>
+<li><strong>Эффект:</strong> соответствие AA по контрасту и удобство на тач-устройствах.</li>
+</ul>
+<h3>A-5. Иконки/SVG без текстовых альтернатив</h3>
+<ul>
+<li><strong>Где:</strong> <code>common/InvoiceboxLogo</code>, <code>Flag</code>, <code>WarningIcon</code>, <code>Arrow</code>,
+  <code>AppCardLink/components/*</code> (GooglePlay/Apk/RuStore/AppGallery), <code>QRCode</code>.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> значимые SVG без <code>role="img"</code>/<code>aria-label</code> или <code>aria-hidden</code> для
+  декоративных. Ссылки-картинки магазинов без доступного имени. WCAG 1.1.1.</li>
+<li><strong>Решение:</strong> значимым — <code>aria-label</code>/<code>&lt;title&gt;</code>, декоративным — <code>aria-hidden="true"</code>;
+  <code>AppCardLink</code> — доступное имя ссылки.</li>
+<li><strong>Эффект:</strong> скринридер корректно описывает графику и ссылки.</li>
+</ul>
+<h3>A-6. Нет учёта <code>prefers-reduced-motion</code> и масштабирования</h3>
+<ul>
+<li><strong>Где:</strong> анимации (Drawer/Toast/спиннеры), вёрстка в <code>px</code>.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> анимации не отключаются по <code>reduce</code>; жёсткие <code>px</code> мешают
+  масштабированию до 200% (WCAG 1.4.4, 1.4.10 Reflow, 2.3.3 Animation from Interactions).</li>
+<li><strong>Решение:</strong> media-query <code>prefers-reduced-motion</code>; перевод критичных размеров на
+  <code>rem</code>; проверка reflow при zoom 200%.</li>
+<li><strong>Эффект:</strong> комфорт для чувствительных к движению и слабовидящих пользователей.</li>
+</ul>
+<hr />
+<p><strong>Приоритет блока:</strong> A-1 (critical), A-2/A-3 (high) — волны 1–2 (по компонентам);
+A-4/A-5/A-6 — волна 3. Рекомендация: подключить <code>eslint-plugin-jsx-a11y</code> и
+<code>@storybook/addon-a11y</code> уже в волне 1 как измеримый гейт.</p></div><div class="doc-section"><h1>06 — Архитектура и линтер</h1>
+<p>В целом структура здоровая: понятное деление <code>common</code>/<code>form</code>/<code>hooks</code>/<code>palette</code>/
+<code>validate</code>, единый barrel-API, god-компонентов нет (макс 341 LOC). Проблемы точечные.</p>
+<hr />
+<h3>AR-1. <code>any</code> и небезопасные assertions</h3>
+<ul>
+<li><strong>Где:</strong> 11 вхождений <code>any</code>/<code>as any</code>/<code>as unknown</code> по <code>src</code> (формы/автокомплит/палитра).</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> дыры в типобезопасности публичного API библиотеки → ошибки протекают к
+  потребителю без подсказок типов. Плюс — <code>@ts-ignore</code> = 0 (хорошо).</li>
+<li><strong>Решение:</strong> заменить <code>any</code> на дженерики/<code>unknown</code> + сужение; запретить правилами
+  <code>@typescript-eslint/no-explicit-any</code> (error) и <code>no-unsafe-*</code> после апгрейда tooling.</li>
+<li><strong>Эффект:</strong> надёжные типы на поверхности пакета, меньше runtime-сюрпризов.</li>
+</ul>
+<h3>AR-2. Нет ограничения размера файла/сложности в линте</h3>
+<ul>
+<li><strong>Где:</strong> <code>.eslintrc.json</code> — нет <code>max-lines</code>/<code>max-lines-per-function</code>/<code>complexity</code>.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> ничто не сдерживает рост файлов (PhoneInput/Select уже 330–341 LOC).</li>
+<li><strong>Решение:</strong> добавить <code>max-lines: [warn, 300]</code>, <code>max-lines-per-function</code>,
+  <code>complexity</code> как warn; крупные компоненты декомпозировать на под-компоненты/хуки.</li>
+<li><strong>Эффект:</strong> предсказуемый размер модулей, ранний сигнал о росте сложности.</li>
+</ul>
+<h3>AR-3. Лишние ререндеры — необёрнутые объекты/мапы в рендере</h3>
+<ul>
+<li><strong>Где:</strong> напр. <code>common/AppCardLink/index.tsx</code> (<code>appCardMap</code> создаётся на каждый рендер),
+  обработчики/объекты-литералы в JSX по формам.</li>
+<li><strong>Серьёзность:</strong> low/medium.</li>
+<li><strong>Описание:</strong> объекты/функции пересоздаются каждый рендер → лишние ререндеры дочерних
+  мемоизированных компонентов.</li>
+<li><strong>Решение:</strong> выносить статические мапы за компонент; <code>useMemo</code>/<code>useCallback</code> для
+  стабильных ссылок там, где есть мемо-потомки. Не мемоизировать вслепую.</li>
+<li><strong>Эффект:</strong> меньше лишних ререндеров в формах.</li>
+</ul>
+<h3>AR-4. 22 <code>eslint-disable</code> — точечно скрытый долг</h3>
+<ul>
+<li><strong>Где:</strong> 22 вхождения по <code>src</code> (в т.ч. <code>src/index.ts</code> — <code>no-var-requires</code>/<code>no-undef</code>
+  для shim-ов <code>object.entries/fromentries</code>).</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> часть оправдана (полифилы), часть может маскировать реальные проблемы.</li>
+<li><strong>Решение:</strong> ревизия каждого disable; shim-полифилы вынести/заменить нативными
+  <code>Object.entries/fromEntries</code> (доступны в target ES2022) — снять зависимости
+  <code>object.entries</code>/<code>object.fromentries</code> целиком.</li>
+<li><strong>Эффект:</strong> минус 2 зависимости + чище линт.</li>
+</ul>
+<h3>AR-5. Консистентность экспорта/именования</h3>
+<ul>
+<li><strong>Где:</strong> <code>src/index.ts</code> — смесь <code>export type { TProps as … }</code>; имена палитр
+  (<code>drawer</code>), пропсы <code>is*</code>-флаги.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> конвенции в целом единые, но <code>TProps</code>-переименования и булевы
+  <code>is*</code>/<code>should*</code> стоит зафиксировать в гайдлайне для предсказуемости API.</li>
+<li><strong>Решение:</strong> короткий CONTRIBUTING/стайлгайд по именованию пропсов и экспортов.</li>
+<li><strong>Эффект:</strong> предсказуемый, документированный публичный API.</li>
+</ul>
+<h3>AR-6. <code>prop-types</code> в devDeps у TS-библиотеки</h3>
+<ul>
+<li><strong>Где:</strong> <code>package.json</code> devDeps <code>prop-types</code>; <code>react/prop-types</code> выключен в линте.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> рудимент — типизация уже на TS; runtime prop-types в <code>src</code> не нужны (0).</li>
+<li><strong>Решение:</strong> удалить <code>prop-types</code>, если не используется stories/helpers.</li>
+<li><strong>Эффект:</strong> чище зависимости.</li>
+</ul>
+<hr />
+<p><strong>Приоритет блока:</strong> AR-1 — волна 2; AR-2/AR-4/AR-6 — волна 1 (дёшево, измеримо);
+AR-3/AR-5 — волна 3.</p></div><div class="doc-section"><h1>07 — Платформа (версии, сборка, CVE, кэш)</h1>
+<hr />
+<h3>PL-1. Устаревший инструментарий (TS / ESLint / typescript-eslint)</h3>
+<ul>
+<li><strong>Где:</strong> <code>package.json</code> — TypeScript <code>4.9.5</code>, ESLint <code>8.x</code>, <code>@typescript-eslint/* 5.x</code>.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> TS 4.9 (текущие — 5.x), ESLint 8 (EOL), typescript-eslint 5 (старая
+  мажорка) — нет современных правил (<code>no-unsafe-*</code>), типов и багфиксов.</li>
+<li><strong>Решение:</strong> апгрейд до TS 5.x, ESLint 9 (flat config) или хотя бы 8 latest,
+  typescript-eslint 8. Прогон автофиксов, актуализация конфигов.</li>
+<li><strong>Эффект:</strong> современные проверки типов/линта, основа для AR-1.</li>
+</ul>
+<h3>PL-2. Storybook 7 тянет уязвимую <code>react-scripts</code>/CRA-цепочку (источник CVE)</h3>
+<ul>
+<li><strong>Где:</strong> devDeps <code>@storybook/preset-create-react-app</code>, <code>@storybook/* 7.6</code>,
+  транзитивно <code>react-scripts</code> → <code>@svgr/*</code>, <code>workbox-*</code>, <code>rollup-plugin-terser</code>, <code>svgo</code>.</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong>.</li>
+<li><strong>Описание:</strong> именно CRA-пресет тянет основную массу high/critical из <code>npm audit</code>.
+  CRA задепрекейчен.</li>
+<li><strong>Решение:</strong> мигрировать на Storybook 8/9 на Vite-билдере, выкинуть
+  <code>preset-create-react-app</code>/<code>react-scripts</code>. Это снимет десятки CVE разом.</li>
+<li><strong>Эффект:</strong> резкое падение <code>npm audit</code>, быстрее dev-сборка витрины.</li>
+</ul>
+<h3>PL-3. Заявленный <code>engines.node &gt;=16</code> недостоверен</h3>
+<ul>
+<li><strong>Где:</strong> <code>package.json</code> <code>"engines": { "node": "&gt;=16.0.0" }</code>; локально node 16.20.2.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> Storybook 7+ и современный tooling требуют node 18+; node 16 — EOL
+  (с 2023). Заявленная совместимость вводит в заблуждение и ломает воспроизводимость.</li>
+<li><strong>Решение:</strong> поднять до <code>&gt;=18</code> (лучше <code>&gt;=20</code>); добавить <code>.nvmrc</code>/<code>engine-strict</code>;
+  зафиксировать версию в CI-матрице.</li>
+<li><strong>Эффект:</strong> воспроизводимая сборка, поддерживаемый рантайм.</li>
+</ul>
+<h3>PL-4. Сборка не воспроизводима и без бандлинга</h3>
+<ul>
+<li><strong>Где:</strong> <code>release.sh</code> (Babel CLI транспиляция, без минификации/бандла),
+  <code>dist/</code> закоммичен в репозиторий.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> артефакт собирается ad-hoc, коммитится в git (раздувает историю),
+  нет ESM/минификации (см. P-1). Babel-транспиляция «как есть».</li>
+<li><strong>Решение:</strong> перейти на <code>tsup</code>/<code>rollup</code> (ESM+CJS+минификация+<code>exports</code>), убрать <code>dist</code>
+  из git (<code>.npmignore</code>/<code>files</code> уже ограничивает публикацию — но коммит лишний),
+  собирать в CI.</li>
+<li><strong>Эффект:</strong> воспроизводимый, минифицированный, tree-shakable артефакт.</li>
+</ul>
+<h3>PL-5. Релиз вручную с локальной машины, без гейта</h3>
+<ul>
+<li><strong>Где:</strong> <code>release.sh</code> — <code>git checkout main &amp;&amp; merge develop &amp;&amp; npm publish</code> локально.</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong> (операционный риск).</li>
+<li><strong>Описание:</strong> публикация в npm и пуш в <code>main</code> идут с машины разработчика без прогона
+  тестов/линта/audit, без 2FA-гейта, без provenance. Риск выката битого/непроверенного
+  пакета и человеческой ошибки в git.</li>
+<li><strong>Решение:</strong> CI-релиз (GitHub Actions) с тегов: lint+test+audit+build → <code>npm publish</code>
+  с <code>--provenance</code>, OIDC-токеном вместо локального; <code>main</code> под branch protection.</li>
+<li><strong>Эффект:</strong> надёжный, проверяемый, аудируемый релиз.</li>
+</ul>
+<h3>PL-6. Кэширование статики витрины</h3>
+<ul>
+<li><strong>Где:</strong> Storybook на GitHub Pages (<code>docs/</code>, <code>CNAME ui.invoicebox.ru</code>).</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> GitHub Pages даёт ограниченный контроль заголовков кэша; хешированные
+  ассеты Storybook кэшируются, но <code>index.html</code> стоит держать <code>no-cache</code>.</li>
+<li><strong>Решение:</strong> при переходе на собственный хостинг — immutable-кэш для хешированных
+  ассетов, <code>no-cache</code> для html. На Pages — оставить как есть (вне контроля).</li>
+<li><strong>Эффект:</strong> корректная инвалидция витрины (низкий приоритет).</li>
+</ul>
+<hr />
+<p><strong>Приоритет блока:</strong> PL-2 + PL-5 (high) — волна 1; PL-1/PL-3/PL-4 — волна 2; PL-6 — фоном.</p></div><div class="doc-section"><h1>08 — Тесты и CI</h1>
+<p>Текущее покрытие близко к нулю: <strong>1 тест-файл, 4 теста</strong> (<code>websiteValidate.test.ts</code>),
+на ~38 компонентов и весь модуль <code>validate</code>. CI нет.</p>
+<hr />
+<h3>T-1. Нет CI вообще</h3>
+<ul>
+<li><strong>Где:</strong> <code>.github/workflows</code> отсутствует.</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong>.</li>
+<li><strong>Описание:</strong> ни тесты, ни линт, ни <code>audit</code>, ни сборка не проверяются автоматически.
+  Любой PR может слить регрессию; релиз идёт без гейта (см. PL-5).</li>
+<li><strong>Решение:</strong> GitHub Actions: на PR — <code>install → lint → typecheck → test --coverage →
+  build → npm audit (порог)</code>; на тег — релиз. Матрица node 18/20.</li>
+<li><strong>Эффект:</strong> автоматический контроль качества каждого изменения.</li>
+</ul>
+<h3>T-2. Критический путь без тестов</h3>
+<ul>
+<li><strong>Где:</strong> <code>validate/utils/vatNumberValidateHelpers.ts</code> (ИНН/ОГРН/БИК/р-с СНГ),
+  <code>validate/index.ts</code> (контрольные суммы settlementAccount/correspondentAccount/ОГРН),
+  <code>form/PhoneInput/phoneInputLogic.ts</code>, <code>CurrencyInput</code>, <code>DateInput</code>/<code>DateTimeInput</code>.</li>
+<li><strong>Серьёзность:</strong> <strong>high</strong>.</li>
+<li><strong>Описание:</strong> бизнес-критичная логика (банковские реквизиты, контрольные числа,
+  телефоны, деньги, даты) почти не покрыта. Ошибка здесь = неверная валидация платёжных
+  данных у всех потребителей.</li>
+<li><strong>Решение:</strong> unit-тесты на все валидаторы (включая edge: пустые/мусорные/граничные
+  длины, NaN), на phone/currency/date-логику. Это самый высокий ROI.</li>
+<li><strong>Эффект:</strong> защита денежно-критичной логики, ловля регрессий.</li>
+</ul>
+<h3>T-3. Нет компонентных/integration-тестов</h3>
+<ul>
+<li><strong>Где:</strong> компоненты <code>form/*</code>, <code>common/Drawer</code>, <code>Select</code>, <code>Autocomplete</code>.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> нет проверки рендера, взаимодействий, доступности.</li>
+<li><strong>Решение:</strong> React Testing Library + <code>jest-dom</code> + <code>user-event</code>; <code>jest-axe</code> для a11y-
+  регрессий (синергия с <code>05</code>); Storybook play-functions (<code>@storybook/test</code> уже в devDeps,
+  но не используется) для interaction-тестов.</li>
+<li><strong>Эффект:</strong> покрытие поведения и доступности ключевых компонентов.</li>
+</ul>
+<h3>T-4. Jest гоняет тесты дважды (из <code>dist/</code>)</h3>
+<ul>
+<li><strong>Где:</strong> <code>jest</code> без конфига → подхватывает <code>dist/validate/utils/websiteValidate.test.js</code>.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> дублирующий прогон скомпилированной копии; зашумляет вывод, маскирует
+  расхождения src/dist.</li>
+<li><strong>Решение:</strong> <code>jest.config</code> с <code>testPathIgnorePatterns: ['/dist/','/node_modules/']</code>,
+  <code>coverageThreshold</code>, окружение <code>jsdom</code> для компонентов.</li>
+<li><strong>Эффект:</strong> чистый, детерминированный прогон + пороги покрытия.</li>
+</ul>
+<h3>T-5. Нет e2e критического пути</h3>
+<ul>
+<li><strong>Где:</strong> —</li>
+<li><strong>Серьёзность:</strong> low (для библиотеки).</li>
+<li><strong>Описание:</strong> полноценный e2e в UI-kit избыточен; роль e2e выполняют Storybook
+  interaction-тесты и визуальная регрессия.</li>
+<li><strong>Решение:</strong> опционально — визуальная регрессия (Chromatic/Playwright-screenshots) по
+  stories; в CI на PR.</li>
+<li><strong>Эффект:</strong> ловля визуальных регрессий без тяжёлого e2e-стека.</li>
+</ul>
+<hr />
+<p><strong>Целевые пороги (предложение):</strong> старт — coverage по <code>validate/</code> ≥80%; общий ≥50% к
+концу волны 2, ≥70% к волне 3.</p>
+<p><strong>Приоритет блока:</strong> T-1 + T-2 (high) — волна 1; T-3/T-4 — волна 2; T-5 — волна 3.</p></div><div class="doc-section"><h1>09 — Наблюдаемость</h1>
+<blockquote>
+<p>В ТЗ пункт 8 оставлен без расшифровки. Для <strong>библиотеки</strong> наблюдаемость трактуем как:
+предсказуемое логирование, диагностируемость в потребителе, версионирование/changelog,
+и хуки для интеграции с мониторингом приложения-потребителя (а не встроенный SDK
+телеметрии — это было бы навязыванием).</p>
+</blockquote>
+<hr />
+<h3>O-1. Бессистемное логирование (<code>console.*</code>)</h3>
+<ul>
+<li><strong>Где:</strong> 3 вхождения <code>console.*</code>, в т.ч. <code>validate/index.ts</code>
+  (<code>console.error('Form dont have vatNumber or countryId')</code>), линт-правило <code>no-console: warn</code>.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> библиотека пишет напрямую в <code>console</code> потребителя, без уровня/префикса/
+  возможности отключить. Шум в проде, нет контроля.</li>
+<li><strong>Решение:</strong> единый dev-only логгер с префиксом <code>[invoicebox/ui]</code>, отключаемый в
+  production-сборке (<code>process.env.NODE_ENV</code>), без прямых <code>console</code> в рантайм-коде.</li>
+<li><strong>Эффект:</strong> чистый прод-лог потребителя, управляемая диагностика.</li>
+</ul>
+<h3>O-2. Нет механизма репортинга ошибок наружу</h3>
+<ul>
+<li><strong>Где:</strong> компоненты с асинхронной логикой / валидацией.</li>
+<li><strong>Серьёзность:</strong> medium.</li>
+<li><strong>Описание:</strong> когда внутри компонента что-то идёт не так (см. <code>02-resilience</code>), у
+  потребителя нет колбэка/хука узнать об этом и отправить в свой Sentry/мониторинг.</li>
+<li><strong>Решение:</strong> опциональный проп <code>onError</code>/контекст <code>onError</code> на составных компонентах
+  и в ErrorBoundary (R-1); документировать.</li>
+<li><strong>Эффект:</strong> потребитель видит сбои библиотеки в своём мониторинге.</li>
+</ul>
+<h3>O-3. Нет CHANGELOG / прозрачности версий</h3>
+<ul>
+<li><strong>Где:</strong> <code>release.sh</code> бампит <code>prerelease --preid=alpha</code> без changelog; <code>RELEASE.md</code>
+  описывает процесс, но истории изменений API нет.</li>
+<li><strong>Серьёзность:</strong> low/medium.</li>
+<li><strong>Описание:</strong> потребитель не понимает, что изменилось между alpha-версиями (а их уже
+  292) — нет наблюдаемости эволюции API.</li>
+<li><strong>Решение:</strong> автогенерация CHANGELOG (changesets/conventional-changelog) в релиз-пайплайне.</li>
+<li><strong>Эффект:</strong> прозрачность изменений, безопасные апгрейды у потребителей.</li>
+</ul>
+<h3>O-4. Версия библиотеки недоступна в рантайме</h3>
+<ul>
+<li><strong>Где:</strong> нет экспорта <code>version</code>.</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> при дебаге у потребителя нельзя программно узнать версию UI-kit.</li>
+<li><strong>Решение:</strong> экспортировать <code>version</code> (из package.json через сборку).</li>
+<li><strong>Эффект:</strong> проще диагностика инцидентов («какая версия установлена»).</li>
+</ul>
+<h3>O-5. Наблюдаемость сборки/релиза</h3>
+<ul>
+<li><strong>Где:</strong> процесс релиза (см. PL-5).</li>
+<li><strong>Серьёзность:</strong> low.</li>
+<li><strong>Описание:</strong> нет следов сборки (логов CI, артефактов, size-отчёта) — релиз
+  непрозрачен.</li>
+<li><strong>Решение:</strong> CI-артефакты: отчёт <code>size-limit</code>, coverage, <code>npm audit</code>, лог сборки на
+  каждый релиз.</li>
+<li><strong>Эффект:</strong> аудируемая история качества релизов.</li>
+</ul>
+<hr />
+<p><strong>Приоритет блока:</strong> O-1/O-2 — волна 2; O-3 — волна 2–3; O-4/O-5 — волна 3.</p></div><div class="doc-section"><h1>10 — План рефакторинга (волнами)</h1>
+<p>Принцип очерёдности: <strong>сначала риски и измеримость</strong> — сперва ставим «сетку
+безопасности» (CI, тесты, измерения), затем закрываем высокий риск, затем качество и
+доступность. Бизнес-логику и пользовательские пути <strong>не меняем без согласования</strong>
+(отдельное продуктовое решение).</p>
+<blockquote>
+<p>Каждая волна = отдельная ветка/PR. Документацию синхронизируем в том же PR, что и код.
+После каждой волны — повторный замер метрик из <code>01-BASELINE-METRICS.md</code>.</p>
+</blockquote>
+<hr />
+<h2>Волна 0 — «Сетка безопасности» (риск + измеримость, без правок бизнес-логики)</h2>
+<p>Цель: начать измерять и не дать регрессий. Минимум изменений поведения.</p>
+<ol>
+<li><strong>CI</strong> (T-1, PL-5): GitHub Actions — lint + typecheck + test + build + <code>npm audit</code>.</li>
+<li><strong>Jest-конфиг</strong> (T-4): <code>testPathIgnorePatterns: /dist/</code>, <code>coverage</code>, <code>coverageThreshold</code>,
+   jsdom.</li>
+<li><strong>Измерения</strong> (P-3): <code>size-limit</code> бюджеты на ключевые экспорты; baseline зафиксирован.</li>
+<li><strong>Lint-гейты дёшево</strong> (AR-2, AR-6): <code>max-lines</code> (warn), <code>eslint-plugin-jsx-a11y</code>,
+   <code>@storybook/addon-a11y</code> — пока как warn, чтобы увидеть масштаб A-блока.</li>
+<li><strong>Удалить мёртвое</strong> (P-2, AR-6): убрать <code>motion</code>; заменить shim-полифилы
+   <code>object.entries/fromentries</code> нативными.</li>
+</ol>
+<p><strong>Эффект/метрика:</strong> появляется CI-гейт; coverage и size измеряются; −1..3 зависимости.
+<strong>Риск:</strong> минимальный (инфраструктура).</p>
+<h2>Волна 1 — Высокий риск: безопасность + платформа + критич. тесты</h2>
+<ol>
+<li><strong>S-1</strong>: <code>isSafeUrl</code> + <code>rel="noopener noreferrer"</code> в <code>AppCardLink</code>.</li>
+<li><strong>S-2</strong>: правый якорь и JSDoc для <code>Validate.website</code>, ReDoS-чек.</li>
+<li><strong>PL-2 + S-3</strong>: миграция Storybook 7 → 8/9 (Vite), выпил <code>react-scripts</code>/CRA-пресета →
+   падение <code>npm audit</code> на десятки CVE.</li>
+<li><strong>PL-3</strong>: <code>engines.node &gt;=18</code>, <code>.nvmrc</code>, CI-матрица.</li>
+<li><strong>T-2</strong>: unit-тесты на весь <code>validate/</code> + phone/currency/date-логику (ROI максимум).</li>
+</ol>
+<p><strong>Эффект/метрика:</strong> <code>npm audit</code> critical→0, coverage <code>validate/</code> ≥80%, закрыт XSS-вектор.
+<strong>Риск:</strong> средний (Storybook-миграция); бизнес-логика не трогается.</p>
+<h2>Волна 2 — Производительность сборки + типы + наблюдаемость</h2>
+<ol>
+<li><strong>P-1 + PL-4</strong>: переход на <code>tsup</code>/<code>rollup</code>: ESM+CJS, <code>exports</code>-map с подпутями,
+   <code>sideEffects</code>, минификация; убрать <code>dist</code> из git, собирать в CI.</li>
+<li><strong>PL-1</strong>: апгрейд TS 5 / ESLint 9 / typescript-eslint 8.</li>
+<li><strong>AR-1</strong>: убрать <code>any</code>/unsafe assertions, включить <code>no-explicit-any</code>/<code>no-unsafe-*</code>.</li>
+<li><strong>O-1/O-2</strong>: единый dev-логгер + опциональный <code>onError</code>.</li>
+<li><strong>T-3</strong>: RTL + <code>jest-axe</code> + Storybook play-тесты на ключевые компоненты.</li>
+</ol>
+<p><strong>Эффект/метрика:</strong> tree-shakable пакет (замер size до/после), типобезопасный API,
+coverage ≥50%.
+<strong>Риск:</strong> средний (смена сборщика — проверить совместимость экспортов у потребителей).</p>
+<h2>Волна 3 — Доступность (по компонентам) + качество + резилентность</h2>
+<blockquote>
+<p>Самый объёмный блок; вести покомпонентно, каждый компонент — отдельный небольшой PR
+со stories + a11y-тестом.
+1. <strong>A-1/A-2/A-3</strong> (critical/high): клавиатура+ARIA для Select/Dropdown/Autocomplete/
+   Toggle; label↔control+ошибки; фокус-трап в Drawer. Рассмотреть Radix/React Aria
+   как базу примитивов.
+2. <strong>A-4/A-5/A-6</strong>: контраст палитры, alt у SVG, <code>prefers-reduced-motion</code>, <code>rem</code>/reflow.
+3. <strong>P-5/P-6</strong>: Skeleton с резервированием размеров (CLS), anti-flicker загрузчик.
+4. <strong>R-1/R-2/R-4/R-5</strong>: ErrorBoundary, guard-парсинг, безопасный <code>useLoadingSubmit</code>,
+   fallback палитры.
+5. <strong>AR-3/AR-5, O-3/O-4</strong>: ререндеры, стайлгайд API, CHANGELOG, экспорт <code>version</code>.</p>
+</blockquote>
+<p><strong>Эффект/метрика:</strong> <code>jest-axe</code>/addon-a11y без нарушений на покрытых компонентах;
+CLS≈0; coverage ≥70%.
+<strong>Риск:</strong> изменения поведения компонентов — <strong>каждый a11y-PR, меняющий разметку/фокус,
+согласуется</strong> (может затронуть верстку потребителей).</p>
+<hr />
+<h2>Что требует явного согласования перед стартом</h2>
+<ol>
+<li><strong>Storybook-миграция 7→8/9</strong> (волна 1) — затрагивает dev-процесс команды.</li>
+<li><strong>Смена сборщика и <code>exports</code>-map</strong> (волна 2) — меняет способ импорта у потребителей
+   (обратная совместимость barrel-импорта сохраняется, подпути добавляются).</li>
+<li><strong>A11y-изменения разметки/ролей</strong> (волна 3) — могут влиять на стили/селекторы
+   потребителей; продуктовое решение по приоритету компонентов.</li>
+<li><strong>Удаление <code>motion</code></strong> — подтвердить, что не планируется к использованию.</li>
+</ol>
+<h2>Сводная таблица приоритетов</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Блок</th>
+<th>Severity</th>
+<th>Волна</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T-1</td>
+<td>CI</td>
+<td>high</td>
+<td>0</td>
+</tr>
+<tr>
+<td>P-2</td>
+<td>мёртвый motion</td>
+<td>high</td>
+<td>0</td>
+</tr>
+<tr>
+<td>S-1</td>
+<td>href/_blank XSS</td>
+<td>high</td>
+<td>1</td>
+</tr>
+<tr>
+<td>PL-2</td>
+<td>CVE через CRA-пресет</td>
+<td>high</td>
+<td>1</td>
+</tr>
+<tr>
+<td>PL-5</td>
+<td>ручной релиз</td>
+<td>high</td>
+<td>1</td>
+</tr>
+<tr>
+<td>T-2</td>
+<td>тесты критич. логики</td>
+<td>high</td>
+<td>1</td>
+</tr>
+<tr>
+<td>S-2</td>
+<td>website regex</td>
+<td>medium</td>
+<td>1</td>
+</tr>
+<tr>
+<td>P-1</td>
+<td>CJS/tree-shaking</td>
+<td>high</td>
+<td>2</td>
+</tr>
+<tr>
+<td>A-1</td>
+<td>клавиатура</td>
+<td>critical</td>
+<td>3</td>
+</tr>
+<tr>
+<td>A-2</td>
+<td>label/ошибки</td>
+<td>high</td>
+<td>3</td>
+</tr>
+<tr>
+<td>A-3</td>
+<td>фокус-трап</td>
+<td>high</td>
+<td>3</td>
+</tr>
+<tr>
+<td>(остальные medium/low)</td>
+<td>—</td>
+<td>—</td>
+<td>2–3</td>
+</tr>
+</tbody>
+</table></div>
+</body></html>
