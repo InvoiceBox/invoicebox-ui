@@ -10,7 +10,6 @@ export type { TAbstractPalette } from './palette';
 
 // common
 export { Skeleton } from './components/common/Skeleton';
-export { InvoiceboxLoader } from './components/common/InvoiceboxLoader';
 export { Typography } from './components/common/Typography';
 export { InvoiceboxSpinner } from './components/common/InvoiceboxSpinner';
 export { SecondaryButton } from './components/common/SecondaryButton';
