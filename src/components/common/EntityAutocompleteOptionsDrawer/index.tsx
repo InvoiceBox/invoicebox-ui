@@ -44,6 +44,10 @@ export const EntityAutocompleteOptionsDrawer = <TEntity,>({
         [onClose, onChange, options],
     );
 
+    // Скелетоны — только на первой загрузке (опций ещё нет). При повторных запросах держим прежние
+    // опции, иначе лоадер мерцает на каждый ввод символа.
+    const showSkeletons = isLoadingOptions && options.length === 0;
+
     return (
         <Drawer isOpen={isOpen} onClose={onClose} isPadding={false} onOpenEnd={onOpenEnd}>
             <S.BodyWrapper>
@@ -55,7 +59,7 @@ export const EntityAutocompleteOptionsDrawer = <TEntity,>({
                                 {promptMessage}
                             </S.Prompt>
                         )}
-                        {isLoadingOptions && (
+                        {showSkeletons && (
                             <S.SkeletonListWrapper>
                                 {loadingList.map((ComponentSkeleton, index) => (
                                     // eslint-disable-next-line react/no-array-index-key
@@ -63,7 +67,7 @@ export const EntityAutocompleteOptionsDrawer = <TEntity,>({
                                 ))}
                             </S.SkeletonListWrapper>
                         )}
-                        {!isLoadingOptions &&
+                        {!showSkeletons &&
                             !promptMessage &&
                             options.map((option, index) => (
                                 <S.OptionWrapper

@@ -13,11 +13,21 @@ export type TProps = {
 // CSS-скроллбар (убрали зависимость `react-custom-scrollbars-2`): нативный overflow + стилизованный
 // тонкий ползунок. Публичный API сохранён (maxHeight/trackWidth/autoHeight). autoHeight=true →
 // контейнер растёт по контенту до maxHeight, затем скроллится; autoHeight=false → высота 100% родителя.
-export const Scrollbar: FC<TProps> = ({ children, maxHeight = '100%', trackWidth = 4, autoHeight = true }) => {
+export const Scrollbar: FC<TProps> = ({
+    children,
+    maxHeight = '100%',
+    trackWidth = 4,
+    autoHeight = true,
+}) => {
     const palette = useComponentPalette<TScrollbarPalette>('scrollbar');
 
     return (
-        <S.Wrapper $maxHeight={maxHeight} $trackWidth={trackWidth} $thumb={palette.thumb} $autoHeight={autoHeight}>
+        <S.Wrapper
+            $maxHeight={maxHeight}
+            $trackWidth={trackWidth}
+            $thumb={palette.thumb}
+            $autoHeight={autoHeight}
+        >
             {children}
         </S.Wrapper>
     );

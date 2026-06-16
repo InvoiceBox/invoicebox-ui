@@ -5,9 +5,10 @@ export const Wrapper = styled.div`
     box-sizing: border-box;
 `;
 
-export const OptionContainer = styled.div<{ $usePadding: boolean; $hoverBg: string }>`
+export const OptionContainer = styled.div<{ $usePadding: boolean; $hoverBg: string; $active?: boolean }>`
     width: 100%;
     border-radius: ${({ $usePadding }) => ($usePadding ? '12px' : 'none')};
+    background-color: ${({ $active, $hoverBg }) => ($active ? $hoverBg : 'transparent')};
     &:hover {
         background-color: ${({ $hoverBg }) => $hoverBg};
     }
