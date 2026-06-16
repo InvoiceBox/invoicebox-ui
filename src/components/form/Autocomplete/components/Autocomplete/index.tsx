@@ -69,6 +69,10 @@ type TControlProps = {
     usePadding?: boolean;
     dropdownWidth?: string;
     useModernStyles?: boolean;
+    // Полностью гасит инлайн-выпадающий список (под полем). Используется, когда результаты
+    // показываются в другом месте — например, на мобильном в боттомшите: поле работает как
+    // обычный инпут-триггер, под ним ничего не всплывает (combobox-ARIA при этом отключается).
+    isDropdownDisabled?: boolean;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -101,6 +105,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             usePadding = false,
             dropdownWidth,
             useModernStyles = false,
+            isDropdownDisabled = false,
         },
         ref,
     ) => {
@@ -180,7 +185,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
 
         const isModernPlaceholderVisible = useMemo(() => !isOpen && !value, [isOpen, value]);
 
-        const isDropdownOpen = isOpen && (!!options.length || !!isLoading);
+        const isDropdownOpen = !isDropdownDisabled && isOpen && (!!options.length || !!isLoading);
         // Скелетоны показываем ТОЛЬКО когда опций ещё нет (первая загрузка). При повторных запросах
         // (ввод символов) держим прежние опции — иначе лоадер мерцает на каждое изменение.
         const showSkeletons = !!isLoading && options.length === 0;
