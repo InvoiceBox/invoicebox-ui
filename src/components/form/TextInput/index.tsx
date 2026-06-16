@@ -24,6 +24,7 @@ export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
         | 'useModernStyles'
         | 'readOnly'
         | 'inputMode'
+        | 'autoComplete'
     > & {
         value: string;
         onChange: (value: string) => void;
@@ -60,6 +61,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             id,
             inputMode,
             readOnly,
+            autoComplete,
         },
         ref,
     ) => {
@@ -145,6 +147,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                         useModernStyles={useModernStyles}
                         inputMode={inputMode}
                         readOnly={readOnly}
+                        autoComplete={autoComplete}
                         {...paddingOptions}
                     />
                     {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
