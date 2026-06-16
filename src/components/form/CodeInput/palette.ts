@@ -1,5 +1,5 @@
 import { TAbstractPalette } from '../../../palette';
-import hexToRgba from 'hex-to-rgba';
+import hexToRgba from '../../../utils/hexToRgba';
 
 export type TCodeInputPalette = {
     errorBorder: string;
