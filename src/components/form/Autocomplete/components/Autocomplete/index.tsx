@@ -220,13 +220,15 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     usePadding={usePadding}
                 >
                     {isLoading ? (
-                        optionsLoader || (
-                            <>
-                                <DefaultSkeletonItem />
-                                <DefaultSkeletonItem />
-                                <DefaultSkeletonItem />
-                            </>
-                        )
+                        <Scrollbar maxHeight={listHeight}>
+                            {optionsLoader || (
+                                <>
+                                    <DefaultSkeletonItem />
+                                    <DefaultSkeletonItem />
+                                    <DefaultSkeletonItem />
+                                </>
+                            )}
+                        </Scrollbar>
                     ) : (
                         <Scrollbar maxHeight={listHeight}>
                             {options.map((option, index) => (
