@@ -1,6 +1,21 @@
 import styled, { css } from 'styled-components';
 import { TDropdownPalette } from './palette';
 
+// Невидимый якорь в потоке: по его родителю (поле-триггер) считаем позицию портал-дропдауна.
+// display:none — не влияет на вёрстку, но parentElement (само поле) доступен для измерений.
+export const Anchor = styled.span`
+    display: none;
+`;
+
+// Слой-обёртка дропдауна: вынесена порталом в body и спозиционирована fixed точно над полем
+// (через inline top/left/width/height). pointer-events:none — сам слой не перехватывает клики
+// (его площадь = полю), кликабелен только внутренний Wrapper.
+export const PositionLayer = styled.div`
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+`;
+
 const hidden = css`
     visibility: hidden;
     opacity: 0;
@@ -30,6 +45,7 @@ export const Wrapper = styled.div<{
     $palette: TDropdownPalette;
     $usePadding?: boolean;
 }>`
+    pointer-events: auto;
     padding: ${({ $usePadding }) => ($usePadding ? '8px 0;' : 'none')};
     overflow: hidden;
     border-radius: 20px;

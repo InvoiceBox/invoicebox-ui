@@ -72,7 +72,8 @@ export const DateTimeInput: FC<TProps> = ({
         [handleCloseAndSkipDropdownValue, isOpen],
     );
 
-    const elRef = useOutsideClick(handleCloseAndSkipDropdownValue);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const elRef = useOutsideClick(handleCloseAndSkipDropdownValue, [dropdownRef]);
     const { calendarRef, handleTimePickerSetHeight, timePickerHeight } = useTimePickerHeight(isOpen);
 
     const {
@@ -233,7 +234,7 @@ export const DateTimeInput: FC<TProps> = ({
                 </S.InputWrapper>
             </InputLabel>
             {!isMobile ? (
-                <Dropdown isOpen={isOpen} isAutoPosition {...dropdownProps}>
+                <Dropdown ref={dropdownRef} isOpen={isOpen} isAutoPosition {...dropdownProps}>
                     <S.CalendarWithTimePicker $dividerColor={palette.divider}>
                         <S.CalendarWrapper ref={calendarRef} $dividerColor={palette.divider}>
                             <Calendar

@@ -106,7 +106,8 @@ export const Select = <TValue extends string | number>({
     const handleShow = useCallback(() => setIsOpen(true), []);
     const handleHide = useCallback(() => setIsOpen(false), []);
 
-    const wrapperRef = useOutsideClick(handleHide);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useOutsideClick(handleHide, [dropdownRef]);
 
     const handleFocus = useCallback(
         (event: FocusEvent<HTMLInputElement>) => {
@@ -316,6 +317,7 @@ export const Select = <TValue extends string | number>({
                 </Drawer>
             ) : (
                 <Dropdown
+                    ref={dropdownRef}
                     isOpen={isOpen}
                     isAutoPosition
                     width={dropdownWidth || '100%'}

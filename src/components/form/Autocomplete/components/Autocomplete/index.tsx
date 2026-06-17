@@ -126,7 +126,8 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             setActiveIndex(-1);
         }, []);
 
-        const wrapperRef = useOutsideClick(handleClose);
+        const dropdownRef = useRef<HTMLDivElement>(null);
+        const wrapperRef = useOutsideClick(handleClose, [dropdownRef]);
 
         const handleChange = useCallback(
             (event: ChangeEvent<HTMLInputElement>) => {
@@ -290,6 +291,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                 </InputLabel>
 
                 <Dropdown
+                    ref={dropdownRef}
                     isOpen={isOpen && (!!options.length || !!isLoading)}
                     isAutoPosition
                     width={dropdownWidth || '100%'}
