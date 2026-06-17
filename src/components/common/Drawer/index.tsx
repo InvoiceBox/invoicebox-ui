@@ -8,6 +8,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import * as S from './styles';
 import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
@@ -108,7 +109,7 @@ export const Drawer: FC<TProps> = ({
     const isDragging = dragOffset > 0;
     const translateY = !isEntered ? '100%' : `${dragOffset}px`;
 
-    return (
+    return createPortal(
         <S.Root role="dialog" aria-modal="true">
             <S.Backdrop $bgColor={palette.backdropBg} $isVisible={isEntered} onClick={onClose} />
             <S.Sheet
@@ -141,6 +142,7 @@ export const Drawer: FC<TProps> = ({
                     {children}
                 </S.ChildrenWrapper>
             </S.Sheet>
-        </S.Root>
+        </S.Root>,
+        document.body,
     );
 };
