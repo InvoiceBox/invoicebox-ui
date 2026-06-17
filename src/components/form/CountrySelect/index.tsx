@@ -28,7 +28,16 @@ type TControlProps<T> = Pick<TSearchInputProps, 'placeholder'> &
     Pick<TCountryItemProps<T>, 'selectedLabel'> & {
         options: TOption[];
         disabled?: boolean;
-    } & Pick<TDropdownProps, 'positionVertical' | 'positionLeft' | 'positionRight' | 'minWidth'>;
+    } & Pick<
+            TDropdownProps,
+            | 'positionVertical'
+            | 'positionLeft'
+            | 'positionRight'
+            | 'minWidth'
+            | 'width'
+            | 'isAutoPosition'
+            | 'isTopPosition'
+        >;
 
 export type TProps = TFieldProps & TControlProps<string>;
 
