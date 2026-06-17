@@ -5,8 +5,10 @@ git checkout develop &&
 # clean up
 rm -rf dist docs &&
 
-# build dist
+# build dist (CommonJS — `main`)
 ./node_modules/.bin/babel src --extensions .ts,.tsx --out-dir dist --copy-files &&
+# build dist/esm (ES modules — `module`; with sideEffects:false enables tree-shaking in consumers)
+./node_modules/.bin/babel src --extensions .ts,.tsx --out-dir dist/esm --copy-files --config-file ./babel.config.esm.json &&
 ./node_modules/.bin/tsc --project tsconfig.json &&
 
 # build storybook

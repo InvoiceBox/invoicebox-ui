@@ -2,7 +2,7 @@ import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { TToastPalette } from './palette';
 import { breakpoints } from '../../../breakpoints';
-import hexToRgba from 'hex-to-rgba';
+import hexToRgba from '../../../utils/hexToRgba';
 
 export const Container = styled(ToastContainer)<{ $palette: TToastPalette }>`
     width: auto;

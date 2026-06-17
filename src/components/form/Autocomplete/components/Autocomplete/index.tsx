@@ -3,10 +3,14 @@ import React, {
     FocusEvent,
     forwardRef,
     InputHTMLAttributes,
+    KeyboardEvent,
     MouseEvent,
     ReactNode,
     useCallback,
+    useEffect,
+    useId,
     useMemo,
+    useRef,
     useState,
 } from 'react';
 import * as S from './styles';
@@ -65,6 +69,10 @@ type TControlProps = {
     usePadding?: boolean;
     dropdownWidth?: string;
     useModernStyles?: boolean;
+    // Полностью гасит инлайн-выпадающий список (под полем). Используется, когда результаты
+    // показываются в другом месте — например, на мобильном в боттомшите: поле работает как
+    // обычный инпут-триггер, под ним ничего не всплывает (combobox-ARIA при этом отключается).
+    isDropdownDisabled?: boolean;
 };
 
 export type TProps = TFieldProps & TControlProps;
@@ -97,22 +105,33 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             usePadding = false,
             dropdownWidth,
             useModernStyles = false,
+            isDropdownDisabled = false,
         },
         ref,
     ) => {
         const isMobile = useMobile();
         const [isOpen, setIsOpen] = useState(false);
+        // Активная (подсвеченная клавиатурой) опция для combobox-навигации ↑/↓/Enter/Esc.
+        const [activeIndex, setActiveIndex] = useState(-1);
+        const baseId = useId();
+        const listboxId = `${baseId}-listbox`;
+        const activeOptionRef = useRef<HTMLButtonElement | null>(null);
         const palette = useComponentPalette<TAutocompleteDefaultOptionPalette>('autocompleteDefaultOption');
 
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
         const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
+        const handleClose = useCallback(() => {
+            setIsOpen(false);
+            setActiveIndex(-1);
+        }, []);
 
         const wrapperRef = useOutsideClick(handleClose);
 
         const handleChange = useCallback(
             (event: ChangeEvent<HTMLInputElement>) => {
+                // Ввод нового запроса сбрасывает клавиатурную подсветку (результаты сменятся).
+                setActiveIndex(-1);
                 onChange(event.target.value);
             },
             [onChange],
@@ -166,6 +185,56 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
 
         const isModernPlaceholderVisible = useMemo(() => !isOpen && !value, [isOpen, value]);
 
+        const isDropdownOpen = !isDropdownDisabled && isOpen && (!!options.length || !!isLoading);
+        // Скелетоны показываем ТОЛЬКО когда опций ещё нет (первая загрузка). При повторных запросах
+        // (ввод символов) держим прежние опции — иначе лоадер мерцает на каждое изменение.
+        const showSkeletons = !!isLoading && options.length === 0;
+        const getOptionId = (index: number) => `${baseId}-option-${index}`;
+
+        // Активная опция всегда видна в прокручиваемом списке.
+        useEffect(() => {
+            activeOptionRef.current?.scrollIntoView({ block: 'nearest' });
+        }, [activeIndex]);
+
+        const handleKeyDown = (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            if (disabled || readOnly) return;
+            const count = options.length;
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    if (!isOpen) {
+                        handleOpen();
+                    } else if (count) {
+                        setActiveIndex((prev) => (prev + 1) % count);
+                    }
+                    break;
+                case 'ArrowUp':
+                    event.preventDefault();
+                    if (count) setActiveIndex((prev) => (prev <= 0 ? count - 1 : prev - 1));
+                    break;
+                case 'Enter':
+                    if (
+                        isDropdownOpen &&
+                        activeIndex >= 0 &&
+                        activeIndex < count &&
+                        !options[activeIndex].isDisabled
+                    ) {
+                        event.preventDefault();
+                        onChange(options[activeIndex].value, options[activeIndex]);
+                        handleClose();
+                    }
+                    break;
+                case 'Escape':
+                    if (isDropdownOpen) {
+                        event.preventDefault();
+                        handleClose();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        };
+
         return (
             <S.Wrapper ref={wrapperRef}>
                 <InputLabel
@@ -207,6 +276,14 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             autoFocus={autoFocus}
                             readOnly={readOnly}
                             useModernStyles={useModernStyles}
+                            onKeyDown={handleKeyDown}
+                            role="combobox"
+                            aria-expanded={isDropdownOpen}
+                            aria-controls={isDropdownOpen ? listboxId : undefined}
+                            aria-autocomplete="list"
+                            aria-activedescendant={
+                                isDropdownOpen && activeIndex >= 0 ? getOptionId(activeIndex) : undefined
+                            }
                             {...paddingOptions}
                         />
                     </S.InputLabelContent>
@@ -219,45 +296,53 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     minWidth={isMobile ? '100%' : '340px'}
                     usePadding={usePadding}
                 >
-                    {isLoading ? (
-                        optionsLoader || (
-                            <>
-                                <DefaultSkeletonItem />
-                                <DefaultSkeletonItem />
-                                <DefaultSkeletonItem />
-                            </>
-                        )
+                    {showSkeletons ? (
+                        <Scrollbar maxHeight={listHeight}>
+                            {optionsLoader || (
+                                <>
+                                    <DefaultSkeletonItem />
+                                    <DefaultSkeletonItem />
+                                    <DefaultSkeletonItem />
+                                </>
+                            )}
+                        </Scrollbar>
                     ) : (
                         <Scrollbar maxHeight={listHeight}>
-                            {options.map((option, index) => (
-                                <S.OptionWrapperWithPadding
-                                    $usePadding={usePadding}
-                                    key={`${option.value}${index}`}
-                                >
-                                    <S.OptionContainer
-                                        $hoverBg={palette.hoverBg}
+                            <div role="listbox" id={listboxId}>
+                                {options.map((option, index) => (
+                                    <S.OptionWrapperWithPadding
                                         $usePadding={usePadding}
                                         key={`${option.value}${index}`}
                                     >
-                                        <S.OptionWrapper
-                                            key={`${option.value}${index}`}
-                                            tabIndex={-1}
-                                            type="button"
-                                            disabled={option.isDisabled}
-                                            onClick={handleSelect}
-                                            data-index={JSON.stringify(index)}
+                                        <S.OptionContainer
+                                            $hoverBg={palette.hoverBg}
+                                            $usePadding={usePadding}
+                                            $active={index === activeIndex}
                                         >
-                                            {renderOption ? (
-                                                renderOption(option)
-                                            ) : (
-                                                <AutocompleteDefaultOption usePadding={usePadding}>
-                                                    {option.value}
-                                                </AutocompleteDefaultOption>
-                                            )}
-                                        </S.OptionWrapper>
-                                    </S.OptionContainer>
-                                </S.OptionWrapperWithPadding>
-                            ))}
+                                            <S.OptionWrapper
+                                                ref={index === activeIndex ? activeOptionRef : undefined}
+                                                id={getOptionId(index)}
+                                                role="option"
+                                                aria-selected={index === activeIndex}
+                                                tabIndex={-1}
+                                                type="button"
+                                                disabled={option.isDisabled}
+                                                onClick={handleSelect}
+                                                onMouseEnter={() => setActiveIndex(index)}
+                                                data-index={JSON.stringify(index)}
+                                            >
+                                                {renderOption ? (
+                                                    renderOption(option)
+                                                ) : (
+                                                    <AutocompleteDefaultOption usePadding={usePadding}>
+                                                        {option.value}
+                                                    </AutocompleteDefaultOption>
+                                                )}
+                                            </S.OptionWrapper>
+                                        </S.OptionContainer>
+                                    </S.OptionWrapperWithPadding>
+                                ))}
+                            </div>
                         </Scrollbar>
                     )}
                 </Dropdown>

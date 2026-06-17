@@ -1,6 +1,6 @@
 import { TAbstractPalette } from '../../../palette';
 import { transformColorByHsl } from '../../../utils/transformColorByHsl';
-import hexToRgba from 'hex-to-rgba';
+import hexToRgba from '../../../utils/hexToRgba';
 
 export type TDrawerPalette = {
     error: string;

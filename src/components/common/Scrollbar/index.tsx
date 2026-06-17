@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useComponentPalette } from '../../../palette';
 import { TScrollbarPalette } from './palette';
+import * as S from './styles';
 
 export type TProps = {
     children: ReactNode;
@@ -10,6 +10,9 @@ export type TProps = {
     autoHeight?: boolean;
 };
 
+// CSS-скроллбар (убрали зависимость `react-custom-scrollbars-2`): нативный overflow + стилизованный
+// тонкий ползунок. Публичный API сохранён (maxHeight/trackWidth/autoHeight). autoHeight=true →
+// контейнер растёт по контенту до maxHeight, затем скроллится; autoHeight=false → высота 100% родителя.
 export const Scrollbar: FC<TProps> = ({
     children,
     maxHeight = '100%',
@@ -18,39 +21,14 @@ export const Scrollbar: FC<TProps> = ({
 }) => {
     const palette = useComponentPalette<TScrollbarPalette>('scrollbar');
 
-    const renderThumbVertical = (thumbProps: any) => (
-        <div
-            {...thumbProps}
-            style={{
-                ...thumbProps.style,
-                backgroundColor: palette.thumb,
-                width: trackWidth,
-                borderRadius: '4px',
-            }}
-        />
-    );
-
-    const renderThumbHorizontal = (thumbProps: any) => (
-        <div
-            {...thumbProps}
-            style={{
-                ...thumbProps.style,
-                backgroundColor: palette.thumb,
-                height: trackWidth,
-                borderRadius: '4px',
-            }}
-        />
-    );
-
     return (
-        <Scrollbars
-            autoHeight={autoHeight}
-            autoHeightMin={0}
-            autoHeightMax={maxHeight}
-            renderThumbHorizontal={renderThumbHorizontal}
-            renderThumbVertical={renderThumbVertical}
+        <S.Wrapper
+            $maxHeight={maxHeight}
+            $trackWidth={trackWidth}
+            $thumb={palette.thumb}
+            $autoHeight={autoHeight}
         >
             {children}
-        </Scrollbars>
+        </S.Wrapper>
     );
 };

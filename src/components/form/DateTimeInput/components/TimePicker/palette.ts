@@ -1,4 +1,4 @@
-import hexToRgba from 'hex-to-rgba';
+import hexToRgba from '../../../../../utils/hexToRgba';
 import { TAbstractPalette } from '../../../../../palette';
 
 export type TTimePickerPalette = {
