@@ -86,20 +86,12 @@ export const Title = styled.div<{ $bg: string }>`
     padding: 30px;
     position: relative;
     text-align: center;
-    border-radius: 10px 10px 0 0;
 `;
 
 export const ChildrenWrapper = styled.div<{
     $isPadding: boolean;
     $bgColor: string;
-    $isBorderRadius?: boolean;
 }>`
     ${({ $isPadding }) => $isPadding && 'padding: 32px 16px 36px'};
     background-color: ${({ $bgColor }) => $bgColor};
-
-    ${({ $isBorderRadius }) =>
-        $isBorderRadius &&
-        css`
-            border-radius: 10px 10px 0 0;
-        `}
 `;

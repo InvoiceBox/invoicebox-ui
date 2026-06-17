@@ -137,7 +137,7 @@ export const Drawer: FC<TProps> = ({
                     </S.Title>
                 )}
 
-                <S.ChildrenWrapper $isBorderRadius={!title} $bgColor={palette.bg} $isPadding={isPadding}>
+                <S.ChildrenWrapper $bgColor={palette.bg} $isPadding={isPadding}>
                     {children}
                 </S.ChildrenWrapper>
             </S.Sheet>
