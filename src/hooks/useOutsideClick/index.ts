@@ -4,7 +4,10 @@ import { RefObject, useEffect, useRef } from 'react';
 // в document.body), но логически ему принадлежат: клик по ним НЕ считается «снаружи». Без этого
 // портал-дропдаун ловил бы клик как outside и схлопывался. По умолчанию пусто — обратная
 // совместимость со старыми вызовами `const ref = useOutsideClick(onClick)`.
-export const useOutsideClick = (onClick: () => void, extraRefs: ReadonlyArray<RefObject<HTMLElement>> = []) => {
+export const useOutsideClick = (
+    onClick: () => void,
+    extraRefs: ReadonlyArray<RefObject<HTMLElement>> = [],
+) => {
     const ref = useRef<HTMLDivElement>(null);
     const extraRefsRef = useRef(extraRefs);
     extraRefsRef.current = extraRefs;

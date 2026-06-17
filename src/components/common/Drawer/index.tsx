@@ -1,4 +1,13 @@
-import React, { FC, PointerEvent, ReactNode, TransitionEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+    FC,
+    PointerEvent,
+    ReactNode,
+    TransitionEvent,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import * as S from './styles';
 import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
