@@ -18,7 +18,7 @@ export const HeaderWrapper = styled.button`
 
 export const ListWrapper = styled.div`
     display: flex;
-    align-items: center;
+    align-items: stretch;
     flex-direction: column;
     pointer-events: auto;
 `;
