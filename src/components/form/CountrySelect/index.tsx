@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
 import * as S from './stlyes';
 import { CountryItem, TProps as TCountryItemProps } from './components/CountryItem';
 import { SearchInput, TProps as TSearchInputProps } from '../SearchInput';
@@ -63,7 +63,8 @@ export const CountrySelect: FC<TProps> = ({
         setIsOpen((flag) => !flag);
     }, []);
 
-    const wrapperRef = useOutsideClick(handleDropdownClose);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useOutsideClick(handleDropdownClose, [dropdownRef]);
 
     const sortedOptions = useMemo(
         () => [selectedOption, ...options.filter((option) => option !== selectedOption)],
@@ -87,6 +88,7 @@ export const CountrySelect: FC<TProps> = ({
                 {!disabled && <Arrow isOpen={isOpen} />}
             </S.HeaderWrapper>
             <Dropdown
+                ref={dropdownRef}
                 isOpen={isOpen}
                 onCloseTransitionEnd={handleClear}
                 zIndex={6}

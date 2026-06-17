@@ -56,7 +56,8 @@ export const DateInput: FC<TProps> = ({
     const handleTrigger = useCallback(() => setOpenFlag((flag) => !flag), []);
     const handleClose = useCallback(() => setOpenFlag(false), []);
 
-    const elRef = useOutsideClick(handleClose);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const elRef = useOutsideClick(handleClose, [dropdownRef]);
 
     const {
         inFocus,
@@ -192,7 +193,7 @@ export const DateInput: FC<TProps> = ({
                     maxDate={maxDate}
                 />
             ) : (
-                <Dropdown isOpen={isOpen} isAutoPosition {...dropdownProps}>
+                <Dropdown ref={dropdownRef} isOpen={isOpen} isAutoPosition {...dropdownProps}>
                     <S.CalendarWrapper>
                         <Calendar
                             value={value}
