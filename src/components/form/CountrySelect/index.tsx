@@ -29,15 +29,15 @@ type TControlProps<T> = Pick<TSearchInputProps, 'placeholder'> &
         options: TOption[];
         disabled?: boolean;
     } & Pick<
-            TDropdownProps,
-            | 'positionVertical'
-            | 'positionLeft'
-            | 'positionRight'
-            | 'minWidth'
-            | 'width'
-            | 'isAutoPosition'
-            | 'isTopPosition'
-        >;
+        TDropdownProps,
+        | 'positionVertical'
+        | 'positionLeft'
+        | 'positionRight'
+        | 'minWidth'
+        | 'width'
+        | 'isAutoPosition'
+        | 'isTopPosition'
+    >;
 
 export type TProps = TFieldProps & TControlProps<string>;
 

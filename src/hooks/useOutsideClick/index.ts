@@ -15,9 +15,14 @@ export const useOutsideClick = (
     useEffect(() => {
         const handleOutsideClick = (event: MouseEvent) => {
             const target = event.target as Node;
-            if (ref.current && ref.current.contains(target)) return;
-            if (extraRefsRef.current.some((extra) => extra.current && extra.current.contains(target))) return;
-            onClick();
+            const isOutside =
+                ref.current &&
+                !ref.current.contains(target) &&
+                !extraRefsRef.current.some((extra) => extra.current && extra.current.contains(target));
+
+            if (isOutside) {
+                onClick();
+            }
         };
 
         document.addEventListener('mousedown', handleOutsideClick);
