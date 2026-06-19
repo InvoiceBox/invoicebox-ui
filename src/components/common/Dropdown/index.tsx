@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { createPortal } from 'react-dom';
 import * as S from './styles';
+import { DROPDOWN_PORTAL_ATTR } from '../../../hooks/useOutsideClick';
 import { useComponentPalette } from '../../../palette';
 import { TDropdownPalette } from './palette';
 
@@ -165,6 +166,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
                 {layerRect &&
                     createPortal(
                         <S.PositionLayer
+                            {...{ [DROPDOWN_PORTAL_ATTR]: '' }}
                             style={{
                                 top: layerRect.top,
                                 left: layerRect.left,
