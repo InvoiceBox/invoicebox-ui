@@ -43,7 +43,7 @@ export type { TProps as TTagsInputProps } from './components/form/TagsInput';
 export { TextInput } from './components/form/TextInput';
 export type { TProps as TTextInputProps } from './components/form/TextInput';
 export { Select } from './components/form/Select';
-export type { TProps as TSelectProps } from './components/form/Select';
+export type { TProps as TSelectProps, TOption, TGroup } from './components/form/Select';
 export { Toggle } from './components/form/Toggle';
 export type { TProps as TToggleProps } from './components/form/Toggle';
 export { DateInput } from './components/form/DateInput';
@@ -69,9 +69,10 @@ export {
     AutocompleteDefaultOption,
     OrganizationAutocompleteItem,
 } from './components/form/Autocomplete/index';
+export type { TSizes } from './components/form/constants';
 
 // hooks
-export { useOutsideClick } from './hooks/useOutsideClick';
+export { useOutsideClick, DROPDOWN_PORTAL_ATTR, isDropdownPortalClick } from './hooks/useOutsideClick';
 export { useInputFocus } from './hooks/useInputFocus';
 export { useUnupdatableHandler } from './hooks/useUnupdatableHandler';
 export { useLoadingSubmit } from './hooks/useLoadingSubmit';
