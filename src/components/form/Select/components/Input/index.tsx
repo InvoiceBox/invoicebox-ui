@@ -42,6 +42,9 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             () => useModernStyles && !isOpen && !value,
             [isOpen, useModernStyles, value],
         );
+        const modernInputPlaceholder = useMemo(() => {
+            return placeholder || label;
+        }, [label, placeholder]);
 
         const paddingOptions = useMemo(() => {
             if ((value || isOpen) && useModernStyles && label) {
@@ -60,14 +63,14 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                 size={size}
             >
                 <S.ControlWrapper>
-                    {useModernStyles && placeholder && (
+                    {useModernStyles && modernInputPlaceholder && (
                         <ModernPlaceholder
                             visible={isModernPlaceholderVisible}
                             paddingTop={SIZE_PARAMS_MAP[size ?? 'M'].paddingTop}
                             size={size ?? 'M'}
                             required={required}
                         >
-                            {placeholder}
+                            {modernInputPlaceholder}
                         </ModernPlaceholder>
                     )}
                     <PureInput

@@ -94,13 +94,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             }
         }, [value, inFocus, useModernStyles, size, inputLabel]);
 
-        const inputPlaceholder = useMemo(() => {
-            if (useModernStyles) {
-                return undefined;
-            } else {
-                return placeholder;
-            }
-        }, [placeholder, useModernStyles]);
+        const modernInputPlaceholder = useMemo(() => {
+            return placeholder || label;
+        }, [label, placeholder]);
 
         const isModernPlaceholderVisible = useMemo(() => {
             return !inFocus && !value;
@@ -116,14 +112,14 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                 useModernStyles={useModernStyles}
             >
                 <S.InputLabelContent>
-                    {useModernStyles && placeholder && (
+                    {useModernStyles && modernInputPlaceholder && (
                         <ModernPlaceholder
                             visible={isModernPlaceholderVisible}
                             paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
                             size={size}
                             required={required}
                         >
-                            {placeholder}
+                            {modernInputPlaceholder}
                         </ModernPlaceholder>
                     )}
                     <PureInput
@@ -137,7 +133,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                         onBlur={handleBlur}
                         value={value}
                         onChange={handleChange}
-                        placeholder={inputPlaceholder}
+                        placeholder={useModernStyles ? undefined : placeholder}
                         paddingRight={paddingRight}
                         type={type}
                         isOnlyNumbers={isOnlyNumbers}

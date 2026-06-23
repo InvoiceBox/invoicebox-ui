@@ -62,14 +62,9 @@ export const PositiveIntegerInput: FC<TProps> = ({
         onChange(decrement(value));
     }, [decrement, value, onChange]);
 
-    const inputPlaceholder = useMemo(() => {
-        if (useModernStyles) {
-            return undefined;
-        } else {
-            return placeholder;
-        }
-    }, [placeholder, useModernStyles]);
-
+    const modernInputPlaceholder = useMemo(() => {
+        return placeholder || label;
+    }, [label, placeholder]);
     const isModernPlaceholderVisible = useMemo(() => !inFocus && value === null, [inFocus, value]);
 
     const inputLabel = useMemo(() => {
@@ -95,20 +90,20 @@ export const PositiveIntegerInput: FC<TProps> = ({
     return (
         <InputLabel inFocus={inFocus} label={inputLabel} useModernStyles={useModernStyles} size={size}>
             <S.ControlWrapper>
-                {useModernStyles && placeholder && (
+                {useModernStyles && modernInputPlaceholder && (
                     <ModernPlaceholder
                         visible={isModernPlaceholderVisible}
                         paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
                         size={size}
                     >
-                        {placeholder}
+                        {modernInputPlaceholder}
                     </ModernPlaceholder>
                 )}
                 <PureInput
                     name={name}
                     hasError={hasError}
                     inFocus={inFocus}
-                    placeholder={inputPlaceholder}
+                    placeholder={useModernStyles ? undefined : placeholder}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     value={normalizeFrom(value)}

@@ -190,7 +190,7 @@ export const DateTimeInput: FC<TProps> = ({
         }
     }, [placeholder, useModernStyles, withTime]);
 
-    const modernPlaceholderText = placeholder || logic.getPlaceholder(withTime);
+    const modernPlaceholderText = placeholder || label || logic.getPlaceholder(withTime);
     const isModernPlaceholderVisible = useMemo(() => !isOpen && !stringValue, [isOpen, stringValue]);
 
     return (

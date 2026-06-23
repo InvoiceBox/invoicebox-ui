@@ -176,14 +176,9 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             }
         }, [value, isOpen, useModernStyles, size, inputLabel]);
 
-        const inputPlaceholder = useMemo(() => {
-            if (useModernStyles) {
-                return undefined;
-            } else {
-                return placeholder;
-            }
-        }, [placeholder, useModernStyles]);
-
+        const modernInputPlaceholder = useMemo(() => {
+            return placeholder || label;
+        }, [label, placeholder]);
         const isModernPlaceholderVisible = useMemo(() => !isOpen && !value, [isOpen, value]);
 
         const isDropdownOpen = !isDropdownDisabled && isOpen && (!!options.length || !!isLoading);
@@ -249,7 +244,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                 >
                     <S.InputLabelContent>
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
-                        {useModernStyles && placeholder && (
+                        {useModernStyles && modernInputPlaceholder && (
                             <ModernPlaceholder
                                 visible={isModernPlaceholderVisible}
                                 paddingLeft={inputPaddingLeft ?? 20}
@@ -257,7 +252,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                                 size={size}
                                 required={required}
                             >
-                                {placeholder}
+                                {modernInputPlaceholder}
                             </ModernPlaceholder>
                         )}
                         <PureInput
@@ -269,7 +264,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             onFocus={handleInputFocus}
                             onBlur={handleBlur}
                             name={name}
-                            placeholder={inputPlaceholder}
+                            placeholder={useModernStyles ? undefined : placeholder}
                             disabled={disabled}
                             paddingLeft={inputPaddingLeft}
                             maxLength={inputMaxLength}

@@ -21,6 +21,7 @@ export const Default: StoryObj<TProps> = {
         label: 'Label',
         size: 'L',
         disabled: false,
+        useModernStyles: true,
     },
     render: Component,
 };

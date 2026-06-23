@@ -44,6 +44,7 @@ const COMMON_ARGS = {
         { label: 'Option 11', value: 'option-11', entity: { id: 11, name: 'name option 11' } },
         { label: 'Option 12', value: 'option-12', entity: { id: 12, name: 'name option 12' } },
     ],
+    useModernStyles: true,
 };
 
 const COLORS_BY_ID_MAP: Record<number, string> = {
