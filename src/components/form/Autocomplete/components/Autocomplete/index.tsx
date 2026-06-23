@@ -27,6 +27,7 @@ import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../../
 import { useComponentPalette } from '../../../../../palette';
 import { TAutocompleteDefaultOptionPalette } from '../AutocompleteDefaultOption/palette';
 import { ModernPlaceholder } from '../../../ModernPlaceholder';
+import { LABEL_PADDING } from '../../../InputLabel/constants';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -240,14 +241,18 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     required={required}
                     useModernStyles={useModernStyles}
                     size={size}
-                    left={useModernStyles ? inputPaddingLeft : undefined}
+                    left={
+                        useModernStyles && typeof inputPaddingLeft === 'number'
+                            ? inputPaddingLeft - LABEL_PADDING
+                            : undefined
+                    }
                 >
                     <S.InputLabelContent>
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
                         {useModernStyles && modernInputPlaceholder && (
                             <ModernPlaceholder
                                 visible={isModernPlaceholderVisible}
-                                paddingLeft={inputPaddingLeft ?? 20}
+                                paddingLeft={typeof inputPaddingLeft === 'number' ? inputPaddingLeft : 20}
                                 paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
                                 size={size}
                                 required={required}

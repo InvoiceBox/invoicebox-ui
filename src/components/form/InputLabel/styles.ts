@@ -1,6 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 import { Typography } from '../../common/Typography';
 import { TInputLabelPalette } from './palette';
+import { LABEL_PADDING } from './constants';
 
 const labelFadeIn = keyframes`
     from {
@@ -24,10 +25,10 @@ export const Label = styled(Typography)<{
     border-radius: 10px;
     position: absolute;
     top: ${({ $paddingTop }) => ($paddingTop ? `${$paddingTop}px` : 0)};
-    left: ${({ $left }) => ($left ? `${$left}px` : '10px')};
+    left: ${({ $left }) => (typeof $left === 'number' ? `${$left}px` : '10px')};
     background-color: ${({ $palette, $useModernStyles }) =>
         $useModernStyles ? $palette.bgModern : $palette.bg};
-    padding: 0 10px;
+    padding: 0 ${LABEL_PADDING}px;
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;
     animation: ${labelFadeIn} 0.15s ease;
