@@ -276,24 +276,12 @@ export const Select = <TValue extends string | number>({
         return renderValue(selectedOption?.entity);
     }, [renderValue, selectedOption?.entity]);
 
-    const inputLabel = useMemo(() => {
-        if (useModernStyles) {
-            if (selectedOption || isOpen) {
-                return label;
-            } else {
-                return undefined;
-            }
-        } else {
-            return label;
-        }
-    }, [isOpen, label, selectedOption, useModernStyles]);
-
     return (
         <S.Wrapper ref={isDrawerOptions ? undefined : wrapperRef}>
             <S.InputWrapper>
                 <Input
                     ref={inputRef}
-                    label={inputLabel}
+                    label={label}
                     hasError={hasError}
                     inFocus={inFocus}
                     placeholder={placeholder}

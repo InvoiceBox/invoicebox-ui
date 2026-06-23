@@ -37,6 +37,18 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
         },
         ref,
     ) => {
+        const inputLabel = useMemo(() => {
+            if (useModernStyles) {
+                if (value || inFocus) {
+                    return label;
+                } else {
+                    return undefined;
+                }
+            } else {
+                return label;
+            }
+        }, [inFocus, label, value, useModernStyles]);
+
         const isShowResetIcon = !!value && !!onReset;
         const isModernPlaceholderVisible = useMemo(
             () => useModernStyles && !isOpen && !value,
@@ -57,7 +69,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
         return (
             <InputLabel
                 inFocus={inFocus}
-                label={label}
+                label={inputLabel}
                 required={required}
                 useModernStyles={useModernStyles}
                 size={size}
