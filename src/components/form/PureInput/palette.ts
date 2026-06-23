@@ -19,6 +19,6 @@ export const generatePureInputPalette = (abstractPalette: TAbstractPalette): TPu
         error: abstractPalette.error,
         border: hexToRgba(abstractPalette.neutralBrutal, 0.3),
         borderFocus: abstractPalette.primary,
-        placeholder: hexToRgba(abstractPalette.primary, 0.3),
+        placeholder: hexToRgba(abstractPalette.primary, 0.5),
     };
 };
