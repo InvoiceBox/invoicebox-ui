@@ -40,13 +40,13 @@ export const InputLabel: FC<TProps> = ({
                     $inFocus={inFocus}
                     variant={
                         size && useModernStyles
-                            ? MODERN_STYLE_SIZE_PARAMS_MAP[size].labelVariant
+                            ? MODERN_STYLE_SIZE_PARAMS_MAP[size].$labelVariant
                             : 'captionRegular'
                     }
                     $required={required}
                     $useModernStyles={useModernStyles}
                     $paddingTop={
-                        size && useModernStyles ? MODERN_STYLE_SIZE_PARAMS_MAP[size].labelPaddingTop : 0
+                        size && useModernStyles ? MODERN_STYLE_SIZE_PARAMS_MAP[size].$labelPaddingTop : 0
                     }
                     $left={left}
                 >
