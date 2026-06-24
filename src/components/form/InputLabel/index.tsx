@@ -22,7 +22,7 @@ export const InputLabel: FC<TProps> = ({
     children,
     required = false,
     useModernStyles = false,
-    size,
+    size = 'M',
     left,
 }) => {
     const palette = useComponentPalette<TInputLabelPalette>('inputLabel');
@@ -33,6 +33,11 @@ export const InputLabel: FC<TProps> = ({
             $disabled={disabled}
             $isLabel={!!label}
             $useModernStyles={useModernStyles}
+            $marginTop={
+                useModernStyles && MODERN_STYLE_SIZE_PARAMS_MAP[size].$labelPaddingTop < 0 && !!label
+                    ? -MODERN_STYLE_SIZE_PARAMS_MAP[size].$labelPaddingTop
+                    : undefined
+            }
         >
             {label && (
                 <S.Label
@@ -45,9 +50,7 @@ export const InputLabel: FC<TProps> = ({
                     }
                     $required={required}
                     $useModernStyles={useModernStyles}
-                    $paddingTop={
-                        size && useModernStyles ? MODERN_STYLE_SIZE_PARAMS_MAP[size].$labelPaddingTop : 0
-                    }
+                    $top={useModernStyles ? MODERN_STYLE_SIZE_PARAMS_MAP[size].$labelPaddingTop : 0}
                     $left={left}
                 >
                     {label}
