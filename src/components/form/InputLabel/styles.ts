@@ -49,7 +49,6 @@ export const Wrapper = styled.div<{
     $useModernStyles?: boolean;
 }>`
     position: relative;
-    padding-top: ${({ $isLabel, $useModernStyles }) => ($isLabel || $useModernStyles ? 10 : 0)}px;
     width: 100%;
     opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
 
