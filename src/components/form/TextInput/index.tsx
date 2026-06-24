@@ -66,6 +66,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
         ref,
     ) => {
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
+        const isHideModernPlaceholder = value || inFocus;
 
         const handleChange = useCallback(
             (event: ChangeEvent<HTMLInputElement>) => {
@@ -76,31 +77,31 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
 
         const inputLabel = useMemo(() => {
             if (useModernStyles) {
-                if (value || inFocus) {
-                    return label;
-                } else {
-                    return undefined;
-                }
+                return isHideModernPlaceholder ? label : undefined;
             } else {
                 return label;
             }
-        }, [inFocus, label, value, useModernStyles]);
+        }, [useModernStyles, isHideModernPlaceholder, label]);
 
-        const paddingOptions = useMemo(() => {
-            if ((value || inFocus) && useModernStyles && inputLabel) {
-                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+        const paddingAndVariantOptions = useMemo(() => {
+            if (useModernStyles) {
+                if (isHideModernPlaceholder) {
+                    return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+                } else {
+                    return {
+                        ...MODERN_STYLE_SIZE_PARAMS_MAP[size],
+                        paddingTop: MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop,
+                        paddingBottom: MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop,
+                    };
+                }
             } else {
                 return SIZE_PARAMS_MAP[size];
             }
-        }, [value, inFocus, useModernStyles, size, inputLabel]);
+        }, [useModernStyles, isHideModernPlaceholder, size]);
 
         const modernInputPlaceholder = useMemo(() => {
             return placeholder || label;
         }, [label, placeholder]);
-
-        const isModernPlaceholderVisible = useMemo(() => {
-            return !inFocus && !value;
-        }, [inFocus, value]);
 
         return (
             <InputLabel
@@ -114,8 +115,8 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                 <S.InputLabelContent>
                     {useModernStyles && modernInputPlaceholder && (
                         <ModernPlaceholder
-                            visible={isModernPlaceholderVisible}
-                            paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                            visible={!isHideModernPlaceholder}
+                            paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
                             size={size}
                             required={required}
                         >
@@ -144,7 +145,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                         inputMode={inputMode}
                         readOnly={readOnly}
                         autoComplete={autoComplete}
-                        {...paddingOptions}
+                        {...paddingAndVariantOptions}
                     />
                     {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
                 </S.InputLabelContent>

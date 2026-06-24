@@ -3,7 +3,7 @@ import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TPureInputPalette } from '../PureInput/palette';
 import { TInputLabelPalette } from '../InputLabel/palette';
-import { SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, TSizes } from '../constants';
 
 type TProps = {
     visible: boolean;
@@ -27,7 +27,7 @@ export const ModernPlaceholder: FC<TProps> = ({
 
     return (
         <S.Wrapper
-            variant={SIZE_PARAMS_MAP[size].variant}
+            variant={MODERN_STYLE_SIZE_PARAMS_MAP[size].variant}
             $visible={visible}
             $paddingLeft={paddingLeft}
             $paddingTop={paddingTop}
