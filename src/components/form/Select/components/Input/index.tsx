@@ -1,11 +1,11 @@
-import React, { forwardRef, useMemo } from 'react';
+import React, { forwardRef } from 'react';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../../../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../../../PureInput';
 import { Arrow, TProps as TArrowProps } from '../../../../common/Arrow';
 import { ResetButton } from '../../../ResetButton';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../../constants';
-import { ModernPlaceholder } from '../../../ModernPlaceholder';
+import { TSizes } from '../../../constants';
+import { useInputStyles } from '../../../_hooks/useInputStyles';
 
 export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label' | 'required'> &
     Pick<TPureInputProps, 'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value' | 'onClick'> &
@@ -20,7 +20,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
     (
         {
             hasError,
-            inFocus,
+            inFocus = false,
             placeholder,
             onFocus,
             onBlur,
@@ -37,34 +37,16 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
         },
         ref,
     ) => {
-        const inputLabel = useMemo(() => {
-            if (useModernStyles) {
-                if (value || inFocus) {
-                    return label;
-                } else {
-                    return undefined;
-                }
-            } else {
-                return label;
-            }
-        }, [inFocus, label, value, useModernStyles]);
+        const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+            isHaveValue: !!value,
+            useModernStyles,
+            size,
+            label,
+            inFocus,
+            placeholder,
+        });
 
         const isShowResetIcon = !!value && !!onReset;
-        const isModernPlaceholderVisible = useMemo(
-            () => useModernStyles && !isOpen && !value,
-            [isOpen, useModernStyles, value],
-        );
-        const modernInputPlaceholder = useMemo(() => {
-            return placeholder || label;
-        }, [label, placeholder]);
-
-        const paddingOptions = useMemo(() => {
-            if ((value || isOpen) && useModernStyles && label) {
-                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-            } else {
-                return SIZE_PARAMS_MAP[size];
-            }
-        }, [value, isOpen, useModernStyles, size, label]);
 
         return (
             <InputLabel
@@ -75,16 +57,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                 size={size}
             >
                 <S.ControlWrapper>
-                    {useModernStyles && modernInputPlaceholder && (
-                        <ModernPlaceholder
-                            visible={isModernPlaceholderVisible}
-                            paddingTop={SIZE_PARAMS_MAP[size ?? 'M'].paddingTop}
-                            size={size ?? 'M'}
-                            required={required}
-                        >
-                            {modernInputPlaceholder}
-                        </ModernPlaceholder>
-                    )}
+                    {modernPlaceholder}
                     <PureInput
                         ref={ref}
                         hasError={hasError}
@@ -99,7 +72,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                         paddingRight={52}
                         onClick={onClick}
                         useModernStyles={useModernStyles}
-                        {...paddingOptions}
+                        {...paddingAndVariantOptions}
                     />
 
                     <S.IconWrapper $pointerEvents={isShowResetIcon ? 'default' : 'none'}>
