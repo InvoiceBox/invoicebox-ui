@@ -19,27 +19,31 @@ export const MODERN_STYLE_SIZE_PARAMS_MAP: Record<
         variant: keyof typeof typography;
         $labelVariant: keyof typeof typography;
         $labelPaddingTop: number;
+        $placeholderPaddingTop: number;
     }
 > = {
     L: {
-        paddingTop: 20,
-        paddingBottom: 12,
-        variant: 'bodyMRegular',
-        $labelVariant: 'captionRegular',
-        $labelPaddingTop: 14,
+        paddingTop: 24,
+        paddingBottom: 8,
+        variant: 'headline5',
+        $labelVariant: 'labelsHintsRegular',
+        $labelPaddingTop: 16,
+        $placeholderPaddingTop: 16,
     },
     M: {
         paddingTop: 20,
-        paddingBottom: 6,
-        variant: 'bodyMRegular',
-        $labelVariant: 'captionRegular',
-        $labelPaddingTop: 12,
+        paddingBottom: 4,
+        variant: 'bodyL',
+        $labelVariant: 'labelsHintsRegular',
+        $labelPaddingTop: 16,
+        $placeholderPaddingTop: 12,
     },
     XS: {
-        paddingTop: 16,
-        paddingBottom: 4,
-        variant: 'labelsHintsRegular',
-        $labelVariant: 'captionSRegular',
-        $labelPaddingTop: 12,
+        paddingTop: 6,
+        paddingBottom: 6,
+        variant: 'headline5',
+        $labelVariant: 'labelsHintsRegular',
+        $labelPaddingTop: -8,
+        $placeholderPaddingTop: 6,
     },
 };

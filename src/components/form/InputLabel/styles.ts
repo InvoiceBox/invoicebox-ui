@@ -26,8 +26,7 @@ export const Label = styled(Typography)<{
     position: absolute;
     top: ${({ $paddingTop }) => ($paddingTop ? `${$paddingTop}px` : 0)};
     left: ${({ $left }) => (typeof $left === 'number' ? `${$left}px` : '10px')};
-    background-color: ${({ $palette, $useModernStyles }) =>
-        $useModernStyles ? $palette.bgModern : $palette.bg};
+    background-color: ${({ $palette, $useModernStyles }) => ($useModernStyles ? 'none' : $palette.bg)};
     padding: 0 ${LABEL_PADDING}px;
     z-index: 2;
     transition: color 0.2s ease-in-out 0s;
