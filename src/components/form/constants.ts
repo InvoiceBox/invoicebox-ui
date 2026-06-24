@@ -27,7 +27,7 @@ export const MODERN_STYLE_SIZE_PARAMS_MAP: Record<
         paddingBottom: 8,
         variant: 'headline5',
         $labelVariant: 'labelsHintsRegular',
-        $labelPaddingTop: 16,
+        $labelPaddingTop: 8,
         $placeholderPaddingTop: 16,
     },
     M: {
@@ -35,7 +35,7 @@ export const MODERN_STYLE_SIZE_PARAMS_MAP: Record<
         paddingBottom: 4,
         variant: 'bodyL',
         $labelVariant: 'labelsHintsRegular',
-        $labelPaddingTop: 16,
+        $labelPaddingTop: 4,
         $placeholderPaddingTop: 12,
     },
     XS: {
@@ -43,7 +43,7 @@ export const MODERN_STYLE_SIZE_PARAMS_MAP: Record<
         paddingBottom: 6,
         variant: 'headline5',
         $labelVariant: 'labelsHintsRegular',
-        $labelPaddingTop: -8,
+        $labelPaddingTop: -18,
         $placeholderPaddingTop: 6,
     },
 };
