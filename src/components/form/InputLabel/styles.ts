@@ -19,12 +19,12 @@ export const Label = styled(Typography)<{
     $palette: TInputLabelPalette;
     $required?: boolean;
     $useModernStyles?: boolean;
-    $paddingTop?: number;
+    $top?: number;
     $left?: number;
 }>`
     border-radius: 10px;
     position: absolute;
-    top: ${({ $paddingTop }) => ($paddingTop ? `${$paddingTop}px` : 0)};
+    top: ${({ $top }) => ($top ? `${$top}px` : 0)};
     left: ${({ $left }) => (typeof $left === 'number' ? `${$left}px` : '10px')};
     background-color: ${({ $palette, $useModernStyles }) => ($useModernStyles ? 'none' : $palette.bg)};
     padding: 0 ${LABEL_PADDING}px;
@@ -47,10 +47,12 @@ export const Wrapper = styled.div<{
     $isLabel: boolean;
     $palette: TInputLabelPalette;
     $useModernStyles?: boolean;
+    $marginTop?: number;
 }>`
     position: relative;
     width: 100%;
     opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+    margin-top: ${({ $marginTop }) => $marginTop || 0}px;
 
     &:hover ${Label} {
         ${({ $disabled, $palette }) =>
