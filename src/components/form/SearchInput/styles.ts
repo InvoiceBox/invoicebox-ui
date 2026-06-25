@@ -4,11 +4,11 @@ import { TSearchInputPalette } from './palette';
 export const IconWrapper = styled.span<{
     $inFocus: boolean;
     $palette: TSearchInputPalette;
-    $wideBottomSpacing: boolean;
+    $useModernStyles: boolean;
 }>`
     position: absolute;
     right: 20px;
-    bottom: ${({ $wideBottomSpacing }) => ($wideBottomSpacing ? `calc(50% - 5px)` : '50%')};
+    bottom: ${({ $useModernStyles }) => (!$useModernStyles ? `calc(50% - 5px)` : '50%')};
     transform: translateY(50%);
     display: flex;
     align-content: center;
