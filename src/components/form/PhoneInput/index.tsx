@@ -18,8 +18,9 @@ import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { CountrySelect, TProps as TCountrySelectProps } from '../CountrySelect';
 import { useMobile } from '../../../hooks/useMedia';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, TSizes } from '../constants';
 import { ModernPlaceholder } from '../ModernPlaceholder';
+import { useInputStyles } from '../_hooks/useInputStyles';
 
 type TFieldProps = Pick<TPureInputProps, 'name' | 'onBlur' | 'onFocus'> & {
     value: string;
@@ -94,6 +95,15 @@ export const PhoneInput: FC<TProps> = ({
 
     const [inputValue, setInputValue] = useState(value);
     const [country, setCountry] = useState(RUS_COUNTRY_CODE);
+
+    const { inputLabel, paddingAndVariantOptions, isHideModernPlaceholder } = useInputStyles({
+        isHaveValue: !!inputValue,
+        useModernStyles,
+        size,
+        label,
+        inFocus,
+        placeholder: '',
+    });
 
     const handleChangeCountry = useCallback(
         (countryCode: string) => {
@@ -237,26 +247,6 @@ export const PhoneInput: FC<TProps> = ({
         return false;
     }, [hasError, isFirstBlur, isHaveInputError, isInnerErrorHighlight]);
 
-    const inputLabel = useMemo(() => {
-        if (useModernStyles) {
-            if (inputValue || inFocus) {
-                return label;
-            } else {
-                return undefined;
-            }
-        } else {
-            return label;
-        }
-    }, [useModernStyles, inputValue, inFocus, label]);
-
-    const paddingOptions = useMemo(() => {
-        if ((inputValue || inFocus) && useModernStyles && inputLabel) {
-            return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-        } else {
-            return SIZE_PARAMS_MAP[size];
-        }
-    }, [inputValue, useModernStyles, size, inFocus, inputLabel]);
-
     const inputPlaceholder = useMemo(() => {
         if (useModernStyles) {
             return undefined;
@@ -266,7 +256,6 @@ export const PhoneInput: FC<TProps> = ({
     }, [country, currentCountriesPhoneRules, useModernStyles]);
 
     const modernPlaceholderText = label || currentCountriesPhoneRules[country].placeholder;
-    const isModernPlaceholderVisible = useMemo(() => !inFocus && !inputValue, [inFocus, inputValue]);
 
     return (
         <InputLabel
@@ -281,9 +270,9 @@ export const PhoneInput: FC<TProps> = ({
             <S.InputLabelContent>
                 {useModernStyles && (
                     <ModernPlaceholder
-                        visible={isModernPlaceholderVisible}
+                        visible={!isHideModernPlaceholder}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
-                        paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                        paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
                         size={size}
                         required={required}
                     >
@@ -330,7 +319,7 @@ export const PhoneInput: FC<TProps> = ({
                         autoComplete={'new-password'}
                         inputMode="numeric"
                         autoFocus={autoFocus}
-                        {...paddingOptions}
+                        {...paddingAndVariantOptions}
                         useModernStyles={useModernStyles}
                         {...pureInputProps}
                     />
