@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './styles';
 import { logic } from './logic';
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
@@ -10,10 +10,10 @@ import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
 import { CalendarIcon } from './components/CalendarIcon';
 import { useComponentPalette } from '../../../palette';
 import { TDateInputPalette } from './palette';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
-import { ModernPlaceholder } from '../ModernPlaceholder';
+import { TSizes } from '../constants';
 import { TDropdownProps, useMobile } from '../../../index';
 import { MobileDrawerDateCalendar } from './components/MobileDrawerDateCalendar';
+import { useInputStyles } from '../_hooks/useInputStyles';
 
 export type TProps = {
     value: Date | null;
@@ -75,6 +75,16 @@ export const DateInput: FC<TProps> = ({
 
     const [stringValue, setStringValue] = useState(logic.valueToString(value));
 
+    const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+        isHaveValue: !!stringValue,
+        useModernStyles,
+        size,
+        label,
+        inFocus,
+        placeholder,
+        conditionHideModernPlaceholder: isOpen,
+    });
+
     useEffect(() => {
         if (stringValue && value === resetValue) {
             setStringValue('');
@@ -112,39 +122,6 @@ export const DateInput: FC<TProps> = ({
         [handleClose, onChange],
     );
 
-    const inputLabel = useMemo(() => {
-        if (useModernStyles) {
-            if (stringValue || isOpen) {
-                return label;
-            } else {
-                return undefined;
-            }
-        } else {
-            return label;
-        }
-    }, [isOpen, label, stringValue, useModernStyles]);
-
-    const paddingOptions = useMemo(() => {
-        if ((stringValue || isOpen) && useModernStyles && inputLabel) {
-            return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-        } else {
-            return SIZE_PARAMS_MAP[size];
-        }
-    }, [stringValue, isOpen, useModernStyles, size, inputLabel]);
-
-    const inputPlaceholder = useMemo(() => {
-        if (useModernStyles) {
-            return undefined;
-        } else {
-            return placeholder || logic.getPlaceholder();
-        }
-    }, [placeholder, useModernStyles]);
-
-    const modernPlaceholderText = useMemo(() => {
-        return placeholder || label || logic.getPlaceholder();
-    }, [label, placeholder]);
-    const isModernPlaceholderVisible = useMemo(() => !isOpen && !stringValue, [isOpen, stringValue]);
-
     return (
         <S.Wrapper ref={isMobile ? undefined : elRef}>
             <InputLabel
@@ -155,30 +132,21 @@ export const DateInput: FC<TProps> = ({
                 required={required}
             >
                 <S.InputWrapper>
-                    {useModernStyles && (
-                        <ModernPlaceholder
-                            visible={isModernPlaceholderVisible}
-                            paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
-                            required={required}
-                            size={size}
-                        >
-                            {modernPlaceholderText}
-                        </ModernPlaceholder>
-                    )}
+                    {modernPlaceholder}
                     <PureInput
                         onClick={handleTrigger}
                         ref={inputRef}
                         hasError={hasError}
                         inFocus={inFocus}
                         name={name}
-                        placeholder={inputPlaceholder}
+                        placeholder={useModernStyles ? undefined : placeholder || logic.getPlaceholder()}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         value={stringValue}
                         onChange={handleStringValueChange}
                         paddingRight={44}
                         useModernStyles={useModernStyles}
-                        {...paddingOptions}
+                        {...paddingAndVariantOptions}
                     />
                     <S.Icon onClick={handleTrigger} $palette={palette}>
                         <CalendarIcon />

@@ -1,12 +1,12 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../../InputLabel';
 import { useInputFocus } from '../../../../hooks/useInputFocus';
 import { StyledCurrencyInputFromLibrary, InputWrapper } from './styles';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../constants';
+import { TSizes } from '../../constants';
 import { useComponentPalette } from '../../../../palette';
 import { TPureInputPalette } from '../../PureInput/palette';
 import { CurrencyInputProps } from 'react-currency-input-field';
-import { ModernPlaceholder } from '../../ModernPlaceholder';
+import { useInputStyles } from '../../_hooks/useInputStyles';
 
 export type TProps = Pick<
     CurrencyInputProps,
@@ -37,34 +37,14 @@ export const CoreCurrencyInput: FC<TProps> = ({
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onBlur });
     const palette = useComponentPalette<TPureInputPalette>('pureInput');
 
-    const inputLabel = useMemo(() => {
-        if (useModernStyles) {
-            if (typeof defaultValue === 'number' || inFocus || typeof value === 'number') {
-                return label;
-            } else {
-                return undefined;
-            }
-        } else {
-            return label;
-        }
-    }, [useModernStyles, defaultValue, inFocus, label, value]);
-
-    const paddingOptions = useMemo(() => {
-        if (
-            (typeof defaultValue === 'number' || typeof value === 'number' || inFocus) &&
-            useModernStyles &&
-            inputLabel
-        ) {
-            return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-        } else {
-            return SIZE_PARAMS_MAP[size];
-        }
-    }, [defaultValue, useModernStyles, size, inFocus, inputLabel, value]);
-
-    const isModernPlaceholderVisible = useMemo(
-        () => !inFocus && !defaultValue && defaultValue !== 0 && !value && value !== 0,
-        [defaultValue, inFocus, value],
-    );
+    const { modernPlaceholder, paddingAndVariantOptions, inputLabel } = useInputStyles({
+        isHaveValue: !!value || typeof defaultValue === 'number',
+        useModernStyles,
+        size,
+        label,
+        inFocus,
+        placeholder: '',
+    });
 
     return (
         <InputLabel
@@ -76,26 +56,16 @@ export const CoreCurrencyInput: FC<TProps> = ({
             size={size}
         >
             <InputWrapper>
-                {useModernStyles && label && (
-                    <ModernPlaceholder
-                        visible={isModernPlaceholderVisible}
-                        paddingLeft={18}
-                        paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
-                        size={size}
-                        required={required}
-                    >
-                        {label}
-                    </ModernPlaceholder>
-                )}
+                {modernPlaceholder}
                 <StyledCurrencyInputFromLibrary
                     $palette={palette}
                     $hasBorder={!useModernStyles}
                     $paddingLeft={18}
                     $paddingRight={18}
                     $borderRadius={10}
-                    $variant={paddingOptions.variant}
-                    $paddingTop={paddingOptions.paddingTop}
-                    $paddingBottom={paddingOptions.paddingBottom}
+                    $variant={paddingAndVariantOptions.variant}
+                    $paddingTop={paddingAndVariantOptions.paddingTop}
+                    $paddingBottom={paddingAndVariantOptions.paddingBottom}
                     $hasError={hasError}
                     $inFocus={inFocus}
                     onBlur={handleBlur}

@@ -9,7 +9,6 @@ import React, {
     useCallback,
     useEffect,
     useId,
-    useMemo,
     useRef,
     useState,
 } from 'react';
@@ -23,11 +22,12 @@ import { InputLabel } from '../../../InputLabel';
 import { PureInput } from '../../../PureInput';
 import { Dropdown } from '../../../../common/Dropdown';
 import { Scrollbar } from '../../../../common/Scrollbar';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../../../constants';
+import { MODERN_STYLE_SIZE_PARAMS_MAP, TSizes } from '../../../constants';
 import { useComponentPalette } from '../../../../../palette';
 import { TAutocompleteDefaultOptionPalette } from '../AutocompleteDefaultOption/palette';
-import { ModernPlaceholder } from '../../../ModernPlaceholder';
 import { LABEL_PADDING } from '../../../InputLabel/constants';
+import { useInputStyles } from '../../../_hooks/useInputStyles';
+import { ModernPlaceholder } from '../../../ModernPlaceholder';
 
 const DefaultSkeletonItem = () => (
     <S.DefaultSkeletonWrapper>
@@ -121,6 +121,16 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
 
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
+        const { inputLabel, paddingAndVariantOptions, isHideModernPlaceholder, modernInputPlaceholder } =
+            useInputStyles({
+                isHaveValue: !!value,
+                useModernStyles,
+                size,
+                label,
+                inFocus,
+                placeholder,
+            });
+
         const handleOpen = useCallback(() => setIsOpen(true), []);
         const handleClose = useCallback(() => {
             setIsOpen(false);
@@ -156,31 +166,6 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             },
             [handleOpen, handleFocus],
         );
-
-        const inputLabel = useMemo(() => {
-            if (useModernStyles) {
-                if (value || isOpen) {
-                    return label;
-                } else {
-                    return undefined;
-                }
-            } else {
-                return label;
-            }
-        }, [isOpen, label, value, useModernStyles]);
-
-        const paddingOptions = useMemo(() => {
-            if ((value || isOpen) && useModernStyles && inputLabel) {
-                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-            } else {
-                return SIZE_PARAMS_MAP[size];
-            }
-        }, [value, isOpen, useModernStyles, size, inputLabel]);
-
-        const modernInputPlaceholder = useMemo(() => {
-            return placeholder || label;
-        }, [label, placeholder]);
-        const isModernPlaceholderVisible = useMemo(() => !isOpen && !value, [isOpen, value]);
 
         const isDropdownOpen = !isDropdownDisabled && isOpen && (!!options.length || !!isLoading);
         // Скелетоны показываем ТОЛЬКО когда опций ещё нет (первая загрузка). При повторных запросах
@@ -251,9 +236,9 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
                         {useModernStyles && modernInputPlaceholder && (
                             <ModernPlaceholder
-                                visible={isModernPlaceholderVisible}
+                                visible={!isHideModernPlaceholder}
                                 paddingLeft={typeof inputPaddingLeft === 'number' ? inputPaddingLeft : 20}
-                                paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
+                                paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
                                 size={size}
                                 required={required}
                             >
@@ -285,7 +270,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             aria-activedescendant={
                                 isDropdownOpen && activeIndex >= 0 ? getOptionId(activeIndex) : undefined
                             }
-                            {...paddingOptions}
+                            {...paddingAndVariantOptions}
                         />
                     </S.InputLabelContent>
                 </InputLabel>
