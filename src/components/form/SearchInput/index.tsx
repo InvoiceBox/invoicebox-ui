@@ -85,11 +85,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     {...paddingAndVariantOptions}
                     useModernStyles={useModernStyles}
                 />
-                <S.IconWrapper
-                    $inFocus={inFocus}
-                    $palette={palette}
-                    $wideBottomSpacing={useModernStyles || !!inputLabel}
-                >
+                <S.IconWrapper $inFocus={inFocus} $palette={palette} $useModernStyles={useModernStyles}>
                     {value ? <ResetButton onClick={handleInputReset} /> : <SearchIcon />}
                 </S.IconWrapper>
             </InputLabel>
