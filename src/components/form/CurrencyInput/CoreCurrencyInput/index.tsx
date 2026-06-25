@@ -44,6 +44,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
         label,
         inFocus,
         placeholder: '',
+        required,
     });
 
     return (

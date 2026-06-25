@@ -83,6 +83,7 @@ export const DateInput: FC<TProps> = ({
         inFocus,
         placeholder,
         conditionHideModernPlaceholder: isOpen,
+        required,
     });
 
     useEffect(() => {

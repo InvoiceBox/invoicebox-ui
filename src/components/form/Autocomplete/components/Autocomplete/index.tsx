@@ -129,6 +129,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                 label,
                 inFocus,
                 placeholder,
+                required,
             });
 
         const handleOpen = useCallback(() => setIsOpen(true), []);

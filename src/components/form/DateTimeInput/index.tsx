@@ -90,6 +90,7 @@ export const DateTimeInput: FC<TProps> = ({
         inFocus,
         placeholder,
         conditionHideModernPlaceholder: isOpen,
+        required,
     });
 
     const handleStringValueChange = useCallback(

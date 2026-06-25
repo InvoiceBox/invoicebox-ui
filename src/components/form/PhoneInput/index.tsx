@@ -103,6 +103,7 @@ export const PhoneInput: FC<TProps> = ({
         label,
         inFocus,
         placeholder: '',
+        required,
     });
 
     const handleChangeCountry = useCallback(

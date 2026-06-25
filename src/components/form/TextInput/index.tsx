@@ -74,6 +74,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             label,
             inFocus,
             placeholder,
+            required,
         });
 
         const handleChange = useCallback(
