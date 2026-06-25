@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useRef, useState } from 'react';
 import { useComponentPalette } from '../../../palette';
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useInputFocus } from '../../../hooks/useInputFocus';
@@ -6,8 +6,7 @@ import { logic } from '../DateInput/logic';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
-import { ModernPlaceholder } from '../ModernPlaceholder';
+import { TSizes } from '../constants';
 import { CalendarIcon } from '../DateInput/components/CalendarIcon';
 import { Dropdown } from '../../common/Dropdown';
 import { Calendar, TProps as TCalendarProps } from '../../common/Calendar';
@@ -17,6 +16,7 @@ import { TDateTimeInputPalette } from './palette';
 import { useTimePickerHeight } from './hooks/useTimePickerHeight';
 import { useStringValue } from './hooks/useStringValue';
 import { MobileDrawerDateTimeCalendar } from './components/MobileDrawerDateTimeCalendar';
+import { useInputStyles } from '../_hooks/useInputStyles';
 
 export type TProps = {
     value: Date | null;
@@ -81,6 +81,16 @@ export const DateTimeInput: FC<TProps> = ({
         handleFocus: focusHandler,
         handleBlur: blurHandler,
     } = useInputFocus({ onFocus, onBlur });
+
+    const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+        isHaveValue: !!stringValue,
+        useModernStyles,
+        size,
+        label,
+        inFocus,
+        placeholder,
+        isShowModernPlaceholder: isOpen,
+    });
 
     const handleStringValueChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -162,37 +172,6 @@ export const DateTimeInput: FC<TProps> = ({
             ? [minDate.getHours(), minDate.getMinutes()]
             : undefined;
 
-    const inputLabel = useMemo(() => {
-        if (useModernStyles) {
-            if (stringValue || isOpen) {
-                return label;
-            } else {
-                return undefined;
-            }
-        } else {
-            return label;
-        }
-    }, [isOpen, label, stringValue, useModernStyles]);
-
-    const paddingOptions = useMemo(() => {
-        if ((stringValue || isOpen) && useModernStyles && inputLabel) {
-            return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-        } else {
-            return SIZE_PARAMS_MAP[size];
-        }
-    }, [stringValue, isOpen, useModernStyles, size, inputLabel]);
-
-    const inputPlaceholder = useMemo(() => {
-        if (useModernStyles) {
-            return undefined;
-        } else {
-            return placeholder || logic.getPlaceholder(withTime);
-        }
-    }, [placeholder, useModernStyles, withTime]);
-
-    const modernPlaceholderText = placeholder || label || logic.getPlaceholder(withTime);
-    const isModernPlaceholderVisible = useMemo(() => !isOpen && !stringValue, [isOpen, stringValue]);
-
     return (
         <S.Wrapper ref={isMobile ? undefined : elRef}>
             <InputLabel
@@ -203,30 +182,23 @@ export const DateTimeInput: FC<TProps> = ({
                 size={size}
             >
                 <S.InputWrapper>
-                    {useModernStyles && (
-                        <ModernPlaceholder
-                            visible={isModernPlaceholderVisible}
-                            paddingTop={SIZE_PARAMS_MAP[size].paddingTop}
-                            size={size}
-                            required={required}
-                        >
-                            {modernPlaceholderText}
-                        </ModernPlaceholder>
-                    )}
+                    {modernPlaceholder}
                     <PureInput
                         onClick={handleTrigger}
                         ref={inputRef}
                         hasError={hasError}
                         inFocus={inFocus}
                         name={name}
-                        placeholder={inputPlaceholder}
+                        placeholder={
+                            useModernStyles ? undefined : placeholder || logic.getPlaceholder(withTime)
+                        }
                         onFocus={focusHandler}
                         onBlur={handleBlur}
                         value={stringValue}
                         onChange={handleStringValueChange}
                         paddingRight={44}
                         useModernStyles={useModernStyles}
-                        {...paddingOptions}
+                        {...paddingAndVariantOptions}
                     />
                     <S.Icon onClick={handleTrigger} $color={palette.icon}>
                         <CalendarIcon />

@@ -47,6 +47,7 @@ const COMMON_ARGS = {
     label: 'Label',
     minDate: new Date(),
     maxDate: dateAfter29Days as unknown as Date,
+    useModernStyles: true,
 };
 
 export const Default: StoryObj<typeof DateTimeInput> = {
