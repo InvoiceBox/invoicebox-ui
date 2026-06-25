@@ -65,16 +65,6 @@ export const DateInput: FC<TProps> = ({
         handleBlur: blurHandler,
     } = useInputFocus({ onFocus, onBlur });
 
-    const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
-        isHaveValue: !!value,
-        useModernStyles,
-        size,
-        label,
-        inFocus,
-        placeholder,
-        isShowModernPlaceholder: isOpen,
-    });
-
     const handleFocus = useCallback(
         (event: FocusEvent<HTMLInputElement>) => {
             handleClose();
@@ -84,6 +74,16 @@ export const DateInput: FC<TProps> = ({
     );
 
     const [stringValue, setStringValue] = useState(logic.valueToString(value));
+
+    const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+        isHaveValue: !!stringValue,
+        useModernStyles,
+        size,
+        label,
+        inFocus,
+        placeholder,
+        isShowModernPlaceholder: isOpen,
+    });
 
     useEffect(() => {
         if (stringValue && value === resetValue) {
