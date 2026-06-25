@@ -38,6 +38,7 @@ export const InputLabel: FC<TProps> = ({
                     ? -MODERN_STYLE_SIZE_PARAMS_MAP[size].$labelPaddingTop
                     : undefined
             }
+            $paddingTop={useModernStyles ? 0 : 10}
         >
             {label && (
                 <S.Label

@@ -48,11 +48,13 @@ export const Wrapper = styled.div<{
     $palette: TInputLabelPalette;
     $useModernStyles?: boolean;
     $marginTop?: number;
+    $paddingTop?: number;
 }>`
     position: relative;
     width: 100%;
     opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
     margin-top: ${({ $marginTop }) => $marginTop || 0}px;
+    padding-top: ${({ $paddingTop }) => $paddingTop}px;
 
     &:hover ${Label} {
         ${({ $disabled, $palette }) =>
