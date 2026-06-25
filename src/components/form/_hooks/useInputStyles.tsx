@@ -10,7 +10,7 @@ type TParams = {
     label?: string;
     placeholder?: string;
     required?: boolean;
-    isShowModernPlaceholder?: boolean;
+    conditionHideModernPlaceholder?: boolean;
 };
 
 export const useInputStyles = ({
@@ -21,9 +21,9 @@ export const useInputStyles = ({
     placeholder,
     isHaveValue,
     required,
-    isShowModernPlaceholder = false,
+    conditionHideModernPlaceholder = false,
 }: TParams) => {
-    const isHideModernPlaceholder = isHaveValue || inFocus || isShowModernPlaceholder;
+    const isHideModernPlaceholder = isHaveValue || inFocus || conditionHideModernPlaceholder;
 
     const inputLabel = useMemo(() => {
         if (useModernStyles) {

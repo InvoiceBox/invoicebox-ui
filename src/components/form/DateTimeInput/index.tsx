@@ -89,7 +89,7 @@ export const DateTimeInput: FC<TProps> = ({
         label,
         inFocus,
         placeholder,
-        isShowModernPlaceholder: isOpen,
+        conditionHideModernPlaceholder: isOpen,
     });
 
     const handleStringValueChange = useCallback(
