@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, forwardRef, useMemo } from 'react';
+import React, { ChangeEvent, useCallback, forwardRef } from 'react';
 import * as S from './styles';
 import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as PureInputProps } from '../PureInput';
@@ -7,7 +7,8 @@ import { SearchIcon } from './components/SearchIcon';
 import { useComponentPalette } from '../../../palette';
 import { TSearchInputPalette } from './palette';
 import { ResetButton } from '../ResetButton';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
+import { TSizes } from '../constants';
+import { useInputStyles } from '../_hooks/useInputStyles';
 
 export type TProps = Pick<
     PureInputProps,
@@ -40,6 +41,15 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
         const palette = useComponentPalette<TSearchInputPalette>('searchInput');
 
+        const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+            isHaveValue: !!value,
+            useModernStyles,
+            size,
+            label: placeholder,
+            inFocus,
+            placeholder,
+        });
+
         const handleInputReset = useCallback(() => {
             onChange('');
         }, [onChange]);
@@ -51,42 +61,19 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             [onChange],
         );
 
-        const inputPlaceholder = useMemo(() => {
-            if (useModernStyles) {
-                if (!inFocus) {
-                    return placeholder;
-                } else {
-                    return undefined;
-                }
-            } else {
-                return placeholder;
-            }
-        }, [placeholder, useModernStyles, inFocus]);
-
-        const inputLabel = useMemo(() => {
-            if (useModernStyles && (value || inFocus)) {
-                return placeholder;
-            } else {
-                return undefined;
-            }
-        }, [inFocus, placeholder, value, useModernStyles]);
-
-        const paddingOptions = useMemo(() => {
-            if ((value || inFocus) && useModernStyles && inputLabel) {
-                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-            } else {
-                return SIZE_PARAMS_MAP[size];
-            }
-        }, [value, inFocus, useModernStyles, size, inputLabel]);
-
         return (
-            <InputLabel useModernStyles={useModernStyles} size={size} label={inputLabel}>
+            <InputLabel
+                useModernStyles={useModernStyles}
+                size={size}
+                label={useModernStyles ? inputLabel : undefined}
+            >
+                {modernPlaceholder}
                 <PureInput
                     ref={ref}
                     paddingRight={56}
                     hasBorder={hasBorder}
                     onChange={handleInputChange}
-                    placeholder={inputPlaceholder}
+                    placeholder={useModernStyles ? undefined : placeholder}
                     value={value}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
@@ -95,7 +82,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     name={name}
                     maxLength={maxLength}
                     isOnlyNumbers={isOnlyNumbers}
-                    {...paddingOptions}
+                    {...paddingAndVariantOptions}
                     useModernStyles={useModernStyles}
                 />
                 <S.IconWrapper
