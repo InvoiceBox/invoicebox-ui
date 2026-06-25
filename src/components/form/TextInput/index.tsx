@@ -1,10 +1,10 @@
-import React, { ChangeEvent, ReactNode, useCallback, useMemo } from 'react';
+import React, { ChangeEvent, ReactNode, useCallback } from 'react';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
-import { MODERN_STYLE_SIZE_PARAMS_MAP, SIZE_PARAMS_MAP, TSizes } from '../constants';
-import { ModernPlaceholder } from '../ModernPlaceholder';
+import { TSizes } from '../constants';
+import { useInputStyles } from '../_hooks/useInputStyles';
 
 export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
     Pick<
@@ -66,7 +66,15 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
         ref,
     ) => {
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
-        const isHideModernPlaceholder = value || inFocus;
+
+        const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+            isHaveValue: !!value,
+            useModernStyles,
+            size,
+            label,
+            inFocus,
+            placeholder,
+        });
 
         const handleChange = useCallback(
             (event: ChangeEvent<HTMLInputElement>) => {
@@ -74,34 +82,6 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             },
             [onChange, maxLength],
         );
-
-        const inputLabel = useMemo(() => {
-            if (useModernStyles) {
-                return isHideModernPlaceholder ? label : undefined;
-            } else {
-                return label;
-            }
-        }, [useModernStyles, isHideModernPlaceholder, label]);
-
-        const paddingAndVariantOptions = useMemo(() => {
-            if (useModernStyles) {
-                if (isHideModernPlaceholder) {
-                    return MODERN_STYLE_SIZE_PARAMS_MAP[size];
-                } else {
-                    return {
-                        ...MODERN_STYLE_SIZE_PARAMS_MAP[size],
-                        paddingTop: MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop,
-                        paddingBottom: MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop,
-                    };
-                }
-            } else {
-                return SIZE_PARAMS_MAP[size];
-            }
-        }, [useModernStyles, isHideModernPlaceholder, size]);
-
-        const modernInputPlaceholder = useMemo(() => {
-            return placeholder || label;
-        }, [label, placeholder]);
 
         return (
             <InputLabel
@@ -113,16 +93,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                 useModernStyles={useModernStyles}
             >
                 <S.InputLabelContent>
-                    {useModernStyles && modernInputPlaceholder && (
-                        <ModernPlaceholder
-                            visible={!isHideModernPlaceholder}
-                            paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
-                            size={size}
-                            required={required}
-                        >
-                            {modernInputPlaceholder}
-                        </ModernPlaceholder>
-                    )}
+                    {modernPlaceholder}
                     <PureInput
                         id={id}
                         ref={ref}
