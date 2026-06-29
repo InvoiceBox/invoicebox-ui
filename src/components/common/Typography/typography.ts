@@ -46,6 +46,11 @@ export const typography = {
             line-height: 24px;
         }
     `,
+    headline5Desktop: css`
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    `,
     headline5: css`
         font-size: 16px;
         font-weight: 400;
