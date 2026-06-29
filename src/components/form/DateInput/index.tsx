@@ -84,6 +84,7 @@ export const DateInput: FC<TProps> = ({
         placeholder,
         conditionHideModernPlaceholder: isOpen,
         required,
+        paddingRight: 44,
     });
 
     useEffect(() => {

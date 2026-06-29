@@ -4,6 +4,7 @@ import { Typography } from '../../common/Typography';
 export const Wrapper = styled(Typography)<{
     $visible: boolean;
     $paddingLeft: number;
+    $paddingRight: number;
     $paddingTop: number;
     $color: string;
 }>`
@@ -12,12 +13,12 @@ export const Wrapper = styled(Typography)<{
     left: 0;
     right: 0;
     padding-left: ${({ $paddingLeft }) => $paddingLeft}px;
+    padding-right: ${({ $paddingRight }) => $paddingRight}px;
     padding-top: ${({ $paddingTop }) => $paddingTop}px;
     pointer-events: none;
     z-index: 1;
     display: flex;
     align-items: flex-start;
-    white-space: nowrap;
     overflow: hidden;
     opacity: ${({ $visible }) => ($visible ? 1 : 0)};
     transform: translateY(${({ $visible }) => ($visible ? '0px' : '-6px')});
@@ -25,6 +26,13 @@ export const Wrapper = styled(Typography)<{
         opacity 0.15s ease,
         transform 0.15s ease;
     color: ${({ $color }) => $color};
+`;
+
+export const TextContent = styled.span`
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 export const Star = styled.span<{ $color: string }>`

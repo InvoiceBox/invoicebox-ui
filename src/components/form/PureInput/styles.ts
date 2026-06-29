@@ -25,6 +25,7 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
     border-radius: ${({ $borderRadius }) => $borderRadius}px;
     border: none;
     width: 100%;
+    text-overflow: ellipsis;
     background-color: ${({ $palette, $useModernStyles }) =>
         $useModernStyles ? $palette.bgOpened : $palette.bg};
     transition: all 0.2s ease-in-out 0s;
