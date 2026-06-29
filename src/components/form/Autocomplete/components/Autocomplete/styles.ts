@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
     position: relative;
     box-sizing: border-box;
+    width: 100%;
 `;
 
 export const OptionContainer = styled.div<{ $usePadding: boolean; $hoverBg: string; $active?: boolean }>`
