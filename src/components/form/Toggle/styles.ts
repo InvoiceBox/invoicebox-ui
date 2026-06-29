@@ -38,7 +38,7 @@ export const INPUT_VARIANT_MAP: Record<
         width: 32.225,
         height: 19.2,
         circleSize: 16,
-        labelVariant: 'headline5',
+        labelVariant: 'headline5Desktop',
         leftChecked: 13,
         left: 0,
         border: 1.5,

@@ -25,7 +25,7 @@ export const MODERN_STYLE_SIZE_PARAMS_MAP: Record<
     L: {
         paddingTop: 24,
         paddingBottom: 8,
-        variant: 'headline5',
+        variant: 'headline5Desktop',
         $labelVariant: 'labelsHintsRegular',
         $labelPaddingTop: 8,
         $placeholderPaddingTop: 16,
@@ -41,7 +41,7 @@ export const MODERN_STYLE_SIZE_PARAMS_MAP: Record<
     XS: {
         paddingTop: 6,
         paddingBottom: 6,
-        variant: 'headline5',
+        variant: 'headline5Desktop',
         $labelVariant: 'labelsHintsRegular',
         $labelPaddingTop: -18,
         $placeholderPaddingTop: 6,
