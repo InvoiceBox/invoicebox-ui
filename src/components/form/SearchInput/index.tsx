@@ -48,6 +48,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             label: placeholder,
             inFocus,
             placeholder,
+            paddingRight: 56,
         });
 
         const handleInputReset = useCallback(() => {

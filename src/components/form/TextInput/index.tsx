@@ -5,6 +5,10 @@ import { PureInput, TProps as TPureInputProps } from '../PureInput';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { TSizes } from '../constants';
 import { useInputStyles } from '../_hooks/useInputStyles';
+import { useElementWidth } from '../_hooks/useElementWidth';
+
+const CHILDREN_RIGHT_OFFSET = 12;
+const CHILDREN_GAP = 8;
 
 export type TProps = Pick<TInputLabelProps, 'label' | 'required'> &
     Pick<
@@ -67,6 +71,12 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
     ) => {
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
+        const { ref: childrenRef, width: childrenWidth } = useElementWidth<HTMLDivElement>();
+
+        const placeholderPaddingRight = childrenWidth
+            ? childrenWidth + CHILDREN_RIGHT_OFFSET + CHILDREN_GAP
+            : paddingRight;
+
         const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
             isHaveValue: !!value,
             useModernStyles,
@@ -75,6 +85,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             inFocus,
             placeholder,
             required,
+            paddingRight: placeholderPaddingRight,
         });
 
         const handleChange = useCallback(
@@ -119,7 +130,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                         autoComplete={autoComplete}
                         {...paddingAndVariantOptions}
                     />
-                    {children && <S.ChildrenWrapper>{children}</S.ChildrenWrapper>}
+                    {children && <S.ChildrenWrapper ref={childrenRef}>{children}</S.ChildrenWrapper>}
                 </S.InputLabelContent>
             </InputLabel>
         );

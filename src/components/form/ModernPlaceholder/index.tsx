@@ -8,6 +8,7 @@ import { MODERN_STYLE_SIZE_PARAMS_MAP, TSizes } from '../constants';
 type TProps = {
     visible: boolean;
     paddingLeft?: number;
+    paddingRight?: number;
     paddingTop: number;
     size: TSizes;
     required?: boolean;
@@ -17,6 +18,7 @@ type TProps = {
 export const ModernPlaceholder: FC<TProps> = ({
     visible,
     paddingLeft = 20,
+    paddingRight = 12,
     paddingTop,
     size,
     required = false,
@@ -30,10 +32,11 @@ export const ModernPlaceholder: FC<TProps> = ({
             variant={MODERN_STYLE_SIZE_PARAMS_MAP[size].variant}
             $visible={visible}
             $paddingLeft={paddingLeft}
+            $paddingRight={paddingRight}
             $paddingTop={paddingTop}
             $color={pureInputPalette.placeholder}
         >
-            {children}
+            <S.TextContent>{children}</S.TextContent>
             {required && <S.Star $color={inputLabelPalette.error}>*</S.Star>}
         </S.Wrapper>
     );

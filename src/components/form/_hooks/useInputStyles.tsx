@@ -11,6 +11,7 @@ type TParams = {
     placeholder?: string;
     required?: boolean;
     conditionHideModernPlaceholder?: boolean;
+    paddingRight?: number;
 };
 
 export const useInputStyles = ({
@@ -22,6 +23,7 @@ export const useInputStyles = ({
     isHaveValue,
     required,
     conditionHideModernPlaceholder = false,
+    paddingRight,
 }: TParams) => {
     const isHideModernPlaceholder = isHaveValue || inFocus || conditionHideModernPlaceholder;
 
@@ -57,6 +59,7 @@ export const useInputStyles = ({
         <ModernPlaceholder
             visible={!isHideModernPlaceholder}
             paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
+            paddingRight={paddingRight}
             size={size}
             required={required}
         >

@@ -45,6 +45,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             inFocus,
             placeholder,
             required,
+            paddingRight: 52,
         });
 
         const isShowResetIcon = !!value && !!onReset;
