@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { Select, TProps } from '.';
+import { Select, TProps, TMultipleProps } from '.';
 
 const meta: Meta<typeof Select> = {
     title: 'form/Select',
@@ -176,4 +176,36 @@ export const WithRenderedValue: StoryObj<TProps<string>> = {
     },
 
     render: Component,
+};
+
+const MultipleComponent = (props: TMultipleProps<string>) => {
+    const [value, setValue] = useState<string[]>([]);
+
+    const handleChange = useCallback((newValue: string[]) => {
+        setValue(newValue);
+        action('onChange')(newValue);
+    }, []);
+
+    return (
+        <div style={{ maxWidth: 360 }}>
+            <Select {...props} value={value} onChange={handleChange} />
+        </div>
+    );
+};
+
+export const Multiple: StoryObj<TMultipleProps<string>> = {
+    args: {
+        ...COMMON_ARGS,
+        isMultiple: true,
+    },
+    render: MultipleComponent,
+};
+
+export const MultipleCollapsed: StoryObj<TMultipleProps<string>> = {
+    args: {
+        ...COMMON_ARGS,
+        isMultiple: true,
+        collapseTags: true,
+    },
+    render: MultipleComponent,
 };

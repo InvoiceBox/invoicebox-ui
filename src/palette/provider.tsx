@@ -32,6 +32,8 @@ import { generateTagsInputPalette } from '../components/form/TagsInput/palette';
 import { generateTimePickerPalette } from '../components/form/DateTimeInput/components/TimePicker/palette';
 import { generateDateTimeInputPalette } from '../components/form/DateTimeInput/palette';
 import { generateDrawerHeaderPalette } from '../components/form/common/DrawerHeader/palette';
+import { generateCheckboxPalette } from '../components/form/Checkbox/palette';
+import { generateTooltipPalette } from '../components/common/Tooltip/palette';
 
 type TProps = {
     children: ReactNode;
@@ -80,6 +82,8 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             timePicker: generateTimePickerPalette(mergedAbstractPalette),
             dateTimeInput: generateDateTimeInputPalette(mergedAbstractPalette),
             drawerHeader: generateDrawerHeaderPalette(mergedAbstractPalette),
+            checkbox: generateCheckboxPalette(mergedAbstractPalette),
+            tooltip: generateTooltipPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );

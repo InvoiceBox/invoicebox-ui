@@ -4,6 +4,8 @@ export type { TAbstractPalette } from './palette';
 // common
 export { Skeleton } from './components/common/Skeleton';
 export { Typography } from './components/common/Typography';
+export { Tooltip } from './components/common/Tooltip';
+export type { TProps as TTooltipProps } from './components/common/Tooltip';
 export { InvoiceboxSpinner } from './components/common/InvoiceboxSpinner';
 export { SecondaryButton } from './components/common/SecondaryButton';
 export { Arrow } from './components/common/Arrow';
@@ -42,8 +44,15 @@ export { TagsInput } from './components/form/TagsInput';
 export type { TProps as TTagsInputProps } from './components/form/TagsInput';
 export { TextInput } from './components/form/TextInput';
 export type { TProps as TTextInputProps } from './components/form/TextInput';
+export { Checkbox } from './components/form/Checkbox';
+export type { TProps as TCheckboxProps } from './components/form/Checkbox';
 export { Select } from './components/form/Select';
-export type { TProps as TSelectProps, TOption, TGroup } from './components/form/Select';
+export type {
+    TProps as TSelectProps,
+    TMultipleProps as TMultipleSelectProps,
+    TOption,
+    TGroup,
+} from './components/form/Select';
 export { Toggle } from './components/form/Toggle';
 export type { TProps as TToggleProps } from './components/form/Toggle';
 export { DateInput } from './components/form/DateInput';
