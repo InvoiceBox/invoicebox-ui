@@ -60,7 +60,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
                 {modernPlaceholder}
                 <StyledCurrencyInputFromLibrary
                     $palette={palette}
-                    $hasBorder={!useModernStyles}
+                    $hasBorder={!useModernStyles || hasError}
                     $paddingLeft={18}
                     $paddingRight={18}
                     $borderRadius={10}
