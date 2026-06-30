@@ -41,7 +41,7 @@ export const DateInput: FC<TProps> = ({
     label,
     minDate,
     maxDate,
-    size = 'M',
+    size,
     dropdownProps,
     placeholder,
     useModernStyles = false,
@@ -75,7 +75,7 @@ export const DateInput: FC<TProps> = ({
 
     const [stringValue, setStringValue] = useState(logic.valueToString(value));
 
-    const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+    const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
         isHaveValue: !!stringValue,
         useModernStyles,
         size,
@@ -130,7 +130,7 @@ export const DateInput: FC<TProps> = ({
                 inFocus={inFocus}
                 label={inputLabel}
                 useModernStyles={useModernStyles}
-                size={size}
+                size={fieldSize}
                 required={required}
             >
                 <S.InputWrapper>

@@ -44,7 +44,7 @@ export const DateTimeInput: FC<TProps> = ({
     label,
     minDate,
     maxDate,
-    size = 'M',
+    size,
     dropdownProps,
     placeholder,
     saveLabel,
@@ -82,7 +82,7 @@ export const DateTimeInput: FC<TProps> = ({
         handleBlur: blurHandler,
     } = useInputFocus({ onFocus, onBlur });
 
-    const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+    const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
         isHaveValue: !!stringValue,
         useModernStyles,
         size,
@@ -181,7 +181,7 @@ export const DateTimeInput: FC<TProps> = ({
                 label={inputLabel}
                 required={required}
                 useModernStyles={useModernStyles}
-                size={size}
+                size={fieldSize}
             >
                 <S.InputWrapper>
                     {modernPlaceholder}

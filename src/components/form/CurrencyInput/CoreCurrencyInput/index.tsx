@@ -22,7 +22,7 @@ export type TProps = Pick<
 
 export const CoreCurrencyInput: FC<TProps> = ({
     label,
-    size = 'M',
+    size,
     hasError = false,
     value,
     allowNegativeValue = false,
@@ -37,7 +37,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onBlur });
     const palette = useComponentPalette<TPureInputPalette>('pureInput');
 
-    const { modernPlaceholder, paddingAndVariantOptions, inputLabel } = useInputStyles({
+    const { modernPlaceholder, paddingAndVariantOptions, inputLabel, fieldSize } = useInputStyles({
         isHaveValue: !!value || typeof defaultValue === 'number',
         useModernStyles,
         size,
@@ -54,7 +54,7 @@ export const CoreCurrencyInput: FC<TProps> = ({
             disabled={disabled}
             required={required}
             useModernStyles={useModernStyles}
-            size={size}
+            size={fieldSize}
         >
             <InputWrapper>
                 {modernPlaceholder}

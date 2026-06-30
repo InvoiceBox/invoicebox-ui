@@ -30,14 +30,14 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             label,
             isOpen,
             onReset,
-            size = 'M',
+            size,
             onClick,
             required,
             useModernStyles = false,
         },
         ref,
     ) => {
-        const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+        const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
             isHaveValue: !!value,
             useModernStyles,
             size,
@@ -56,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                 label={inputLabel}
                 required={required}
                 useModernStyles={useModernStyles}
-                size={size}
+                size={fieldSize}
             >
                 <S.ControlWrapper>
                     {modernPlaceholder}

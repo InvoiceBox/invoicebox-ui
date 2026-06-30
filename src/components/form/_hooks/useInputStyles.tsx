@@ -4,7 +4,7 @@ import { ModernPlaceholder } from '../ModernPlaceholder';
 
 type TParams = {
     inFocus: boolean;
-    size: TSizes;
+    size?: TSizes;
     isHaveValue: boolean;
     useModernStyles?: boolean;
     label?: string;
@@ -27,6 +27,8 @@ export const useInputStyles = ({
 }: TParams) => {
     const isHideModernPlaceholder = isHaveValue || inFocus || conditionHideModernPlaceholder;
 
+    const fieldSize = useModernStyles && !size ? 'L' : size || 'M';
+
     const inputLabel = useMemo(() => {
         if (useModernStyles) {
             return isHideModernPlaceholder ? label : undefined;
@@ -38,18 +40,18 @@ export const useInputStyles = ({
     const paddingAndVariantOptions = useMemo(() => {
         if (useModernStyles) {
             if (isHideModernPlaceholder) {
-                return MODERN_STYLE_SIZE_PARAMS_MAP[size];
+                return MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize];
             } else {
                 return {
-                    ...MODERN_STYLE_SIZE_PARAMS_MAP[size],
-                    paddingTop: MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop,
-                    paddingBottom: MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop,
+                    ...MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize],
+                    paddingTop: MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize].$placeholderPaddingTop,
+                    paddingBottom: MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize].$placeholderPaddingTop,
                 };
             }
         } else {
-            return SIZE_PARAMS_MAP[size];
+            return SIZE_PARAMS_MAP[fieldSize];
         }
-    }, [useModernStyles, isHideModernPlaceholder, size]);
+    }, [useModernStyles, isHideModernPlaceholder, fieldSize]);
 
     const modernInputPlaceholder = useMemo(() => {
         return placeholder || label;
@@ -58,9 +60,9 @@ export const useInputStyles = ({
     const modernPlaceholder = useModernStyles && modernInputPlaceholder && (
         <ModernPlaceholder
             visible={!isHideModernPlaceholder}
-            paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
+            paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize].$placeholderPaddingTop}
             paddingRight={paddingRight}
-            size={size}
+            size={fieldSize}
             required={required}
         >
             {modernInputPlaceholder}
@@ -73,5 +75,6 @@ export const useInputStyles = ({
         modernInputPlaceholder,
         isHideModernPlaceholder,
         modernPlaceholder,
+        fieldSize,
     };
 };

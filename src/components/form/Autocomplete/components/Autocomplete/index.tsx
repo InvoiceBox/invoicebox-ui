@@ -99,7 +99,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
             optionsLoader,
             inputMaxLength,
             isInputOnlyNumbers = false,
-            size = 'M',
+            size,
             autoFocus,
             required = false,
             readOnly,
@@ -121,16 +121,21 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
 
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
-        const { inputLabel, paddingAndVariantOptions, isHideModernPlaceholder, modernInputPlaceholder } =
-            useInputStyles({
-                isHaveValue: !!value,
-                useModernStyles,
-                size,
-                label,
-                inFocus,
-                placeholder,
-                required,
-            });
+        const {
+            inputLabel,
+            paddingAndVariantOptions,
+            isHideModernPlaceholder,
+            modernInputPlaceholder,
+            fieldSize,
+        } = useInputStyles({
+            isHaveValue: !!value,
+            useModernStyles,
+            size,
+            label,
+            inFocus,
+            placeholder,
+            required,
+        });
 
         const handleOpen = useCallback(() => setIsOpen(true), []);
         const handleClose = useCallback(() => {
@@ -226,7 +231,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                     disabled={disabled}
                     required={required}
                     useModernStyles={useModernStyles}
-                    size={size}
+                    size={fieldSize}
                     left={
                         useModernStyles && typeof inputPaddingLeft === 'number'
                             ? inputPaddingLeft - LABEL_PADDING
@@ -239,8 +244,8 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             <ModernPlaceholder
                                 visible={!isHideModernPlaceholder}
                                 paddingLeft={typeof inputPaddingLeft === 'number' ? inputPaddingLeft : 20}
-                                paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
-                                size={size}
+                                paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize].$placeholderPaddingTop}
+                                size={fieldSize}
                                 required={required}
                             >
                                 {modernInputPlaceholder}
