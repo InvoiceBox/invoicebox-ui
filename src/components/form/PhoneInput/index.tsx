@@ -266,7 +266,7 @@ export const PhoneInput: FC<TProps> = ({
             required={required}
             useModernStyles={useModernStyles}
             size={size}
-            left={useModernStyles ? 65 : undefined}
+            left={isHaveSelectCountries && useModernStyles ? 65 : undefined}
         >
             <S.InputLabelContent>
                 {useModernStyles && (

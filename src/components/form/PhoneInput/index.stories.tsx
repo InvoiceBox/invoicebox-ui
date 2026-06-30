@@ -35,6 +35,7 @@ const commonProps = {
     label: 'Телефон',
     size: 'L' as const,
     isSupportCityRusPhoneNumber: false,
+    useModernStyles: true,
 };
 
 export const MultiCountry: StoryObj<TProps> = {
