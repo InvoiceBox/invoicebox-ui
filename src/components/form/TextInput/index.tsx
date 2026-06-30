@@ -55,7 +55,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             paddingRight,
             type,
             children,
-            size = 'M',
+            size,
             isOnlyNumbers,
             autoFocus,
             element = 'input',
@@ -77,7 +77,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             ? childrenWidth + CHILDREN_RIGHT_OFFSET + CHILDREN_GAP
             : paddingRight;
 
-        const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+        const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
             isHaveValue: !!value,
             useModernStyles,
             size,
@@ -101,7 +101,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                 label={inputLabel}
                 disabled={disabled}
                 required={required}
-                size={size}
+                size={fieldSize}
                 useModernStyles={useModernStyles}
             >
                 <S.InputLabelContent>

@@ -82,6 +82,8 @@ export const Select = <TValue extends string | number>({
 
     const [isOpen, setIsOpen] = useState(false);
 
+    const fieldSize = useModernStyles && !size ? 'L' : size || 'M';
+
     /*  
         существует интеграционная проблема селекта с final-form 
 
@@ -292,7 +294,7 @@ export const Select = <TValue extends string | number>({
                     name={name}
                     isOpen={isOpen}
                     onReset={isResetButtonEnabled ? handleReset : undefined}
-                    size={size}
+                    size={fieldSize}
                     onClick={isDrawerOptions || !!renderedValue ? handleInputClick : undefined}
                     required={required}
                     useModernStyles={useModernStyles}

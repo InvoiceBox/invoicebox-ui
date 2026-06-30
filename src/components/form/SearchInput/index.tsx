@@ -33,7 +33,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             autoFocus,
             isOnlyNumbers,
             maxLength,
-            size = 'M',
+            size,
             useModernStyles = false,
         },
         ref,
@@ -41,7 +41,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
         const palette = useComponentPalette<TSearchInputPalette>('searchInput');
 
-        const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+        const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
             isHaveValue: !!value,
             useModernStyles,
             size,
@@ -65,7 +65,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
         return (
             <InputLabel
                 useModernStyles={useModernStyles}
-                size={size}
+                size={fieldSize}
                 label={useModernStyles ? inputLabel : undefined}
             >
                 {modernPlaceholder}

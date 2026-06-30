@@ -56,7 +56,7 @@ export const PhoneInput: FC<TProps> = ({
     countries,
     onCountryChange,
     pureInputProps,
-    size = 'M',
+    size,
     autoFocus,
     isSupportCityRusPhoneNumber = false,
     isInnerErrorHighlight = true,
@@ -96,7 +96,7 @@ export const PhoneInput: FC<TProps> = ({
     const [inputValue, setInputValue] = useState(value);
     const [country, setCountry] = useState(RUS_COUNTRY_CODE);
 
-    const { inputLabel, paddingAndVariantOptions, isHideModernPlaceholder } = useInputStyles({
+    const { inputLabel, paddingAndVariantOptions, isHideModernPlaceholder, fieldSize } = useInputStyles({
         isHaveValue: !!inputValue,
         useModernStyles,
         size,
@@ -265,7 +265,7 @@ export const PhoneInput: FC<TProps> = ({
             disabled={disabled}
             required={required}
             useModernStyles={useModernStyles}
-            size={size}
+            size={fieldSize}
             left={isHaveSelectCountries && useModernStyles ? 65 : undefined}
         >
             <S.InputLabelContent>
@@ -273,8 +273,8 @@ export const PhoneInput: FC<TProps> = ({
                     <ModernPlaceholder
                         visible={!isHideModernPlaceholder}
                         paddingLeft={isHaveSelectCountries ? 75 : 18}
-                        paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[size].$placeholderPaddingTop}
-                        size={size}
+                        paddingTop={MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize].$placeholderPaddingTop}
+                        size={fieldSize}
                         required={required}
                     >
                         {modernPlaceholderText}

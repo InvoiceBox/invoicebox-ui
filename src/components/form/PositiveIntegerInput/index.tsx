@@ -35,12 +35,12 @@ export const PositiveIntegerInput: FC<TProps> = ({
     onFocus,
     onBlur,
     name,
-    size = 'M',
+    size,
     useModernStyles = false,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
-    const { inputLabel, paddingAndVariantOptions, modernPlaceholder } = useInputStyles({
+    const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
         isHaveValue: typeof value === 'number',
         useModernStyles,
         size,
@@ -72,7 +72,7 @@ export const PositiveIntegerInput: FC<TProps> = ({
     }, [decrement, value, onChange]);
 
     return (
-        <InputLabel inFocus={inFocus} label={inputLabel} useModernStyles={useModernStyles} size={size}>
+        <InputLabel inFocus={inFocus} label={inputLabel} useModernStyles={useModernStyles} size={fieldSize}>
             <S.ControlWrapper>
                 {modernPlaceholder}
                 <PureInput
