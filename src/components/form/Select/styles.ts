@@ -23,6 +23,7 @@ export const Option = styled(Typography)<{
     $palette: TSelectPalette;
     $isGrouped: boolean;
     $usePadding: boolean;
+    $isSelected?: boolean;
 }>`
     overflow: hidden;
     width: 100%;
@@ -31,6 +32,13 @@ export const Option = styled(Typography)<{
     box-sizing: border-box;
     cursor: pointer;
     border-radius: ${({ $usePadding }) => ($usePadding ? '12px' : 'none')};
+
+    ${({ $isSelected, $palette }) =>
+        $isSelected &&
+        css`
+            background-color: ${$palette.bgHover};
+            border-radius: 8px;
+        `}
 
     &:hover {
         background-color: ${({ $palette }) => $palette.bgHover};
@@ -47,8 +55,12 @@ export const Group = styled(Typography)`
     padding: 12px 20px;
 `;
 
-export const DefaultOptionWrapper = styled.div<{ $usePadding?: boolean }>`
+export const DefaultOptionWrapper = styled.div<{
+    $usePadding?: boolean;
+    $isMultiple?: boolean;
+}>`
     padding: ${({ $usePadding }) => ($usePadding ? '12px' : '12px 20px')};
+    padding-left: ${({ $isMultiple, $usePadding }) => ($isMultiple && !$usePadding ? '6px' : undefined)};
 `;
 
 export const DrawerContent = styled.div`
@@ -64,3 +76,15 @@ export const EmptyLabel = styled(Typography)<{ $color: string }>`
 `;
 
 export const ScrollbarContent = styled.div``;
+
+export const OptionContent = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 16px;
+`;
+
+export const CheckboxWrapper = styled.div`
+    flex: 0 0 auto;
+    pointer-events: none;
+`;

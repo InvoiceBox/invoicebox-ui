@@ -19,6 +19,9 @@ import { TSelectPalette } from './palette';
 import { useOptionGroups } from './hooks/useOptionGroups';
 import { Drawer } from '../../common/Drawer';
 import Loader from './components/Loader';
+import { MultipleValue } from './components/MultipleValue';
+import { Checkbox } from '../Checkbox';
+import { TProps as TChipProps } from '../../common/Chip';
 
 const MAX_LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
@@ -26,12 +29,10 @@ const OPTION_IDENTIFIER = 'option-identifier';
 export type TOption<TValue> = { label: string; value: TValue; groupId?: string; entity?: unknown };
 export type TGroup = { label: string; id: string; entity?: unknown };
 
-export type TProps<TValue> = Pick<
+type TSharedProps<TValue> = Pick<
     TInputProps,
     'label' | 'hasError' | 'placeholder' | 'name' | 'size' | 'onBlur' | 'required'
 > & {
-    value: TValue | null;
-    onChange: (value: TValue | null) => void;
     options: TOption<TValue>[];
     groups?: TGroup[];
     isResetButtonEnabled?: boolean;
@@ -50,32 +51,57 @@ export type TProps<TValue> = Pick<
     useModernStyles?: boolean;
 };
 
-export const Select = <TValue extends string | number>({
-    label,
-    hasError,
-    placeholder,
-    name,
-    value,
-    renderValue,
-    onChange,
-    options,
-    groups = [],
-    isResetButtonEnabled = false,
-    size,
-    renderOption,
-    dropdownHeader,
-    isDrawerOptions = false,
-    renderGroup,
-    scrollbarMaxHeight = MAX_LIST_HEIGHT,
-    scrollbarHeader,
-    emptyOptionsLabel,
-    isLoading,
-    onBlur,
-    required,
-    usePadding = false,
-    dropdownWidth,
-    useModernStyles = false,
-}: TProps<TValue>) => {
+export type TProps<TValue> = TSharedProps<TValue> & {
+    isMultiple?: false;
+    value: TValue | null;
+    onChange: (value: TValue | null) => void;
+};
+
+export type TMultipleProps<TValue> = TSharedProps<TValue> & {
+    isMultiple: true;
+    value: TValue[];
+    onChange: (value: TValue[]) => void;
+    collapseTags?: boolean;
+    chipProps?: Partial<Omit<TChipProps, 'label'>>;
+};
+
+type TAllProps<TValue> = TProps<TValue> | TMultipleProps<TValue>;
+
+export const Select = <TValue extends string | number>(props: TAllProps<TValue>) => {
+    const {
+        label,
+        hasError,
+        placeholder,
+        name,
+        value,
+        renderValue,
+        onChange,
+        options,
+        groups = [],
+        isResetButtonEnabled = false,
+        size,
+        renderOption,
+        dropdownHeader,
+        isDrawerOptions = false,
+        renderGroup,
+        scrollbarMaxHeight = MAX_LIST_HEIGHT,
+        scrollbarHeader,
+        emptyOptionsLabel,
+        isLoading,
+        onBlur,
+        required,
+        usePadding = false,
+        dropdownWidth,
+        useModernStyles = false,
+    } = props;
+
+    const isMultiple = props.isMultiple === true;
+    const collapseTags = isMultiple ? ((props as TMultipleProps<TValue>).collapseTags ?? false) : false;
+    const chipProps = isMultiple ? (props as TMultipleProps<TValue>).chipProps : undefined;
+
+    const onChangeSingle = onChange as (value: TValue | null) => void;
+    const onChangeMultiple = onChange as (value: TValue[]) => void;
+
     const palette = useComponentPalette<TSelectPalette>('select');
 
     const { inFocus, handleFocus: focusHandler, handleBlur: blurHandler } = useInputFocus({ onBlur });
@@ -101,7 +127,22 @@ export const Select = <TValue extends string | number>({
     const delayBlur = useRef<null | (() => void)>(null);
     const inputRef = useRef<null | HTMLInputElement>(null);
 
-    const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
+    const multipleValue = useMemo<TValue[]>(
+        () => (isMultiple ? ((value as TValue[]) ?? []) : []),
+        [isMultiple, value],
+    );
+
+    const selectedOption = useMemo(
+        () => (isMultiple ? undefined : options.find((option) => option.value === value)),
+        [isMultiple, options, value],
+    );
+
+    const selectedOptions = useMemo(
+        () => (isMultiple ? options.filter((option) => multipleValue.includes(option.value)) : []),
+        [isMultiple, options, multipleValue],
+    );
+
+    const selectedValuesSet = useMemo(() => new Set<TValue>(multipleValue), [multipleValue]);
 
     const optionGroups = useOptionGroups(options, groups);
 
@@ -137,17 +178,35 @@ export const Select = <TValue extends string | number>({
     const handleSelect = useCallback(
         (event: MouseEvent<HTMLDivElement>) => {
             const newValue = JSON.parse(event.currentTarget.dataset.value as string) as TValue;
-            onChange(newValue);
+
+            if (isMultiple) {
+                const next = multipleValue.includes(newValue)
+                    ? multipleValue.filter((item) => item !== newValue)
+                    : [...multipleValue, newValue];
+                onChangeMultiple(next);
+                // при множественном выборе дропдаун остаётся открытым
+                return;
+            }
+
+            onChangeSingle(newValue);
             handleHide();
             if (delayBlur.current) {
                 delayBlur.current();
                 delayBlur.current = null;
             }
         },
-        [handleHide, onChange],
+        [handleHide, isMultiple, multipleValue, onChangeMultiple, onChangeSingle],
     );
 
-    const handleReset = useCallback(() => onChange(null), [onChange]);
+    const handleRemoveTag = useCallback(
+        (removedValue: TValue) => onChangeMultiple(multipleValue.filter((item) => item !== removedValue)),
+        [multipleValue, onChangeMultiple],
+    );
+
+    const handleReset = useCallback(
+        () => (isMultiple ? onChangeMultiple([]) : onChangeSingle(null)),
+        [isMultiple, onChangeMultiple, onChangeSingle],
+    );
 
     const handleInputClick = () => {
         inputRef.current?.blur();
@@ -165,7 +224,11 @@ export const Select = <TValue extends string | number>({
             return renderOption(option.entity);
         }
 
-        return <S.DefaultOptionWrapper $usePadding={usePadding}> {option.label}</S.DefaultOptionWrapper>;
+        return (
+            <S.DefaultOptionWrapper $usePadding={usePadding} $isMultiple={isMultiple}>
+                {option.label}
+            </S.DefaultOptionWrapper>
+        );
     };
 
     const handleGroupRender = (group: TGroup | null) => {
@@ -204,8 +267,21 @@ export const Select = <TValue extends string | number>({
                                 data-option-identifier={OPTION_IDENTIFIER}
                                 $isGrouped={!!group && !renderOption}
                                 $usePadding={usePadding}
+                                $isSelected={!isMultiple && option.value === value}
                             >
-                                {handleOptionRender(option)}
+                                {isMultiple ? (
+                                    <S.OptionContent>
+                                        <S.CheckboxWrapper>
+                                            <Checkbox
+                                                checked={selectedValuesSet.has(option.value)}
+                                                readOnly
+                                            />
+                                        </S.CheckboxWrapper>
+                                        {handleOptionRender(option)}
+                                    </S.OptionContent>
+                                ) : (
+                                    handleOptionRender(option)
+                                )}
                             </S.Option>
                         </S.OptionWrapper>
                     ))}
@@ -274,9 +350,33 @@ export const Select = <TValue extends string | number>({
     };
 
     const renderedValue: ReactNode | undefined = useMemo(() => {
+        if (isMultiple) {
+            if (!selectedOptions.length) return;
+            return (
+                <MultipleValue
+                    selectedOptions={selectedOptions}
+                    onRemove={handleRemoveTag}
+                    collapse={collapseTags}
+                    chipProps={chipProps}
+                />
+            );
+        }
+
         if (!renderValue || !selectedOption?.entity) return;
         return renderValue(selectedOption?.entity);
-    }, [renderValue, selectedOption?.entity]);
+    }, [
+        isMultiple,
+        selectedOptions,
+        handleRemoveTag,
+        collapseTags,
+        chipProps,
+        renderValue,
+        selectedOption?.entity,
+    ]);
+
+    const inputValue = isMultiple
+        ? selectedOptions.map((option) => option.label).join(', ')
+        : selectedOption?.label || '';
 
     return (
         <S.Wrapper ref={isDrawerOptions ? undefined : wrapperRef}>
@@ -285,11 +385,11 @@ export const Select = <TValue extends string | number>({
                     ref={inputRef}
                     label={label}
                     hasError={hasError}
-                    inFocus={inFocus}
+                    inFocus={isMultiple ? isOpen : inFocus}
                     placeholder={placeholder}
                     onFocus={isDrawerOptions ? undefined : handleFocus}
                     onBlur={isDrawerOptions ? undefined : handleBlur}
-                    value={selectedOption?.label || ''}
+                    value={inputValue}
                     renderedValue={renderedValue}
                     name={name}
                     isOpen={isOpen}

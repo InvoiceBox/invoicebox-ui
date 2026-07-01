@@ -60,6 +60,8 @@ import {
     generateDrawerHeaderPalette,
     TDrawerHeaderPalette,
 } from '../components/form/common/DrawerHeader/palette';
+import { generateCheckboxPalette, TCheckboxPalette } from '../components/form/Checkbox/palette';
+import { generateTooltipPalette, TTooltipPalette } from '../components/common/Tooltip/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -92,6 +94,8 @@ type TContext = {
     timePicker: TTimePickerPalette;
     dateTimeInput: TDateTimeInputPalette;
     drawerHeader: TDrawerHeaderPalette;
+    checkbox: TCheckboxPalette;
+    tooltip: TTooltipPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -125,4 +129,6 @@ export const PaletteContext = createContext<TContext>({
     timePicker: generateTimePickerPalette(defaultAbstractPalette),
     dateTimeInput: generateDateTimeInputPalette(defaultAbstractPalette),
     drawerHeader: generateDrawerHeaderPalette(defaultAbstractPalette),
+    checkbox: generateCheckboxPalette(defaultAbstractPalette),
+    tooltip: generateTooltipPalette(defaultAbstractPalette),
 });
