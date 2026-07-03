@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
 import * as S from './styles';
 import { logic } from './logic';
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
@@ -25,7 +25,7 @@ export type TProps = {
     >;
     useModernStyles?: boolean;
     required?: boolean;
-} & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
+} & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus' | 'id'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
 
@@ -46,9 +46,13 @@ export const DateInput: FC<TProps> = ({
     placeholder,
     useModernStyles = false,
     required = false,
+    id,
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const fallbackId = useId();
+    const inputId = id ?? fallbackId;
     const isMobile = useMobile();
 
     const [isOpen, setOpenFlag] = useState(false);
@@ -132,10 +136,13 @@ export const DateInput: FC<TProps> = ({
                 useModernStyles={useModernStyles}
                 size={fieldSize}
                 required={required}
+                htmlFor={inputId}
             >
                 <S.InputWrapper>
                     {modernPlaceholder}
                     <PureInput
+                        id={inputId}
+                        aria-label={label && !inputLabel ? label : undefined}
                         onClick={handleTrigger}
                         ref={inputRef}
                         hasError={hasError}

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useId, useRef, useState } from 'react';
 import { useComponentPalette } from '../../../palette';
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useInputFocus } from '../../../hooks/useInputFocus';
@@ -30,7 +30,7 @@ export type TProps = {
     cancelLabel?: string;
     required?: boolean;
     useModernStyles?: boolean;
-} & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus'> &
+} & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus' | 'id'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
 
@@ -51,9 +51,13 @@ export const DateTimeInput: FC<TProps> = ({
     cancelLabel,
     required = false,
     useModernStyles = false,
+    id,
 }) => {
     const palette = useComponentPalette<TDateTimeInputPalette>('dateTimeInput');
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const fallbackId = useId();
+    const inputId = id ?? fallbackId;
     const isMobile = useMobile();
     const withTime = true;
 
@@ -182,10 +186,13 @@ export const DateTimeInput: FC<TProps> = ({
                 required={required}
                 useModernStyles={useModernStyles}
                 size={fieldSize}
+                htmlFor={inputId}
             >
                 <S.InputWrapper>
                     {modernPlaceholder}
                     <PureInput
+                        id={inputId}
+                        aria-label={label && !inputLabel ? label : undefined}
                         onClick={handleTrigger}
                         ref={inputRef}
                         hasError={hasError}

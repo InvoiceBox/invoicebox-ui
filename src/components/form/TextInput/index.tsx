@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode, useCallback } from 'react';
+import React, { ChangeEvent, ReactNode, useCallback, useId } from 'react';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../PureInput';
@@ -71,6 +71,9 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
     ) => {
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
+        const fallbackId = useId();
+        const inputId = id ?? fallbackId;
+
         const { ref: childrenRef, width: childrenWidth } = useElementWidth<HTMLDivElement>();
 
         const placeholderPaddingRight = childrenWidth
@@ -103,11 +106,13 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                 required={required}
                 size={fieldSize}
                 useModernStyles={useModernStyles}
+                htmlFor={inputId}
             >
                 <S.InputLabelContent>
                     {modernPlaceholder}
                     <PureInput
-                        id={id}
+                        id={inputId}
+                        aria-label={label && !inputLabel ? label : undefined}
                         ref={ref}
                         name={name}
                         disabled={disabled}

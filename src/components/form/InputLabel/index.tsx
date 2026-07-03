@@ -13,6 +13,7 @@ export type TProps = {
     useModernStyles?: boolean;
     size?: TSizes;
     left?: number;
+    htmlFor?: string;
 };
 
 export const InputLabel: FC<TProps> = ({
@@ -24,6 +25,7 @@ export const InputLabel: FC<TProps> = ({
     useModernStyles = false,
     size = 'M',
     left,
+    htmlFor,
 }) => {
     const palette = useComponentPalette<TInputLabelPalette>('inputLabel');
 
@@ -42,6 +44,8 @@ export const InputLabel: FC<TProps> = ({
         >
             {label && (
                 <S.Label
+                    element="label"
+                    htmlFor={htmlFor}
                     $palette={palette}
                     $inFocus={inFocus}
                     variant={

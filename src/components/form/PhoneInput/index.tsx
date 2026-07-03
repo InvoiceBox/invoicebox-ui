@@ -7,6 +7,7 @@ import React, {
     useMemo,
     useState,
     useRef,
+    useId,
 } from 'react';
 import InputMask from '@mona-health/react-input-mask';
 import * as S from './styles';
@@ -65,6 +66,9 @@ export const PhoneInput: FC<TProps> = ({
 }) => {
     const inputRef = useRef<HTMLInputElement>();
     const isMobile = useMobile();
+
+    const fallbackId = useId();
+    const inputId = id ?? fallbackId;
 
     const phoneInputLogic = useMemo(
         () => new PhoneInputLogic(isSupportCityRusPhoneNumber),
@@ -267,6 +271,7 @@ export const PhoneInput: FC<TProps> = ({
             useModernStyles={useModernStyles}
             size={fieldSize}
             left={isHaveSelectCountries && useModernStyles ? 65 : undefined}
+            htmlFor={inputId}
         >
             <S.InputLabelContent>
                 {useModernStyles && (
@@ -311,7 +316,8 @@ export const PhoneInput: FC<TProps> = ({
                     ref={inputRef}
                 >
                     <PureInput
-                        id={id}
+                        id={inputId}
+                        aria-label={label && !inputLabel ? label : undefined}
                         hasError={hasPureInputError}
                         inFocus={inFocus}
                         name={name}

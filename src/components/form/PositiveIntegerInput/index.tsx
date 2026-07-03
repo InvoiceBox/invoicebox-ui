@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useId } from 'react';
 import * as S from './styles';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
@@ -19,7 +19,7 @@ export type TProps = {
 } & Pick<TInputLabelProps, 'label'> &
     Pick<
         TPureInputProps,
-        'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name' | 'useModernStyles'
+        'placeholder' | 'hasError' | 'onFocus' | 'onBlur' | 'disabled' | 'name' | 'useModernStyles' | 'id'
     > & {
         size?: TSizes;
     };
@@ -37,8 +37,12 @@ export const PositiveIntegerInput: FC<TProps> = ({
     name,
     size,
     useModernStyles = false,
+    id,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
+
+    const fallbackId = useId();
+    const inputId = id ?? fallbackId;
 
     const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
         isHaveValue: typeof value === 'number',
@@ -72,10 +76,18 @@ export const PositiveIntegerInput: FC<TProps> = ({
     }, [decrement, value, onChange]);
 
     return (
-        <InputLabel inFocus={inFocus} label={inputLabel} useModernStyles={useModernStyles} size={fieldSize}>
+        <InputLabel
+            inFocus={inFocus}
+            label={inputLabel}
+            useModernStyles={useModernStyles}
+            size={fieldSize}
+            htmlFor={inputId}
+        >
             <S.ControlWrapper>
                 {modernPlaceholder}
                 <PureInput
+                    id={inputId}
+                    aria-label={label && !inputLabel ? label : undefined}
                     name={name}
                     hasError={hasError}
                     inFocus={inFocus}
