@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent } from 'react';
+import React, { ChangeEvent, FC, useState, KeyboardEvent, useRef, FocusEvent, useId } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
 import { PureInput } from '../PureInput';
 import * as S from './styles';
@@ -32,6 +32,8 @@ export const TagsInput: FC<TProps> = ({
 
     const [inputValue, setInputValue] = useState('');
     const { inFocus, handleFocus, handleBlur } = useInputFocus();
+
+    const inputId = useId();
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -116,7 +118,7 @@ export const TagsInput: FC<TProps> = ({
     };
 
     return (
-        <InputLabel label={label}>
+        <InputLabel label={label} htmlFor={inputId}>
             <S.PureInputStyledWrapper
                 $palette={pureInputPalette}
                 $hasBorder
@@ -157,6 +159,7 @@ export const TagsInput: FC<TProps> = ({
                     ))}
                     <S.InputWithSaveButtonWrapper>
                         <PureInput
+                            id={inputId}
                             ref={inputRef}
                             hasBorder={inFocus}
                             paddingBottom={0}

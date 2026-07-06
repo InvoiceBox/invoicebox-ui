@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useId } from 'react';
 import * as S from './styles';
 import { InputLabel, TProps as TInputLabelProps } from '../../../InputLabel';
 import { PureInput, TProps as TPureInputProps } from '../../../PureInput';
@@ -8,7 +8,10 @@ import { TSizes } from '../../../constants';
 import { useInputStyles } from '../../../_hooks/useInputStyles';
 
 export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label' | 'required'> &
-    Pick<TPureInputProps, 'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value' | 'onClick'> &
+    Pick<
+        TPureInputProps,
+        'hasError' | 'placeholder' | 'name' | 'onFocus' | 'onBlur' | 'value' | 'onClick' | 'id'
+    > &
     Pick<TArrowProps, 'isOpen'> & {
         onReset?: () => void;
         size?: TSizes;
@@ -34,9 +37,13 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             onClick,
             required,
             useModernStyles = false,
+            id,
         },
         ref,
     ) => {
+        const fallbackId = useId();
+        const inputId = id ?? fallbackId;
+
         const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
             isHaveValue: !!value,
             useModernStyles,
@@ -57,10 +64,13 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                 required={required}
                 useModernStyles={useModernStyles}
                 size={fieldSize}
+                htmlFor={inputId}
             >
                 <S.ControlWrapper>
                     {modernPlaceholder}
                     <PureInput
+                        id={inputId}
+                        aria-label={label && !inputLabel ? label : undefined}
                         ref={ref}
                         hasError={hasError}
                         inFocus={inFocus}

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, forwardRef } from 'react';
+import React, { ChangeEvent, useCallback, forwardRef, useId } from 'react';
 import * as S from './styles';
 import { InputLabel } from '../InputLabel';
 import { PureInput, TProps as PureInputProps } from '../PureInput';
@@ -12,7 +12,15 @@ import { useInputStyles } from '../_hooks/useInputStyles';
 
 export type TProps = Pick<
     PureInputProps,
-    'placeholder' | 'hasBorder' | 'autoFocus' | 'name' | 'onFocus' | 'onBlur' | 'isOnlyNumbers' | 'maxLength'
+    | 'placeholder'
+    | 'hasBorder'
+    | 'autoFocus'
+    | 'name'
+    | 'onFocus'
+    | 'onBlur'
+    | 'isOnlyNumbers'
+    | 'maxLength'
+    | 'id'
 > & {
     value: string;
     onChange: (value: string) => void;
@@ -35,10 +43,14 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
             maxLength,
             size,
             useModernStyles = false,
+            id,
         },
         ref,
     ) => {
         const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
+
+        const fallbackId = useId();
+        const inputId = id ?? fallbackId;
         const palette = useComponentPalette<TSearchInputPalette>('searchInput');
 
         const { inputLabel, paddingAndVariantOptions, modernPlaceholder, fieldSize } = useInputStyles({
@@ -67,10 +79,13 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                 useModernStyles={useModernStyles}
                 size={fieldSize}
                 label={useModernStyles ? inputLabel : undefined}
+                htmlFor={inputId}
             >
                 {modernPlaceholder}
                 <PureInput
                     ref={ref}
+                    id={inputId}
+                    aria-label={useModernStyles && inputLabel ? undefined : placeholder}
                     paddingRight={56}
                     hasBorder={hasBorder}
                     onChange={handleInputChange}

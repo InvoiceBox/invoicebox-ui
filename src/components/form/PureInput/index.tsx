@@ -1,4 +1,4 @@
-import React, { ChangeEvent, InputHTMLAttributes, TextareaHTMLAttributes, useCallback } from 'react';
+import React, { ChangeEvent, InputHTMLAttributes, TextareaHTMLAttributes, useCallback, useId } from 'react';
 import * as S from './styles';
 import { useComponentPalette } from '../../../palette';
 import { TPureInputPalette } from './palette';
@@ -41,11 +41,13 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
             variant = 'bodyMRegular',
             renderedValue,
             useModernStyles = false,
+            id,
             ...rest
         },
         ref,
     ) => {
         const palette = useComponentPalette<TPureInputPalette>('pureInput');
+        const fallbackId = useId();
 
         const handleChange = useCallback(
             (event: ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +76,7 @@ export const PureInput = React.forwardRef<HTMLInputElement, TProps>(
                 $borderRadius={borderRadius}
                 onChange={handleChange}
                 $useModernStyles={useModernStyles}
+                id={id ?? fallbackId}
                 {...rest}
             >
                 {renderedValue}

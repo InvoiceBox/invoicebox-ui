@@ -4,6 +4,7 @@ import React, {
     forwardRef,
     HTMLAttributes,
     InputHTMLAttributes,
+    LabelHTMLAttributes,
     TextareaHTMLAttributes,
 } from 'react';
 import * as S from './styles';
@@ -16,6 +17,7 @@ type THeadingProps = {
     element: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 } & HTMLAttributes<HTMLHeadingElement>;
 type TButtonProps = { element: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>;
+type TLabelProps = { element: 'label' } & LabelHTMLAttributes<HTMLLabelElement>;
 type TInputProps = { element: 'input' } & InputHTMLAttributes<HTMLInputElement>;
 type TTextAreaProps = { element: 'textarea' } & Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -28,7 +30,16 @@ type TGeneralProps = {
 };
 
 export type TTypographyProps = TGeneralProps &
-    (TDivProps | TParagraphProps | TSpanProps | THeadingProps | TButtonProps | TInputProps | TTextAreaProps);
+    (
+        | TDivProps
+        | TParagraphProps
+        | TSpanProps
+        | THeadingProps
+        | TButtonProps
+        | TLabelProps
+        | TInputProps
+        | TTextAreaProps
+    );
 
 export const Typography: FC<TTypographyProps> = ({ variant, element = 'div', ...rest }) => {
     return <S.Wrapper as={element} $variant={variant} {...rest} />;

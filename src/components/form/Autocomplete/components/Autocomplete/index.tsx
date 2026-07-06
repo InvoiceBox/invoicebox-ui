@@ -116,6 +116,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
         const [activeIndex, setActiveIndex] = useState(-1);
         const baseId = useId();
         const listboxId = `${baseId}-listbox`;
+        const inputId = `${baseId}-input`;
         const activeOptionRef = useRef<HTMLButtonElement | null>(null);
         const palette = useComponentPalette<TAutocompleteDefaultOptionPalette>('autocompleteDefaultOption');
 
@@ -237,6 +238,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             ? inputPaddingLeft - LABEL_PADDING
                             : undefined
                     }
+                    htmlFor={inputId}
                 >
                     <S.InputLabelContent>
                         {children ? <S.ChildrenWrapper>{children}</S.ChildrenWrapper> : null}
@@ -252,6 +254,8 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             </ModernPlaceholder>
                         )}
                         <PureInput
+                            id={inputId}
+                            aria-label={label && !inputLabel ? label : undefined}
                             ref={ref}
                             hasError={hasError}
                             inFocus={inFocus}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useId } from 'react';
 import { InputLabel, TProps as TInputLabelProps } from '../../InputLabel';
 import { useInputFocus } from '../../../../hooks/useInputFocus';
 import { StyledCurrencyInputFromLibrary, InputWrapper } from './styles';
@@ -10,7 +10,7 @@ import { useInputStyles } from '../../_hooks/useInputStyles';
 
 export type TProps = Pick<
     CurrencyInputProps,
-    'allowNegativeValue' | 'onValueChange' | 'value' | 'defaultValue' | 'allowDecimals' | 'onBlur'
+    'allowNegativeValue' | 'onValueChange' | 'value' | 'defaultValue' | 'allowDecimals' | 'onBlur' | 'id'
 > &
     Pick<TInputLabelProps, 'label' | 'disabled'> & {
         hasError?: boolean;
@@ -33,9 +33,13 @@ export const CoreCurrencyInput: FC<TProps> = ({
     required = false,
     onBlur,
     useModernStyles = false,
+    id,
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onBlur });
     const palette = useComponentPalette<TPureInputPalette>('pureInput');
+
+    const fallbackId = useId();
+    const inputId = id ?? fallbackId;
 
     const { modernPlaceholder, paddingAndVariantOptions, inputLabel, fieldSize } = useInputStyles({
         isHaveValue: !!value || typeof defaultValue === 'number',
@@ -55,10 +59,13 @@ export const CoreCurrencyInput: FC<TProps> = ({
             required={required}
             useModernStyles={useModernStyles}
             size={fieldSize}
+            htmlFor={inputId}
         >
             <InputWrapper>
                 {modernPlaceholder}
                 <StyledCurrencyInputFromLibrary
+                    id={inputId}
+                    aria-label={label && !inputLabel ? label : undefined}
                     $palette={palette}
                     $hasBorder={!useModernStyles || hasError}
                     $paddingLeft={18}
