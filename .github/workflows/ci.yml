@@ -14,8 +14,7 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  # задача 0.4 перенесёт версию в .nvmrc (node-version-file)
-                  node-version: '20.20.1'
+                  node-version-file: '.nvmrc'
                   cache: npm
 
             - run: npm ci
