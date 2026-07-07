@@ -12,6 +12,7 @@ import { createPortal } from 'react-dom';
 import * as S from './styles';
 import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
+import { useLockBodyScroll } from '../../../hooks/useLockBodyScroll';
 import { TDrawerPalette } from './palette';
 
 export type TProps = {
@@ -68,14 +69,7 @@ export const Drawer: FC<TProps> = ({
     }, [shouldRender, isOpen]);
 
     // Блокируем скролл фона, пока боттомшит открыт (как делал react-modal-sheet).
-    useEffect(() => {
-        if (!shouldRender) return undefined;
-        const prev = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
-        return () => {
-            document.body.style.overflow = prev;
-        };
-    }, [shouldRender]);
+    useLockBodyScroll(shouldRender);
 
     const handleTransitionEnd = useCallback(
         (event: TransitionEvent<HTMLDivElement>) => {

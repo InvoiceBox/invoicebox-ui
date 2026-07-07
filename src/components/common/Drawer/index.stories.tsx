@@ -25,16 +25,30 @@ const Counter = () => {
 };
 
 function Render(args: TProps) {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenDrawer1, setIsOpenDrawer1] = useState(false);
+    const [isOpenDrawer2, setIsOpenDrawer2] = useState(false);
 
     return (
         <div>
-            <Drawer {...args} onClose={() => setIsOpen(false)} isOpen={isOpen}>
-                Content
+            <Drawer {...args} onClose={() => setIsOpenDrawer1(false)} isOpen={isOpenDrawer1}>
+                Drawer 1 Content
+                <button
+                    type={'button'}
+                    onClick={() => {
+                        setIsOpenDrawer2(true);
+                        setIsOpenDrawer1(false);
+                    }}
+                >
+                    Open drawer 2
+                </button>
                 <Counter />
             </Drawer>
-            <button type={'button'} onClick={() => setIsOpen(true)}>
-                Open
+            <Drawer {...args} onClose={() => setIsOpenDrawer2(false)} isOpen={isOpenDrawer2}>
+                Drawer 2 Content
+                <Counter />
+            </Drawer>
+            <button type={'button'} onClick={() => setIsOpenDrawer1(true)}>
+                Open drawer 1
             </button>
         </div>
     );
