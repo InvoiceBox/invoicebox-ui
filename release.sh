@@ -22,19 +22,23 @@ git add docs &&
 git commit -m "storybook build" &&
 git push &&
 
-# up version
+# up version (коммит и тег пока только локальные)
 if [ -n "$VERSION" ]; then
     npm version "$VERSION"
 else
     npm version prerelease --preid=alpha
 fi &&
+
+# publish to npm ДО пуша версии/тега в git: если публикация упадёт,
+# git-состояние ещё не тронуто — откат см. RELEASE.md
+npm publish &&
+
 git push &&
 git push --tags &&
 
-# merge to master and publish to npm
+# merge to master
 git checkout main &&
 git merge develop &&
 git push &&
-npm publish &&
 
 git checkout develop
