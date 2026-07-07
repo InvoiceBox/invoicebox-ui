@@ -56,12 +56,15 @@ export const Sheet = styled.div<{
               `}
 `;
 
-export const DragHandle = styled.div<{ $bg: string }>`
-    position: relative;
-    flex: 0 0 auto;
+// Зона перетаскивания лежит поверх контента (как DragIndicatorWrapper в react-modal-sheet),
+// чтобы шапка-картинка могла подниматься под индикатор без белой полосы сверху.
+export const DragHandle = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 28px;
-    background-color: ${({ $bg }) => $bg};
-    border-radius: 10px 10px 0 0;
+    z-index: 1;
     touch-action: none;
     cursor: grab;
 

@@ -123,7 +123,6 @@ export const Drawer: FC<TProps> = ({
                 onTransitionEnd={handleTransitionEnd}
             >
                 <S.DragHandle
-                    $bg={title ? palette.titleBg : palette.bg}
                     onPointerDown={handlePointerDown}
                     onPointerMove={handlePointerMove}
                     onPointerUp={handlePointerUp}
