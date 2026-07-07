@@ -99,6 +99,7 @@ export const CodeInput: FC<TProps> = ({
                     placeholder="-"
                     $hasError={hasError}
                     disabled={!!disabled}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus -- проп прокидывается потребителю, решение об автофокусе за ним
                     autoFocus={autoFocus}
                     autoComplete={'one-time-code'}
                     type="text"

@@ -94,6 +94,7 @@ export const SearchInput = forwardRef<HTMLInputElement, TProps>(
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     inFocus={inFocus}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus -- проп прокидывается потребителю, решение об автофокусе за ним
                     autoFocus={autoFocus}
                     name={name}
                     maxLength={maxLength}
