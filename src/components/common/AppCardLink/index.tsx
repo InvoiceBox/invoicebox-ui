@@ -23,7 +23,7 @@ export const AppCardLink: FC<TProps> = ({ height, variant, href }) => {
     const AppCardComponent = appCardMap[variant];
 
     return (
-        <S.Wrapper href={href} target={'_blank'}>
+        <S.Wrapper href={href} target={'_blank'} rel="noopener noreferrer">
             <AppCardComponent height={height} />
         </S.Wrapper>
     );
