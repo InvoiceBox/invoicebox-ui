@@ -6,7 +6,10 @@
     "scripts": {
         "storybook": "storybook dev -p 6006",
         "release": "./release.sh",
-        "test": "jest"
+        "test": "jest",
+        "lint": "eslint src --ext .ts,.tsx",
+        "typecheck": "tsc --project tsconfig.json --noEmit --emitDeclarationOnly false",
+        "build": "rm -rf dist && babel src --extensions .ts,.tsx --out-dir dist --copy-files && babel src --extensions .ts,.tsx --out-dir dist/esm --copy-files --config-file ./babel.config.esm.json && tsc --project tsconfig.json"
     },
     "bugs": {
         "url": "https://github.com/InvoiceBox/invoicebox-ui/issues"
