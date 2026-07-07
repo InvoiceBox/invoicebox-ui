@@ -126,6 +126,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
                         paddingRight={paddingRight}
                         type={type}
                         isOnlyNumbers={isOnlyNumbers}
+                        // eslint-disable-next-line jsx-a11y/no-autofocus -- проп прокидывается потребителю, решение об автофокусе за ним
                         autoFocus={autoFocus}
                         element={element}
                         rows={rows}

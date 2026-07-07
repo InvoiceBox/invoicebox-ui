@@ -325,6 +325,7 @@ export const PhoneInput: FC<TProps> = ({
                         // for disable autocomplete
                         autoComplete={'new-password'}
                         inputMode="numeric"
+                        // eslint-disable-next-line jsx-a11y/no-autofocus -- проп прокидывается потребителю, решение об автофокусе за ним
                         autoFocus={autoFocus}
                         {...paddingAndVariantOptions}
                         useModernStyles={useModernStyles}

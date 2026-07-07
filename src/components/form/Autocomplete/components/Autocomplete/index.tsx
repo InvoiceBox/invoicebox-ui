@@ -269,6 +269,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
                             paddingLeft={inputPaddingLeft}
                             maxLength={inputMaxLength}
                             isOnlyNumbers={isInputOnlyNumbers}
+                            // eslint-disable-next-line jsx-a11y/no-autofocus -- проп прокидывается потребителю, решение об автофокусе за ним
                             autoFocus={autoFocus}
                             readOnly={readOnly}
                             useModernStyles={useModernStyles}
