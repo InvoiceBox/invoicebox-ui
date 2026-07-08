@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { TSearchInputPalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 export const IconWrapper = styled.span<{
     $inFocus: boolean;
@@ -16,4 +17,5 @@ export const IconWrapper = styled.span<{
     opacity: ${({ $inFocus }) => ($inFocus ? 1 : 0.5)};
     transition: all 0.2s ease-in-out 0s;
     color: ${({ $palette }) => $palette.icon};
+    ${reducedMotion}
 `;

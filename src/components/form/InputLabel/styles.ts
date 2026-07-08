@@ -2,6 +2,7 @@ import styled, { css, keyframes } from 'styled-components';
 import { Typography } from '../../common/Typography';
 import { TInputLabelPalette } from './palette';
 import { LABEL_PADDING } from './constants';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 const labelFadeIn = keyframes`
     from {
@@ -32,6 +33,7 @@ export const Label = styled(Typography)<{
     transition: color 0.2s ease-in-out 0s;
     animation: ${labelFadeIn} 0.15s ease;
     color: ${({ $inFocus, $palette }) => ($inFocus ? $palette.textHighlight : $palette.text)};
+    ${reducedMotion}
 
     ${({ $required, $palette }) =>
         $required &&

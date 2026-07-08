@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Typography } from '../../common/Typography';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 export const Wrapper = styled(Typography)<{
     $visible: boolean;
@@ -26,6 +27,7 @@ export const Wrapper = styled(Typography)<{
         opacity 0.15s ease,
         transform 0.15s ease;
     color: ${({ $color }) => $color};
+    ${reducedMotion}
 `;
 
 export const TextContent = styled.span`

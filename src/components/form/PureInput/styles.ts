@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { TPureInputPalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 import { InputWithTypography } from '../../common/Typography';
 import { ElementType } from 'react';
 import { typography } from '../../common/Typography/typography';
@@ -75,6 +76,8 @@ export const getPureInputStyled = (component: ElementType) => styled(component)<
             background-color 0s 600000s,
             color 0s 600000s !important;
     }
+
+    ${reducedMotion}
 `;
 
 export const Wrapper = getPureInputStyled(InputWithTypography);

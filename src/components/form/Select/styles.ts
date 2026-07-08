@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Typography } from '../../common/Typography';
 import { TSelectPalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 export const Wrapper = styled.div`
     position: relative;
@@ -49,6 +50,8 @@ export const Option = styled(Typography)<{
         css`
             padding-left: 30px;
         `}
+
+    ${reducedMotion}
 `;
 
 export const Group = styled(Typography)`

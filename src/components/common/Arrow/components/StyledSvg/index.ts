@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Svg } from '../Svg';
+import { reducedMotion } from '../../../../../utils/reducedMotion';
 
 export const StyledSvg = styled(Svg)<{
     $isOpen: boolean;
@@ -10,6 +11,7 @@ export const StyledSvg = styled(Svg)<{
 }>`
     transform: rotateZ(${({ $isOpen, $defaultRotate }) => ($isOpen ? $defaultRotate + 180 : $defaultRotate)}deg);
     transition: all 0.2s ease-in-out 0s;
+    ${reducedMotion}
     box-sizing: content-box;
 
     padding: ${({ $padding }) => $padding}px;
