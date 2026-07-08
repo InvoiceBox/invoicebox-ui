@@ -38,6 +38,9 @@ export type TProps = {
     onCloseTransitionEnd?: () => void;
     isTopPosition?: boolean;
     usePadding?: boolean;
+    // ARIA-роль контейнера поповера: задаётся местом использования
+    // (например, "dialog" для календаря; "listbox" требует ролей на опциях)
+    role?: string;
 };
 
 export const Dropdown = forwardRef<HTMLDivElement, TProps>(
@@ -55,6 +58,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
             onCloseTransitionEnd,
             isTopPosition = false,
             usePadding = false,
+            role,
         },
         forwardedRef,
     ) => {
@@ -176,6 +180,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
                         >
                             <S.Wrapper
                                 ref={setWrapperRef}
+                                role={role}
                                 $isVisible={isOpen}
                                 $isAbove={position.current.isAbove}
                                 $translateY={position.current.translateY}
