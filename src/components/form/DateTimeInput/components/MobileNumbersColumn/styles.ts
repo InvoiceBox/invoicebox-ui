@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { reducedMotion } from '../../../../../utils/reducedMotion';
 
 export const Wrapper = styled.div`
     height: 100%;
@@ -35,4 +36,5 @@ export const Number = styled.div<{ $opacity: number; $incline: number; $isActive
         css`
             margin: 4px 0;
         `}
+    ${reducedMotion}
 `;

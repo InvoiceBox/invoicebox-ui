@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 export const Root = styled.div`
     position: fixed;
@@ -15,6 +16,7 @@ export const Backdrop = styled.div<{ $bgColor: string; $isVisible: boolean }>`
     background-color: ${({ $bgColor }) => $bgColor};
     opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
     transition: opacity 300ms ease;
+    ${reducedMotion}
 `;
 
 export const Sheet = styled.div<{
@@ -54,6 +56,8 @@ export const Sheet = styled.div<{
             : css`
                   overflow-y: auto;
               `}
+
+    ${reducedMotion}
 `;
 
 // Зона перетаскивания лежит поверх контента (как DragIndicatorWrapper в react-modal-sheet),

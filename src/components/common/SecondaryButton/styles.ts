@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Typography } from '../Typography';
 import { TSecondaryButtonPalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 export const Inner = styled(Typography)<{ $isLoading?: boolean }>`
     visibility: ${({ $isLoading }) => ($isLoading ? 'hidden' : 'visible')};
@@ -58,6 +59,8 @@ export const Wrapper = styled.button<{
                 opacity: 0.5;
             }
         `}
+
+    ${reducedMotion}
 `;
 
 export const LoaderWrapper = styled.div`

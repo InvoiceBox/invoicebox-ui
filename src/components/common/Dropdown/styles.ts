@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { TDropdownPalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 // Невидимый якорь в потоке: по его родителю (поле-триггер) считаем позицию портал-дропдауна.
 // display:none — не влияет на вёрстку, но parentElement (само поле) доступен для измерений.
@@ -77,4 +78,6 @@ export const Wrapper = styled.div<{
     ${({ $translateY }) => css`
         transform: translateY(${$translateY});
     `};
+
+    ${reducedMotion}
 `;

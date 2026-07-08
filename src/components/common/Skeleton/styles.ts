@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { TSkeletonPalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 const shine = keyframes`
     0% {
@@ -31,4 +32,5 @@ export const Inner = styled.div<{ $palette: TSkeletonPalette }>`
         ${({ $palette }) => $palette.bg} 100px
     );
     animation: ${shine} 3s infinite linear;
+    ${reducedMotion}
 `;

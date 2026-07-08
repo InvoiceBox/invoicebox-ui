@@ -2,6 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 import { typography } from '../../../../common/Typography/typography';
 import { Typography } from '../../../../common/Typography';
+import { reducedMotion } from '../../../../../utils/reducedMotion';
 
 export type TProps = {
     children: ReactNode;
@@ -26,4 +27,5 @@ const Wrapper = styled(Typography)<{ $usePadding: boolean }>`
     transition: all 0.2s ease-in-out;
     ${typography.bodyMRegular}
     box-sizing: border-box;
+    ${reducedMotion}
 `;

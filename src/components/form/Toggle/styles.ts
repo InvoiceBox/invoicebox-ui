@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { typography } from '../../common/Typography/typography';
 import { TTogglePalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 export type TToggleSize = 'small' | 'medium';
 
@@ -100,4 +101,6 @@ export const StyledInput = styled.input<{
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
         }
     }
+
+    ${reducedMotion}
 `;

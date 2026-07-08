@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { CheckIcon } from './CheckIcon';
 import { TCheckboxPalette } from './palette';
+import { reducedMotion } from '../../../utils/reducedMotion';
 
 const TRANSITION = 'all .2s ease-in-out';
 const BORDER_RADIUS_MIN = 4;
@@ -16,6 +17,7 @@ export const HiddenCheckbox = styled.input`
 
 export const CheckboxIcon = styled(CheckIcon)`
     transition: ${TRANSITION};
+    ${reducedMotion}
 `;
 
 export const StyledCheckbox = styled.div`
@@ -26,6 +28,7 @@ export const StyledCheckbox = styled.div`
     height: 16px;
     border-radius: ${BORDER_RADIUS_MIN}px;
     transition: ${TRANSITION};
+    ${reducedMotion}
 `;
 
 const getStylesCheckbox = (palette: TCheckboxPalette, disabled: boolean, checked: boolean) => {
