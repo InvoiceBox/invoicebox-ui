@@ -215,7 +215,7 @@ export const DateTimeInput: FC<TProps> = ({
                 </S.InputWrapper>
             </InputLabel>
             {!isMobile ? (
-                <Dropdown ref={dropdownRef} isOpen={isOpen} isAutoPosition {...dropdownProps}>
+                <Dropdown ref={dropdownRef} isOpen={isOpen} isAutoPosition role="dialog" {...dropdownProps}>
                     <S.CalendarWithTimePicker $dividerColor={palette.divider}>
                         <S.CalendarWrapper ref={calendarRef} $dividerColor={palette.divider}>
                             <Calendar

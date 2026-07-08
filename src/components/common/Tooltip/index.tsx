@@ -1,4 +1,12 @@
-import React, { PropsWithChildren, ReactNode, useCallback, useRef, useState } from 'react';
+import React, {
+    KeyboardEvent,
+    PropsWithChildren,
+    ReactNode,
+    useCallback,
+    useId,
+    useRef,
+    useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
@@ -19,6 +27,7 @@ export const Tooltip = ({ overlay, placement = 'top', gap = 8, children }: Props
     const palette = useComponentPalette<TTooltipPalette>('tooltip');
     const triggerRef = useRef<HTMLSpanElement>(null);
     const [coords, setCoords] = useState<TCoords | null>(null);
+    const tooltipId = useId();
 
     const show = useCallback(() => {
         const el = triggerRef.current;
@@ -32,13 +41,31 @@ export const Tooltip = ({ overlay, placement = 'top', gap = 8, children }: Props
 
     const hide = useCallback(() => setCoords(null), []);
 
+    // WAI-ARIA tooltip: Escape закрывает тултип, не убирая фокус с триггера
+    const handleKeyDown = useCallback(
+        (event: KeyboardEvent<HTMLSpanElement>) => {
+            if (event.key === 'Escape') hide();
+        },
+        [hide],
+    );
+
     return (
-        <S.Trigger ref={triggerRef} onMouseEnter={show} onMouseLeave={hide} onFocus={show} onBlur={hide}>
+        <S.Trigger
+            ref={triggerRef}
+            onMouseEnter={show}
+            onMouseLeave={hide}
+            onFocus={show}
+            onBlur={hide}
+            onKeyDown={handleKeyDown}
+            aria-describedby={coords ? tooltipId : undefined}
+        >
             {children}
 
             {coords &&
                 createPortal(
                     <S.Overlay
+                        id={tooltipId}
+                        role="tooltip"
                         $palette={palette}
                         $top={coords.top}
                         $left={coords.left}

@@ -172,7 +172,7 @@ export const DateInput: FC<TProps> = ({
                     maxDate={maxDate}
                 />
             ) : (
-                <Dropdown ref={dropdownRef} isOpen={isOpen} isAutoPosition {...dropdownProps}>
+                <Dropdown ref={dropdownRef} isOpen={isOpen} isAutoPosition role="dialog" {...dropdownProps}>
                     <S.CalendarWrapper>
                         <Calendar
                             value={value}
