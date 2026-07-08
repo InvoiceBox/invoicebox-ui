@@ -14,6 +14,7 @@ import { Typography } from '../Typography';
 import { useComponentPalette } from '../../../palette';
 import { useLockBodyScroll } from '../../../hooks/useLockBodyScroll';
 import { TDrawerPalette } from './palette';
+import { ErrorBoundary } from '../ErrorBoundary';
 
 export type TProps = {
     children: ReactNode;
@@ -132,7 +133,9 @@ export const Drawer: FC<TProps> = ({
                 )}
 
                 <S.ChildrenWrapper $bgColor={palette.bg} $isPadding={isPadding}>
-                    {children}
+                    {/* Падение пользовательского контента не роняет страницу: шторка
+                        остаётся управляемой (закрытие работает), контент — пустой (RES-001) */}
+                    <ErrorBoundary>{children}</ErrorBoundary>
                 </S.ChildrenWrapper>
             </S.Sheet>
         </S.Root>,

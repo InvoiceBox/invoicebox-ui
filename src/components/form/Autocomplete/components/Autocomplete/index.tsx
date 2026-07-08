@@ -18,6 +18,7 @@ import { Skeleton } from '../../../../common/Skeleton';
 import { useMobile } from '../../../../../hooks/useMedia';
 import { useInputFocus } from '../../../../../hooks/useInputFocus';
 import { useOutsideClick } from '../../../../../hooks/useOutsideClick';
+import { ErrorBoundary } from '../../../../common/ErrorBoundary';
 import { InputLabel } from '../../../InputLabel';
 import { PureInput } from '../../../PureInput';
 import { Dropdown } from '../../../../common/Dropdown';
@@ -78,7 +79,7 @@ type TControlProps = {
 
 export type TProps = TFieldProps & TControlProps;
 
-export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
+const AutocompleteInner = forwardRef<HTMLInputElement, TProps>(
     (
         {
             options,
@@ -348,5 +349,16 @@ export const Autocomplete = forwardRef<HTMLInputElement, TProps>(
         );
     },
 );
+
+AutocompleteInner.displayName = 'AutocompleteInner';
+
+// Граница ошибок снаружи: renderOption/optionsLoader потребителя вызываются в
+// рендере AutocompleteInner — исключение колбэка иначе валило бы всё дерево
+// приложения (RES-001). Fallback — null: поле исчезает, страница живёт.
+export const Autocomplete = forwardRef<HTMLInputElement, TProps>((props, ref) => (
+    <ErrorBoundary>
+        <AutocompleteInner {...props} ref={ref} />
+    </ErrorBoundary>
+));
 
 Autocomplete.displayName = 'Autocomplete';

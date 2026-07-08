@@ -25,6 +25,7 @@ import Loader from './components/Loader';
 import { MultipleValue } from './components/MultipleValue';
 import { Checkbox } from '../Checkbox';
 import { TProps as TChipProps } from '../../common/Chip';
+import { ErrorBoundary } from '../../common/ErrorBoundary';
 
 const MAX_LIST_HEIGHT = 294;
 const OPTION_IDENTIFIER = 'option-identifier';
@@ -70,7 +71,7 @@ export type TMultipleProps<TValue> = TSharedProps<TValue> & {
 
 type TAllProps<TValue> = TProps<TValue> | TMultipleProps<TValue>;
 
-export const Select = <TValue extends string | number>(props: TAllProps<TValue>) => {
+const SelectInner = <TValue extends string | number>(props: TAllProps<TValue>) => {
     const {
         label,
         hasError,
@@ -513,3 +514,12 @@ export const Select = <TValue extends string | number>(props: TAllProps<TValue>)
         </S.Wrapper>
     );
 };
+
+// Граница ошибок снаружи: renderOption/renderGroup/renderValue вызываются в
+// рендере SelectInner, и исключение потребительского колбэка иначе валило бы
+// всё дерево приложения (RES-001). Fallback — null: поле исчезает, страница живёт.
+export const Select = <TValue extends string | number>(props: TAllProps<TValue>) => (
+    <ErrorBoundary>
+        <SelectInner {...props} />
+    </ErrorBoundary>
+);
