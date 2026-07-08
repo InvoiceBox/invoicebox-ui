@@ -25,6 +25,7 @@ export const Option = styled(Typography)<{
     $isGrouped: boolean;
     $usePadding: boolean;
     $isSelected?: boolean;
+    $isActive?: boolean;
 }>`
     overflow: hidden;
     width: 100%;
@@ -39,6 +40,12 @@ export const Option = styled(Typography)<{
         css`
             background-color: ${$palette.bgHover};
             border-radius: 8px;
+        `}
+
+    ${({ $isActive, $palette }) =>
+        $isActive &&
+        css`
+            background-color: ${$palette.bgHover};
         `}
 
     &:hover {
