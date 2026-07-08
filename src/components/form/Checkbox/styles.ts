@@ -11,8 +11,18 @@ export const CheckboxContainer = styled.div`
     vertical-align: middle;
 `;
 
+// Инпут скрыт визуально, но остаётся в дереве доступности и фокусируем с
+// клавиатуры (display: none выключал и то и другое) — паттерн visually hidden
 export const HiddenCheckbox = styled.input`
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
 `;
 
 export const CheckboxIcon = styled(CheckIcon)`
@@ -82,5 +92,10 @@ export const CheckboxLabel = styled.label<{
         ${StyledCheckbox} {
             ${({ $checked, $disabled, $palette }) => getHoverStylesCheckbox($palette, $disabled, $checked)};
         }
+    }
+
+    ${HiddenCheckbox}:focus-visible + ${StyledCheckbox} {
+        outline: 2px solid ${({ $palette }) => $palette.borderHover};
+        outline-offset: 2px;
     }
 `;

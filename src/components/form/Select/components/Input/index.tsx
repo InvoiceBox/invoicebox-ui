@@ -17,6 +17,16 @@ export type TProps = Pick<TInputLabelProps, 'inFocus' | 'label' | 'required'> &
         size?: TSizes;
         renderedValue?: React.ReactNode;
         useModernStyles?: boolean;
+        // ARIA-атрибуты и клавиатура комбобокса — прокидываются на PureInput как есть
+        comboboxProps?: Pick<
+            TPureInputProps,
+            | 'role'
+            | 'aria-expanded'
+            | 'aria-haspopup'
+            | 'aria-controls'
+            | 'aria-activedescendant'
+            | 'onKeyDown'
+        >;
     };
 
 export const Input = forwardRef<HTMLInputElement, TProps>(
@@ -38,6 +48,7 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
             required,
             useModernStyles = false,
             id,
+            comboboxProps,
         },
         ref,
     ) => {
@@ -84,6 +95,10 @@ export const Input = forwardRef<HTMLInputElement, TProps>(
                         paddingRight={52}
                         onClick={onClick}
                         useModernStyles={useModernStyles}
+                        // с renderedValue PureInput рендерится как div — без tabIndex
+                        // он был бы недостижим с клавиатуры
+                        tabIndex={renderedValue ? 0 : undefined}
+                        {...comboboxProps}
                         {...paddingAndVariantOptions}
                     />
 

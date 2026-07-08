@@ -102,5 +102,10 @@ export const StyledInput = styled.input<{
         }
     }
 
+    &:focus-visible {
+        outline: 2px solid ${({ $palette }) => $palette.activeBg};
+        outline-offset: 2px;
+    }
+
     ${reducedMotion}
 `;

@@ -1,9 +1,12 @@
 import React, {
     FocusEvent,
     Fragment,
+    KeyboardEvent,
     MouseEvent,
     ReactNode,
     useCallback,
+    useEffect,
+    useId,
     useMemo,
     useRef,
     useState,
@@ -146,8 +149,35 @@ export const Select = <TValue extends string | number>(props: TAllProps<TValue>)
 
     const optionGroups = useOptionGroups(options, groups);
 
-    const handleShow = useCallback(() => setIsOpen(true), []);
+    // Плоский список опций в порядке отрисовки (группы разворачиваются) —
+    // по нему ходит клавиатурная навигация и считаются id для activedescendant
+    const flatOptions = useMemo(
+        () => optionGroups.reduce<TOption<TValue>[]>((acc, group) => acc.concat(group.options), []),
+        [optionGroups],
+    );
+    const optionIndexByValue = useMemo(
+        () => new Map<TValue, number>(flatOptions.map((option, index) => [option.value, index])),
+        [flatOptions],
+    );
+
+    const baseId = useId();
+    const listboxId = `${baseId}-listbox`;
+    const getOptionId = (index: number) => `${baseId}-option-${index}`;
+
+    // Позиция клавиатурного фокуса в списке (aria-activedescendant)
+    const [activeIndex, setActiveIndex] = useState(-1);
+
+    const handleShow = useCallback(() => {
+        setIsOpen(true);
+        // при открытии встаём на выбранную опцию (single), иначе — вне списка
+        setActiveIndex(isMultiple ? -1 : flatOptions.findIndex((option) => option.value === value));
+    }, [flatOptions, isMultiple, value]);
     const handleHide = useCallback(() => setIsOpen(false), []);
+
+    useEffect(() => {
+        if (activeIndex < 0) return;
+        document.getElementById(`${baseId}-option-${activeIndex}`)?.scrollIntoView({ block: 'nearest' });
+    }, [activeIndex, baseId]);
 
     const dropdownRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useOutsideClick(handleHide, [dropdownRef]);
@@ -175,10 +205,8 @@ export const Select = <TValue extends string | number>(props: TAllProps<TValue>)
         [blurHandler],
     );
 
-    const handleSelect = useCallback(
-        (event: MouseEvent<HTMLDivElement>) => {
-            const newValue = JSON.parse(event.currentTarget.dataset.value as string) as TValue;
-
+    const selectValue = useCallback(
+        (newValue: TValue) => {
             if (isMultiple) {
                 const next = multipleValue.includes(newValue)
                     ? multipleValue.filter((item) => item !== newValue)
@@ -196,6 +224,50 @@ export const Select = <TValue extends string | number>(props: TAllProps<TValue>)
             }
         },
         [handleHide, isMultiple, multipleValue, onChangeMultiple, onChangeSingle],
+    );
+
+    const handleSelect = useCallback(
+        (event: MouseEvent<HTMLDivElement>) => {
+            selectValue(JSON.parse(event.currentTarget.dataset.value as string) as TValue);
+        },
+        [selectValue],
+    );
+
+    // Клавиатурная навигация комбобокса — тот же набор клавиш, что в Autocomplete
+    const handleKeyDown = useCallback(
+        (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            const count = flatOptions.length;
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    if (!isOpen) handleShow();
+                    else if (count) setActiveIndex((prev) => (prev + 1) % count);
+                    break;
+                case 'ArrowUp':
+                    event.preventDefault();
+                    if (!isOpen) handleShow();
+                    else if (count) setActiveIndex((prev) => (prev <= 0 ? count - 1 : prev - 1));
+                    break;
+                case 'Enter':
+                case ' ':
+                    event.preventDefault();
+                    if (!isOpen) {
+                        handleShow();
+                    } else if (activeIndex >= 0 && activeIndex < count) {
+                        selectValue(flatOptions[activeIndex].value);
+                    }
+                    break;
+                case 'Escape':
+                    if (isOpen) {
+                        event.preventDefault();
+                        handleHide();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        },
+        [activeIndex, flatOptions, handleHide, handleShow, isOpen, selectValue],
     );
 
     const handleRemoveTag = useCallback(
@@ -250,41 +322,53 @@ export const Select = <TValue extends string | number>(props: TAllProps<TValue>)
     };
 
     const scrollbarContent = (
-        <S.ScrollbarContent>
+        <S.ScrollbarContent role="listbox" id={listboxId} aria-multiselectable={isMultiple || undefined}>
             {scrollbarHeader}
 
             {optionGroups.map(({ group, options: groupOptions }) => (
                 <Fragment key={group?.id || null}>
                     {handleGroupRender(group)}
-                    {groupOptions.map((option) => (
-                        <S.OptionWrapper $usePadding={usePadding} key={option.value}>
-                            <S.Option
-                                key={option.value}
-                                $palette={palette}
-                                variant="bodyMRegular"
-                                onClick={handleSelect}
-                                data-value={JSON.stringify(option.value)}
-                                data-option-identifier={OPTION_IDENTIFIER}
-                                $isGrouped={!!group && !renderOption}
-                                $usePadding={usePadding}
-                                $isSelected={!isMultiple && option.value === value}
-                            >
-                                {isMultiple ? (
-                                    <S.OptionContent>
-                                        <S.CheckboxWrapper>
-                                            <Checkbox
-                                                checked={selectedValuesSet.has(option.value)}
-                                                readOnly
-                                            />
-                                        </S.CheckboxWrapper>
-                                        {handleOptionRender(option)}
-                                    </S.OptionContent>
-                                ) : (
-                                    handleOptionRender(option)
-                                )}
-                            </S.Option>
-                        </S.OptionWrapper>
-                    ))}
+                    {groupOptions.map((option) => {
+                        const flatIndex = optionIndexByValue.get(option.value) as number;
+                        const isSelected = isMultiple
+                            ? selectedValuesSet.has(option.value)
+                            : option.value === value;
+                        return (
+                            <S.OptionWrapper $usePadding={usePadding} key={option.value}>
+                                <S.Option
+                                    key={option.value}
+                                    id={getOptionId(flatIndex)}
+                                    role="option"
+                                    aria-selected={isSelected}
+                                    $palette={palette}
+                                    variant="bodyMRegular"
+                                    onClick={handleSelect}
+                                    data-value={JSON.stringify(option.value)}
+                                    data-option-identifier={OPTION_IDENTIFIER}
+                                    $isGrouped={!!group && !renderOption}
+                                    $usePadding={usePadding}
+                                    $isSelected={!isMultiple && option.value === value}
+                                    $isActive={flatIndex === activeIndex}
+                                >
+                                    {isMultiple ? (
+                                        <S.OptionContent>
+                                            <S.CheckboxWrapper>
+                                                <Checkbox
+                                                    checked={selectedValuesSet.has(option.value)}
+                                                    readOnly
+                                                    tabIndex={-1}
+                                                    aria-hidden
+                                                />
+                                            </S.CheckboxWrapper>
+                                            {handleOptionRender(option)}
+                                        </S.OptionContent>
+                                    ) : (
+                                        handleOptionRender(option)
+                                    )}
+                                </S.Option>
+                            </S.OptionWrapper>
+                        );
+                    })}
                 </Fragment>
             ))}
         </S.ScrollbarContent>
@@ -398,6 +482,15 @@ export const Select = <TValue extends string | number>(props: TAllProps<TValue>)
                     onClick={isDrawerOptions || !!renderedValue ? handleInputClick : undefined}
                     required={required}
                     useModernStyles={useModernStyles}
+                    comboboxProps={{
+                        role: 'combobox',
+                        'aria-expanded': isOpen,
+                        'aria-haspopup': 'listbox',
+                        'aria-controls': isOpen && optionGroups.length ? listboxId : undefined,
+                        'aria-activedescendant':
+                            isOpen && activeIndex >= 0 ? getOptionId(activeIndex) : undefined,
+                        onKeyDown: isDrawerOptions ? undefined : handleKeyDown,
+                    }}
                 />
             </S.InputWrapper>
 

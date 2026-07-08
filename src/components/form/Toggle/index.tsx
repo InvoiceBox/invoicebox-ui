@@ -38,6 +38,7 @@ export const Toggle: FC<TProps> = ({
                 checked={checked}
                 onChange={handleChange}
                 type="checkbox"
+                role="switch"
                 disabled={disabled}
                 {...other}
             />
