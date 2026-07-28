@@ -74,6 +74,62 @@ export const MultiCountry: StoryObj<TProps> = {
                 label: 'Узбекистан',
                 value: 'UZB',
             },
+            {
+                label: 'Китай',
+                value: 'CHN',
+            },
+            {
+                label: 'Испания',
+                value: 'ESP',
+            },
+            {
+                label: 'Великобритания',
+                value: 'GBR',
+            },
+            {
+                label: 'ОАЭ',
+                value: 'ARE',
+            },
+            {
+                label: 'Франция',
+                value: 'FRA',
+            },
+            {
+                label: 'Сербия',
+                value: 'SRB',
+            },
+            {
+                label: 'Индия',
+                value: 'IND',
+            },
+            {
+                label: 'Турция',
+                value: 'TUR',
+            },
+            {
+                label: 'Словения',
+                value: 'SVN',
+            },
+            {
+                label: 'Словакия',
+                value: 'SVK',
+            },
+            {
+                label: 'Эквадор',
+                value: 'ECU',
+            },
+            {
+                label: 'Германия',
+                value: 'DEU',
+            },
+            {
+                label: 'Австралия',
+                value: 'AUS',
+            },
+            {
+                label: 'Саудовская Аравия',
+                value: 'SAU',
+            },
         ],
     },
     render: Component,
