@@ -1,0 +1,27 @@
+import React from 'react';
+
+export const SvkFlag = () => (
+    <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="22" height="16" rx="2" fill="white" />
+        <path fillRule="evenodd" clipRule="evenodd" d="M0 5.33331H22V10.6666H0V5.33331Z" fill="#1A47B8" />
+        <path fillRule="evenodd" clipRule="evenodd" d="M0 10.6667H22V16.0001H0V10.6667Z" fill="#F93939" />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M4.19043 4.26669H8.38091V8.10669C8.38091 9.70669 6.28567 10.6667 6.28567 10.6667C6.28567 10.6667 4.19043 9.70669 4.19043 8.10669V4.26669Z"
+            fill="#F93939"
+        />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M5.86901 5.33331H6.70234V6.39998H7.63329V7.24798H6.70234V9.06665H5.86901V7.24798H4.93805V6.39998H5.86901V5.33331Z"
+            fill="white"
+        />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M5.02853 8.53331C5.44758 8.53331 5.85615 8.85331 6.28567 8.85331C6.71425 8.85331 7.12377 8.53331 7.54187 8.53331C7.77206 8.53331 7.98615 8.62931 8.16901 8.78931C7.71187 9.99998 6.28567 10.6666 6.28567 10.6666C6.28567 10.6666 4.85853 9.99998 4.40234 8.78931C4.5852 8.62931 4.79929 8.53331 5.02853 8.53331Z"
+            fill="#1A47B8"
+        />
+    </svg>
+);

@@ -12,6 +12,17 @@ import { UzbFlag } from './components/UzbFlag';
 import { ChnFlag } from './components/ChnFlag';
 import { EngFlag } from './components/EngFlag';
 import { EspFlag } from './components/EspFlag';
+import { AreFlag } from './components/AreFlag';
+import { AusFlag } from './components/AusFlag';
+import { DeuFlag } from './components/DeuFlag';
+import { EcuFlag } from './components/EcuFlag';
+import { FraFlag } from './components/FraFlag';
+import { IndFlag } from './components/IndFlag';
+import { SauFlag } from './components/SauFlag';
+import { SrbFlag } from './components/SrbFlag';
+import { SvkFlag } from './components/SvkFlag';
+import { SvnFlag } from './components/SvnFlag';
+import { TurFlag } from './components/TurFlag';
 import { UnknownFlag } from './components/UnknownFlag';
 
 const flagKeys = [
@@ -27,6 +38,17 @@ const flagKeys = [
     'CHN',
     'ENG',
     'ESP',
+    'ARE',
+    'AUS',
+    'DEU',
+    'ECU',
+    'FRA',
+    'IND',
+    'SAU',
+    'SRB',
+    'SVK',
+    'SVN',
+    'TUR',
     'UNKNOWN',
 ] as const;
 
@@ -45,6 +67,17 @@ const map: Record<TFlagKey, ReactNode> = {
     CHN: <ChnFlag />,
     ENG: <EngFlag />,
     ESP: <EspFlag />,
+    ARE: <AreFlag />,
+    AUS: <AusFlag />,
+    DEU: <DeuFlag />,
+    ECU: <EcuFlag />,
+    FRA: <FraFlag />,
+    IND: <IndFlag />,
+    SAU: <SauFlag />,
+    SRB: <SrbFlag />,
+    SVK: <SvkFlag />,
+    SVN: <SvnFlag />,
+    TUR: <TurFlag />,
     UNKNOWN: <UnknownFlag />,
 };
 

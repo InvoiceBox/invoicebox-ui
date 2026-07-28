@@ -1,0 +1,27 @@
+import React from 'react';
+
+export const IndFlag = () => (
+    <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="22" height="16" rx="2" fill="white" />
+        <path fillRule="evenodd" clipRule="evenodd" d="M0 0H22V5.33333H0V0Z" fill="#FF6C2D" />
+        <path fillRule="evenodd" clipRule="evenodd" d="M0 10.6667H22V16.0001H0V10.6667Z" fill="#249F58" />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M11 9.86672C12.031 9.86672 12.8667 9.03105 12.8667 8.00005C12.8667 6.96906 12.031 6.13338 11 6.13338C9.96903 6.13338 9.13336 6.96906 9.13336 8.00005C9.13336 9.03105 9.96903 9.86672 11 9.86672Z"
+            fill="#1A47B8"
+        />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M11 9.20005C11.6627 9.20005 12.2 8.66279 12.2 8.00005C12.2 7.33731 11.6627 6.80005 11 6.80005C10.3372 6.80005 9.79998 7.33731 9.79998 8.00005C9.79998 8.66279 10.3372 9.20005 11 9.20005Z"
+            fill="white"
+        />
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M11 8.53338C11.2945 8.53338 11.5333 8.29459 11.5333 8.00005C11.5333 7.70551 11.2945 7.46672 11 7.46672C10.7054 7.46672 10.4666 7.70551 10.4666 8.00005C10.4666 8.29459 10.7054 8.53338 11 8.53338Z"
+            fill="#1A47B8"
+        />
+    </svg>
+);
