@@ -26,6 +26,8 @@ export const supportedCountries = [
     'DEU',
     'AUS',
     'SAU',
+    'USA',
+    'CAN',
     UNKNOWN_COUNTRY_CODE,
 ] as const;
 export type TSupportedCountries = (typeof supportedCountries)[number];

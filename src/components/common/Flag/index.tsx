@@ -23,6 +23,8 @@ import { SrbFlag } from './components/SrbFlag';
 import { SvkFlag } from './components/SvkFlag';
 import { SvnFlag } from './components/SvnFlag';
 import { TurFlag } from './components/TurFlag';
+import { UsaFlag } from './components/UsaFlag';
+import { CanFlag } from './components/CanFlag';
 import { UnknownFlag } from './components/UnknownFlag';
 
 const flagKeys = [
@@ -49,6 +51,8 @@ const flagKeys = [
     'SVK',
     'SVN',
     'TUR',
+    'USA',
+    'CAN',
     'UNKNOWN',
 ] as const;
 
@@ -78,6 +82,8 @@ const map: Record<TFlagKey, ReactNode> = {
     SVK: <SvkFlag />,
     SVN: <SvnFlag />,
     TUR: <TurFlag />,
+    USA: <UsaFlag />,
+    CAN: <CanFlag />,
     UNKNOWN: <UnknownFlag />,
 };
 

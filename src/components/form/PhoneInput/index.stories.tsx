@@ -130,6 +130,14 @@ export const MultiCountry: StoryObj<TProps> = {
                 label: 'Саудовская Аравия',
                 value: 'SAU',
             },
+            {
+                label: 'США',
+                value: 'USA',
+            },
+            {
+                label: 'Канада',
+                value: 'CAN',
+            },
         ],
     },
     render: Component,

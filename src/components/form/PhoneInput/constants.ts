@@ -159,6 +159,23 @@ export const getAllCountriesPhoneRules: (
         regexp: /^\+?966\d{9}$/,
         flag: 'SAU' as const,
     },
+    // США и Канада входят в общий план нумерации NANP (+1) и неотличимы по префиксу.
+    // Автоопределение выберет USA (идёт первым), при этом ручной выбор CAN не сбрасывается —
+    // getIsNeedChangeCountry сравнивает startSubsequence, а он у обеих стран одинаковый.
+    USA: {
+        placeholder: '+1 (XXX) XXX-XXXX',
+        mask: '+9 (999) 999-9999',
+        startSubsequence: '1',
+        regexp: /^\+?1[2-9]\d{2}[2-9]\d{6}$/,
+        flag: 'USA' as const,
+    },
+    CAN: {
+        placeholder: '+1 (XXX) XXX-XXXX',
+        mask: '+9 (999) 999-9999',
+        startSubsequence: '1',
+        regexp: /^\+?1[2-9]\d{2}[2-9]\d{6}$/,
+        flag: 'CAN' as const,
+    },
 
     // для всех непредусмотренных стран
     UNKNOWN: {
