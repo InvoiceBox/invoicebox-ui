@@ -1,0 +1,19 @@
+# Паспорт проекта для графа знаний (architecture-graph).
+# Источник правды о проекте: обновляйте тем же MR, что меняет API/зависимости.
+# Схема: https://gitlab.srv.local.invbox.ru/invoicebox/frontend/architecture-graph
+
+id: invoicebox-ui
+type: library
+title: '@invoicebox/ui'
+summary: Публичная UI-библиотека — 45+ компонентов, палитра, хуки; npm + storybook
+status: active
+repo:
+    provider: github
+    url: https://github.com/InvoiceBox/invoicebox-ui
+stack: [react-18, styled-components, babel, jest, storybook-7]
+links:
+    storybook: 'https://ui.invoicebox.ru/'
+    figma: 'https://www.figma.com/design/K67DIpqVJqBhdwgTRHAUu4/Minimal_Web'
+env:
+    prod: https://ui.invoicebox.ru
+owners: [frontend-team]
