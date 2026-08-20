@@ -1,6 +1,15 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './styles';
-import { ITEM_HEIGHT, SETTLE_MS } from '../../constants';
+import {
+    DRAG_THRESHOLD,
+    FRAME_MS,
+    FRICTION_PER_FRAME,
+    ITEM_HEIGHT,
+    MAX_VELOCITY,
+    MIN_VELOCITY,
+    SETTLE_MS,
+    STALE_DRAG_MS,
+} from '../../constants';
 import { useComponentPalette } from '../../../../../../../palette';
 import { TMobileWheelPickerPalette } from '../../palette';
 
@@ -23,8 +32,19 @@ const OPACITY_STEPS = [1, 0.75, 0.45, 0.28, 0.18];
 const INCLINE_STEPS = [0, 22, 42, 58, 68];
 const SCALE_STEPS = [1, 0.94, 0.87, 0.82, 0.78];
 
+type TDrag = {
+    pointerId: number;
+    startY: number;
+    lastY: number;
+    lastTime: number;
+    velocity: number;
+    isMoved: boolean;
+};
+
 const getIndexByScrollTop = (scrollTop: number, count: number) =>
     Math.min(Math.max(Math.round(scrollTop / ITEM_HEIGHT), 0), Math.max(count - 1, 0));
+
+const clampVelocity = (velocity: number) => Math.min(Math.max(velocity, -MAX_VELOCITY), MAX_VELOCITY);
 
 export const WheelColumn: FC<TProps> = ({ options, value, onChange, label, align = 'center', width }) => {
     const palette = useComponentPalette<TMobileWheelPickerPalette>('mobileWheelPicker');
@@ -34,6 +54,10 @@ export const WheelColumn: FC<TProps> = ({ options, value, onChange, label, align
     const settleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const isUserScrollingRef = useRef(false);
     const isMountedRef = useRef(false);
+
+    const dragRef = useRef<TDrag | null>(null);
+    const inertiaRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
+    const isClickSuppressedRef = useRef(false);
 
     const valueIndex = useMemo(() => {
         const index = options.findIndex((option) => option.value === value);
@@ -108,7 +132,133 @@ export const WheelColumn: FC<TProps> = ({ options, value, onChange, label, align
         };
     }, []);
 
+    const stopInertia = useCallback(() => {
+        if (!inertiaRef.current) return;
+        cancelAnimationFrame(inertiaRef.current);
+        inertiaRef.current = null;
+    }, []);
+
+    useEffect(() => stopInertia, [stopInertia]);
+
+    // Пока барабан ведёт палец или инерция, залипание выключено: браузер иначе
+    // отматывал бы scrollTop обратно к ближайшей строке на каждый кадр.
+    const setSnapEnabled = useCallback((isEnabled: boolean) => {
+        const container = containerRef.current;
+        if (container) container.style.scrollSnapType = isEnabled ? '' : 'none';
+    }, []);
+
+    // Барабан остановился — возвращаем залипание и доводим до строки. onChange
+    // отправит общий обработчик скролла, когда доводка закончится.
+    const finishDrag = useCallback(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        setSnapEnabled(true);
+
+        const index = getIndexByScrollTop(container.scrollTop, optionsRef.current.length);
+        container.scrollTo({ top: index * ITEM_HEIGHT, behavior: 'smooth' });
+    }, [setSnapEnabled]);
+
+    const startInertia = useCallback(
+        (initialVelocity: number) => {
+            const container = containerRef.current;
+            if (!container) return;
+
+            let velocity = initialVelocity;
+            let previousTime = performance.now();
+
+            const step = (now: number) => {
+                // Кадр мог быть пропущен (вкладка в фоне) — не даём барабану прыгнуть.
+                const elapsed = Math.min(now - previousTime, 50);
+                previousTime = now;
+
+                const shift = velocity * elapsed;
+                const scrollTopBefore = container.scrollTop;
+                container.scrollTop = scrollTopBefore - shift;
+
+                velocity *= Math.pow(FRICTION_PER_FRAME, elapsed / FRAME_MS);
+
+                // scrollTop не сдвинулся, хотя должен был — упёрлись в край списка.
+                const isStuck = Math.abs(shift) >= 1 && container.scrollTop === scrollTopBefore;
+
+                if (Math.abs(velocity) < MIN_VELOCITY || isStuck) {
+                    inertiaRef.current = null;
+                    finishDrag();
+                    return;
+                }
+
+                inertiaRef.current = requestAnimationFrame(step);
+            };
+
+            inertiaRef.current = requestAnimationFrame(step);
+        },
+        [finishDrag],
+    );
+
+    const handlePointerDown = useCallback(
+        (event: PointerEvent<HTMLDivElement>) => {
+            // Толчок по крутящемуся барабану ловит его — как в нативных пикерах.
+            stopInertia();
+            setSnapEnabled(false);
+            isClickSuppressedRef.current = false;
+            isUserScrollingRef.current = true;
+
+            dragRef.current = {
+                pointerId: event.pointerId,
+                startY: event.clientY,
+                lastY: event.clientY,
+                lastTime: event.timeStamp,
+                velocity: 0,
+                isMoved: false,
+            };
+
+            event.currentTarget.setPointerCapture?.(event.pointerId);
+        },
+        [setSnapEnabled, stopInertia],
+    );
+
+    const handlePointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
+        const drag = dragRef.current;
+        const container = containerRef.current;
+        if (!drag || !container || drag.pointerId !== event.pointerId) return;
+
+        const shift = event.clientY - drag.lastY;
+        const elapsed = event.timeStamp - drag.lastTime;
+
+        container.scrollTop -= shift;
+
+        // Скорость сглаживаем: дрожание пальца в конце жеста иначе гасит бросок.
+        if (elapsed > 0) drag.velocity = drag.velocity * 0.7 + (shift / elapsed) * 0.3;
+        if (Math.abs(event.clientY - drag.startY) > DRAG_THRESHOLD) drag.isMoved = true;
+
+        drag.lastY = event.clientY;
+        drag.lastTime = event.timeStamp;
+    }, []);
+
+    const handlePointerUp = useCallback(
+        (event: PointerEvent<HTMLDivElement>) => {
+            const drag = dragRef.current;
+            if (!drag || drag.pointerId !== event.pointerId) return;
+
+            dragRef.current = null;
+            isClickSuppressedRef.current = drag.isMoved;
+
+            // Палец замер перед отпусканием — это доводка, а не бросок.
+            const isStale = event.timeStamp - drag.lastTime > STALE_DRAG_MS;
+            const velocity = isStale ? 0 : clampVelocity(drag.velocity);
+
+            if (Math.abs(velocity) < MIN_VELOCITY) {
+                finishDrag();
+                return;
+            }
+
+            startInertia(velocity);
+        },
+        [finishDrag, startInertia],
+    );
+
     const handleItemClick = useCallback((index: number) => {
+        if (isClickSuppressedRef.current) return;
         containerRef.current?.scrollTo({ top: index * ITEM_HEIGHT, behavior: 'smooth' });
     }, []);
 
@@ -122,6 +272,10 @@ export const WheelColumn: FC<TProps> = ({ options, value, onChange, label, align
             role="listbox"
             aria-label={label}
             tabIndex={-1}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
         >
             {options.map((option, index) => {
                 const step = Math.min(Math.abs(index - activeIndex), OPACITY_STEPS.length - 1);

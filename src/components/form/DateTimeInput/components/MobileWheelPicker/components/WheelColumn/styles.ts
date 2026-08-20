@@ -13,6 +13,17 @@ export const Wrapper = styled.div<{ $align: 'left' | 'center' | 'right' }>`
     -webkit-overflow-scrolling: touch;
     text-align: ${({ $align }) => $align};
 
+    /* Жест забираем себе (см. WheelColumn): нативный fling живёт только у тач-скролла,
+       а барабан должен докручиваться после толчка и мышью тоже. */
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
+
+    &:active {
+        cursor: grabbing;
+    }
+
     /* Скрываем скроллбар: барабан управляется жестом, полоса ломает нативный вид. */
     scrollbar-width: none;
     -ms-overflow-style: none;
