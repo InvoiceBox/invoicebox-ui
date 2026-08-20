@@ -3,7 +3,6 @@ import * as S from './styles';
 import { useComponentPalette } from '../../../../../palette';
 import { TTimePickerPalette } from './palette';
 import { Scrollbar } from '../../../../common/Scrollbar';
-import { useMobile } from '../../../../../hooks/useMedia';
 import { MobileWheelPicker, WheelColumn } from '../MobileWheelPicker';
 import { Typography } from '../../../../common/Typography';
 
@@ -24,11 +23,18 @@ export type TProps = {
     height?: number;
     minTime?: [number, number];
     maxTime?: [number, number];
+    isMobile?: boolean;
 };
 
-export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime, minTime }) => {
+export const TimePicker: FC<TProps> = ({
+    value,
+    onChange,
+    height = 230,
+    maxTime,
+    minTime,
+    isMobile = false,
+}) => {
     const palette = useComponentPalette<TTimePickerPalette>('timePicker');
-    const isMobile = useMobile();
 
     const [hour, minute] = value;
     const maxTimeHour = maxTime?.[0];

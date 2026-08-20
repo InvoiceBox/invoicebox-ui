@@ -10,15 +10,24 @@ const meta: Meta<typeof TimePicker> = {
 
 export default meta;
 
-export const Default: StoryObj<TProps> = {
-    args: {
-        height: 300,
-        minTime: [10, 30],
-        maxTime: [22, 15],
-    },
-    render: function Render(props) {
-        const [time, setTime] = useState<[number, number]>([11, 0]);
+const Render = (props: TProps) => {
+    const [time, setTime] = useState<[number, number]>([11, 0]);
 
-        return <TimePicker {...props} value={time} onChange={setTime} />;
-    },
+    return <TimePicker {...props} value={time} onChange={setTime} />;
+};
+
+const commonArgs = {
+    height: 300,
+    minTime: [10, 30] as [number, number],
+    maxTime: [22, 15] as [number, number],
+};
+
+export const Default: StoryObj<TProps> = {
+    args: commonArgs,
+    render: Render,
+};
+
+export const Mobile: StoryObj<TProps> = {
+    args: { ...commonArgs, isMobile: true },
+    render: Render,
 };

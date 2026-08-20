@@ -94,6 +94,7 @@ export const MobileDrawerDateTimeCalendar: FC<TProps> = ({
                     />
                 ) : (
                     <TimePicker
+                        isMobile
                         value={[currentHour, currentMinute]}
                         onChange={onTimeChange}
                         maxTime={maxTime}
