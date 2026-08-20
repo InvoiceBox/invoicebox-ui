@@ -10,17 +10,32 @@ export type TProps = {
     onSubmit?: () => void;
     label: string;
     isSubmitDisabled?: boolean;
+    closeLabel?: string;
+    submitLabel?: string;
 };
 
-export const DrawerHeader: FC<TProps> = ({ onClose, label, onSubmit, isSubmitDisabled }) => {
+export const DrawerHeader: FC<TProps> = ({
+    onClose,
+    label,
+    onSubmit,
+    isSubmitDisabled,
+    closeLabel,
+    submitLabel,
+}) => {
     const palette = useComponentPalette<TDrawerHeaderPalette>('drawerHeader');
 
     return (
         <S.Wrapper $borderColor={palette.border}>
-            <S.CloseButton type={'button'} onClick={onClose}>
-                <Cross24Icon />
-            </S.CloseButton>
-            <S.HeadLabel $color={palette.headLabel} variant={'headline3'}>
+            {closeLabel ? (
+                <S.CancelButton type={'button'} onClick={onClose} $color={palette.applyButton}>
+                    <Typography variant={'headline6'}>{closeLabel}</Typography>
+                </S.CancelButton>
+            ) : (
+                <S.CloseButton type={'button'} onClick={onClose}>
+                    <Cross24Icon />
+                </S.CloseButton>
+            )}
+            <S.HeadLabel $color={palette.headLabel} variant={'headline3'} $isCentered={!!closeLabel}>
                 {label}
             </S.HeadLabel>
             {onSubmit && (
@@ -30,7 +45,7 @@ export const DrawerHeader: FC<TProps> = ({ onClose, label, onSubmit, isSubmitDis
                     type={'button'}
                     $color={palette.applyButton}
                 >
-                    <Typography variant={'headline6'}>Готово</Typography>
+                    <Typography variant={'headline6'}>{submitLabel || 'Готово'}</Typography>
                 </S.ApplyButton>
             )}
         </S.Wrapper>

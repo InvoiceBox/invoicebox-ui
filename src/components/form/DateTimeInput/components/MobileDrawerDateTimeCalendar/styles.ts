@@ -1,13 +1,7 @@
 import styled from 'styled-components';
 
-export const MobileCalendarWrapper = styled.div`
-    padding: 18px 16px 30px;
-    display: flex;
-    justify-content: center;
-`;
-
-export const TimePickerWrapper = styled.div`
-    padding-bottom: 30px;
+export const PickerWrapper = styled.div`
+    padding: 20px 16px 30px;
     display: flex;
     justify-content: center;
 `;

@@ -19,8 +19,19 @@ export const CloseButton = styled.button`
     color: inherit;
 `;
 
-export const HeadLabel = styled(Typography)<{ $color: string }>`
+export const CancelButton = styled.button<{ $color: string }>`
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    white-space: nowrap;
+    color: ${({ $color }) => $color};
+`;
+
+export const HeadLabel = styled(Typography)<{ $color: string; $isCentered?: boolean }>`
     flex: 1;
+    ${({ $isCentered }) => $isCentered && 'text-align: center;'}
     color: ${({ $color }) => $color};
     text-overflow: ellipsis;
     overflow: hidden;

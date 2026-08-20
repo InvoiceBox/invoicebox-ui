@@ -30,6 +30,7 @@ import { generateReadOnlyLabelValueFieldPalette } from '../components/common/Rea
 import { generatePointsLoaderPalette } from '../components/common/PointsLoader/palette';
 import { generateTagsInputPalette } from '../components/form/TagsInput/palette';
 import { generateTimePickerPalette } from '../components/form/DateTimeInput/components/TimePicker/palette';
+import { generateMobileWheelPickerPalette } from '../components/form/DateTimeInput/components/MobileWheelPicker/palette';
 import { generateDateTimeInputPalette } from '../components/form/DateTimeInput/palette';
 import { generateDrawerHeaderPalette } from '../components/form/common/DrawerHeader/palette';
 import { generateCheckboxPalette } from '../components/form/Checkbox/palette';
@@ -80,6 +81,7 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             pointsLoader: generatePointsLoaderPalette(mergedAbstractPalette),
             tagsInput: generateTagsInputPalette(mergedAbstractPalette),
             timePicker: generateTimePickerPalette(mergedAbstractPalette),
+            mobileWheelPicker: generateMobileWheelPickerPalette(mergedAbstractPalette),
             dateTimeInput: generateDateTimeInputPalette(mergedAbstractPalette),
             drawerHeader: generateDrawerHeaderPalette(mergedAbstractPalette),
             checkbox: generateCheckboxPalette(mergedAbstractPalette),
