@@ -53,6 +53,10 @@ import {
     TTimePickerPalette,
 } from '../components/form/DateTimeInput/components/TimePicker/palette';
 import {
+    generateMobileWheelPickerPalette,
+    TMobileWheelPickerPalette,
+} from '../components/form/DateTimeInput/components/MobileWheelPicker/palette';
+import {
     generateDateTimeInputPalette,
     TDateTimeInputPalette,
 } from '../components/form/DateTimeInput/palette';
@@ -92,6 +96,7 @@ type TContext = {
     pointsLoader: TPointsLoaderPalette;
     tagsInput: TTagsInputPalette;
     timePicker: TTimePickerPalette;
+    mobileWheelPicker: TMobileWheelPickerPalette;
     dateTimeInput: TDateTimeInputPalette;
     drawerHeader: TDrawerHeaderPalette;
     checkbox: TCheckboxPalette;
@@ -127,6 +132,7 @@ export const PaletteContext = createContext<TContext>({
     pointsLoader: generatePointsLoaderPalette(defaultAbstractPalette),
     tagsInput: generateTagsInputPalette(defaultAbstractPalette),
     timePicker: generateTimePickerPalette(defaultAbstractPalette),
+    mobileWheelPicker: generateMobileWheelPickerPalette(defaultAbstractPalette),
     dateTimeInput: generateDateTimeInputPalette(defaultAbstractPalette),
     drawerHeader: generateDrawerHeaderPalette(defaultAbstractPalette),
     checkbox: generateCheckboxPalette(defaultAbstractPalette),

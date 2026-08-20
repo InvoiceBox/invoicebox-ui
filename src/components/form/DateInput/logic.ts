@@ -43,6 +43,15 @@ class Logic {
         return new Date(withTime ? formattedDateStr + ' ' + formattedTimeStr : formattedDateStr);
     }
 
+    // Поля с временем работают с точностью до минуты, а секунды приходят из
+    // `new Date()` у потребителя и ломают сравнения: выбранные 15:12:00 оказываются
+    // «меньше» границы 15:12:37, и сохранить значение невозможно.
+    dropSeconds(date: Date): Date {
+        const newDate = new Date(date);
+        newDate.setSeconds(0, 0);
+        return newDate;
+    }
+
     addHoursAndMinutesToDate(date: Date, hours: number, minutes: number) {
         const newDate = new Date(date);
         newDate.setHours(hours, minutes, 0, 0);

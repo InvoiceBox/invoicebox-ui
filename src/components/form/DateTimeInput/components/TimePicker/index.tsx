@@ -3,11 +3,12 @@ import * as S from './styles';
 import { useComponentPalette } from '../../../../../palette';
 import { TTimePickerPalette } from './palette';
 import { Scrollbar } from '../../../../common/Scrollbar';
-import { useMobile } from '../../../../../hooks/useMedia';
-import MobileNumbersColumn from '../MobileNumbersColumn';
+import { MobileWheelPicker, WheelColumn } from '../MobileWheelPicker';
 import { Typography } from '../../../../common/Typography';
 
-const isIphone = /iPhone/.test(navigator.userAgent);
+const TIME_COLUMN_WIDTH = 70;
+
+const toTwoDigits = (item: number) => `0${item}`.slice(-2);
 
 const HOURS = new Array(24).fill(0).map((item, index) => index);
 const MINUTES = new Array(60).fill(0).map((item, index) => index);
@@ -22,11 +23,18 @@ export type TProps = {
     height?: number;
     minTime?: [number, number];
     maxTime?: [number, number];
+    isMobile?: boolean;
 };
 
-export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime, minTime }) => {
+export const TimePicker: FC<TProps> = ({
+    value,
+    onChange,
+    height = 230,
+    maxTime,
+    minTime,
+    isMobile = false,
+}) => {
     const palette = useComponentPalette<TTimePickerPalette>('timePicker');
-    const isMobile = useMobile();
 
     const [hour, minute] = value;
     const maxTimeHour = maxTime?.[0];
@@ -70,11 +78,28 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
 
     if (isMobile) {
         return (
-            <S.MobileWrapper $isIphone={isIphone}>
-                <S.SelectedMask />
-                <MobileNumbersColumn numbers={mobileHours} onChange={handleHourChange} value={hour} />
-                <MobileNumbersColumn numbers={mobileMinutes} onChange={handleMinuteChange} value={minute} />
-            </S.MobileWrapper>
+            <MobileWheelPicker label={'Время'}>
+                <WheelColumn
+                    label={'Часы'}
+                    options={mobileHours.map((hourItem) => ({
+                        value: hourItem,
+                        label: toTwoDigits(hourItem),
+                    }))}
+                    value={hour}
+                    onChange={handleHourChange}
+                    width={TIME_COLUMN_WIDTH}
+                />
+                <WheelColumn
+                    label={'Минуты'}
+                    options={mobileMinutes.map((minuteItem) => ({
+                        value: minuteItem,
+                        label: toTwoDigits(minuteItem),
+                    }))}
+                    value={minute}
+                    onChange={handleMinuteChange}
+                    width={TIME_COLUMN_WIDTH}
+                />
+            </MobileWheelPicker>
         );
     }
 
@@ -102,9 +127,7 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                                     minTimeHour ? minTimeHour : 0,
                                 )}
                             >
-                                <Typography variant={'captionRegular'}>
-                                    {hourItem.toString().length === 1 ? `0${hourItem}` : hourItem}
-                                </Typography>
+                                <Typography variant={'captionRegular'}>{toTwoDigits(hourItem)}</Typography>
                             </S.ValueWrapper>
                         ))}
                     </S.ValuesWrapper>
@@ -129,9 +152,7 @@ export const TimePicker: FC<TProps> = ({ value, onChange, height = 230, maxTime,
                                 onClick={() => handleMinuteChange(minuteItem)}
                                 disabled={getIsDisabledMinute(minuteItem)}
                             >
-                                <Typography variant={'captionRegular'}>
-                                    {minuteItem.toString().length === 1 ? `0${minuteItem}` : minuteItem}
-                                </Typography>
+                                <Typography variant={'captionRegular'}>{toTwoDigits(minuteItem)}</Typography>
                             </S.ValueWrapper>
                         ))}
                     </S.ValuesWrapper>

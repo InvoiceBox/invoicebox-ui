@@ -57,31 +57,3 @@ export const ValueWrapper = styled.button<{
         color: ${({ $colorDisabled }) => $colorDisabled};
     }
 `;
-
-export const MobileWrapper = styled.div<{ $isIphone: boolean }>`
-    height: 178px;
-    width: 140px;
-    display: flex;
-    font-size: 23px;
-    font-weight: 400;
-    line-height: 28px;
-    color: #3c3c4399;
-    position: relative;
-
-    font-family: ${({ $isIphone }) =>
-        $isIphone ? '-apple-system, BlinkMacSystemFont' : "'Roboto', sans-serif"};
-`;
-
-export const SelectedMask = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 34px;
-    background-color: #74748014;
-    z-index: 10;
-    transform: translateY(-50%);
-    flex-shrink: 0;
-    border-radius: 8px;
-    pointer-events: none;
-`;

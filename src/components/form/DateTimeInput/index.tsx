@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FocusEvent, useCallback, useId, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, FocusEvent, useCallback, useId, useMemo, useRef, useState } from 'react';
 import { useComponentPalette } from '../../../palette';
 import { useOutsideClick } from '../../../hooks/useOutsideClick';
 import { useInputFocus } from '../../../hooks/useInputFocus';
@@ -36,14 +36,14 @@ export type TProps = {
 
 export const DateTimeInput: FC<TProps> = ({
     onChange,
-    value,
+    value: valueProp,
     hasError,
     name,
     onBlur,
     onFocus,
     label,
-    minDate,
-    maxDate,
+    minDate: minDateProp,
+    maxDate: maxDateProp,
     size,
     dropdownProps,
     placeholder,
@@ -55,6 +55,22 @@ export const DateTimeInput: FC<TProps> = ({
 }) => {
     const palette = useComponentPalette<TDateTimeInputPalette>('dateTimeInput');
     const inputRef = useRef<HTMLInputElement>(null);
+
+    // Внутри компонента ходят только даты минутной точности: и выбранное значение, и
+    // границы. Иначе minDate вида `new Date()` не даёт сохранить ближайшую допустимую
+    // минуту — 15:12:00 сравнивается с 15:12:37. Мемоизация нужна, чтобы новая ссылка
+    // не пересобирала списки барабанов на каждый рендер.
+    /* eslint-disable react-hooks/exhaustive-deps */
+    const value = useMemo(() => (valueProp ? logic.dropSeconds(valueProp) : null), [valueProp?.getTime()]);
+    const minDate = useMemo(
+        () => (minDateProp ? logic.dropSeconds(minDateProp) : undefined),
+        [minDateProp?.getTime()],
+    );
+    const maxDate = useMemo(
+        () => (maxDateProp ? logic.dropSeconds(maxDateProp) : undefined),
+        [maxDateProp?.getTime()],
+    );
+    /* eslint-enable react-hooks/exhaustive-deps */
 
     const fallbackId = useId();
     const inputId = id ?? fallbackId;
