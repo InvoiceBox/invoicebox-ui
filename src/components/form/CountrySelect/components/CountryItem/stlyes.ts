@@ -9,6 +9,14 @@ export const Title = styled.div<{ $isSelected: boolean; $palette: TCountrySelect
     opacity: ${({ $isSelected }) => ($isSelected ? 0.5 : 1)};
 `;
 
+export const TitleTexts = styled.div`
+    text-align: left;
+`;
+
+export const Hint = styled.div<{ $palette: TCountrySelectPalette }>`
+    color: ${({ $palette }) => $palette.countryDescription};
+`;
+
 export const Wrapper = styled.button<{ $palette: TCountrySelectPalette }>`
     padding: 15px 20px;
     display: flex;

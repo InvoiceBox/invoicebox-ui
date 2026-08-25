@@ -166,6 +166,7 @@ export const MultiCountryWithUnknown: StoryObj<TProps> = {
             {
                 label: 'Другая',
                 value: 'UNKNOWN',
+                hint: 'Выберите если вашей страны нет в списке',
             },
         ],
     },

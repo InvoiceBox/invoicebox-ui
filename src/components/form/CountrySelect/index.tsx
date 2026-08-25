@@ -17,6 +17,7 @@ type TOption = {
     label: string;
     description: string;
     flag?: TFlagKey;
+    hint?: string;
 };
 
 type TFieldProps = {
@@ -124,6 +125,7 @@ export const CountrySelect: FC<TProps> = ({
                                 value={option.value}
                                 isSelected={option === selectedOption}
                                 description={option.description}
+                                hint={option.hint}
                                 flag={option.flag}
                             />
                         ))}

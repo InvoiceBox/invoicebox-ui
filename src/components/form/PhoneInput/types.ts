@@ -45,4 +45,5 @@ export type TCountrySelectOption = {
     flag: string;
     label: string;
     value: string;
+    hint?: string;
 };
