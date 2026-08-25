@@ -13,6 +13,7 @@ export type TProps<TValue> = {
     selectedLabel: string;
     palette: TCountrySelectPalette;
     flag?: TFlagKey;
+    hint?: string;
 };
 
 export const CountryItem = <TValue,>({
@@ -24,6 +25,7 @@ export const CountryItem = <TValue,>({
     countryLabel,
     selectedLabel,
     palette,
+    hint,
 }: TProps<TValue>) => {
     const handleSelect = useCallback(() => onSelect(value), [onSelect, value]);
 
@@ -31,9 +33,16 @@ export const CountryItem = <TValue,>({
         <S.Wrapper $palette={palette} onClick={handleSelect} type="button">
             <S.Title $isSelected={isSelected} $palette={palette}>
                 {flag && <Flag flag={flag} isSmall={true} />}
-                <Typography variant={'captionRegular'}>
-                    {countryLabel} {isSelected && selectedLabel}
-                </Typography>
+                <S.TitleTexts>
+                    <Typography variant={'captionRegular'}>
+                        {countryLabel} {isSelected && selectedLabel}
+                    </Typography>
+                    {hint && (
+                        <S.Hint $palette={palette}>
+                            <Typography variant={'captionSRegular'}>{hint}</Typography>
+                        </S.Hint>
+                    )}
+                </S.TitleTexts>
             </S.Title>
             <Typography variant={'captionRegular'}>{description}</Typography>
         </S.Wrapper>

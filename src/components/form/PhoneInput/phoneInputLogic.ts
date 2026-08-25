@@ -40,7 +40,9 @@ export class PhoneInputLogic {
         return countries?.filter((country) => this.allCountriesPhoneRules[country]);
     }
 
-    getCountriesSelectOptions(countries?: Array<{ label: string; value: TSupportedCountries }>) {
+    getCountriesSelectOptions(
+        countries?: Array<{ label: string; value: TSupportedCountries; hint?: string }>,
+    ) {
         const supportedCountries = countries?.filter((country) => this.allCountriesPhoneRules[country.value]);
 
         return supportedCountries?.map((country) => {

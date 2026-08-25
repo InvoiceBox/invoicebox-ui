@@ -33,7 +33,7 @@ type TControlProps = Pick<TPureInputProps, 'disabled' | 'id' | 'autoFocus' | 'us
     label: string;
     countrySelectProps?: Pick<TCountrySelectProps, 'selectedLabel' | 'placeholder'>;
     onCountryChange?: (countryCode: string) => void;
-    countries?: Array<{ label: string; value: TSupportedCountries }>;
+    countries?: Array<{ label: string; value: TSupportedCountries; hint?: string }>;
     pureInputProps?: Pick<TPureInputProps, 'paddingTop' | 'paddingBottom' | 'autoFocus'>;
     size?: TSizes;
     isSupportCityRusPhoneNumber?: boolean;
