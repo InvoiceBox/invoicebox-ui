@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useId } from 'react';
+import React, { FC, KeyboardEvent, MouseEvent, useCallback, useId } from 'react';
 import * as S from './styles';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel, TProps as TInputLabelProps } from '../InputLabel';
@@ -16,6 +16,10 @@ export type TProps = {
     onChange: (value: number | null) => void;
     max?: number;
     upAndDown?: boolean;
+    /** Только для скринридеров и голосового управления, на экране не выводится: aria-label кнопки «вверх» */
+    incrementButtonAriaLabel?: string;
+    /** Только для скринридеров и голосового управления, на экране не выводится: aria-label кнопки «вниз» */
+    decrementButtonAriaLabel?: string;
 } & Pick<TInputLabelProps, 'label'> &
     Pick<
         TPureInputProps,
@@ -38,6 +42,9 @@ export const PositiveIntegerInput: FC<TProps> = ({
     size,
     useModernStyles = false,
     id,
+    disabled = false,
+    incrementButtonAriaLabel = 'Увеличить',
+    decrementButtonAriaLabel = 'Уменьшить',
 }) => {
     const { inFocus, handleFocus, handleBlur } = useInputFocus({ onFocus, onBlur });
 
@@ -75,6 +82,30 @@ export const PositiveIntegerInput: FC<TProps> = ({
         onChange(decrement(value));
     }, [decrement, value, onChange]);
 
+    const isUpDisabled = disabled || isIncrementDisabled;
+    const isDownDisabled = disabled || isDecrementDisabled;
+
+    // Стрелки клавиатуры в поле — как кнопки «вверх»/«вниз» (кнопки вне порядка Tab)
+    const handleKeyDown = useCallback(
+        (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            if (!upAndDown) return;
+            if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (!isUpDisabled) handleUp();
+            } else if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (!isDownDisabled) handleDown();
+            }
+        },
+        [handleDown, handleUp, isDownDisabled, isUpDisabled, upAndDown],
+    );
+
+    // Клик по кнопке не забирает фокус у поля: иначе срабатывал бы onBlur поля
+    const preventFocusLoss = useCallback(
+        (event: MouseEvent<HTMLButtonElement>) => event.preventDefault(),
+        [],
+    );
+
     return (
         <InputLabel
             inFocus={inFocus}
@@ -82,6 +113,7 @@ export const PositiveIntegerInput: FC<TProps> = ({
             useModernStyles={useModernStyles}
             size={fieldSize}
             htmlFor={inputId}
+            disabled={disabled}
         >
             <S.ControlWrapper>
                 {modernPlaceholder}
@@ -96,16 +128,36 @@ export const PositiveIntegerInput: FC<TProps> = ({
                     onBlur={handleBlur}
                     value={normalizeFrom(value)}
                     onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    disabled={disabled}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     paddingRight={upAndDown ? 44 : undefined}
                     {...paddingAndVariantOptions}
                     useModernStyles={useModernStyles}
                 />
                 {upAndDown && (
                     <S.Arrows>
-                        <S.Arrow onClick={handleUp} $disabled={isIncrementDisabled}>
+                        <S.Arrow
+                            type="button"
+                            tabIndex={-1}
+                            aria-label={incrementButtonAriaLabel}
+                            aria-controls={inputId}
+                            disabled={isUpDisabled}
+                            onMouseDown={preventFocusLoss}
+                            onClick={handleUp}
+                        >
                             <Arrow isOpen outterSize={12} />
                         </S.Arrow>
-                        <S.Arrow onClick={handleDown} $disabled={isDecrementDisabled}>
+                        <S.Arrow
+                            type="button"
+                            tabIndex={-1}
+                            aria-label={decrementButtonAriaLabel}
+                            aria-controls={inputId}
+                            disabled={isDownDisabled}
+                            onMouseDown={preventFocusLoss}
+                            onClick={handleDown}
+                        >
                             <Arrow isOpen={false} outterSize={12} />
                         </S.Arrow>
                     </S.Arrows>
