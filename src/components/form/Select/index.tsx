@@ -183,18 +183,23 @@ const SelectInner = <TValue extends string | number>(props: TAllProps<TValue>) =
     const dropdownRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useOutsideClick(handleHide, [dropdownRef]);
 
-    const handleFocus = useCallback(
-        (event: FocusEvent<HTMLInputElement>) => {
-            handleShow();
-            focusHandler(event);
-        },
-        [focusHandler, handleShow],
-    );
+    // Список не открывается на фокус (WCAG 2.4.11): иначе при переходе по Tab он перекрывает
+    // следующие элементы. Открытие — кликом, Enter, пробелом или стрелками
+    const handleFocus = focusHandler;
 
     const handleBlur = useCallback(
         (event: FocusEvent<HTMLInputElement>) => {
             const relatedTarget = event.relatedTarget as HTMLElement | null;
             const isOptionClick = relatedTarget?.dataset.optionIdentifier === OPTION_IDENTIFIER;
+
+            // Фокус ушёл на другой элемент вне поля и списка — закрываем список. Без relatedTarget
+            // (клик по неактивной области списка, уход из окна) не закрываем: клик снаружи
+            // обрабатывает useOutsideClick
+            const isFocusOutside =
+                !!relatedTarget &&
+                !wrapperRef.current?.contains(relatedTarget) &&
+                !dropdownRef.current?.contains(relatedTarget);
+            if (isFocusOutside) handleHide();
 
             if (!isOptionClick) {
                 blurHandler(event);
@@ -203,7 +208,7 @@ const SelectInner = <TValue extends string | number>(props: TAllProps<TValue>) =
 
             delayBlur.current = () => blurHandler(event);
         },
-        [blurHandler],
+        [blurHandler, handleHide, wrapperRef],
     );
 
     const selectValue = useCallback(
@@ -264,6 +269,10 @@ const SelectInner = <TValue extends string | number>(props: TAllProps<TValue>) =
                         handleHide();
                     }
                     break;
+                case 'Tab':
+                    // фокус уходит дальше по странице — список не должен оставаться поверх
+                    if (isOpen) handleHide();
+                    break;
                 default:
                     break;
             }
@@ -284,6 +293,13 @@ const SelectInner = <TValue extends string | number>(props: TAllProps<TValue>) =
     const handleInputClick = () => {
         inputRef.current?.blur();
         handleShow();
+    };
+
+    // Раньше список открывался фокусом, который ставит и клик; теперь клик открывает его сам.
+    // Повторный клик по полю закрывает список, как у нативного select
+    const handleToggleClick = () => {
+        if (isOpen) handleHide();
+        else handleShow();
     };
 
     const handleOptionRender = (option: TOption<TValue>) => {
@@ -480,7 +496,7 @@ const SelectInner = <TValue extends string | number>(props: TAllProps<TValue>) =
                     isOpen={isOpen}
                     onReset={isResetButtonEnabled ? handleReset : undefined}
                     size={fieldSize}
-                    onClick={isDrawerOptions || !!renderedValue ? handleInputClick : undefined}
+                    onClick={isDrawerOptions || !!renderedValue ? handleInputClick : handleToggleClick}
                     required={required}
                     useModernStyles={useModernStyles}
                     comboboxProps={{
