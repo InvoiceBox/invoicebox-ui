@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
+import React, { FC, useCallback, useId, useMemo, useRef, useState } from 'react';
 import * as S from './stlyes';
 import { CountryItem, TProps as TCountryItemProps } from './components/CountryItem';
 import { SearchInput, TProps as TSearchInputProps } from '../SearchInput';
@@ -29,6 +29,12 @@ type TControlProps<T> = Pick<TSearchInputProps, 'placeholder'> &
     Pick<TCountryItemProps<T>, 'selectedLabel'> & {
         options: TOption[];
         disabled?: boolean;
+        /**
+         * Только для скринридеров, на экране не выводится: начало aria-label кнопки выбора страны.
+         * Итоговое имя — «<buttonAriaLabelPrefix>: <название выбранной страны>», например
+         * «Код страны: Россия». Кнопка показывает только флаг, без имени её не понять (WCAG 4.1.2).
+         */
+        buttonAriaLabelPrefix?: string;
     } & Pick<
         TDropdownProps,
         | 'positionVertical'
@@ -49,8 +55,10 @@ export const CountrySelect: FC<TProps> = ({
     placeholder,
     disabled = false,
     selectedLabel,
+    buttonAriaLabelPrefix = 'Код страны',
     ...dropdownPositionProps
 }) => {
+    const listboxId = useId();
     const palette = useComponentPalette<TCountrySelectPalette>('countrySelect');
 
     const [isOpen, setIsOpen] = useState(false);
@@ -93,8 +101,20 @@ export const CountrySelect: FC<TProps> = ({
 
     return (
         <S.Wrapper ref={wrapperRef}>
-            <S.HeaderWrapper type="button" onClick={handleDropdownTrigger} disabled={disabled}>
-                {selectedOption.flag && <Flag isSmall={false} flag={selectedOption.flag} />}
+            <S.HeaderWrapper
+                type="button"
+                onClick={handleDropdownTrigger}
+                disabled={disabled}
+                aria-label={
+                    selectedOption
+                        ? `${buttonAriaLabelPrefix}: ${selectedOption.label}`
+                        : buttonAriaLabelPrefix
+                }
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
+                aria-controls={isOpen ? listboxId : undefined}
+            >
+                {selectedOption?.flag && <Flag isSmall={false} flag={selectedOption.flag} />}
                 {!disabled && <Arrow isOpen={isOpen} />}
             </S.HeaderWrapper>
             <Dropdown
@@ -115,20 +135,22 @@ export const CountrySelect: FC<TProps> = ({
                         />
                     </S.CountrySearchWrapper>
                     <Scrollbar maxHeight={192}>
-                        {filtredOptions.map((option) => (
-                            <CountryItem
-                                key={option.value}
-                                palette={palette}
-                                countryLabel={option.label}
-                                onSelect={handleSelect}
-                                selectedLabel={selectedLabel}
-                                value={option.value}
-                                isSelected={option === selectedOption}
-                                description={option.description}
-                                hint={option.hint}
-                                flag={option.flag}
-                            />
-                        ))}
+                        <div role="listbox" id={listboxId} aria-label={buttonAriaLabelPrefix}>
+                            {filtredOptions.map((option) => (
+                                <CountryItem
+                                    key={option.value}
+                                    palette={palette}
+                                    countryLabel={option.label}
+                                    onSelect={handleSelect}
+                                    selectedLabel={selectedLabel}
+                                    value={option.value}
+                                    isSelected={option === selectedOption}
+                                    description={option.description}
+                                    hint={option.hint}
+                                    flag={option.flag}
+                                />
+                            ))}
+                        </div>
                     </Scrollbar>
                 </S.ListWrapper>
             </Dropdown>

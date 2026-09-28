@@ -30,7 +30,13 @@ export const CountryItem = <TValue,>({
     const handleSelect = useCallback(() => onSelect(value), [onSelect, value]);
 
     return (
-        <S.Wrapper $palette={palette} onClick={handleSelect} type="button">
+        <S.Wrapper
+            $palette={palette}
+            onClick={handleSelect}
+            type="button"
+            role="option"
+            aria-selected={isSelected}
+        >
             <S.Title $isSelected={isSelected} $palette={palette}>
                 {flag && <Flag flag={flag} isSmall={true} />}
                 <S.TitleTexts>
