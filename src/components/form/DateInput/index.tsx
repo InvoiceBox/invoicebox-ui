@@ -25,7 +25,7 @@ export type TProps = {
     >;
     useModernStyles?: boolean;
     required?: boolean;
-} & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus' | 'id'> &
+} & Pick<TPureInputProps, 'hasError' | 'name' | 'onBlur' | 'onFocus' | 'id' | 'inputMode'> &
     Pick<TInputLabelProps, 'label'> &
     Pick<TCalendarProps, 'maxDate' | 'minDate'> & { size?: TSizes };
 
@@ -47,6 +47,7 @@ export const DateInput: FC<TProps> = ({
     useModernStyles = false,
     required = false,
     id,
+    inputMode,
 }) => {
     const palette = useComponentPalette<TDateInputPalette>('dateInput');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +55,10 @@ export const DateInput: FC<TProps> = ({
     const fallbackId = useId();
     const inputId = id ?? fallbackId;
     const isMobile = useMobile();
+    // На мобильном тап по полю открывает календарь в шторке — экранная клавиатура поверх него
+    // не нужна (MOB-8). Ввод с клавиатуры остаётся (физическая клавиатура, вставка); проп
+    // inputMode переопределяет значение, например 'none' для всех тач-экранов
+    const fieldInputMode = inputMode ?? (isMobile ? 'none' : undefined);
 
     const [isOpen, setOpenFlag] = useState(false);
 
@@ -153,6 +158,7 @@ export const DateInput: FC<TProps> = ({
                         onBlur={handleBlur}
                         value={stringValue}
                         onChange={handleStringValueChange}
+                        inputMode={fieldInputMode}
                         paddingRight={44}
                         useModernStyles={useModernStyles}
                         {...paddingAndVariantOptions}
