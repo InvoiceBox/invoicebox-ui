@@ -89,6 +89,25 @@ export { useLoadingSubmit } from './hooks/useLoadingSubmit';
 export { breakpoints } from './breakpoints';
 export { useMobile, useTablet, useLargeTablet, useMiniLaptop } from './hooks/useMedia';
 export { useModal } from './hooks/useModal';
+export {
+    useQueryFilter,
+    QueryFilterProvider,
+    DEFAULT_PAGE_PARAM_NAME,
+    DEFAULT_FIRST_PAGE,
+    DATA_SPLITTER,
+    formatDateForQuery,
+    formatDateOnlyForQuery,
+    getDateOrNullFromQueryString,
+    getQueryStringFromDateOrNull,
+    getDateArrOrNullFromQueryString,
+    getQueryStringFromDateArrOrNull,
+    getNumberOrNullFromQueryString,
+    getQueryStringFromNumberOrNull,
+    getQueryStringFromArrayString,
+    getArrayStringsFromQueryString,
+    booleanFromString,
+} from './hooks/useQueryFilter';
+export type { TUseQueryArgumentType, TQueryFilterProviderProps } from './hooks/useQueryFilter';
 
 export { LENGTH_VAT_NUMBER } from './validate/utils/vatNumberValidateHelpers';
 export { Validate } from './validate';
