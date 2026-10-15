@@ -66,6 +66,11 @@ import {
 } from '../components/form/common/DrawerHeader/palette';
 import { generateCheckboxPalette, TCheckboxPalette } from '../components/form/Checkbox/palette';
 import { generateTooltipPalette, TTooltipPalette } from '../components/common/Tooltip/palette';
+import { generateModalPalette, TModalPalette } from '../components/common/Modal/palette';
+import {
+    generateWentWrongModalPalette,
+    TWentWrongModalPalette,
+} from '../components/common/WentWrongModal/palette';
 
 type TContext = {
     skeleton: TSkeletonPalette;
@@ -101,6 +106,8 @@ type TContext = {
     drawerHeader: TDrawerHeaderPalette;
     checkbox: TCheckboxPalette;
     tooltip: TTooltipPalette;
+    modal: TModalPalette;
+    wentWrongModal: TWentWrongModalPalette;
 };
 
 export const PaletteContext = createContext<TContext>({
@@ -137,4 +144,6 @@ export const PaletteContext = createContext<TContext>({
     drawerHeader: generateDrawerHeaderPalette(defaultAbstractPalette),
     checkbox: generateCheckboxPalette(defaultAbstractPalette),
     tooltip: generateTooltipPalette(defaultAbstractPalette),
+    modal: generateModalPalette(defaultAbstractPalette),
+    wentWrongModal: generateWentWrongModalPalette(defaultAbstractPalette),
 });

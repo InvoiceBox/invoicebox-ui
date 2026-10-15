@@ -35,6 +35,8 @@ import { generateDateTimeInputPalette } from '../components/form/DateTimeInput/p
 import { generateDrawerHeaderPalette } from '../components/form/common/DrawerHeader/palette';
 import { generateCheckboxPalette } from '../components/form/Checkbox/palette';
 import { generateTooltipPalette } from '../components/common/Tooltip/palette';
+import { generateModalPalette } from '../components/common/Modal/palette';
+import { generateWentWrongModalPalette } from '../components/common/WentWrongModal/palette';
 
 type TProps = {
     children: ReactNode;
@@ -86,6 +88,8 @@ export const PaletteProvider: FC<TProps> = ({ children, abstract, skeleton }) =>
             drawerHeader: generateDrawerHeaderPalette(mergedAbstractPalette),
             checkbox: generateCheckboxPalette(mergedAbstractPalette),
             tooltip: generateTooltipPalette(mergedAbstractPalette),
+            modal: generateModalPalette(mergedAbstractPalette),
+            wentWrongModal: generateWentWrongModalPalette(mergedAbstractPalette),
         }),
         [mergedSkeletonPalette, mergedAbstractPalette],
     );
