@@ -76,6 +76,52 @@ describe('WentWrongModal', () => {
         expect(onClose).toHaveBeenCalledTimes(2);
     });
 
+    test('после копирования ID показывает «Скопировано» и через 2 секунды убирает', async () => {
+        jest.useFakeTimers();
+        const writeText = jest.fn().mockResolvedValue(undefined);
+        Object.assign(navigator, { clipboard: { writeText } });
+        render({ requestErrorId: 'req-123' });
+
+        const status = () => document.querySelector('[role="status"]')?.textContent;
+        expect(status()).toBe('');
+
+        const idButton = Array.from(document.querySelectorAll('button')).find(
+            (button) => button.textContent === 'req-123',
+        );
+        await act(async () => {
+            idButton?.click();
+        });
+        expect(writeText).toHaveBeenCalledWith('req-123');
+        expect(status()).toBe('Скопировано');
+
+        act(() => {
+            jest.advanceTimersByTime(2000);
+        });
+        expect(status()).toBe('');
+        jest.useRealTimers();
+    });
+
+    test('уход курсора с ID сбрасывает «Скопировано»', async () => {
+        Object.assign(navigator, { clipboard: { writeText: jest.fn().mockResolvedValue(undefined) } });
+        render({ requestErrorId: 'req-123' });
+
+        const status = () => document.querySelector('[role="status"]')?.textContent;
+        const idButton = Array.from(document.querySelectorAll('button')).find(
+            (button) => button.textContent === 'req-123',
+        );
+        await act(async () => {
+            idButton?.click();
+        });
+        expect(status()).toBe('Скопировано');
+
+        act(() => {
+            idButton?.dispatchEvent(
+                new MouseEvent('mouseout', { bubbles: true, relatedTarget: document.body }),
+            );
+        });
+        expect(status()).toBe('');
+    });
+
     test('закрытое окно ничего не рендерит и не блокирует скролл', () => {
         render({ isOpen: false });
         expect(document.querySelector('[role="dialog"]')).toBeNull();

@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { useMobile } from '../../../hooks/useMedia';
 import { useComponentPalette } from '../../../palette';
 import { AdaptiveModalDrawer } from '../AdaptiveModalDrawer';
@@ -16,6 +16,9 @@ export type TWentWrongModalContact = {
     href: string;
     icon?: ReactNode;
 };
+
+/** сколько держим подтверждение «Скопировано» после копирования ID */
+const COPIED_FEEDBACK_MS = 2000;
 
 const SUPPORT_PHONE_LABEL = '8 (800) 100-76-20';
 const SUPPORT_PHONE = '+78001007620';
@@ -54,16 +57,34 @@ export const WentWrongModal: FC<TProps> = ({
 }) => {
     const mergedPalette = useComponentPalette<TWentWrongModalPalette>('wentWrongModal', palette);
     const isMobile = useMobile();
+    const [isCopied, setIsCopied] = useState(false);
+    const copiedTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+    // При закрытии окна и смене ID подтверждение сбрасываем, таймер не переживает размонтирование
+    useEffect(() => {
+        setIsCopied(false);
+        clearTimeout(copiedTimerRef.current);
+    }, [isOpen, requestErrorId]);
+
+    useEffect(() => () => clearTimeout(copiedTimerRef.current), []);
 
     const copyRequestId = async () => {
         if (!requestErrorId || !navigator.clipboard?.writeText) return;
 
         try {
             await navigator.clipboard.writeText(requestErrorId);
-            toast.success('Скопировано в буфер обмена');
+            setIsCopied(true);
+            clearTimeout(copiedTimerRef.current);
+            copiedTimerRef.current = setTimeout(() => setIsCopied(false), COPIED_FEEDBACK_MS);
         } catch {
             toast.error('Не удалось скопировать');
         }
+    };
+
+    // Уводим курсор/фокус с ID — подтверждение гасим, при возврате тултип снова подсказывает про копирование
+    const resetCopied = () => {
+        clearTimeout(copiedTimerRef.current);
+        setIsCopied(false);
     };
 
     const handleCopy = () => {
@@ -119,7 +140,7 @@ export const WentWrongModal: FC<TProps> = ({
                                     overlay={
                                         <S.CopyText>
                                             <Typography variant="captionRegular">
-                                                Нажмите, чтобы скопировать
+                                                {isCopied ? 'Скопировано' : 'Нажмите, чтобы скопировать'}
                                             </Typography>
                                         </S.CopyText>
                                     }
@@ -130,12 +151,23 @@ export const WentWrongModal: FC<TProps> = ({
                                         element="button"
                                         type="button"
                                         onClick={handleCopy}
+                                        onMouseLeave={resetCopied}
+                                        onBlur={resetCopied}
                                         $palette={mergedPalette}
                                     >
                                         {requestErrorId}
                                     </S.RequestIdValue>
                                 </Tooltip>
                             )}
+                            {/* На мобильном подтверждение видно рядом с кнопкой, на десктопе его показывает
+                                тултип, а здесь оно только для скринридеров */}
+                            <S.CopiedStatus role="status" $isVisuallyHidden={!isMobile}>
+                                {isCopied && (
+                                    <Typography variant="bodyMRegular" element="span">
+                                        Скопировано
+                                    </Typography>
+                                )}
+                            </S.CopiedStatus>
                         </S.RequestIdWrapper>
                     )}
                     <SecondaryButton
