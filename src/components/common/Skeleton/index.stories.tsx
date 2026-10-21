@@ -25,3 +25,26 @@ export const ByOwnSize: StoryObj<typeof Skeleton> = {
         height: '100px',
     },
 };
+
+/** Строки текста, поле и кнопка: скругление по месту, как в личном кабинете */
+export const Shapes: StoryObj<typeof Skeleton> = {
+    render: () => (
+        <div style={{ width: 320, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                <Skeleton circle height={36} />
+                <Skeleton height={14} borderRadius={4} />
+            </div>
+            <Skeleton height={56} />
+            <Skeleton height={36} width={132} borderRadius={20} />
+        </div>
+    ),
+};
+
+/** Плашка появляется через 180 мс: на быстром ответе её не видно */
+export const WithShowDelay: StoryObj<typeof Skeleton> = {
+    args: {
+        width: 200,
+        height: 56,
+        showDelay: 180,
+    },
+};
