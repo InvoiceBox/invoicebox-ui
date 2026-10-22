@@ -1,36 +1,58 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { TSkeletonPalette } from './palette';
 import { reducedMotion } from '../../../utils/reducedMotion';
 
 const shine = keyframes`
-    0% {
-        left: calc(0% - 200px);
+    from {
+        background-position: -200px 0;
     }
-    100% {
-        left: calc(100% + 200px);
+    to {
+        background-position: calc(200px + 100%) 0;
     }
 `;
 
-export const Wrapper = styled.div<{ $width: string; $height: string; $palette: TSkeletonPalette }>`
+const appear = keyframes`
+    to {
+        visibility: visible;
+    }
+`;
+
+export const Wrapper = styled.div<{
+    $width: string;
+    $height: string;
+    $borderRadius: string;
+    $showDelay: number;
+    $palette: TSkeletonPalette;
+}>`
     width: ${({ $width }) => $width};
     height: ${({ $height }) => $height};
-    border-radius: 10px;
+    border-radius: ${({ $borderRadius }) => $borderRadius};
     overflow: hidden;
     position: relative;
+    flex-shrink: 0;
     background: ${({ $palette }) => $palette.bg};
+
+    /* Задержка показа — не движение: при «Уменьшении движения» она остаётся, иначе плашка не появится */
+    ${({ $showDelay }) =>
+        $showDelay > 0 &&
+        css`
+            visibility: hidden;
+            animation: ${appear} 0s linear ${$showDelay}ms forwards;
+        `}
 `;
 
+/* Перелив как в личном кабинете: полоса 200 проходит плашку за 1,2 с */
 export const Inner = styled.div<{ $palette: TSkeletonPalette }>`
     position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100px;
+    inset: 0;
     background-image: linear-gradient(
         90deg,
-        ${({ $palette }) => $palette.bg} 0px,
-        ${({ $palette }) => $palette.flicker} 50px,
-        ${({ $palette }) => $palette.bg} 100px
+        ${({ $palette }) => $palette.bg},
+        ${({ $palette }) => $palette.flicker},
+        ${({ $palette }) => $palette.bg}
     );
-    animation: ${shine} 3s infinite linear;
+    background-size: 200px 100%;
+    background-repeat: no-repeat;
+    animation: ${shine} 1.2s ease-in-out infinite;
     ${reducedMotion}
 `;

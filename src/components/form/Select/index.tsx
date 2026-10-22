@@ -21,7 +21,7 @@ import { useComponentPalette } from '../../../palette';
 import { TSelectPalette } from './palette';
 import { useOptionGroups } from './hooks/useOptionGroups';
 import { Drawer } from '../../common/Drawer';
-import Loader from './components/Loader';
+import { Skeleton } from '../../common/Skeleton';
 import { MultipleValue } from './components/MultipleValue';
 import { Checkbox } from '../Checkbox';
 import { TProps as TChipProps } from '../../common/Chip';
@@ -399,10 +399,15 @@ const SelectInner = <TValue extends string | number>(props: TAllProps<TValue>) =
         </S.DefaultOptionWrapper>
     );
 
+    // Пока варианты грузятся — плашки на месте вариантов, как у `Autocomplete`
     const loader = (
-        <S.DefaultOptionWrapper>
-            <Loader />
-        </S.DefaultOptionWrapper>
+        <>
+            {[0, 1, 2].map((key) => (
+                <S.DefaultOptionWrapper key={key}>
+                    <Skeleton height={20} borderRadius={4} />
+                </S.DefaultOptionWrapper>
+            ))}
+        </>
     );
 
     const handleDropdownContentRender = () => {
