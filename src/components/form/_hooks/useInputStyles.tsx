@@ -41,7 +41,9 @@ export const useInputStyles = ({
 
     const paddingAndVariantOptions = useMemo(() => {
         if (useModernStyles) {
-            if (isHideModernPlaceholder) {
+            // Отступ сверху под label нужен, только если label есть. Без него текст
+            // центрируется так же, как placeholder
+            if (isHideModernPlaceholder && label) {
                 return MODERN_STYLE_SIZE_PARAMS_MAP[fieldSize];
             } else {
                 return {
@@ -53,7 +55,7 @@ export const useInputStyles = ({
         } else {
             return SIZE_PARAMS_MAP[fieldSize];
         }
-    }, [useModernStyles, isHideModernPlaceholder, fieldSize]);
+    }, [useModernStyles, isHideModernPlaceholder, fieldSize, label]);
 
     const modernInputPlaceholder = useMemo(() => {
         return placeholder || label;
