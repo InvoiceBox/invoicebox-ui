@@ -8,11 +8,13 @@ export const Wrapper = styled(Typography)<{
     $paddingRight: number;
     $paddingTop: number;
     $color: string;
+    $multiline: boolean;
 }>`
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
+    ${({ $multiline }) => ($multiline ? 'bottom: 0;' : '')}
     padding-left: ${({ $paddingLeft }) => $paddingLeft}px;
     padding-right: ${({ $paddingRight }) => $paddingRight}px;
     padding-top: ${({ $paddingTop }) => $paddingTop}px;
@@ -30,11 +32,19 @@ export const Wrapper = styled(Typography)<{
     ${reducedMotion}
 `;
 
-export const TextContent = styled.span`
+export const TextContent = styled.span<{ $multiline: boolean }>`
     min-width: 0;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    ${({ $multiline }) =>
+        $multiline
+            ? `
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    `
+            : `
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    `}
 `;
 
 export const Star = styled.span<{ $color: string }>`

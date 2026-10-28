@@ -12,6 +12,7 @@ type TParams = {
     required?: boolean;
     conditionHideModernPlaceholder?: boolean;
     paddingRight?: number;
+    multiline?: boolean;
 };
 
 export const useInputStyles = ({
@@ -24,6 +25,7 @@ export const useInputStyles = ({
     required,
     conditionHideModernPlaceholder = false,
     paddingRight,
+    multiline = false,
 }: TParams) => {
     const isHideModernPlaceholder = isHaveValue || inFocus || conditionHideModernPlaceholder;
 
@@ -64,6 +66,7 @@ export const useInputStyles = ({
             paddingRight={paddingRight}
             size={fieldSize}
             required={required}
+            multiline={multiline}
         >
             {modernInputPlaceholder}
         </ModernPlaceholder>
