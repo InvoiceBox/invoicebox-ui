@@ -89,6 +89,7 @@ export const TextInput = React.forwardRef<HTMLInputElement, TProps>(
             placeholder,
             required,
             paddingRight: placeholderPaddingRight,
+            multiline: element === 'textarea',
         });
 
         const handleChange = useCallback(
