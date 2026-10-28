@@ -35,3 +35,23 @@ export const Default: StoryObj<TProps> = {
     },
     render: Component,
 };
+
+export const TextArea: StoryObj<TProps> = {
+    args: {
+        hasError: false,
+        label: 'Комментарий',
+        name: 'comment',
+        onBlur: action('blur'),
+        onFocus: action('focus'),
+        maxLength: 500,
+        placeholder:
+            'Введите комментарий введите комментарий введите комментарий введите комментарий введите комментарий введите комментарий введите комментарий',
+        disabled: false,
+        size: 'L',
+        autoFocus: false,
+        useModernStyles: true,
+        element: 'textarea',
+        rows: 4,
+    },
+    render: Component,
+};

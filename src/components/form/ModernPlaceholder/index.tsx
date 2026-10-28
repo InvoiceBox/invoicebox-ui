@@ -12,6 +12,7 @@ type TProps = {
     paddingTop: number;
     size: TSizes;
     required?: boolean;
+    multiline?: boolean;
     children: ReactNode;
 };
 
@@ -22,6 +23,7 @@ export const ModernPlaceholder: FC<TProps> = ({
     paddingTop,
     size,
     required = false,
+    multiline = false,
     children,
 }) => {
     const pureInputPalette = useComponentPalette<TPureInputPalette>('pureInput');
@@ -35,8 +37,9 @@ export const ModernPlaceholder: FC<TProps> = ({
             $paddingRight={paddingRight}
             $paddingTop={paddingTop}
             $color={pureInputPalette.placeholder}
+            $multiline={multiline}
         >
-            <S.TextContent>{children}</S.TextContent>
+            <S.TextContent $multiline={multiline}>{children}</S.TextContent>
             {required && <S.Star $color={inputLabelPalette.error}>*</S.Star>}
         </S.Wrapper>
     );
