@@ -12,7 +12,7 @@ import React, {
 import InputMask from '@mona-health/react-input-mask';
 import * as S from './styles';
 import { PhoneInputLogic } from './phoneInputLogic';
-import { useValidateInitialValue } from './hooks/useValidateInitialValue';
+import { useSyncExternalValue } from './hooks/useSyncExternalValue';
 import { RUS_COUNTRY_CODE, TSupportedCountries } from './types';
 import { useInputFocus } from '../../../hooks/useInputFocus';
 import { InputLabel } from '../InputLabel';
@@ -100,6 +100,16 @@ export const PhoneInput: FC<TProps> = ({
     const [inputValue, setInputValue] = useState(value);
     const [country, setCountry] = useState(RUS_COUNTRY_CODE);
 
+    // Последнее значение, отданное в onChange: по нему отличаем эхо своего ввода от reset/setValue снаружи
+    const lastEmittedValueRef = useRef(value);
+    const emitChange = useCallback(
+        (nextValue: string) => {
+            lastEmittedValueRef.current = nextValue;
+            onChange(nextValue);
+        },
+        [onChange],
+    );
+
     const { inputLabel, paddingAndVariantOptions, isHideModernPlaceholder, fieldSize } = useInputStyles({
         isHaveValue: !!inputValue,
         useModernStyles,
@@ -120,30 +130,40 @@ export const PhoneInput: FC<TProps> = ({
         [onCountryChange],
     );
 
-    const handleInitialValid = useCallback(
+    const handleExternalValid = useCallback(
         (currentInputValue: string, countryCode: string) => {
-            onChange(currentInputValue);
+            setInputValue(currentInputValue);
+            emitChange(currentInputValue);
             setIsHaveInputError(false);
             setCountry(countryCode);
         },
-        [onChange],
+        [emitChange],
     );
 
-    const handleInitialUnValid = useCallback(
-        (countryCode: string) => {
-            onChange('');
+    const handleExternalUnValid = useCallback(
+        (currentInputValue: string, countryCode: string) => {
+            setInputValue(currentInputValue);
+            emitChange('');
             setIsHaveInputError(true);
             setCountry(countryCode);
         },
-        [onChange],
+        [emitChange],
     );
 
-    useValidateInitialValue(
+    const handleExternalClear = useCallback(() => {
+        setInputValue('');
+        setIsHaveInputError(false);
+        setIsFirstBlur(true);
+    }, []);
+
+    useSyncExternalValue(
         phoneInputLogic,
         value,
         currentCountriesPhoneRules,
-        handleInitialValid,
-        handleInitialUnValid,
+        lastEmittedValueRef,
+        handleExternalValid,
+        handleExternalUnValid,
+        handleExternalClear,
     );
 
     const getNewCountryByInputValue = useCallback(
@@ -191,10 +211,10 @@ export const PhoneInput: FC<TProps> = ({
 
             const isValidInputValue = getIsValidValue(intermediateValue);
             setIsHaveInputError(!isValidInputValue);
-            onChange(isValidInputValue ? intermediateValue : '');
+            emitChange(isValidInputValue ? intermediateValue : '');
             setInputValue(intermediateValue);
         },
-        [country, getIsValidValue, onChange, phoneInputLogic],
+        [country, emitChange, getIsValidValue, phoneInputLogic],
     );
 
     const handleChange = useCallback(
@@ -224,12 +244,12 @@ export const PhoneInput: FC<TProps> = ({
             );
             setIsFirstBlur(false);
             setIsHaveInputError(!isValidInputValue);
-            onChange(isValidInputValue ? inputValue : '');
+            emitChange(isValidInputValue ? inputValue : '');
             setTimeout(() => {
                 inputRef.current?.focus();
             }, 0);
         },
-        [currentCountriesPhoneRules, handleChangeCountry, inputValue, onChange, phoneInputLogic],
+        [currentCountriesPhoneRules, emitChange, handleChangeCountry, inputValue, phoneInputLogic],
     );
 
     const handlePaste = useCallback(
