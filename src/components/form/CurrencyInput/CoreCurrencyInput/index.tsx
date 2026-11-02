@@ -7,6 +7,7 @@ import { useComponentPalette } from '../../../../palette';
 import { TPureInputPalette } from '../../PureInput/palette';
 import { CurrencyInputProps } from 'react-currency-input-field';
 import { useInputStyles } from '../../_hooks/useInputStyles';
+import { DECIMAL_SEPARATOR, normalizeDecimalSeparator } from './normalizeDecimalSeparator';
 
 export type TProps = Pick<
     CurrencyInputProps,
@@ -85,7 +86,8 @@ export const CoreCurrencyInput: FC<TProps> = ({
                     defaultValue={defaultValue}
                     allowDecimals={allowDecimals}
                     decimalsLimit={2}
-                    decimalSeparator={','}
+                    decimalSeparator={DECIMAL_SEPARATOR}
+                    transformRawValue={normalizeDecimalSeparator}
                     groupSeparator={' '}
                     disabled={disabled}
                     disableAbbreviations={true}
