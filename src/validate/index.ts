@@ -37,7 +37,7 @@ export class Validate {
         }
 
         const basePattern =
-            '(?:(?:[a-z\u00a1-\uffff](?:[a-z\u00a1-\uffff-]{0,61}[a-z\u00a1-\uffff])?\\.)+([a-z\u00a1-\uffff]{2,63}))(?::\\d+)?)(?:\\/[\\w \\/-]*)*(?:\\?[^#\\s]*)?(?:\\#\\S*)';
+            '(?:(?:[a-z0-9\u00a1-\uffff](?:[a-z0-9\u00a1-\uffff-]{0,61}[a-z0-9\u00a1-\uffff])?\\.)+([a-z\u00a1-\uffff]{2,63}))(?::\\d+)?)(?:\\/[\\w \\/-]*)*(?:\\?[^#\\s]*)?(?:\\#\\S*)';
 
         const prefix = isOnlyHttpsFormat ? '^((https:\\/\\/)' : '^((?:https?:\\/\\/)?';
 
