@@ -39,4 +39,25 @@ describe('Website validate', () => {
         expect(validateHttpsFunc('.com')).toBe(WEBSITE_WRONG_MESSAGE);
         expect(validateHttpsFunc('дом')).toBe(WEBSITE_WRONG_MESSAGE);
     });
+
+    test('validate web sites with digits in domain', () => {
+        expect(validateHttpsFunc('https://price.24promo.ru/')).toBe(true);
+        expect(validateHttpsFunc('https://24promo.ru/')).toBe(true);
+        expect(validateHttpsFunc('https://shop1.example.ru/')).toBe(true);
+        expect(validateHttpsFunc('https://shop.my-store.ru/')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/')).toBe(true);
+        expect(validateAllFunc('24promo.ru')).toBe(true);
+        expect(validateAllFunc('http://price.24promo.ru/')).toBe(true);
+
+        expect(validateHttpsFunc('24promo.ru')).toBe(WEBSITE_WRONG_MESSAGE);
+    });
+
+    test('validate web sites with digits in top level domain', () => {
+        expect(validateAllFunc('1.2.3.4')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateAllFunc('http://1.2.3.4')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateAllFunc('127.0.0.1:8080')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://1.2.3.4')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://1.2.3.4/')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.24')).toBe(WEBSITE_WRONG_MESSAGE);
+    });
 });
