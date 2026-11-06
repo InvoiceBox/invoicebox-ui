@@ -1,0 +1,5 @@
+{
+    "main": "../dist/realtime/index.js",
+    "module": "../dist/esm/realtime/index.js",
+    "types": "../dist/realtime/index.d.ts"
+}

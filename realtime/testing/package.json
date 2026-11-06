@@ -1,0 +1,5 @@
+{
+    "main": "../../dist/realtime/testing.js",
+    "module": "../../dist/esm/realtime/testing.js",
+    "types": "../../dist/realtime/testing.d.ts"
+}

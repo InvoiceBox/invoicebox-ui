@@ -5,7 +5,7 @@
 id: invoicebox-ui
 type: library
 title: '@invoicebox/ui'
-summary: Публичная UI-библиотека — 45+ компонентов, палитра, хуки; npm + storybook
+summary: Публичная UI-библиотека — 45+ компонентов, палитра, хуки, клиент реалтайма (Centrifugo); npm + storybook
 status: active
 repo:
     provider: github
