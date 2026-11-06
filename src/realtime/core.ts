@@ -214,9 +214,7 @@ export const createRealtime = ({
         }
     };
 
-    const connect = async (options: TRealtimeStartOptions, current: number) => {
-        const { Centrifuge } = await loadLibrary();
-
+    const connect = ({ Centrifuge }: TRealtimeLibrary, options: TRealtimeStartOptions, current: number) => {
         if (current !== session) {
             return;
         }
@@ -314,12 +312,17 @@ export const createRealtime = ({
 
         const current = session;
 
-        // чанк библиотеки не загрузился (сеть, новый деплой) — до перезагрузки остаётся опрос
-        connect(options, current).catch(() => {
-            if (current === session) {
-                turnOff();
-            }
-        });
+        // без async/await: Babel встроил бы regenerator в стартовый бандл приложения.
+        // Чанк библиотеки не загрузился (сеть, новый деплой) — до перезагрузки остаётся опрос
+        new Promise<TRealtimeLibrary>((resolve) => {
+            resolve(loadLibrary());
+        })
+            .then((library) => connect(library, options, current))
+            .catch(() => {
+                if (current === session) {
+                    turnOff();
+                }
+            });
     };
 
     /** Выход из учётной записи: соединение закрывается, следующий вход запустит заново */

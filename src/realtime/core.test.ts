@@ -8,6 +8,7 @@ import {
     toRealtimeUrl,
     UNAUTHORIZED_DISCONNECT_CODE,
 } from './core';
+import type { TRealtimeLibrary } from './types';
 import { createFakeLibrary, createTestSignal, TEST_CHANNEL, TEST_CONTOUR } from './testing';
 
 const START = { contour: TEST_CONTOUR, url: 'ws://app.test/api/realtime/connection/websocket' };
@@ -235,6 +236,36 @@ describe('createRealtime', () => {
 
     it('чанк библиотеки не загрузился — disabled', async () => {
         const realtime = createRealtime({ loadLibrary: () => Promise.reject(new Error('ChunkLoadError')) });
+        realtime.start(START);
+        await flush();
+
+        expect(realtime.getStatus()).toBe('disabled');
+    });
+
+    it('загрузчик библиотеки бросил синхронно — disabled, start не бросает', async () => {
+        const realtime = createRealtime({
+            loadLibrary: () => {
+                throw new Error('loader failed');
+            },
+        });
+
+        expect(() => realtime.start(START)).not.toThrow();
+        await flush();
+
+        expect(realtime.getStatus()).toBe('disabled');
+    });
+
+    it('конструктор клиента бросил — disabled', async () => {
+        const realtime = createRealtime({
+            loadLibrary: async () => ({
+                Centrifuge: class {
+                    constructor() {
+                        throw new Error('bad options');
+                    }
+                } as unknown as TRealtimeLibrary['Centrifuge'],
+            }),
+        });
+
         realtime.start(START);
         await flush();
 
