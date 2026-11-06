@@ -59,5 +59,70 @@ describe('Website validate', () => {
         expect(validateHttpsFunc('https://1.2.3.4')).toBe(WEBSITE_WRONG_MESSAGE);
         expect(validateHttpsFunc('https://1.2.3.4/')).toBe(WEBSITE_WRONG_MESSAGE);
         expect(validateHttpsFunc('https://example.24')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://1.2.3.ab4')).toBe(WEBSITE_WRONG_MESSAGE);
+    });
+
+    test('validate web sites with punycode top level domain', () => {
+        expect(validateHttpsFunc('https://xn--80ak6aa92e.xn--p1ai')).toBe(true);
+        expect(validateAllFunc('xn--80ak6aa92e.xn--p1ai')).toBe(true);
+
+        expect(validateHttpsFunc('https://example.xn--')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.xn---')).toBe(WEBSITE_WRONG_MESSAGE);
+    });
+
+    test('validate web sites with path, query and fragment', () => {
+        expect(validateHttpsFunc('https://example.ru/page.html')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/путь')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a%20b')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a,b')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a+b')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a:b')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a=b;c')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a@b')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a(b)')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru:8443/a')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru?b=c')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru#d')).toBe(true);
+        expect(validateHttpsFunc('https://example.ru/a?b=c&d=e#f')).toBe(true);
+    });
+
+    test('validate web sites with garbage after domain', () => {
+        expect(validateHttpsFunc('https://example.ru!!!')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru мусор')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru"><script>alert(1)</script>')).toBe(
+            WEBSITE_WRONG_MESSAGE,
+        );
+        expect(validateHttpsFunc('https://example.ru,https://other.ru')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru.')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru…')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru—мусор')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateAllFunc('example.ru!!!')).toBe(WEBSITE_WRONG_MESSAGE);
+    });
+
+    test('validate web sites with forbidden chars after domain', () => {
+        expect(validateHttpsFunc('https://example.ru/"><script>alert(1)</script>')).toBe(
+            WEBSITE_WRONG_MESSAGE,
+        );
+        expect(validateHttpsFunc('https://example.ru/?"><script>alert(1)</script>')).toBe(
+            WEBSITE_WRONG_MESSAGE,
+        );
+        expect(validateHttpsFunc('https://example.ru/#"><script>alert(1)</script>')).toBe(
+            WEBSITE_WRONG_MESSAGE,
+        );
+        expect(validateHttpsFunc('https://example.ru/a`b')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru/a b')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru/?q=a b')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru/#a b')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru ')).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc('https://example.ru\n')).toBe(WEBSITE_WRONG_MESSAGE);
+    });
+
+    test('validate web sites without exponential backtracking', () => {
+        const startedAt = Date.now();
+
+        expect(validateHttpsFunc(`https://example.ru${'/'.repeat(5000)}"`)).toBe(WEBSITE_WRONG_MESSAGE);
+        expect(validateHttpsFunc(`https://${'a.'.repeat(5000)}!`)).toBe(WEBSITE_WRONG_MESSAGE);
+
+        expect(Date.now() - startedAt).toBeLessThan(1000);
     });
 });
