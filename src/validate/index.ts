@@ -36,14 +36,17 @@ export class Validate {
             return true;
         }
 
-        const basePattern =
-            '(?:(?:[a-z0-9\u00a1-\uffff](?:[a-z0-9\u00a1-\uffff-]{0,61}[a-z0-9\u00a1-\uffff])?\\.)+([a-z\u00a1-\uffff]{2,63}))(?::\\d+)?)(?:\\/[\\w \\/-]*)*(?:\\?[^#\\s]*)?(?:\\#\\S*)';
+        const domainChar = '[\\p{L}\\p{M}\\p{N}]';
+        const domainLabel = `${domainChar}(?:[\\p{L}\\p{M}\\p{N}-]{0,61}${domainChar})?`;
+        // Зона без цифр, кроме punycode: 1.2.3.4 не сайт
+        const topLevelDomain = '(?:[\\p{L}\\p{M}]{2,63}|xn--[a-z0-9-]{0,58}[a-z0-9])';
+        const tail = '(?:\\/[^\\s<>"`?#]*)?(?:\\?[^\\s<>"`#]*)?(?:#[^\\s<>"`]*)?';
 
-        const prefix = isOnlyHttpsFormat ? '^((https:\\/\\/)' : '^((?:https?:\\/\\/)?';
+        const prefix = isOnlyHttpsFormat ? 'https:\\/\\/' : '(?:https?:\\/\\/)?';
 
-        const pattern = `${prefix}${basePattern}?`;
+        const pattern = `^${prefix}(?:${domainLabel}\\.)+${topLevelDomain}(?::\\d+)?${tail}$`;
 
-        const regex = new RegExp(pattern, 'i');
+        const regex = new RegExp(pattern, 'iu');
 
         if (value.match(regex)) {
             return true;
