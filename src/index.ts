@@ -1,5 +1,16 @@
 export { PaletteProvider, defaultAbstractPalette } from './palette';
 export type { TAbstractPalette } from './palette';
+export {
+    colorPrimitives,
+    colorAlias,
+    lightPalette,
+    darkPalette,
+    ThemeModeProvider,
+    useThemeMode,
+    getThemeModeInitScript,
+    ThemeSwitcher,
+} from './theme';
+export type { TColorPalette, TThemeMode, TThemeSwitcherLabels } from './theme';
 
 // common
 export { Skeleton } from './components/common/Skeleton';
