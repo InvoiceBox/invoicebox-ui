@@ -35,9 +35,6 @@ const visible = css`
 
 export const Wrapper = styled.div<{
     $isVisible: boolean;
-    $isAbove: boolean;
-    $translateY: string;
-    $positionVertical: number;
     $positionLeft: string;
     $positionRight: string;
     $minWidth: string;
@@ -65,19 +62,6 @@ export const Wrapper = styled.div<{
     z-index: ${({ $zIndex }) => $zIndex ?? 5};
 
     ${({ $isVisible }) => ($isVisible ? visible : hidden)};
-
-    ${({ $isAbove, $positionVertical }) =>
-        $isAbove
-            ? css`
-                  bottom: calc(100% + ${$positionVertical}px);
-              `
-            : css`
-                  top: calc(100% + ${$positionVertical}px);
-              `};
-
-    ${({ $translateY }) => css`
-        transform: translateY(${$translateY});
-    `};
 
     ${reducedMotion}
 `;
