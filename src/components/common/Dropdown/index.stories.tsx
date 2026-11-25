@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Dropdown, TProps } from '.';
@@ -51,4 +51,34 @@ export const AutoPosition: StoryObj<TProps> = {
             </div>
         </div>
     ),
+};
+
+/** Над полем появляется/исчезает контент (как строки «Загружаем…» в модалке), пока дропдаун
+ * открыт: слой должен перевязаться за полем, а не остаться на старом месте */
+const RepositionOnContentResizeDemo = (props: TProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [hasContentAbove, setHasContentAbove] = useState(true);
+
+    return (
+        <div style={{ width: 320 }}>
+            {hasContentAbove && <div style={{ height: 60 }}>Контент над полем (строка загрузки)</div>}
+            <div style={{ position: 'relative' }}>
+                <div>parent (поле)</div>
+                <button type="button" onClick={() => setIsOpen(!isOpen)}>
+                    {isOpen ? 'Закрыть' : 'Открыть'} дропдаун
+                </button>{' '}
+                <button type="button" onClick={() => setHasContentAbove(!hasContentAbove)}>
+                    Контент над полем: {hasContentAbove ? 'скрыть' : 'показать'}
+                </button>
+                <Dropdown {...props} isOpen={isOpen} />
+            </div>
+        </div>
+    );
+};
+
+export const RepositionOnContentResize: StoryObj<TProps> = {
+    args: {
+        ...args,
+    },
+    render: (props) => <RepositionOnContentResizeDemo {...props} />,
 };

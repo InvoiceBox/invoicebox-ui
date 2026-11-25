@@ -76,13 +76,23 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
         // пустой полосой внизу) и не зависит от `overflow`/`transform` предков. Слой-обёртка
         // (`PositionLayer`) `fixed` точно над полем: внутренний `Wrapper` остаётся `absolute`
         // относительно него, поэтому ВСЯ старая логика позиционирования (top/bottom/left/right/
-        // translateY) и измерения работают без изменений. Пересчёт на скролл/resize, пока открыт.
+        // translateY) и измерения работают без изменений. Пересчёт на скролл/resize и на смену
+        // размеров поля и его предков, пока открыт: поле может сдвинуться и без скролла —
+        // например, когда над ним в модалке исчезает строка «Загружаем…».
         useLayoutEffect(() => {
             const updateRect = () => {
                 const field = anchorRef.current?.parentElement;
                 if (!field) return;
                 const rect = field.getBoundingClientRect();
-                setLayerRect({ top: rect.top, left: rect.left, width: rect.width, height: rect.height });
+                setLayerRect((prev) =>
+                    prev &&
+                    prev.top === rect.top &&
+                    prev.left === rect.left &&
+                    prev.width === rect.width &&
+                    prev.height === rect.height
+                        ? prev
+                        : { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
+                );
             };
 
             updateRect();
@@ -90,9 +100,18 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
 
             window.addEventListener('scroll', updateRect, true);
             window.addEventListener('resize', updateRect);
+
+            // ResizeObserver не следит за позицией, поэтому наблюдаем всю цепочку предков поля:
+            // при изменении их размеров (контент над полем, сама модалка) поле уезжает, а слой,
+            // посчитанный при открытии, оставался на месте и отрывался от поля
+            const resizeObserver = new ResizeObserver(updateRect);
+            for (let el = anchorRef.current?.parentElement; el; el = el.parentElement) {
+                resizeObserver.observe(el);
+            }
             return () => {
                 window.removeEventListener('scroll', updateRect, true);
                 window.removeEventListener('resize', updateRect);
+                resizeObserver.disconnect();
             };
         }, [isOpen]);
 
