@@ -15,14 +15,29 @@ import { TDropdownPalette } from './palette';
 
 type TPosition = {
     isAbove: boolean;
-    translateY: string;
+    offset: number;
 };
 
-type TLayerRect = {
+type TLayout = TPosition & {
     top: number;
     left: number;
     width: number;
     height: number;
+};
+
+const getAutoPosition = (field: DOMRect, panelHeight: number, gap: number): TPosition => {
+    const viewportHeight = window.innerHeight;
+    const spaceBelow = viewportHeight - field.bottom;
+    const spaceAbove = field.top;
+    const offset = field.height + gap;
+
+    if (spaceBelow >= panelHeight + gap) return { isAbove: false, offset };
+    if (spaceAbove >= panelHeight + gap) return { isAbove: true, offset };
+
+    // Если список не помещается целиком, используем сторону с большим запасом места.
+    return spaceBelow >= spaceAbove
+        ? { isAbove: false, offset: viewportHeight - field.top - panelHeight }
+        : { isAbove: true, offset: field.bottom - panelHeight };
 };
 
 export type TProps = {
@@ -64,56 +79,72 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
     ) => {
         const palette = useComponentPalette<TDropdownPalette>('dropdown');
 
-        const position = useRef<TPosition>({ isAbove: true, translateY: '0px' });
-        const [elRef, setElRef] = useState<HTMLDivElement | null>(null);
-
-        // Якорь остаётся в потоке на месте поля-триггера; по его родителю (само поле) считаем,
-        // куда поставить вынесенный порталом дропдаун.
         const anchorRef = useRef<HTMLSpanElement>(null);
-        const [layerRect, setLayerRect] = useState<TLayerRect | null>(null);
+        const [panel, setPanel] = useState<HTMLDivElement | null>(null);
+        const [layout, setLayout] = useState<TLayout | null>(null);
+        const lastLayout = useRef<TLayout | null>(null);
 
-        // Дропдаун вынесён в body порталом и спозиционирован `fixed` → НЕ растит документ (баг с
-        // пустой полосой внизу) и не зависит от `overflow`/`transform` предков. Слой-обёртка
-        // (`PositionLayer`) `fixed` точно над полем: внутренний `Wrapper` остаётся `absolute`
-        // относительно него, поэтому ВСЯ старая логика позиционирования (top/bottom/left/right/
-        // translateY) и измерения работают без изменений. Пересчёт на скролл/resize и на смену
-        // размеров поля и его предков, пока открыт: поле может сдвинуться и без скролла —
-        // например, когда над ним в модалке исчезает строка «Загружаем…».
-        useLayoutEffect(() => {
-            const updateRect = () => {
-                const field = anchorRef.current?.parentElement;
-                if (!field) return;
-                const rect = field.getBoundingClientRect();
-                setLayerRect((prev) =>
-                    prev &&
-                    prev.top === rect.top &&
-                    prev.left === rect.left &&
-                    prev.width === rect.width &&
-                    prev.height === rect.height
-                        ? prev
-                        : { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
-                );
+        const updateLayout = useCallback(() => {
+            const field = anchorRef.current?.parentElement;
+            if (!field) return;
+
+            const rect = field.getBoundingClientRect();
+            const { isAbove, offset } =
+                isAutoPosition && panel
+                    ? getAutoPosition(rect, panel.getBoundingClientRect().height, positionVertical)
+                    : { isAbove: isTopPosition, offset: rect.height + positionVertical };
+
+            const prev = lastLayout.current;
+            if (
+                prev &&
+                prev.top === rect.top &&
+                prev.left === rect.left &&
+                prev.width === rect.width &&
+                prev.height === rect.height &&
+                prev.isAbove === isAbove &&
+                prev.offset === offset
+            ) {
+                return;
+            }
+
+            const next = {
+                top: rect.top,
+                left: rect.left,
+                width: rect.width,
+                height: rect.height,
+                isAbove,
+                offset,
             };
+            lastLayout.current = next;
+            setLayout(next);
+        }, [isAutoPosition, isTopPosition, panel, positionVertical]);
 
-            updateRect();
+        // После обновления React поле может сдвинуться без изменения размеров, а список
+        // может вырасти после загрузки вариантов. Измеряем оба элемента до отрисовки.
+        useLayoutEffect(() => {
+            if (isOpen || !layout) updateLayout();
+        });
+
+        useLayoutEffect(() => {
             if (!isOpen) return undefined;
 
-            window.addEventListener('scroll', updateRect, true);
-            window.addEventListener('resize', updateRect);
+            window.addEventListener('scroll', updateLayout, true);
+            window.addEventListener('resize', updateLayout);
 
-            // ResizeObserver не следит за позицией, поэтому наблюдаем всю цепочку предков поля:
-            // при изменении их размеров (контент над полем, сама модалка) поле уезжает, а слой,
-            // посчитанный при открытии, оставался на месте и отрывался от поля
-            const resizeObserver = new ResizeObserver(updateRect);
-            for (let el = anchorRef.current?.parentElement; el; el = el.parentElement) {
-                resizeObserver.observe(el);
+            const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updateLayout);
+            if (observer) {
+                if (panel) observer.observe(panel, { box: 'border-box' });
+                for (let el = anchorRef.current?.parentElement; el; el = el.parentElement) {
+                    observer.observe(el, { box: 'border-box' });
+                }
             }
+
             return () => {
-                window.removeEventListener('scroll', updateRect, true);
-                window.removeEventListener('resize', updateRect);
-                resizeObserver.disconnect();
+                window.removeEventListener('scroll', updateLayout, true);
+                window.removeEventListener('resize', updateLayout);
+                observer?.disconnect();
             };
-        }, [isOpen]);
+        }, [isOpen, panel, updateLayout]);
 
         const handleCloseTransitionEnd = useCallback(
             (event: TransitionEvent<HTMLDivElement>) => {
@@ -124,59 +155,9 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
             [isOpen, onCloseTransitionEnd],
         );
 
-        const getPosition = useCallback(
-            ({
-                dropdownHeight,
-                belowHeight,
-                aboveHeight,
-                dropdownIndent,
-            }: {
-                dropdownHeight: number;
-                belowHeight: number;
-                aboveHeight: number;
-                dropdownIndent: number;
-            }): TPosition => {
-                const isEnoughSpaceBelow = belowHeight >= dropdownHeight + dropdownIndent;
-                if (isEnoughSpaceBelow) return { isAbove: false, translateY: '0px' };
-
-                const isEnoghtSpaceAbove = aboveHeight >= dropdownHeight + dropdownIndent;
-                if (isEnoghtSpaceAbove) return { isAbove: true, translateY: '0px' };
-
-                const isMoreSpaceBelowThanAbove = belowHeight >= aboveHeight;
-                if (isMoreSpaceBelowThanAbove) {
-                    const outOfViewPortHeight = dropdownHeight + dropdownIndent - belowHeight;
-                    return { isAbove: false, translateY: `-${outOfViewPortHeight}px` };
-                }
-                const outOfViewPortHeight = dropdownHeight + dropdownIndent - aboveHeight;
-                return { isAbove: true, translateY: `${outOfViewPortHeight}px` };
-            },
-            [],
-        );
-
-        const openFlagCache = useRef<boolean | null>(null);
-        if (elRef) {
-            const isTriggeredByFlag = openFlagCache.current !== isOpen;
-            openFlagCache.current = isOpen;
-            if (isTriggeredByFlag && isOpen) {
-                const viewportHeight = window.innerHeight;
-                const parent = elRef.parentElement as HTMLElement;
-                const { bottom, top: aboveHeight } = parent.getBoundingClientRect();
-                const belowHeight = viewportHeight - bottom;
-                const dropdownHeight = elRef.scrollHeight;
-                position.current = isAutoPosition
-                    ? getPosition({
-                          dropdownHeight,
-                          aboveHeight,
-                          belowHeight,
-                          dropdownIndent: positionVertical,
-                      })
-                    : { isAbove: isTopPosition, translateY: '0px' };
-            }
-        }
-
         const setWrapperRef = useCallback(
             (node: HTMLDivElement | null) => {
-                setElRef(node);
+                setPanel(node);
                 if (typeof forwardedRef === 'function') forwardedRef(node);
                 else if (forwardedRef) forwardedRef.current = node;
             },
@@ -186,24 +167,22 @@ export const Dropdown = forwardRef<HTMLDivElement, TProps>(
         return (
             <>
                 <S.Anchor ref={anchorRef} />
-                {layerRect &&
+                {layout &&
                     createPortal(
                         <S.PositionLayer
                             {...{ [DROPDOWN_PORTAL_ATTR]: '' }}
                             style={{
-                                top: layerRect.top,
-                                left: layerRect.left,
-                                width: layerRect.width,
-                                height: layerRect.height,
+                                top: layout.top,
+                                left: layout.left,
+                                width: layout.width,
+                                height: layout.height,
                             }}
                         >
                             <S.Wrapper
                                 ref={setWrapperRef}
                                 role={role}
                                 $isVisible={isOpen}
-                                $isAbove={position.current.isAbove}
-                                $translateY={position.current.translateY}
-                                $positionVertical={positionVertical}
+                                style={layout.isAbove ? { bottom: layout.offset } : { top: layout.offset }}
                                 $positionLeft={positionLeft}
                                 $positionRight={positionRight}
                                 $minWidth={minWidth}
